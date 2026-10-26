@@ -1,0 +1,252 @@
+{
+  "country": "CO",
+  "status": "publicado",
+  "generated_at": "2026-10-26",
+  "timezone": "America/Bogota",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "carnaval-barranquilla",
+      "names": { "local": "Carnaval de Barranquilla", "es": "Carnaval de Barranquilla", "en": "Barranquilla Carnival", "pt": "Carnaval de Barranquilla" },
+      "city": "Barranquilla",
+      "subdivision": "CO-ATL",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 10.9685, "lon": -74.7813 },
+      "nearest_airport": "BAQ",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -50, "end": -47 },
+      "editions": {
+        "2027": {
+          "start": "2027-02-06",
+          "end": "2027-02-09",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "lectura-del-bando", "name": { "es": "Lectura del Bando", "en": "Reading of the Bando", "pt": "Leitura do Bando" }, "date": "2027-01-16", "confidence": "oficial" },
+            { "id": "guacherna", "name": { "es": "Guacherna", "en": "Guacherna night parade", "pt": "Guacherna" }, "date": "2027-01-29", "rule": { "type": "relative_to", "ref": "carnaval-barranquilla", "anchor": "start", "offset": -8, "duration_days": 1 }, "confidence": "oficial" },
+            { "id": "batalla-de-flores", "name": { "es": "Batalla de Flores", "en": "Battle of Flowers", "pt": "Batalha de Flores" }, "date": "2027-02-06", "confidence": "oficial" }
+          ],
+          "sources": [
+            { "url": "https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/", "publisher": "Carnaval de Barranquilla S.A.S.", "accessed": "2026-10-26", "tier": "A" }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 6000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.valoraanalitik.com/?p=555318", "note": { "es": "380 de más de 500 eventos gratuitos (2026)", "en": "380 of 500+ events were free (2026)", "pt": "380 de mais de 500 eventos gratuitos (2026)" } },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
+        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+      },
+      "street_tip": { "es": "El Carnaval de la 44 y las verbenas de barrio son gratis y es donde baila la ciudad.", "en": "Carnaval de la 44 and the neighborhood verbenas are free, and that is where the city dances.", "pt": "O Carnaval de la 44 e as verbenas de bairro são gratuitos e é ali que a cidade dança." }
+    },
+    {
+      "slug": "negros-y-blancos",
+      "names": { "local": "Carnaval de Negros y Blancos", "es": "Carnaval de Negros y Blancos", "en": "Blacks and Whites Carnival", "pt": "Carnaval de Negros e Brancos" },
+      "city": "Pasto",
+      "subdivision": "CO-NAR",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 1.2136, "lon": -77.2811 },
+      "nearest_airport": "PSO",
+      "type": "carnaval",
+      "rule": { "type": "fixed", "start": "01-02", "end": "01-07" },
+      "editions": {},
+      "score": {
+        "convocatoria": { "measure": { "attendance": 250000, "qualifier": "about", "unit": "tourists", "year": 2026 }, "confidence": "prensa", "source": "https://www.diariodelsur.com.co/?p=468063" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
+        "conectividad": { "measure": "nacional", "confidence": "oficial" },
+        "local": { "measure": "intermedia", "confidence": "oficial" }
+      },
+      "street_tip": { "es": "El 5 de enero es el Día de Negritos y el 6 el Desfile Magno; lleva ropa que se pueda manchar.", "en": "January 5 is the Day of the Blacks and January 6 the Grand Parade; wear clothes you don't mind ruining.", "pt": "Em 5 de janeiro é o Dia dos Negritos e em 6 o Desfile Magno; use roupa que possa sujar." }
+    },
+    {
+      "slug": "feria-de-cali",
+      "names": { "local": "Feria de Cali", "es": "Feria de Cali", "en": "Cali Fair", "pt": "Feira de Cali" },
+      "city": "Cali",
+      "subdivision": "CO-VAC",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 3.4516, "lon": -76.532 },
+      "nearest_airport": "CLO",
+      "type": "musica",
+      "rule": { "type": "fixed", "start": "12-25", "end": "12-30" },
+      "editions": {
+        "2026": {
+          "start": "2026-12-25",
+          "end": "2026-12-30",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.lafm.com.co/actualidad/feria-de-cali-si-se-realizara-pese-al-terremoto-alcalde-alejandro-eder-confirmo-el-evento-408792", "publisher": "La FM", "accessed": "2026-10-26", "tier": "B" }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "Confirmada tras el sismo; programa diario pendiente.", "en": "Confirmed after the earthquake; daily program pending.", "pt": "Confirmada após o terremoto; programação diária pendente." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 700000, "qualifier": "more_than", "unit": "attendees", "year": 2025 }, "confidence": "estimacion", "source": "https://www.farandahotels.com/en/blog/descubre-la-feria-de-cali-2026-fechas-alojamiento", "note": { "es": "Fuente comercial, débil.", "en": "Commercial source, weak.", "pt": "Fonte comercial, fraca." } },
+        "calle": { "measure": "mixta", "confidence": "estimacion" },
+        "reconocimiento": null,
+        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+      },
+      "street_tip": { "es": "El Salsódromo del 25 de diciembre se ve gratis desde la calle si llegas temprano.", "en": "The December 25 Salsódromo can be watched free from the street if you arrive early.", "pt": "O Salsódromo de 25 de dezembro pode ser visto de graça da rua se você chegar cedo." }
+    },
+    {
+      "slug": "festival-vallenato",
+      "names": { "local": "Festival de la Leyenda Vallenata", "es": "Festival de la Leyenda Vallenata", "en": "Vallenato Legend Festival", "pt": "Festival da Lenda Vallenata" },
+      "city": "Valledupar",
+      "subdivision": "CO-CES",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 10.4631, "lon": -73.2532 },
+      "nearest_airport": "VUP",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "04-25", "end": "05-05" } },
+      "editions": {},
+      "score": {
+        "convocatoria": { "measure": { "attendance": 137672, "qualifier": "exact", "unit": "tourists", "year": 2022 }, "confidence": "prensa", "source": "https://www.pulzo.com/nacion/cuantos-turistas-asistieron-festival-vallenato-55-PP1396134A", "note": { "es": "Edición 55.", "en": "55th edition.", "pt": "55ª edição." } },
+        "calle": { "measure": "mixta", "confidence": "estimacion" },
+        "reconocimiento": null,
+        "conectividad": { "measure": "nacional", "confidence": "oficial" },
+        "local": { "measure": "intermedia", "confidence": "oficial" }
+      },
+      "street_tip": { "es": "Las parrandas en las casas y la plaza Alfonso López son el corazón fuera de la tarima.", "en": "House parrandas and Alfonso López square are the heart of it, away from the main stage.", "pt": "As parrandas nas casas e a praça Alfonso López são o coração da festa fora do palco." }
+    },
+    {
+      "slug": "san-pacho",
+      "names": { "local": "Fiestas de San Pacho", "es": "Fiestas de San Pacho", "en": "San Pacho Festival", "pt": "Festas de San Pacho" },
+      "city": "Quibdó",
+      "subdivision": "CO-CHO",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 5.6947, "lon": -76.6611 },
+      "nearest_airport": "UIB",
+      "type": "tradicion_religiosa",
+      "rule": { "type": "fixed", "start": "09-20", "end": "10-05" },
+      "editions": {},
+      "score": {
+        "convocatoria": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
+        "conectividad": { "measure": "nacional", "confidence": "oficial" },
+        "local": { "measure": "intermedia", "confidence": "oficial" }
+      },
+      "street_tip": { "es": "Cada barrio franciscano sale con su comparsa y chirimía; el desfile de tu barrio anfitrión es abierto.", "en": "Each Franciscan neighborhood parades with its comparsa and chirimía band; the host neighborhood's parade is open to all.", "pt": "Cada bairro franciscano sai com sua comparsa e chirimía; o desfile do bairro anfitrião é aberto." },
+      "etiquette": { "es": "Es una fiesta patronal: en misas y procesiones, silencio, ropa discreta y pide permiso antes de fotografiar.", "en": "It is a patron-saint feast: keep quiet and dress modestly at masses and processions, and ask before taking photos.", "pt": "É uma festa de padroeiro: nas missas e procissões, silêncio, roupa discreta e peça permissão antes de fotografar." }
+    },
+    {
+      "slug": "festival-tambores-palenque",
+      "names": { "local": "Festival de Tambores y Expresiones Culturales de Palenque", "es": "Festival de Tambores de Palenque", "en": "Palenque Drum Festival", "pt": "Festival de Tambores de Palenque" },
+      "city": "San Basilio de Palenque",
+      "subdivision": "CO-BOL",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 10.1036, "lon": -75.1995 },
+      "nearest_airport": "CTG",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "10-08", "end": "10-20" } },
+      "editions": {},
+      "score": {
+        "convocatoria": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
+        "conectividad": { "measure": "ninguno", "confidence": "oficial" },
+        "local": { "measure": "pueblo", "confidence": "oficial" }
+      },
+      "street_tip": { "es": "Es un pueblo pequeño: los conciertos de tambor en la plaza y las ruedas de baile son abiertos.", "en": "It is a small village: the drum concerts in the square and the dance circles are open to everyone.", "pt": "É um povoado pequeno: os concertos de tambor na praça e as rodas de dança são abertos." },
+      "etiquette": { "es": "Palenque es la comunidad, no un escenario: saluda, pide permiso para fotos y compra a la gente local.", "en": "Palenque is a community, not a stage: greet people, ask before photos and buy from locals.", "pt": "Palenque é uma comunidade, não um palco: cumprimente, peça licença para fotos e compre dos moradores." }
+    },
+    {
+      "slug": "carnaval-riosucio",
+      "names": { "local": "Carnaval de Riosucio", "es": "Carnaval de Riosucio", "en": "Riosucio Carnival", "pt": "Carnaval de Riosucio" },
+      "city": "Riosucio",
+      "subdivision": "CO-CAL",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 5.4214, "lon": -75.7031 },
+      "type": "carnaval",
+      "rule": { "type": "nth_weekday", "month": 1, "weekday": 5, "n": 1, "duration_days": 6, "parity": "odd" },
+      "editions": {
+        "2027": {
+          "start": "2027-01-01",
+          "end": "2027-01-06",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.lapatria.com/caldas/el-carnaval-de-riosucio-vuelve-sacar-los-cachos-fecha-y-hora-de-instalacion-de-la-republica", "publisher": "La Patria", "accessed": "2026-10-26", "tier": "B" }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 30000, "qualifier": "about", "unit": "visitors", "year": 2023 }, "confidence": "oficial", "source": "https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos", "note": { "es": "Visitantes esperados en 2023.", "en": "Expected visitors in 2023.", "pt": "Visitantes esperados em 2023." } },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
+        "reconocimiento": { "measure": "nacional", "confidence": "prensa" },
+        "conectividad": { "measure": "ninguno", "confidence": "oficial" },
+        "local": { "measure": "pueblo", "confidence": "oficial" }
+      },
+      "street_tip": { "es": "Solo en años impares. Las cuadrillas recitan en la plaza y el pueblo entero canta con ellas.", "en": "Odd years only. The cuadrillas recite in the square and the whole town sings along.", "pt": "Só em anos ímpares. As cuadrillas declamam na praça e a cidade inteira canta junto." }
+    },
+    {
+      "slug": "independencia-cartagena",
+      "names": { "local": "Fiestas de la Independencia de Cartagena", "es": "Fiestas de la Independencia de Cartagena", "en": "Cartagena Independence Festivities", "pt": "Festas da Independência de Cartagena" },
+      "city": "Cartagena",
+      "subdivision": "CO-BOL",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 10.391, "lon": -75.4794 },
+      "nearest_airport": "CTG",
+      "type": "fiesta_nacional",
+      "rule": { "type": "fixed", "start": "11-10", "end": "11-16" },
+      "editions": {},
+      "score": {
+        "convocatoria": null,
+        "calle": { "measure": "mixta", "confidence": "estimacion" },
+        "reconocimiento": null,
+        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+      },
+      "street_tip": { "es": "Los desfiles y bandos del 11 de noviembre se viven en los barrios populares, fuera de la ciudad amurallada.", "en": "The November 11 parades and bandos are lived in the working-class neighborhoods, outside the walled city.", "pt": "Os desfiles e bandos de 11 de novembro acontecem nos bairros populares, fora da cidade murada." }
+    },
+    {
+      "slug": "feria-de-las-flores",
+      "names": { "local": "Feria de las Flores", "es": "Feria de las Flores", "en": "Medellín Flower Festival", "pt": "Feira das Flores" },
+      "city": "Medellín",
+      "subdivision": "CO-ANT",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 6.2442, "lon": -75.5812 },
+      "nearest_airport": "MDE",
+      "type": "cosecha_temporada",
+      "rule": { "type": "announced", "window": { "start": "07-25", "end": "08-15" } },
+      "editions": {},
+      "score": {
+        "convocatoria": null,
+        "calle": null,
+        "reconocimiento": null,
+        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+      }
+    },
+    {
+      "slug": "petronio-alvarez",
+      "names": { "local": "Festival de Música del Pacífico Petronio Álvarez", "es": "Festival Petronio Álvarez", "en": "Petronio Álvarez Pacific Music Festival", "pt": "Festival de Música do Pacífico Petronio Álvarez" },
+      "city": "Cali",
+      "subdivision": "CO-VAC",
+      "timezone": "America/Bogota",
+      "coords": { "lat": 3.4516, "lon": -76.532 },
+      "nearest_airport": "CLO",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "08-01", "end": "08-31" } },
+      "editions": {},
+      "score": {
+        "convocatoria": null,
+        "calle": null,
+        "reconocimiento": null,
+        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+      }
+    }
+  ]
+}
