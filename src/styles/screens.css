@@ -1,0 +1,8 @@
+/* Screen styles, one file per screen. Order matters: later files may override earlier ones. */
+@import "./screens/shell.css";
+@import "./screens/home.css";
+@import "./screens/explore.css";
+@import "./screens/festival.css";
+@import "./screens/saved-settings.css";
+@import "./screens/about.css";
+@import "./screens/wide.css";

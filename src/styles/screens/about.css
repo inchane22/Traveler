@@ -1,0 +1,187 @@
+/* ---------- Sobre los datos ---------- */
+
+.criteria {
+  display: grid;
+}
+
+.criterion {
+  padding-block: var(--sp-4);
+  border-block-end: 1px solid var(--hairline);
+}
+
+.criterion__name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+}
+
+.criterion__max {
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.criterion__desc {
+  margin-block: var(--sp-1) var(--sp-2);
+  color: var(--ink-2);
+  max-inline-size: 62ch;
+}
+
+.scale {
+  display: grid;
+  max-inline-size: 28rem;
+  font-size: var(--fs-sm);
+}
+
+.scale li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-block: 0.35rem;
+  border-block-end: 1px dotted var(--hairline);
+}
+
+.scale .num {
+  font-weight: 800;
+}
+
+.tiers {
+  display: grid;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-4);
+  padding: var(--sp-4);
+  border: var(--rule-thin) solid var(--ink);
+  font-size: var(--fs-sm);
+}
+
+.keys {
+  display: grid;
+  gap: var(--sp-5);
+}
+
+.key-list li {
+  display: grid;
+  gap: 0.15rem;
+  padding-block: var(--sp-2);
+  border-block-end: 1px solid var(--hairline);
+}
+
+.key-list__desc {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.fresh-list {
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.fresh {
+  display: grid;
+  gap: var(--sp-2);
+  padding: var(--sp-4);
+  border: var(--rule-thin) solid var(--ink);
+}
+
+.fresh--stale {
+  border-inline-start-width: 8px;
+}
+
+.fresh__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+.fresh__name {
+  font-size: var(--fs-xl);
+}
+
+.fresh__name .link {
+  font-weight: inherit;
+}
+
+.fresh__count {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.fresh__when {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.fresh__coverage {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.fresh__sub {
+  display: grid;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-1);
+}
+
+.fresh__sublabel {
+  font-size: var(--fs-sm);
+  font-weight: 750;
+}
+
+.log {
+  display: grid;
+}
+
+.log__item {
+  display: grid;
+  gap: 0.2rem;
+  padding-block: var(--sp-3);
+  border-block-end: 1px solid var(--hairline);
+}
+
+.log__date {
+  font-size: var(--fs-xs);
+  font-weight: 750;
+  color: var(--ink-2);
+}
+
+.log__field {
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.log__change {
+  font-size: var(--fs-sm);
+}
+
+.log__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+/* Partial coverage, shared by the Inicio freshness line and the data card. Comes after
+   .freshness and .fresh__coverage so its color and weight win. */
+.freshness--partial,
+.fresh__coverage--partial {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.freshness--partial .icon,
+.fresh__coverage--partial .icon {
+  inline-size: 1rem;
+  block-size: 1rem;
+  margin-block-start: 0.15rem;
+}

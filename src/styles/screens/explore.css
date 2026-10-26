@@ -1,0 +1,179 @@
+/* ---------- Explorar ---------- */
+
+.filters {
+  display: grid;
+  gap: var(--sp-3);
+  margin-block-end: var(--sp-3);
+}
+
+.trip {
+  min-inline-size: 0;
+  margin: 0;
+  padding: var(--sp-1) var(--sp-3) var(--sp-3);
+  border: var(--rule-thin) solid var(--ink);
+  border-radius: 12px;
+}
+
+.trip--active {
+  border-width: var(--rule);
+  background: var(--paper-raised);
+}
+
+.trip__legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding-inline: 0.35rem;
+  font-weight: 800;
+}
+
+.trip__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.trip__hint {
+  margin-block-start: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.filters__line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2) var(--sp-4);
+}
+
+.summary {
+  position: sticky;
+  inset-block-start: calc(var(--header-h) + var(--rule));
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-inline: calc(-1 * var(--gutter));
+  padding: var(--sp-1) var(--gutter);
+  background: var(--paper);
+  border-block: var(--rule-thin) solid var(--ink);
+}
+
+.summary__count {
+  font-weight: 800;
+  font-size: var(--fs-lg);
+}
+
+.summary__clear {
+  margin-inline-end: calc(-1 * var(--sp-3));
+}
+
+.results {
+  min-block-size: 12rem;
+}
+
+.month {
+  margin-block-start: var(--sp-5);
+}
+
+.month__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-size: var(--fs-xl);
+  padding-block-end: var(--sp-1);
+  border-block-end: var(--rule-thin) solid var(--ink);
+}
+
+.month__count {
+  font-family: var(--font-text);
+  font-stretch: 100%;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  letter-spacing: 0;
+  color: var(--ink-2);
+}
+
+.fest-list {
+  display: grid;
+}
+
+.fest-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  gap: var(--sp-3);
+  align-items: start;
+  padding-block: var(--sp-3);
+  border-block-end: 1px solid var(--hairline);
+}
+
+.stub {
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  padding-block-start: 0.15rem;
+}
+
+.stub__day {
+  font-family: var(--font-display);
+  font-stretch: var(--display-stretch);
+  font-weight: var(--display-weight);
+  font-size: var(--fs-2xl);
+  line-height: 0.9;
+}
+
+.stub__month {
+  font-size: var(--fs-xs);
+  font-weight: 750;
+  color: var(--ink-2);
+}
+
+.stub .band {
+  inline-size: 100%;
+  margin-block-start: 0.3rem;
+}
+
+.fest-row__main {
+  display: grid;
+  gap: 0.3rem;
+  min-inline-size: 0;
+}
+
+.fest-row__name {
+  font-size: var(--fs-xl);
+}
+
+.fest-row__when {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.75rem;
+  font-size: var(--fs-sm);
+}
+
+.fest-row__when .num {
+  font-weight: 750;
+}
+
+.fest-row__place {
+  color: var(--ink-2);
+}
+
+/* Shown on the world view: why only Nivel 1 appears. */
+.explore-hint {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: flex-start;
+  margin-block: var(--sp-3) 0;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.explore-hint .icon {
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  margin-block-start: 0.1rem;
+}

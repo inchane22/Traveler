@@ -1,0 +1,316 @@
+/* ---------- Buttons and links ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-block-size: var(--tap);
+  padding: 0.5rem 1.1rem;
+  border: var(--rule-thin) solid var(--ink);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink);
+  font-size: var(--fs-md);
+  font-weight: 750;
+  line-height: 1.15;
+  text-decoration: none;
+  text-align: center;
+  transition: transform 90ms var(--ease), background-color 120ms var(--ease);
+}
+
+.btn svg {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  flex: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: var(--paper-sunk);
+}
+
+.btn--ghost {
+  border-color: transparent;
+  padding-inline: 0.75rem;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--paper-sunk);
+}
+
+.btn:disabled {
+  cursor: default;
+  color: var(--ink-3);
+  border-color: var(--ink-3);
+  background: transparent;
+}
+
+.btn--ghost:disabled {
+  border-color: transparent;
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  flex: none;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink);
+}
+
+.icon-btn:hover {
+  background: var(--paper-sunk);
+}
+
+.link {
+  color: inherit;
+  font-weight: 650;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.2em;
+}
+
+.link:hover {
+  text-decoration-thickness: 3px;
+}
+
+.link--small {
+  font-size: var(--fs-sm);
+}
+
+.link--external svg,
+.link--source svg {
+  display: inline-block;
+  inline-size: 0.85em;
+  block-size: 0.85em;
+  margin-inline-start: 0.25em;
+  vertical-align: -0.05em;
+}
+
+.link--source {
+  text-decoration-line: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  color: inherit;
+}
+
+.btn.link--external svg {
+  margin-inline-start: 0;
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+/* A card's main link covers the whole card; inner controls sit above it. */
+.stretched {
+  text-decoration: none;
+  color: inherit;
+}
+
+.stretched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.stretched:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.12em;
+}
+
+.stretched:focus-visible {
+  outline: none;
+}
+
+.stretched:focus-visible::after {
+  outline: var(--focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Save toggle ---------- */
+
+.save {
+  position: relative;
+  z-index: 1;
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--tap);
+  block-size: var(--tap);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink);
+}
+
+.save:hover {
+  background: var(--paper-sunk);
+}
+
+.save svg {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+.save--full {
+  inline-size: auto;
+  display: inline-flex;
+  gap: 0.5rem;
+  padding-inline: 1rem;
+  border: var(--rule-thin) solid var(--ink);
+  font-weight: 750;
+}
+
+.save--full[aria-pressed="true"] {
+  background: var(--paper-sunk);
+}
+
+.save--pop svg {
+  animation: pop 220ms var(--ease);
+}
+
+@keyframes pop {
+  40% {
+    transform: scale(1.25);
+  }
+}
+
+/* ---------- Countdown ---------- */
+
+.countdown {
+  text-align: end;
+}
+
+.countdown__visual {
+  display: grid;
+  justify-items: end;
+  line-height: 1;
+}
+
+.countdown__label {
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--ink-2);
+}
+
+.countdown__number {
+  font-size: var(--fs-4xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  margin-block: 0.1rem;
+}
+
+.countdown__unit {
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.countdown--word .countdown__word {
+  font-weight: 800;
+  font-size: var(--fs-lg);
+}
+
+.moon-note {
+  margin-block-start: var(--sp-2);
+  padding-inline-start: var(--sp-3);
+  border-inline-start: 3px dotted var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* ---------- Notices ---------- */
+
+.notices:empty {
+  display: none;
+}
+
+.notices {
+  max-inline-size: calc(var(--column) + 2 * var(--gutter));
+  margin-inline: auto;
+  inline-size: 100%;
+  padding: var(--sp-3) var(--gutter) 0;
+}
+
+.notice {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: flex-start;
+  padding: var(--sp-3) var(--sp-4);
+  margin-block-end: var(--sp-4);
+  border: var(--rule-thin) solid var(--ink);
+  background: var(--paper-raised);
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+}
+
+.notice svg {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  flex: none;
+  margin-block-start: 0.05rem;
+}
+
+.notice--warn,
+.notice--cancel {
+  border-inline-start-width: 8px;
+  font-weight: 600;
+}
+
+.notice--draft {
+  border-width: var(--rule);
+  background-image: repeating-linear-gradient(135deg, var(--hatch-ink) 0 1px, transparent 1px 8px);
+  background-color: var(--paper-raised);
+  font-weight: 700;
+}
+
+.notice--draft .notice__body p {
+  background: var(--paper-raised);
+  padding: 0.1rem 0.3rem;
+  margin: -0.1rem -0.3rem;
+}
+
+.notice--offline {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  font-weight: 650;
+}
+
+/* ---------- Empty states ---------- */
+
+.empty {
+  padding-block: var(--sp-6);
+  display: grid;
+  gap: var(--sp-3);
+  justify-items: start;
+}
+
+.empty__title {
+  font-size: var(--fs-2xl);
+  max-inline-size: 18ch;
+}
+
+.empty__body {
+  color: var(--ink-2);
+  max-inline-size: 52ch;
+}
+
+.empty__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-2);
+}

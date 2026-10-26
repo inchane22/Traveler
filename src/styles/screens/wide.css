@@ -1,0 +1,32 @@
+/* ---------- Wider screens ---------- */
+
+@media (min-width: 48rem) {
+  .screen-title {
+    font-size: var(--fs-4xl);
+  }
+
+  .poster {
+    padding-inline: var(--sp-5);
+    padding-block-end: var(--sp-5);
+  }
+
+  .poster__band {
+    margin-inline: calc(-1 * var(--sp-5));
+  }
+
+  .poster__name {
+    font-size: var(--fs-4xl);
+  }
+
+  .poster .countdown__number {
+    font-size: 6rem;
+  }
+
+  .keys {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .fresh-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,0 +1,82 @@
+/* ---------- Guardadas ---------- */
+
+.saved-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2) var(--sp-4);
+  padding-block: var(--sp-2);
+  border-block: var(--rule-thin) solid var(--ink);
+  margin-block-end: var(--sp-2);
+}
+
+.saved-head__count {
+  font-weight: 800;
+  font-size: var(--fs-lg);
+}
+
+/* ---------- Ajustes ---------- */
+
+.settings {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.setting {
+  min-inline-size: 0;
+  margin: 0;
+  padding: var(--sp-3) 0 0;
+  border: 0;
+  border-block-start: var(--rule) solid var(--ink);
+}
+
+.setting__legend {
+  display: block;
+  float: inline-start;
+  inline-size: 100%;
+  padding: 0;
+  margin-block-end: var(--sp-2);
+  font-size: var(--fs-xl);
+}
+
+.setting__legend + * {
+  clear: both;
+}
+
+.setting__hint {
+  clear: both;
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+  max-inline-size: 60ch;
+  margin-block-end: var(--sp-2);
+}
+
+.setting .radios,
+.setting .select-wrap {
+  clear: both;
+  max-inline-size: 26rem;
+}
+
+.setting__state {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 750;
+  margin-block-end: var(--sp-3);
+}
+
+.setting__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-2);
+}
+
+.setting .notice {
+  margin-block: var(--sp-2) 0;
+}
+
+.settings__about {
+  font-weight: 650;
+}
