@@ -1,0 +1,20 @@
+{
+  "country": "PE",
+  "A": ["gob.pe", "peru.travel", "unesco.org"],
+  "B": [
+    "elperuano.pe",
+    "andina.pe",
+    "rpp.pe",
+    "elcomercio.pe",
+    "larepublica.pe",
+    "gestion.pe",
+    "peru21.pe",
+    "diariocorreo.pe",
+    "caretas.pe",
+    "panamericana.pe",
+    "americatv.com.pe",
+    "forbes.pe",
+    "bloomberglinea.com"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

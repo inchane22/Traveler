@@ -1,0 +1,16 @@
+{
+  "country": "BO",
+  "A": ["gob.bo", "unesco.org"],
+  "B": [
+    "lostiempos.com",
+    "opinion.com.bo",
+    "eldeber.com.bo",
+    "la-razon.com",
+    "correodelsur.com",
+    "elpotosi.net",
+    "abi.bo",
+    "unitel.bo",
+    "erbol.com.bo"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

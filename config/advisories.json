@@ -1,0 +1,231 @@
+{
+  "verified_at": "2026-10-26",
+  "origins": {
+    "US": {
+      "name": "United States",
+      "publisher": "U.S. Department of State",
+      "destinations": {},
+      "fallback": null
+    },
+    "GB": {
+      "name": "United Kingdom",
+      "publisher": "Foreign, Commonwealth & Development Office (FCDO)",
+      "destinations": {
+        "CO": "https://www.gov.uk/foreign-travel-advice/colombia",
+        "PE": "https://www.gov.uk/foreign-travel-advice/peru",
+        "BR": "https://www.gov.uk/foreign-travel-advice/brazil",
+        "BO": "https://www.gov.uk/foreign-travel-advice/bolivia",
+        "MX": "https://www.gov.uk/foreign-travel-advice/mexico"
+      },
+      "fallback": "https://www.gov.uk/foreign-travel-advice"
+    },
+    "CA": {
+      "name": "Canada",
+      "publisher": "Government of Canada (Global Affairs Canada)",
+      "destinations": {
+        "CO": "https://travel.gc.ca/destinations/colombia",
+        "PE": "https://travel.gc.ca/destinations/peru",
+        "BR": "https://travel.gc.ca/destinations/brazil",
+        "BO": "https://travel.gc.ca/destinations/bolivia",
+        "MX": "https://travel.gc.ca/destinations/mexico"
+      },
+      "fallback": "https://travel.gc.ca/travelling/advisories"
+    },
+    "AU": {
+      "name": "Australia",
+      "publisher": "Department of Foreign Affairs and Trade (Smartraveller)",
+      "destinations": {
+        "CO": "https://www.smartraveller.gov.au/destinations/americas/colombia",
+        "PE": "https://www.smartraveller.gov.au/destinations/americas/peru",
+        "BR": "https://www.smartraveller.gov.au/destinations/americas/brazil",
+        "BO": "https://www.smartraveller.gov.au/destinations/americas/bolivia",
+        "MX": "https://www.smartraveller.gov.au/destinations/americas/mexico"
+      },
+      "fallback": "https://www.smartraveller.gov.au/destinations"
+    },
+    "ES": {
+      "name": "Spain",
+      "publisher": "Ministerio de Asuntos Exteriores, Unión Europea y Cooperación",
+      "destinations": {
+        "CO": "https://www.exteriores.gob.es/es/ServiciosAlCiudadano/Paginas/Detalle-recomendaciones-de-viaje.aspx?trc=colombia",
+        "PE": "https://www.exteriores.gob.es/es/ServiciosAlCiudadano/Paginas/Detalle-recomendaciones-de-viaje.aspx?trc=Peru",
+        "BR": "https://www.exteriores.gob.es/es/ServiciosAlCiudadano/Paginas/Detalle-recomendaciones-de-viaje.aspx?trc=Brasil",
+        "BO": "https://www.exteriores.gob.es/es/ServiciosAlCiudadano/Paginas/Detalle-recomendaciones-de-viaje.aspx?trc=Bolivia",
+        "MX": "https://www.exteriores.gob.es/es/ServiciosAlCiudadano/Paginas/Detalle-recomendaciones-de-viaje.aspx?trc=Mexico"
+      },
+      "fallback": "https://www.exteriores.gob.es/es/ServiciosAlCiudadano/Paginas/Recomendaciones-de-viaje.aspx"
+    },
+    "DE": {
+      "name": "Germany",
+      "publisher": "Auswärtiges Amt",
+      "destinations": {
+        "CO": "https://www.auswaertiges-amt.de/de/reiseundsicherheit/kolumbiensicherheit-201516",
+        "PE": "https://www.auswaertiges-amt.de/de/service/laender/peru-node/perusicherheit-211938",
+        "BR": "https://www.auswaertiges-amt.de/de/service/laender/brasilien-node/brasiliensicherheit-201092",
+        "BO": "https://www.auswaertiges-amt.de/de/reiseundsicherheit/boliviensicherheit-213428",
+        "MX": "https://www.auswaertiges-amt.de/de/service/laender/mexiko-node/mexikosicherheit-213648"
+      },
+      "fallback": "https://www.auswaertiges-amt.de/de/ReiseUndSicherheit/reise-und-sicherheitshinweise"
+    },
+    "FR": {
+      "name": "France",
+      "publisher": "Ministère de l'Europe et des Affaires étrangères (France Diplomatie)",
+      "destinations": {
+        "CO": "https://www.diplomatie.gouv.fr/fr/information-par-pays/colombie/conseils-aux-voyageurs-securite",
+        "PE": "https://www.diplomatie.gouv.fr/fr/information-par-pays/perou/conseils-aux-voyageurs-securite",
+        "BR": "https://www.diplomatie.gouv.fr/fr/information-par-pays/bresil/conseils-aux-voyageurs-securite",
+        "BO": "https://www.diplomatie.gouv.fr/fr/information-par-pays/bolivie/conseils-aux-voyageurs-securite",
+        "MX": "https://www.diplomatie.gouv.fr/fr/information-par-pays/mexique/conseils-aux-voyageurs-securite"
+      },
+      "fallback": "https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs"
+    },
+    "PE": {
+      "name": "Peru",
+      "publisher": "Ministerio de Relaciones Exteriores del Perú",
+      "destinations": {},
+      "fallback": null
+    },
+    "CO": {
+      "name": "Colombia",
+      "publisher": "Ministerio de Relaciones Exteriores de Colombia (Cancillería)",
+      "destinations": {},
+      "fallback": null
+    },
+    "AR": {
+      "name": "Argentina",
+      "publisher": "Ministerio de Relaciones Exteriores, Comercio Internacional y Culto",
+      "destinations": {
+        "CO": "https://ecolo.cancilleria.gob.ar/es/content/informaci%C3%B3n-para-argentinos-en-colombia",
+        "PE": "https://clima.cancilleria.gob.ar/es/consejos-utiles-para-el-turista-argentino-en-peru",
+        "BR": "https://creci.cancilleria.gob.ar/es/recomendaciones-para-turistas-argentinos-1",
+        "BO": "https://ebolv.cancilleria.gob.ar/es/aviso-para-viajeros",
+        "MX": "https://cmexi.cancilleria.gob.ar/es/viaje-preparado-2"
+      },
+      "fallback": "https://cancilleria.gob.ar/es/servicios/recomendaciones/cosas-tener-en-cuenta-antes-de-viajar-al-exterior"
+    },
+    "CL": {
+      "name": "Chile",
+      "publisher": "Ministerio de Relaciones Exteriores de Chile",
+      "destinations": {
+        "BO": "https://www.chile.gob.cl/la-paz/sobre-el-consulado/consulado-general-de-chile-en-la-paz-informa/recomendaciones-de-viaje/recomendaciones-de-viaje",
+        "MX": "https://www.chile.gob.cl/ciudad-de-mexico/noticias/viaje-informado-a-mexico"
+      },
+      "fallback": "https://www.consulado.gob.cl/chilenas-os-que-viajan-fuera-de-chile"
+    },
+    "MX": {
+      "name": "Mexico",
+      "publisher": "Secretaría de Relaciones Exteriores (SRE)",
+      "destinations": {},
+      "fallback": "https://www.gob.mx/guiadelviajero"
+    },
+    "BR": {
+      "name": "Brazil",
+      "publisher": "Ministério das Relações Exteriores (Itamaraty)",
+      "destinations": {
+        "CO": "https://www.gov.br/mre/pt-br/embaixada-bogota/consular/brasileiros/brasileiros-a-colombia",
+        "PE": "https://www.gov.br/mre/pt-br/embaixada-lima/sc/viagem/viagem-ao-peru",
+        "BO": "https://www.gov.br/mre/pt-br/embaixada-la-paz/comunidade-brasileira-1",
+        "MX": "https://www.gov.br/mre/pt-br/embaixada-mexico/brasileiros-precisam-de-visto-para-entrar-ou-fazer-conexao-no-mexico"
+      },
+      "fallback": "https://www.gov.br/mre/pt-br/assuntos/portal-consular"
+    }
+  },
+  "unverified": [
+    {
+      "origin": "US",
+      "destination": "CO",
+      "url": "https://travel.state.gov/en/international-travel/travel-advisories/colombia.html",
+      "note": "HTTP 403 to WebFetch and curl; Cloudflare bot challenge in a browser. URL taken from the search index. The official State Dept API (cadataapi.state.gov/api/TravelAdvisories, fetched) lists Colombia at Level 3, dated 2026-03-30, with link https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.col.html."
+    },
+    {
+      "origin": "US",
+      "destination": "PE",
+      "url": "https://travel.state.gov/en/international-travel/travel-advisories/peru.html",
+      "note": "HTTP 403 / Cloudflare challenge. URL from the search index. State Dept API lists Peru at Level 2, dated 2026-09-03, link .../travel-advisories/destination.per.html."
+    },
+    {
+      "origin": "US",
+      "destination": "BR",
+      "url": "https://travel.state.gov/en/international-travel/travel-advisories/brazil.html",
+      "note": "HTTP 403 / Cloudflare challenge. URL from the search index. State Dept API lists Brazil at Level 2, dated 2026-08-30, link .../travel-advisories/destination.bra.html."
+    },
+    {
+      "origin": "US",
+      "destination": "BO",
+      "url": "https://travel.state.gov/en/international-travel/travel-advisories/bolivia.html",
+      "note": "HTTP 403 / Cloudflare challenge. URL from the search index. State Dept API lists Bolivia at Level 2, dated 2026-08-17, link .../travel-advisories/destination.bol.html."
+    },
+    {
+      "origin": "US",
+      "destination": "MX",
+      "url": "https://travel.state.gov/en/international-travel/travel-advisories/mexico.html",
+      "note": "HTTP 403 / Cloudflare challenge. URL from the search index. State Dept API lists Mexico at Level 2, dated 2026-05-28, link .../travel-advisories/destination.mex.html."
+    },
+    {
+      "origin": "US",
+      "destination": null,
+      "url": "https://travel.state.gov/en/international-travel/travel-advisories.html",
+      "note": "Fallback candidate (advisories index). Not opened: same 403 / Cloudflare block. Path inferred from the per-country URLs above, so treat it as unconfirmed."
+    },
+    {
+      "origin": "MX",
+      "destination": "CO",
+      "url": "https://guiadelviajero.sre.gob.mx/103-ficha-de-paises/255-colombia",
+      "note": "SRE Guía del Viajero country page. Host did not resolve (ENOTFOUND) and browser navigation failed; the portales.sre.gob.mx/guiadelviajero mirror redirects to portales.sre.gob.mx/guiadeviaje/ behind a Radware bot check. Search snippets show 2021 content with COVID-era rules."
+    },
+    {
+      "origin": "MX",
+      "destination": "PE",
+      "url": "https://guiadelviajero.sre.gob.mx/index.php/component/content/article/103-ficha-de-paises/395-peru",
+      "note": "Same SRE Guía del Viajero block (DNS failure, Radware on the mirror). URL from the search index."
+    },
+    {
+      "origin": "MX",
+      "destination": "BR",
+      "url": "https://guiadelviajero.sre.gob.mx/103-ficha-de-paises/249-brasil",
+      "note": "Same SRE Guía del Viajero block. Search snippet shows last update 2021."
+    },
+    {
+      "origin": "MX",
+      "destination": "BO",
+      "url": "https://guiadelviajero.sre.gob.mx/103-ficha-de-paises/190-bolivia-2",
+      "note": "Same SRE Guía del Viajero block. URL from the search index."
+    },
+    {
+      "origin": "CO",
+      "destination": "PE",
+      "url": "https://lima.consulado.gov.co/viajar/recomendaciones",
+      "note": "Colombian consulate in Lima, 'Recomendaciones para viajeros'. HTTP 403 to WebFetch, Cloudflare challenge in a browser. The same path exists on other consulates (Tokio, Guayaquil, Asunción), so it may be a generic template, not Peru-specific advice."
+    },
+    {
+      "origin": "CO",
+      "destination": "BO",
+      "url": "https://lapaz.consulado.gov.co/viajar/recomendaciones",
+      "note": "Colombian consulate in La Paz. HTTP 403 / Cloudflare. Possibly a generic template (see CO→PE)."
+    },
+    {
+      "origin": "CO",
+      "destination": "MX",
+      "url": "https://www.cancilleria.gov.co/sala-de-prensa/noticias/planea-viajar-mexico-atencion-estas-recomendaciones",
+      "note": "Cancillería news note with recommendations for travel to Mexico, 2024 or earlier per search snippets. HTTP 403 / Cloudflare."
+    },
+    {
+      "origin": "CO",
+      "destination": null,
+      "url": "https://www.cancilleria.gov.co/sala-de-prensa/noticias/cuando-viaje-al-exterior-viaje-seguro-tips-de-la-cancilleria-de-colombia-para-viajeros",
+      "note": "Fallback candidate: Cancillería travel tips for Colombians abroad. HTTP 403 to WebFetch; cancilleria.gov.co shows a Cloudflare challenge in a browser. No per-destination advisory found for BR."
+    },
+    {
+      "origin": "PE",
+      "destination": "MX",
+      "url": "https://www.gob.pe/institucion/rree/noticias/759315-recomendaciones-para-viajar-a-mexico",
+      "note": "Cancillería del Perú note on entry refusals in Mexico (Nota Informativa 317-23, 2023 per search snippets). HTTP 418 to WebFetch."
+    },
+    {
+      "origin": "PE",
+      "destination": null,
+      "url": "https://www.gob.pe/162-viajar-fuera-del-peru",
+      "note": "Fallback candidate: Cancillería orientation 'Viajar fuera del Perú'. HTTP 418 to WebFetch; 'Acceso restringido' in a browser on two attempts. Peru publishes no standing per-destination advisories for CO, BR or BO that search could find."
+    }
+  ]
+}
