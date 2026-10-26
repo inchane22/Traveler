@@ -1,0 +1,34 @@
+{
+  "_note": "Synthetic recorded Messages API responses for offline tests. URLs, quotes and figures are illustrative test data, not verified facts; encrypted fields are placeholders.",
+  "research": [
+    {
+      "id": "msg_019c0a9ed28ce60a2b06a4409c",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [],
+      "stop_reason": "refusal",
+      "stop_sequence": null,
+      "stop_details": {
+        "type": "refusal",
+        "category": null,
+        "explanation": "Synthetic refusal for tests."
+      },
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": null,
+        "input_tokens": 2600,
+        "output_tokens": 0,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    }
+  ],
+  "extract": []
+}

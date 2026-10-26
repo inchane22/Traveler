@@ -1,0 +1,157 @@
+{
+  "_note": "Synthetic recorded Messages API responses for offline tests. URLs, quotes and figures are illustrative test data, not verified facts; encrypted fields are placeholders.",
+  "research": [
+    {
+      "id": "msg_013185126677b0a7be71e9c335",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "server_tool_use",
+          "id": "srvtoolu_01327ed35ac5a3c5efceab665d",
+          "name": "web_search",
+          "input": {
+            "query": "Fiestas de Independencia Cartagena 2026 programación"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        },
+        {
+          "type": "web_search_tool_result",
+          "tool_use_id": "srvtoolu_01327ed35ac5a3c5efceab665d",
+          "caller": {
+            "type": "direct"
+          },
+          "content": []
+        },
+        {
+          "type": "text",
+          "text": "start: no encontrado en sitios oficiales.",
+          "citations": null
+        }
+      ],
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 900,
+        "cache_read_input_tokens": 0,
+        "inference_geo": null,
+        "input_tokens": 2800,
+        "output_tokens": 80,
+        "output_tokens_details": null,
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 1
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    {
+      "id": "msg_01533e405c5c9baec2f4c7ebf6",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "server_tool_use",
+          "id": "srvtoolu_01d5e9da3d5d89887645546221",
+          "name": "web_search",
+          "input": {
+            "query": "Fiestas de Independencia Cartagena 2026 fechas cancelado aplazado"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        },
+        {
+          "type": "web_search_tool_result",
+          "tool_use_id": "srvtoolu_01d5e9da3d5d89887645546221",
+          "caller": {
+            "type": "direct"
+          },
+          "content": [
+            {
+              "type": "web_search_result",
+              "url": "https://www.eltiempo.com/colombia/otras-ciudades/fiestas-de-independencia-cartagena-2026-programacion",
+              "title": "Fiestas de la Independencia de Cartagena 2026: programación | El Tiempo",
+              "encrypted_content": "FAKE-ENCRYPTED-49e4b1e82cfafc61d8b939290f33503c2a9f675c",
+              "page_age": "October 22, 2026"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "start: 2026-11-10; end: 2026-11-16; no hay noticias de cancelación ni aplazamiento. ",
+          "citations": [
+            {
+              "type": "web_search_result_location",
+              "url": "https://www.eltiempo.com/colombia/otras-ciudades/fiestas-de-independencia-cartagena-2026-programacion",
+              "title": "Fiestas de la Independencia de Cartagena 2026: programación | El Tiempo",
+              "cited_text": "Las Fiestas de la Independencia de Cartagena 2026 se celebrarán del 10 al 16 de noviembre, con el desfile de independencia el 11 de noviembre.",
+              "encrypted_index": "FAKE-ENCRYPTED-7fb31e86440dd35dc7b9d01f35adb7bc6191813c"
+            }
+          ]
+        }
+      ],
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 900,
+        "inference_geo": null,
+        "input_tokens": 3200,
+        "output_tokens": 240,
+        "output_tokens_details": null,
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 2
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    }
+  ],
+  "extract": [
+    {
+      "id": "msg_01ca78a337de0db64e11ba0ec0",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"country\": \"CO\", \"slug\": \"independencia-cartagena\", \"edition\": 2026, \"changes\": [{\"field\": \"start\", \"old\": null, \"new\": \"2026-11-10\", \"source_urls\": [\"https://www.eltiempo.com/colombia/otras-ciudades/fiestas-de-independencia-cartagena-2026-programacion\"], \"quote\": \"se celebrarán del 10 al 16 de noviembre\", \"quote_language\": \"es\", \"confidence\": \"oficial\", \"note\": \"El Tiempo publica la programación 2026.\"}, {\"field\": \"end\", \"old\": null, \"new\": \"2026-11-16\", \"source_urls\": [\"https://www.eltiempo.com/colombia/otras-ciudades/fiestas-de-independencia-cartagena-2026-programacion\"], \"quote\": \"se celebrarán del 10 al 16 de noviembre\", \"quote_language\": \"es\", \"confidence\": \"oficial\", \"note\": \"El Tiempo publica la programación 2026.\"}], \"not_found\": [\"key_events\"]}",
+          "citations": null
+        }
+      ],
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": null,
+        "input_tokens": 1800,
+        "output_tokens": 400,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    }
+  ]
+}
