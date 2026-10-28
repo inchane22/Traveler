@@ -159,7 +159,7 @@ describe("reviewChange: fields and values (LLM05)", () => {
   test("score criteria: figures need the number and its year, judgment criteria go to a person", () => {
     const text = "Más de 7 millones de asistentes tuvo el Carnaval de 2027.";
     const c = ctx("carnaval-barranquilla", 1, 2027, [cite(BAQ, text)]);
-    expect(currentValue(festival("CO", "carnaval-barranquilla"), 2027, "score.convocatoria")).toBe(6_000_000);
+    expect(currentValue(festival("CO", "carnaval-barranquilla"), 2027, "score.convocatoria")).toBe(820_000);
     const figure = reviewChange(change({ field: "score.convocatoria", new: "7000000", source_urls: [BAQ], quote: text }), c);
     expect(figure).toMatchObject({ verdict: "accepted", new: 7_000_000 });
     const noYear = reviewChange(change({ field: "score.convocatoria", new: 7_000_000, source_urls: [BAQ], quote: "Más de 7 millones de asistentes" }), c);

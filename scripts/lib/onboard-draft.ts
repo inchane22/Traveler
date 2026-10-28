@@ -3,7 +3,7 @@
 // every date, figure and declaration needs a validated citation or becomes «por medir» / «por anunciar».
 import { z } from "zod";
 import { addDays, resolveRule, type ISO } from "../../src/dates.ts";
-import { Confidence, FestivalType, Rule, Status, type Edition, type Festival, type Lang, type ScoreInputs } from "../../src/schema.ts";
+import { Confidence, FestivalType, Identity, Rule, Status, type Edition, type Festival, type Lang, type ScoreInputs } from "../../src/schema.ts";
 import { quoteStatesDate } from "./date-parser.ts";
 import type { DomainPolicy } from "./domains.ts";
 import { checkSources, citedTextsFor, quoteIsVerbatim, quoteNumbers, type CitedSource } from "./evidence.ts";
@@ -200,6 +200,20 @@ export function slugify(text: string): string {
 
 const ZONES = new Set(Intl.supportedValuesOf("timeZone"));
 
+/**
+ * Names and city reach every later research prompt, so a page cannot plant text in them (SEC-07):
+ * one bounded plain line each (schema Identity) and no instruction phrase. A hit drops the festival
+ * from the draft and the reason goes to the reviewer.
+ */
+export function identityProblem(fields: readonly string[]): string | null {
+  for (const field of fields) {
+    const parsed = Identity.safeParse(field.trim());
+    if (!parsed.success) return `name or city rejected (${parsed.error.issues.map((i) => i.message).join("; ")}): «${field.slice(0, 40)}»`;
+  }
+  const hits = hasInjection(fields);
+  return hits.length ? `R7: possible instruction in a name or city («${hits.map((h) => h.phrase).join("», «")}»)` : null;
+}
+
 export interface MappedFestival {
   festival: Festival;
   verified: string[];
@@ -216,6 +230,8 @@ export function mapFestival(f: DraftFestival, country: string, defaultZone: stri
   if (!new RegExp(`^${country}-[A-Z0-9]{1,3}$`).test(f.subdivision)) return { error: `${slug}: subdivision ${f.subdivision} is not an ISO 3166-2 code of ${country}` };
   if (Math.abs(f.coords.lat) > 90 || Math.abs(f.coords.lon) > 180) return { error: `${slug}: coordinates out of range` };
   if (![f.names.local, f.names.es, f.names.en, f.names.pt, f.city].every((s) => s.trim().length > 0)) return { error: `${slug}: empty name or city` };
+  const identity = identityProblem([f.names.local, f.names.es, f.names.en, f.names.pt, f.city]);
+  if (identity) return { error: `${slug}: ${identity}` };
   const year = f.next_edition?.year ?? Number(today.slice(0, 4)) + 1;
   const rule = verifiedRule(f, ctx, year);
   const edition = verifiedEdition(f, ctx, today);

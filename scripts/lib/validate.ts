@@ -196,8 +196,9 @@ export function reviewChange(change: Proposed, ctx: ReviewContext): ReviewedChan
   if (change.field.startsWith("key_events.") && old === null && !stored?.key_events.some((k) => k.id === keyEventId(change.field))) {
     flags.push("revisar: evento clave nuevo, falta su nombre");
   }
-  if (change.field === "score.convocatoria" && typeof value === "number" && kind === "change") {
-    if (!quoteNumbers(change.quote).includes(value)) flags.push("revisar: la cifra no aparece en la cita");
+  if (change.field === "score.convocatoria" && typeof value === "number") {
+    if (kind === "change" && !quoteNumbers(change.quote).includes(value)) flags.push("revisar: la cifra no aparece en la cita");
+    // A figure with no year cannot be «el último balance», confirmed or not (SEC-01).
     if (!quoteYears(change.quote).length) flags.push("revisar: la cifra no dice de qué año es");
   }
   if (["score.calle", "score.conectividad", "score.local"].includes(change.field) && kind === "change") flags.push("revisar: criterio de juicio, lo decide una persona");
@@ -262,7 +263,26 @@ export function reviewProposal(raw: unknown, ctx: ReviewContext): ProposalReview
   if (errors.length) return { changes: [], errors, notFound: p.not_found };
 
   const reviewed = p.changes.map((c) => reviewChange(c, ctx));
-  return { changes: checkDateOrder(reviewed, ctx), errors, notFound: p.not_found };
+  return { changes: checkConfirmedStatus(checkDateOrder(reviewed, ctx), ctx), errors, notFound: p.not_found };
+}
+
+/**
+ * «confirmada» needs start, end and a source on the edition that results from the proposal (the
+ * schema refuses anything else, and apply would throw on it). Otherwise the status move is rejected.
+ */
+export function checkConfirmedStatus(changes: readonly ReviewedChange[], ctx: ReviewContext): ReviewedChange[] {
+  const edition = ctx.festival.editions[String(ctx.year)];
+  const live = changes.filter((c) => c.verdict === "accepted");
+  const pick = (field: "start" | "end"): ChangeValue => live.find((c) => c.field === field)?.new ?? edition?.[field] ?? null;
+  // apply merges the sources of every edition change into the edition, the status change's own included.
+  const hasSource = (edition?.sources.length ?? 0) > 0 || live.some((c) => !c.field.startsWith("score.") && c.sources.length > 0);
+  const missing = [pick("start") === null ? "inicio" : null, pick("end") === null ? "fin" : null, hasSource ? null : "fuente"].filter(Boolean);
+  if (!missing.length) return [...changes];
+  return changes.map((c) =>
+    c.field === "status" && c.new === "confirmada" && c.kind === "change" && c.verdict !== "rejected"
+      ? { ...c, verdict: "rejected" as const, reasons: [...c.reasons, `«confirmada» sin ${missing.join(", ")} en la edición: no se confirma una fecha que no está`] }
+      : c,
+  );
 }
 
 /** start ≤ end for the edition after the proposal; both date changes are rejected otherwise. */

@@ -99,13 +99,13 @@ describe("prompts built from our own data", () => {
   test("the extraction context is JSON written by code", () => {
     const ctx = extractionContext(item("carnaval-barranquilla"));
     const body = JSON.parse(ctx.slice(ctx.indexOf("```json") + 7, ctx.lastIndexOf("```")));
-    expect(body).toMatchObject({ country: "CO", slug: "carnaval-barranquilla", edition: 2027, stored: { start: "2027-02-06", score: { convocatoria: 6_000_000, calle: "mayoria_gratis" } } });
+    expect(body).toMatchObject({ country: "CO", slug: "carnaval-barranquilla", edition: 2027, stored: { start: "2027-02-06", score: { convocatoria: 820_000, calle: "mayoria_gratis" } } });
   });
 });
 
 describe("PR body", () => {
   test("Markdown from the web cannot inject links, mentions, HTML or table breaks", () => {
-    expect(mdText("[x](https://evil) @user #12 <img> a|b")).toBe("\\[x\\]\\(https://evil\\) \\@user \\#12 \\<img\\> a\\|b");
+    expect(mdText("[x](https://evil) @user #12 <img> a|b")).toBe("\\[x\\]\\(https:&#47;&#47;evil\\) \\@user \\#12 \\<img\\> a\\|b");
     expect(mdText("a\n\nb")).toBe("a b");
     expect(mdText("abcdef", 4)).toBe("abc…");
     expect(mdText(null)).toBe("—");
@@ -143,6 +143,14 @@ describe("PR body", () => {
     expect(md).toContain("US$1.23 de US$20.00 (3 búsquedas");
     expect(md).toContain("CO/x 2027: api_error (boom)");
     expect(tier1DateCount(report.applied)).toBe(1);
+    // SEC-04: a web quote or note cannot become a clickable link or smuggle an entity.
+    const phishing = "Compra entradas en https://evil.example/login o WWW.evil.example &#64;user del 2 de enero de 2027";
+    const poisoned = renderRefreshMarkdown(buildRefreshReport(report, selectForPr([rc({ quote: phishing, note: `ver www.evil.example y http://x.example` })], null)));
+    const prose = poisoned.replace(/\]\(https:\/\/[^)\s]+\)/g, "](link)");
+    expect(prose).toContain("evil.example");
+    expect(prose).not.toMatch(/https?:\/\//i);
+    expect(prose).not.toMatch(/www\./i);
+    expect(prose).not.toContain("&#64;");
     expect(fieldLabel("key_events.guacherna")).toBe("key_events.guacherna");
   });
 });

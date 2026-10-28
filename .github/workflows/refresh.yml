@@ -67,6 +67,8 @@ jobs:
     # Proposals are always based on main; a dispatch from another branch is refused. Runs even
     # when the usage job failed: the fallback is an extra safeguard, not a precondition.
     if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+    # SEC-12: ANTHROPIC_API_KEY and ARCHIVE_* live in this environment, limited to main (README).
+    environment: ai-pipeline
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -148,7 +150,8 @@ jobs:
           MAX_FESTIVALS_PER_RUN: ${{ vars.MAX_FESTIVALS_PER_RUN || '40' }}
           ARCHIVE_ACCESS_KEY: ${{ secrets.ARCHIVE_ACCESS_KEY }}
           ARCHIVE_SECRET_KEY: ${{ secrets.ARCHIVE_SECRET_KEY }}
-          TRAP_SECRET: ${{ secrets.TRAP_SECRET }}
+          # R12: a trap is planted only when its fingerprint can be stored (the app step below).
+          TRAP_SECRET: ${{ vars.PR_APP_CLIENT_ID != '' && secrets.TRAP_SECRET || '' }}
           ONLY_SLUG: ${{ inputs.only }}
           ONLY_COUNTRY: ${{ inputs.country }}
           MODE: ${{ steps.mode.outputs.mode }}
@@ -182,6 +185,44 @@ jobs:
             *) echo "::error::Unknown mode '${MODE}'."; exit 1 ;;
           esac
           pnpm refresh -- "${args[@]}"
+
+      # A GitHub App token makes ci.yml run on the bot PR by itself and stores the R12 fingerprint.
+      # Without the app the PR is opened with GITHUB_TOKEN, CI must be triggered by hand, and no
+      # trap is planted (README).
+      - name: Mint GitHub App token
+        id: app
+        if: vars.PR_APP_CLIENT_ID != ''
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.PR_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PR_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-secrets: write
+
+      # R12 (PRD: the fingerprint is kept as a repository secret, the reviewer never sees it):
+      # append this month's fingerprint to TRAP_FINGERPRINTS, which ci.yml and deploy.yml check.
+      # Runs before the PR step and never with always(): if it cannot be stored, no PR opens.
+      - name: Store the trap fingerprint (R12)
+        if: steps.refresh.outputs.trap_fingerprint != ''
+        env:
+          FP: ${{ steps.refresh.outputs.trap_fingerprint }}
+          EXISTING: ${{ secrets.TRAP_FINGERPRINTS }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "::add-mask::${FP}"
+          if [[ ! "${FP}" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "::error::refresh wrote a malformed trap fingerprint."
+            exit 1
+          fi
+          if [ -z "${GH_TOKEN}" ]; then
+            echo "::error::A trap was planted but there is no app token to store its fingerprint; refusing to open the PR."
+            exit 1
+          fi
+          next="${EXISTING:+${EXISTING},}${FP}"
+          printf '%s' "${next}" | gh secret set TRAP_FINGERPRINTS --repo "${REPO}"
+          echo "R12: fingerprint stored." >> "${GITHUB_STEP_SUMMARY}"
 
       # R10: snapshot data/usage.json now, before the pull request step switches branches. The next
       # run's usage job reads the "usage" artifact. The script writes the merged total before its
@@ -276,18 +317,6 @@ jobs:
           if [ "${open}" = false ]; then
             echo "::notice::No data changes: no PR opened. usage.json from this run is kept only in the run artifact."
           fi
-
-      # Optional: a GitHub App token makes ci.yml run on the bot PR by itself. Without it the
-      # PR is opened with GITHUB_TOKEN and CI must be triggered by hand (README).
-      - name: Mint GitHub App token
-        id: app
-        if: steps.pr.outputs.open == 'true' && vars.PR_APP_CLIENT_ID != ''
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
-        with:
-          client-id: ${{ vars.PR_APP_CLIENT_ID }}
-          private-key: ${{ secrets.PR_APP_PRIVATE_KEY }}
-          permission-contents: write
-          permission-pull-requests: write
 
       - name: Open pull request (never auto-merged)
         id: cpr

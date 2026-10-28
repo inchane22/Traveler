@@ -13,6 +13,7 @@ export type FestivalOutcome =
   | "truncated"
   | "invalid_proposal"
   | "api_error"
+  | "error"
   | "no_fixture"
   | "skipped_budget"
   | "not_run";

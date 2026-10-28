@@ -3,6 +3,7 @@
 import { resolveRule } from "../../src/dates.ts";
 import { ctxFor } from "../../src/festivals.ts";
 import type { CountryFile } from "../../src/schema.ts";
+import { fence } from "./extract.ts";
 import { loadPrompt } from "./io.ts";
 import { countryInfo, langFor, needsNewsSweep, newsTerms } from "./lang.ts";
 import type { QueueItem } from "./queue.ts";
@@ -37,11 +38,12 @@ export function researchUserPrompt(item: QueueItem, country: CountryFile): strin
   const news = needsNewsSweep(item.daysToStart)
     ? `- news from the last 30 days about this edition that use the words ${newsTerms(lang).map((t) => `«${t}»`).join(", ")}`
     : "";
+  // Stored names came from an onboarding draft: fenced like any web text (SEC-07).
   return loadPrompt("research-user.md", {
-    name_local: item.festival.names.local,
-    name_es: item.festival.names.es,
-    name_en: item.festival.names.en,
-    city: item.festival.city,
+    name_local: fence(item.festival.names.local),
+    name_es: fence(item.festival.names.es),
+    name_en: fence(item.festival.names.en),
+    city: fence(item.festival.city),
     country_name: countryInfo(country.country)?.names.en ?? country.country,
     country: country.country,
     year: String(item.year),

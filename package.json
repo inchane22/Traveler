@@ -8,9 +8,9 @@
     "node": ">=22.18"
   },
   "scripts": {
-    "dev": "pnpm run data && vite",
+    "dev": "INCLUDE_DRAFTS=1 pnpm run data && vite",
     "data": "node scripts/build-data.ts && node scripts/build-calendars.ts",
-    "build": "pnpm run data && vite build && node scripts/check-secrets.ts",
+    "build": "pnpm run data && vite build && node scripts/check-csp.ts && node scripts/check-secrets.ts",
     "preview": "vite preview --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -21,7 +21,7 @@
     "check-secrets": "node scripts/check-secrets.ts",
     "refresh": "node scripts/refresh.ts",
     "onboard": "node scripts/onboard.ts",
-    "validate-data": "node scripts/validate-data.ts"
+    "validate-data": "node scripts/build-data.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

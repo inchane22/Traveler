@@ -71,7 +71,7 @@ El detalle de cada módulo y quién lo puede tocar está en [docs/architecture.m
 
 - Toda fecha o cifra lleva una fuente https. Sin fuente, la fecha es «por anunciar» y la cifra «por medir».
 - La IA propone y una persona aprueba. No hay merge automático.
-- Los borradores no se publican: `build-data` los deja fuera salvo con `INCLUDE_DRAFTS=1`, que solo usa `pnpm dev`.
+- Los borradores no se publican: `build-data` los deja fuera salvo con `INCLUDE_DRAFTS=1`, que solo usa `pnpm dev` (en Windows, sin shell POSIX: `set INCLUDE_DRAFTS=1 && pnpm run data && pnpm exec vite`).
 - Un país pasa de `borrador` a `publicado` cuando se aprueba su PR de onboarding y tiene al menos 3 fiestas con fecha y fuente (A, o dos B; R2). Para publicarlo, en ese PR cambia `"status": "borrador"` por `"publicado"`, corre `node scripts/build-data.ts` y versiona `data/index.json`; CI falla si el índice no coincide.
 - Una fecha confirmada no vuelve a tentativa sin una fuente que lo diga, y ninguna fiesta se borra desde el pipeline.
 - De terceros se guardan hechos y una frase propia con enlace; nunca párrafos copiados.
@@ -101,18 +101,19 @@ Todas las acciones de terceros están fijadas por SHA con la versión en un come
 2. Settings > Pages > Source: **GitHub Actions**. Si usas dominio propio, define las variables `BASE_PATH=/` y `SITE_URL=https://tu-dominio/`; `deploy.yml` falla con un mensaje claro si la ruta no coincide con la que sirve Pages.
 3. Settings > Environments > `github-pages`: deployment branches solo `main`.
 4. Settings > Actions > General > Workflow permissions: deja **Read repository contents**. Activa **Allow GitHub Actions to create and approve pull requests** solo si no vas a usar la GitHub App del paso 11 (el `GITHUB_TOKEN` lo necesita para abrir PRs).
-5. Settings > Rules > Rulesets > nuevo ruleset para la rama por defecto (RF-16): bloquear force push y borrado; exigir PR con 1 aprobación, descartar aprobaciones viejas con commits nuevos y resolver conversaciones; exigir el check `ci` con la rama al día. Como mantenedor único no puedes aprobar tus propios PRs de código: agrega «Repository admin» a la lista de bypass en modo «solo pull requests» y úsalo solo en tus PRs de código y con `ci` en verde (el bypass también salta el check, y `deploy.yml` no espera a `ci.yml`), nunca en uno con `needs-review`. Es una tensión real con R12; un segundo revisor la elimina, y `deploy.yml` repite `check-trap` de respaldo.
+5. Settings > Rules > Rulesets > nuevo ruleset para la rama por defecto (RF-16): bloquear force push y borrado; exigir PR con 1 aprobación, descartar aprobaciones viejas con commits nuevos y resolver conversaciones; exigir el check `ci` con la rama al día. Como mantenedor único no puedes aprobar tus propios PRs de código: agrega «Repository admin» a la lista de bypass en modo «solo pull requests» y úsalo solo en tus PRs de código y con `ci` en verde (el bypass también salta el check del PR, pero `deploy.yml` solo publica cuando `ci.yml` pasó en el push a `main`), nunca en uno con `needs-review`. Es una tensión real con R12; un segundo revisor la elimina, y `deploy.yml` repite `check-trap` de respaldo.
 6. Settings > Code security: secret scanning, push protection, Dependabot alerts y security updates. GitHub reconoce las keys de Anthropic (API, admin y service account), bloquea el push y avisa a Anthropic.
 7. Settings > General: **Automatically delete head branches**. Un PR de onboarding cerrado sin merge deja su rama `onboard/<cc>`, y el job mensual salta ese país hasta que la borres.
-8. Secretos (Settings > Secrets and variables > Actions). `gh secret set` pide el valor por teclado, así no queda en el historial:
+8. Secretos (Settings > Secrets and variables > Actions). `gh secret set` pide el valor por teclado, así no queda en el historial. Las keys de IA van en el environment `ai-pipeline` (Settings > Environments > ai-pipeline > Deployment branches: solo `main`), así ningún workflow de otra rama las lee (SEC-12). `TRAP_SECRET` queda como secreto del repositorio porque `ci.yml` lo usa en los PRs:
 
    ```bash
-   gh secret set ANTHROPIC_API_KEY
+   gh secret set ANTHROPIC_API_KEY --env ai-pipeline
+   gh secret set ARCHIVE_ACCESS_KEY --env ai-pipeline   # opcional, R13 (archive.org)
+   gh secret set ARCHIVE_SECRET_KEY --env ai-pipeline   # opcional, R13
    gh secret set TRAP_SECRET
-   gh secret set TRAP_FINGERPRINTS     # solo en GitHub; no lo guardes donde lo puedas leer al revisar
-   gh secret set ARCHIVE_ACCESS_KEY    # opcional, R13 (archive.org)
-   gh secret set ARCHIVE_SECRET_KEY    # opcional, R13
    ```
+
+   `TRAP_FINGERPRINTS` no se crea a mano: `refresh.yml` le agrega la huella de cada trampa con el token de la App del paso 11 (R12). Sin la App no se siembra ninguna trampa.
 
 9. Variables:
 
@@ -132,7 +133,7 @@ Todas las acciones de terceros están fijadas por SHA con la versión en un come
     gh label create sugerencia     --color 0E8A16 --description "Fiesta sugerida (R11)"
     ```
 
-11. GitHub App, recomendada (10 minutos). Settings > Developer settings > GitHub Apps > New: sin webhook, permisos de repositorio Contents y Pull requests en Read and write, instalada solo en este repo. Genera una clave privada y guárdala: `gh variable set PR_APP_CLIENT_ID --body <client-id>` y `gh secret set PR_APP_PRIVATE_KEY < clave.pem`; luego borra el `.pem`. Con la App los PRs de IA disparan CI solos y puedes dejar apagada la opción del paso 4.
+11. GitHub App, recomendada (10 minutos). Settings > Developer settings > GitHub Apps > New: sin webhook, permisos de repositorio Contents, Pull requests y Secrets en Read and write (Secrets guarda la huella de la trampa mensual, R12), instalada solo en este repo. Genera una clave privada y guárdala: `gh variable set PR_APP_CLIENT_ID --body <client-id>` y `gh secret set PR_APP_PRIVATE_KEY < clave.pem`; luego borra el `.pem`. Con la App los PRs de IA disparan CI solos y puedes dejar apagada la opción del paso 4.
 12. Claude Console: crea el workspace y la key según la política de abajo. La búsqueda web viene activada salvo que un admin la haya apagado en [Settings > Capabilities](https://platform.claude.com/settings/capabilities), donde también se restringen dominios; confírmalo.
 13. Primera corrida barata: `gh workflow run refresh.yml -f only=carnaval-barranquilla` y `gh run watch`. Revisa el PR, ciérralo y vuelve a abrirlo para que corra CI (o usa la App), apruébalo y fusiónalo; `deploy.yml` publica.
 

@@ -185,3 +185,25 @@ describe("draft mapping", () => {
     expect(onboardFlags(good, good).messages).toEqual([]);
   });
 });
+
+describe("onboarding archives what it cites (prd-F10, R13)", () => {
+  test("a non-dry run asks the archiver for every edition source and stores the copies", async () => {
+    const root = tempRepo({ countries: [] });
+    const asked: string[] = [];
+    const archiver = { capture: (url: string) => (asked.push(url), Promise.resolve(`https://web.archive.org/web/20261026000000/${url}`)) };
+    const result = await runOnboard(opts(root), deps({ archiver }));
+    expect(result.exitCode).toBe(0);
+    const stored = CountryFile.parse(readJsonFile(join(root, "data", "countries", "pe.json")));
+    const sources = stored.festivals.flatMap((f) => Object.values(f.editions).flatMap((e) => e.sources));
+    expect(sources.length).toBeGreaterThan(0);
+    expect(asked.length).toBe(new Set(sources.map((s) => s.url)).size);
+    expect(sources.every((s) => s.archive_url === `https://web.archive.org/web/20261026000000/${s.url}`)).toBe(true);
+  });
+
+  test("a dry run archives nothing", async () => {
+    const asked: string[] = [];
+    const archiver = { capture: (url: string) => (asked.push(url), Promise.resolve(null)) };
+    await runOnboard(opts(tempRepo({ countries: [] }), { dryRun: true }), deps({ archiver }));
+    expect(asked).toEqual([]);
+  });
+});

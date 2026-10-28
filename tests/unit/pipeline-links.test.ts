@@ -94,7 +94,10 @@ describe("link verdicts (R6)", () => {
     expect(await verdict("https://a.example/410")).toBe("broken");
     expect(await checkLink("https://travel.state.gov/x", f)).toMatchObject({ verdict: "unknown", detail: expect.stringContaining("bot challenge") as unknown });
     for (const url of ["403", "429", "503", "teapot", "challenge-200"]) expect(await verdict(`https://a.example/${url}`)).toBe("unknown");
-    expect(await checkLink("https://a.example/down", f)).toMatchObject({ verdict: "unknown", status: null, detail: expect.stringContaining("ENOTFOUND") as unknown });
+    const down = await checkLink("https://a.example/down", f);
+    expect(down).toMatchObject({ verdict: "unknown", status: null, detail: expect.stringContaining("network error") as unknown });
+    // SEC-08: the cause (which hosts resolve or refuse) never reaches the job summary.
+    expect(down.detail).not.toContain("ENOTFOUND");
     expect(f.calls.filter((c) => c === "GET https://a.example/ok")).toEqual([]);
   });
 

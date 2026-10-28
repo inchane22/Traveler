@@ -87,14 +87,17 @@ describe("budget inside a refresh run (R10)", () => {
 
     expect(result.exitCode).toBe(1);
     expect(result.report?.stopped).toMatch(/monthly budget reached/);
-    // Every call that was sent was recorded, and the cap was crossed by the last one.
-    expect(transport.calls.length).toBe(usage.saved.length);
+    // Every call that got a response was recorded, and the cap was crossed by the last one. The
+    // postponed Petronio 2026 queues first (ux-F01) and has no recording, so it costs nothing.
+    const outcomes = result.report!.festivals.map((f) => f.outcome);
+    const unrecorded = outcomes.filter((o) => o === "no_fixture").length;
+    expect(transport.calls.length).toBe(usage.saved.length + unrecorded);
     expect(usage.saved.at(-2)!.at(-1)!.usd).toBeLessThan(budgetUsd);
     expect(usage.saved.at(-1)!.at(-1)!.usd).toBeGreaterThanOrEqual(budgetUsd);
-    const outcomes = result.report!.festivals.map((f) => f.outcome);
-    expect(outcomes[0]).toBe("ok");
-    expect(outcomes[1]).toBe("skipped_budget");
-    expect(outcomes.slice(2).every((o) => o === "not_run")).toBe(true);
+    const ran = outcomes.filter((o) => o !== "no_fixture");
+    expect(ran[0]).toBe("ok");
+    expect(ran[1]).toBe("skipped_budget");
+    expect(ran.slice(2).every((o) => o === "not_run")).toBe(true);
     expect(githubOutput(out).changes).toBe("0");
     expect(readFileSync(join(root, "data", "countries", "co.json"), "utf8")).toBe(before);
   });

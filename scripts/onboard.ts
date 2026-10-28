@@ -6,6 +6,7 @@ import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { onboardArgs, UsageError } from "./lib/args.ts";
 import { fileUsageStore, memoryUsageStore, readUsageFallback, UsageFile, withUsageFallback } from "./lib/budget.ts";
+import { archiverFor } from "./lib/archive.ts";
 import { anthropicTransport, fixtureDirTransport } from "./lib/client.ts";
 import { readJson, readJsonOr, stdLogger, writeJson, type Logger } from "./lib/io.ts";
 import { runOnboard } from "./lib/onboard-run.ts";
@@ -40,7 +41,7 @@ export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root
       budgetUsd: args.budgetUsd,
       ...(args.githubOutput ? { githubOutput: args.githubOutput } : {}),
     },
-    { transport: offline ? fixtureDirTransport(resolve(root, args.fixtures!)) : anthropicTransport(), usage, log },
+    { transport: offline ? fixtureDirTransport(resolve(root, args.fixtures!)) : anthropicTransport(), usage, log, archiver: archiverFor(env, { dryRun: args.dryRun, offline, log }) },
   );
   for (const file of result.files) log.info(`wrote ${file}`);
   return result.exitCode;

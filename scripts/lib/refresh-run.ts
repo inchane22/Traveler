@@ -5,7 +5,7 @@ import { ctxFor } from "../../src/festivals.ts";
 import { ChangelogEntry, CountryFile, Proposal } from "../../src/schema.ts";
 import type { ScoringConfig } from "../../src/score.ts";
 import { loadCountries } from "../build-data.ts";
-import { applyChanges, changelogEntries } from "./apply.ts";
+import { applyChanges, changelogEntries, trialApply } from "./apply.ts";
 import { archiveAll, type Archiver } from "./archive.ts";
 import { allowedAtLevel, BudgetExceededError, createBudgetGuard, type BudgetGuard, type UsageStore } from "./budget.ts";
 import { classifyApiError, type MessagesTransport } from "./client.ts";
@@ -17,7 +17,7 @@ import { applyLostSources, type LinkDowngrade, type LinkVerdict } from "./links.
 import { buildQueue, type QueueItem } from "./queue.ts";
 import { buildRefreshReport, renderRefreshMarkdown, type FestivalLog, type RefreshReport } from "./report.ts";
 import { research } from "./research.ts";
-import { dataChangeCount, selectForPr } from "./select.ts";
+import { dataChangeCount, selectForPr, type Selection } from "./select.ts";
 import { fingerprint, makeTrap } from "./trap.ts";
 import { reviewProposal, type ReviewedChange } from "./validate.ts";
 
@@ -98,7 +98,6 @@ async function verifyFestival(item: QueueItem, country: CountryFile, policy: Dom
     model: opts.model,
     system: loadPrompt("extract-system.md"),
     context: extractionContext(item),
-    citedClaims: result.citedClaims,
     citations: result.citations,
     schema: Proposal,
   });
@@ -186,7 +185,13 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
         logs.push({ ...baseLog(item), outcome: "skipped_budget", detail: "R10: budget reached" });
         continue;
       }
-      const failure = classifyApiError(error);
+      const failure = classifyOrUnexpected(error);
+      if (failure.kind === "unexpected") {
+        // A bug or bad data in one festival (code-F2): log it and keep verifying the others.
+        logs.push({ ...baseLog(item), outcome: "error", detail: failure.message });
+        deps.log.error(`${item.country}/${item.slug}: unexpected error: ${failure.message}`);
+        continue;
+      }
       logs.push({ ...baseLog(item), outcome: failure.kind === "fixture" ? "no_fixture" : "api_error", detail: failure.message });
       deps.log.warn(`${item.country}/${item.slug}: ${failure.kind}: ${failure.message}`);
       if (failure.kind === "fatal") {
@@ -204,7 +209,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
     : null;
   if (opts.trapSecret && guard.firstRunOfMonth && !trap) deps.log.info("R12: no trap this run (needs $GITHUB_OUTPUT, a real change and a dated upcoming edition)");
 
-  const selection = selectForPr(changes, trap);
+  const selection = demoteUnappliable(selectForPr(changes, trap), countries, opts.today, deps.log);
   const usage = guard.current();
   const report = buildRefreshReport(
     {
@@ -236,6 +241,32 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   appendGithubOutput(opts.githubOutput, { ...output, ...(trap ? { trap_fingerprint: fingerprint(opts.trapSecret!, trap) } : {}) });
   deps.log.info(`refresh ${opts.today}: ${selection.applied.length} change(s), ${selection.confirmations.length} confirmation(s), ${selection.flagged.length} to review, ${selection.rejected.length} rejected, ${r13.downgrades.length} R13 downgrade(s)`);
   return { exitCode, report, files, calls: guard.calls };
+}
+
+function classifyOrUnexpected(error: unknown): ReturnType<typeof classifyApiError> | { kind: "unexpected"; message: string } {
+  try {
+    return classifyApiError(error);
+  } catch {
+    return { kind: "unexpected", message: error instanceof Error ? error.message : String(error) };
+  }
+}
+
+/**
+ * Changes that would make a country file invalid move to «para revisar» with the validation
+ * message, before the report and the files are written, so the run still opens its PR (code-F2).
+ */
+export function demoteUnappliable(selection: Selection, countries: readonly CountryFile[], today: string, log: Logger): Selection {
+  const { failed } = trialApply(countries, [...selection.applied, ...selection.confirmations], today);
+  if (!failed.length) return selection;
+  const bad = new Set(failed.map((f) => f.change));
+  for (const f of failed) log.warn(`${f.change.country}/${f.change.slug} ${f.change.field}: not applied, sent to review: ${f.error}`);
+  const flaggedNow = failed.map(({ change, error }) => ({ ...change, verdict: "flagged" as const, flags: [...change.flags, `revisar: no se puede aplicar (${error})`] }));
+  return {
+    ...selection,
+    applied: selection.applied.filter((c) => !bad.has(c)),
+    confirmations: selection.confirmations.filter((c) => !bad.has(c)),
+    flagged: [...selection.flagged, ...flaggedNow],
+  };
 }
 
 export function writeProposals(root: string, name: string, report: RefreshReport | Record<string, unknown>, markdown?: string): string[] {

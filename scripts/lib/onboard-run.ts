@@ -3,8 +3,9 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { addMonths } from "../../src/dates.ts";
-import { CountryFile, type CountryFile as Country } from "../../src/schema.ts";
+import { CountryFile, MIN_SOURCED_FESTIVALS, type CountryFile as Country } from "../../src/schema.ts";
 import { scoreFestival, type ScoringConfig } from "../../src/score.ts";
+import { archiveAll, noopArchiver, type Archiver } from "./archive.ts";
 import { BudgetExceededError, createBudgetGuard, type UsageStore } from "./budget.ts";
 import { classifyApiError, type MessagesTransport } from "./client.ts";
 import { loadDomainPolicy, withGovernmentFallback } from "./domains.ts";
@@ -14,6 +15,7 @@ import { countryInfo } from "./lang.ts";
 import { details, mdLink, mdTable, mdText } from "./markdown.ts";
 import { mapFestival, OnboardingDraft, type MappedFestival } from "./onboard-draft.ts";
 import { research } from "./research.ts";
+import { loadSensitiveTerms, sensitiveHits } from "./sensitive.ts";
 
 export interface OnboardOptions {
   root: string;
@@ -29,10 +31,27 @@ export interface OnboardDeps {
   transport: MessagesTransport;
   usage: UsageStore;
   log: Logger;
+  /** R13: cited edition sources are archived before the draft is written (none in a dry run). */
+  archiver?: Archiver;
+}
+
+/** Edition sources with the archive copy made for them; the same object when nothing was archived. */
+export function withArchives(country: Country, archived: ReadonlyMap<string, string>): Country {
+  if (!archived.size) return country;
+  return {
+    ...country,
+    festivals: country.festivals.map((f) => ({
+      ...f,
+      editions: Object.fromEntries(
+        Object.entries(f.editions).map(([y, e]) => [y, { ...e, sources: e.sources.map((s) => (archived.has(s.url) && !s.archive_url ? { ...s, archive_url: archived.get(s.url)! } : s)) }]),
+      ),
+    })),
+  };
 }
 
 export const ONBOARD_MAX_USES = 15;
-export const MIN_SOURCED_FESTIVALS = 3;
+/** Re-exported from src/schema.ts so build-data and onboarding share one threshold. */
+export { MIN_SOURCED_FESTIVALS };
 export const MIN_SHARE_A = 0.6;
 export const MIN_NON_MEDIA_SHARE = 0.5;
 
@@ -131,7 +150,6 @@ export async function runOnboard(opts: OnboardOptions, deps: OnboardDeps): Promi
       model: opts.model,
       system: loadPrompt("onboard-extract-system.md"),
       context: `País: ${info.names.es} (${cc}). Zona por defecto: ${info.timezone}. Hoy: ${opts.today}.`,
-      citedClaims: result.citedClaims,
       citations: result.citations,
       schema: OnboardingDraft,
       maxTokens: 16000,
@@ -156,7 +174,10 @@ export async function runOnboard(opts: OnboardOptions, deps: OnboardDeps): Promi
   }
   const scored = mapped.map((m) => ({ m, s: scoreFestival(m.festival.score, config) }));
   const ranked = [...scored].sort((a, b) => b.s.low - a.s.low || b.s.high - a.s.high || a.m.festival.slug.localeCompare(b.m.festival.slug));
-  const flags = onboardFlags(mapped, ranked.map((x) => x.m));
+  const base = onboardFlags(mapped, ranked.map((x) => x.m));
+  const terms = loadSensitiveTerms(opts.root);
+  const r5 = mapped.flatMap((m) => sensitiveHits(m.festival, terms)).map((h) => `R5: revisar el texto de ${h.slug} (${h.field}): «${h.term}» presenta la fiesta como simple parranda`);
+  const flags = { ...base, messages: [...base.messages, ...r5] };
 
   const parsed = CountryFile.safeParse({ country: cc, status: "borrador", generated_at: opts.today, timezone: info.timezone, region: info.region, festivals: ranked.map((x) => x.m.festival) });
   if (!parsed.success) return fail(`onboard ${cc}: draft does not validate: ${parsed.error.issues.map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}`);
@@ -182,7 +203,10 @@ export async function runOnboard(opts: OnboardOptions, deps: OnboardDeps): Promi
   writeJson(files[0]!, { ...report, draft: parsed.data });
   writeText(files[1]!, renderOnboardMarkdown(report));
   if (!opts.dryRun) {
-    writeJson(dataPath, parsed.data);
+    const urls = parsed.data.festivals.flatMap((f) => Object.values(f.editions).flatMap((e) => e.sources.map((s) => s.url)));
+    const archived = await archiveAll(deps.archiver ?? noopArchiver, urls);
+    deps.log.info(`R13: ${archived.size} of ${new Set(urls).size} edition source(s) archived`);
+    writeJson(dataPath, CountryFile.parse(withArchives(parsed.data, archived)));
     files.push(dataPath);
   }
   appendGithubOutput(opts.githubOutput, { changes: parsed.data.festivals.length, branch: `onboard/${cc.toLowerCase()}` });

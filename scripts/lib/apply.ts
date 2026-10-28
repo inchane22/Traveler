@@ -60,13 +60,24 @@ function unitOf(quote: string): "attendees" | "tourists" | "visitors" {
   return "attendees";
 }
 
+/**
+ * A change replaces the measure; a confirmation only refreshes its source and confidence and keeps
+ * the stored measure and note (SEC-01). A figure needs the year its quote states; without one the
+ * change cannot be applied (validate flags it, so this only guards direct callers).
+ */
 function applyToScore(festival: Festival, change: ReviewedChange): Festival["score"] {
   const criterion = change.field.slice("score.".length) as keyof Festival["score"];
   const source = change.quote_url ?? change.sources[0]?.url;
-  const base = { confidence: change.confidence, ...(source ? { source } : {}) };
+  const base = { confidence: change.confidence, ...(source ? { source } : {}), ...(change.quote_url ? { quote: change.quote } : {}) };
+  const stored = festival.score[criterion];
+  if (change.kind === "confirmation" && stored) {
+    const kept = { ...stored, confidence: higher(stored.confidence, change.confidence) };
+    return { ...festival.score, [criterion]: source ? { ...kept, source, ...(change.quote_url ? { quote: change.quote } : {}) } : kept } as Festival["score"];
+  }
   if (criterion === "convocatoria") {
-    const year = Math.max(...quoteYears(change.quote));
-    const measure = { attendance: Number(change.new), qualifier: quoteQualifier(change.quote), unit: unitOf(change.quote), year };
+    const years = quoteYears(change.quote);
+    if (!years.length) throw new Error(`${change.country}/${change.slug}: score.convocatoria quote states no year`);
+    const measure = { attendance: Number(change.new), qualifier: quoteQualifier(change.quote), unit: unitOf(change.quote), year: Math.max(...years) };
     return { ...festival.score, convocatoria: { measure, ...base } };
   }
   return { ...festival.score, [criterion]: { measure: change.new, ...base } } as Festival["score"];
@@ -113,6 +124,54 @@ function applyToFestival(festival: Festival, changes: readonly ReviewedChange[],
     editions[key] = { ...updated, sequence: Math.max(bumped, first) };
   }
   return { ...next, editions };
+}
+
+export interface SafeApply {
+  /** Changes that apply cleanly together. */
+  ok: ReviewedChange[];
+  /** Changes that would break the country file, each with the validation message. */
+  failed: Array<{ change: ReviewedChange; error: string }>;
+}
+
+const message = (error: unknown): string => (error instanceof Error ? error.message : String(error));
+
+/**
+ * Trial apply before anything is reported or written (code-F2, SEC-01): when a country's accepted
+ * changes do not validate together, each one is tried alone and the ones that break the file are
+ * returned in `failed`, so one bad change can no longer abort the whole run.
+ */
+export function trialApply(countries: readonly CountryFile[], changes: readonly ReviewedChange[], today: ISODate): SafeApply {
+  const ok: ReviewedChange[] = [];
+  const failed: SafeApply["failed"] = [];
+  const known = new Set(countries.map((c) => c.country));
+  for (const c of changes) if (!known.has(c.country)) failed.push({ change: c, error: `${c.country}: no country file` });
+  for (const country of countries) {
+    const mine = changes.filter((c) => c.country === country.country);
+    if (!mine.length) continue;
+    try {
+      applyChanges(country, mine, today);
+      ok.push(...mine);
+      continue;
+    } catch {
+      // Falls through to one-by-one: the combined error does not say which change caused it.
+    }
+    const alone = mine.filter((c) => {
+      try {
+        applyChanges(country, [c], today);
+        return true;
+      } catch (error) {
+        failed.push({ change: c, error: message(error) });
+        return false;
+      }
+    });
+    try {
+      applyChanges(country, alone, today);
+      ok.push(...alone);
+    } catch (error) {
+      for (const c of alone) failed.push({ change: c, error: `en conjunto: ${message(error)}` });
+    }
+  }
+  return { ok, failed };
 }
 
 /** New country file with the changes applied; throws when the result would not validate. */

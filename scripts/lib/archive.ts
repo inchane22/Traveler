@@ -1,5 +1,6 @@
 // R13: every accepted source gets an Internet Archive capture (Save Page Now 2, authenticated) and
 // its archive_url is stored next to the source. Skipped silently in --dry-run or without keys.
+import { canonicalUrl } from "./domains.ts";
 import type { Logger } from "./io.ts";
 
 export interface Archiver {
@@ -65,7 +66,15 @@ export function spnArchiver(opts: SpnOptions): Archiver {
           await opts.sleep(pollMs);
           const st = await opts.fetch(`${SAVE}/status/${encodeURIComponent(saved.job_id)}`, { method: "GET", headers });
           const status = (await st.json()) as StatusResponse;
-          if (status.status === "success" && status.timestamp) return waybackUrl(status.timestamp, status.original_url ?? url);
+          if (status.status === "success" && status.timestamp) {
+            // SEC-09: record the capture only when it is of this page, not one the response names.
+            const original = status.original_url ?? url;
+            if (canonicalUrl(original) !== canonicalUrl(url)) {
+              opts.log.warn(`R13: archive of ${url} answered with a capture of another page; not recorded`);
+              return null;
+            }
+            return waybackUrl(status.timestamp, url);
+          }
           if (status.status === "error") {
             opts.log.warn(`R13: archive of ${url} failed: ${status.message ?? "error"}`);
             return null;
@@ -81,6 +90,9 @@ export function spnArchiver(opts: SpnOptions): Archiver {
   };
 }
 
+/** Per request to Save Page Now (submit or status poll). */
+export const ARCHIVE_TIMEOUT_MS = 30_000;
+
 export interface ArchiveEnv {
   ARCHIVE_ACCESS_KEY?: string;
   ARCHIVE_SECRET_KEY?: string;
@@ -94,7 +106,8 @@ export function archiverFor(env: ArchiveEnv, opts: { dryRun: boolean; offline: b
   return spnArchiver({
     accessKey: access,
     secretKey: secret,
-    fetch: (url, init) => fetch(url, init),
+    // SEC-09: a stalled archive.org connection must not hold the job (and its secrets) for an hour.
+    fetch: (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(ARCHIVE_TIMEOUT_MS) }),
     sleep: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
     log: opts.log,
   });

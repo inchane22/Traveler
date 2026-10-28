@@ -46,6 +46,8 @@ jobs:
     # Drafts are always based on main; a dispatch from another branch is refused. Runs even when
     # the usage job failed: the fallback is an extra safeguard, not a precondition.
     if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+    # SEC-12: ANTHROPIC_API_KEY and ARCHIVE_* live in this environment, limited to main (README).
+    environment: ai-pipeline
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:

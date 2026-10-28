@@ -135,7 +135,10 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
     expect(denied.exitCode).toBe(1);
     expect(denied.report!.stopped).toMatch(/credentials rejected/);
     expect(denied.report!.festivals.map((f) => f.outcome)).toEqual(["api_error", "not_run", "not_run"]);
-    await expect(runRefresh(refreshOptions(tempRepo(), { maxFestivals: 1 }), deps({ transport: failing(new TypeError("bug")) }))).rejects.toThrow(TypeError);
+    // code-F2: an unexpected error in one festival is logged and the others still run.
+    const buggy = await runRefresh(refreshOptions(tempRepo(), { maxFestivals: 2 }), deps({ transport: failing(new TypeError("bug")) }));
+    expect(buggy.exitCode).toBe(0);
+    expect(buggy.report!.festivals.map((f) => [f.outcome, f.detail])).toEqual([["error", "bug"], ["error", "bug"]]);
   });
 
   test("a proposal that never validates, or is about another festival, is dropped with a log line", async () => {

@@ -3,8 +3,12 @@
 # Separate from the AI jobs: it never sees ANTHROPIC_API_KEY and holds no contents: write.
 name: deploy
 
+# RF-16 (prd-F17): deploy only after ci.yml (tests, e2e, trap check) passed on a push to main, so
+# a bypass merge with red CI never publishes. A manual dispatch from main stays for recovery.
 on:
-  push:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -26,17 +30,23 @@ env:
 jobs:
   build:
     name: build
-    # workflow_dispatch can target any branch; refuse anything but main.
-    if: github.ref == 'refs/heads/main'
+    # A dispatch can target any branch; refuse anything but main. A ci run counts only when it
+    # succeeded on a push to main (not a PR whose head branch happens to be called main).
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
       contents: read
       pages: read # configure-pages reads the Pages site settings
     steps:
+      # Build exactly the commit ci.yml verified, not whatever main points at now.
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
           persist-credentials: false
 
       - name: Set up pnpm

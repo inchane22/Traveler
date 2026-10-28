@@ -12,14 +12,20 @@ export interface LinkResponse {
   status: number;
   headers: { get(name: string): string | null };
   text(): Promise<string>;
+  /** When present, the body is read only up to BODY_SNIFF bytes (SEC-08). */
+  body?: ReadableStream<Uint8Array> | null;
 }
 
 export interface LinkRequest {
   method: "HEAD" | "GET";
   headers: Record<string, string>;
-  redirect: "follow";
+  /** Redirects are followed by checkLink, hop by hop, so every hop passes the address guard. */
+  redirect: "manual";
   signal: AbortSignal;
 }
+
+/** Addresses a host name resolves to (DNS in check-links.ts, a fake in tests). */
+export type ResolveHost = (host: string) => Promise<string[]>;
 
 export type LinkFetch = (url: string, init: LinkRequest) => Promise<LinkResponse>;
 
@@ -115,36 +121,135 @@ export function isBotChallenge(headers: LinkResponse["headers"], body: string): 
   return CHALLENGE_MARKERS.some((m) => text.includes(m));
 }
 
-/** Node's fetch says only «fetch failed»; the reason (ENOTFOUND, a TLS error...) is in `cause`. */
+/**
+ * Generic reason only: the report lands in the job summary, and causes such as ECONNREFUSED or
+ * ENOTFOUND would tell anyone which hosts the runner can reach (SEC-08).
+ */
 function errorText(error: unknown): string {
-  if (!(error instanceof Error)) return String(error);
-  const cause = error.cause as { code?: unknown; message?: unknown } | undefined;
-  const why = typeof cause?.code === "string" ? cause.code : typeof cause?.message === "string" ? cause.message : "";
-  return why ? `${error.message}: ${why}` : error.message;
+  if (error instanceof BlockedAddressError || error instanceof RedirectError) return error.message;
+  const name = error instanceof Error ? error.name : "";
+  return name === "TimeoutError" || name === "AbortError" ? "timeout" : "network error";
+}
+
+export const MAX_REDIRECTS = 5;
+
+class BlockedAddressError extends Error {
+  constructor() {
+    super("blocked: not a public https address");
+  }
+}
+
+class RedirectError extends Error {
+  constructor(why: string) {
+    super(why);
+  }
+}
+
+const v4 = (ip: string): number[] | null => {
+  const parts = ip.split(".").map(Number);
+  return parts.length === 4 && parts.every((n) => Number.isInteger(n) && n >= 0 && n <= 255) ? parts : null;
+};
+
+/** Loopback, private, link-local, CGNAT, unspecified and multicast addresses (IPv4 and IPv6). */
+export function isPrivateAddress(ip: string): boolean {
+  const addr = ip.toLowerCase().replace(/^\[|\]$/g, "");
+  const mapped = /^::ffff:(\d+\.\d+\.\d+\.\d+)$/.exec(addr);
+  const p = v4(mapped ? mapped[1]! : addr);
+  if (p) {
+    const [a, b] = p as [number, number];
+    return a === 0 || a === 10 || a === 127 || a >= 224 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 100 && b >= 64 && b <= 127);
+  }
+  if (!addr.includes(":")) return false;
+  return addr === "::" || addr === "::1" || /^f[cd]/.test(addr) || /^fe[89ab]/.test(addr) || /^ff/.test(addr);
+}
+
+/** https, a public host name or address, and (with a resolver) only public addresses behind it. */
+export async function isPublicHttps(url: string, resolveHost?: ResolveHost): Promise<boolean> {
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    return false;
+  }
+  const host = u.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+  if (u.protocol !== "https:" || host === "localhost" || /\.(localhost|local|internal|lan|home\.arpa)$/.test(host)) return false;
+  if (v4(host) || host.includes(":")) return !isPrivateAddress(host);
+  if (!resolveHost) return true;
+  const addresses = await resolveHost(host);
+  return addresses.length > 0 && !addresses.some(isPrivateAddress);
+}
+
+const REDIRECTS = new Set([301, 302, 303, 307, 308]);
+
+/** Follows redirects by hand, checking every hop, at most MAX_REDIRECTS times. */
+async function fetchGuarded(url: string, init: LinkRequest, fetcher: LinkFetch, resolveHost?: ResolveHost): Promise<LinkResponse> {
+  let current = url;
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    if (!(await isPublicHttps(current, resolveHost))) throw new BlockedAddressError();
+    const res = await fetcher(current, init);
+    const location = REDIRECTS.has(res.status) ? res.headers.get("location") : null;
+    if (!location) return res;
+    try {
+      current = new URL(location, current).href;
+    } catch {
+      throw new RedirectError("redirect to an invalid address");
+    }
+  }
+  throw new RedirectError(`more than ${MAX_REDIRECTS} redirects`);
+}
+
+/** At most `limit` bytes of the body; the rest is never downloaded. */
+async function readSniff(res: LinkResponse, limit = BODY_SNIFF): Promise<string> {
+  if (!res.body) return (await res.text()).slice(0, limit);
+  const reader = res.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  while (size < limit) {
+    const { done, value } = await reader.read();
+    if (done || !value) break;
+    chunks.push(value);
+    size += value.byteLength;
+  }
+  await reader.cancel().catch(() => undefined);
+  const all = new Uint8Array(size);
+  let at = 0;
+  for (const c of chunks) {
+    all.set(c, at);
+    at += c.byteLength;
+  }
+  return new TextDecoder().decode(all.slice(0, limit));
 }
 
 /**
  * HEAD first; anything but a clean 2xx/3xx is confirmed with GET, because many servers answer
  * HEAD with 403, 404 or 405 while the page works. Network errors are «unknown», never «broken».
  */
-export async function checkLink(url: string, fetcher: LinkFetch, timeoutMs = TIMEOUT_MS): Promise<Omit<LinkResult, "where">> {
+export async function checkLink(url: string, fetcher: LinkFetch, timeoutMs = TIMEOUT_MS, resolveHost?: ResolveHost): Promise<Omit<LinkResult, "where">> {
   const init = (method: "HEAD" | "GET"): LinkRequest => ({
     method,
     headers: { "User-Agent": USER_AGENT, Accept: "text/html,application/xhtml+xml,*/*;q=0.8" },
-    redirect: "follow",
+    redirect: "manual",
     signal: AbortSignal.timeout(timeoutMs),
   });
+  let allowed: boolean;
+  try {
+    allowed = await isPublicHttps(url, resolveHost);
+  } catch (error) {
+    // The host did not resolve: a network failure, reported generically like any other.
+    return { url, verdict: "unknown", status: null, method: "HEAD", detail: `HEAD failed: ${errorText(error)}` };
+  }
+  if (!allowed) return { url, verdict: "unknown", status: null, method: "HEAD", detail: new BlockedAddressError().message };
   let headNote = "";
   try {
-    const head = await fetcher(url, init("HEAD"));
+    const head = await fetchGuarded(url, init("HEAD"), fetcher, resolveHost);
     if (verdictForStatus(head.status) === "ok" && !isBotChallenge(head.headers, "")) return { url, verdict: "ok", status: head.status, method: "HEAD", detail: "" };
     headNote = `HEAD ${head.status}`;
   } catch (error) {
     headNote = `HEAD failed: ${errorText(error)}`;
   }
   try {
-    const res = await fetcher(url, init("GET"));
-    const body = (await res.text()).slice(0, BODY_SNIFF);
+    const res = await fetchGuarded(url, init("GET"), fetcher, resolveHost);
+    const body = await readSniff(res);
     if (isBotChallenge(res.headers, body)) return { url, verdict: "unknown", status: res.status, method: "GET", detail: `bot challenge (${headNote})` };
     return { url, verdict: verdictForStatus(res.status), status: res.status, method: "GET", detail: headNote };
   } catch (error) {
@@ -153,7 +258,7 @@ export async function checkLink(url: string, fetcher: LinkFetch, timeoutMs = TIM
 }
 
 /** Each distinct URL once, `concurrency` at a time, in a stable order (broken first, then unknown, then ok). */
-export async function checkLinks(refs: readonly LinkRef[], fetcher: LinkFetch, opts: { concurrency?: number; timeoutMs?: number } = {}): Promise<LinkResult[]> {
+export async function checkLinks(refs: readonly LinkRef[], fetcher: LinkFetch, opts: { concurrency?: number; timeoutMs?: number; resolveHost?: ResolveHost } = {}): Promise<LinkResult[]> {
   const where = new Map<string, string[]>();
   for (const r of refs) where.set(r.url, [...(where.get(r.url) ?? []), r.where]);
   const urls = [...where.keys()];
@@ -162,7 +267,7 @@ export async function checkLinks(refs: readonly LinkRef[], fetcher: LinkFetch, o
   const worker = async (): Promise<void> => {
     while (next < urls.length) {
       const url = urls[next++]!;
-      const r = await checkLink(url, fetcher, opts.timeoutMs);
+      const r = await checkLink(url, fetcher, opts.timeoutMs, opts.resolveHost);
       results.push({ ...r, where: where.get(url)! });
     }
   };
