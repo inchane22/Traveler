@@ -118,10 +118,13 @@
   font-size: var(--fs-sm);
   font-weight: 600;
   color: var(--ink-2);
-  white-space: nowrap;
+  /* One line while it fits; a long tag («Ventana probable, sin fecha oficial») wraps inside its row
+     at 320 px instead of pushing the page sideways (font metrics differ by platform). */
+  max-inline-size: 100%;
 }
 
 .tag svg {
+  flex: none;
   inline-size: 0.9rem;
   block-size: 0.9rem;
 }

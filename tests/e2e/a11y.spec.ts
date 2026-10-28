@@ -128,4 +128,19 @@ test.describe("targets and keyboard", () => {
       }
     }
   });
+
+  // Linux CI renders the same fonts about 1% wider than macOS; a nowrap tag that exactly fit its row
+  // on macOS overflowed by 1 px there. Extra letter-spacing stands in for that metric drift.
+  test("no horizontal scroll at 320 px when text renders wider than on the dev machine", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 844 });
+    for (const hash of ["#/pais/co", "#/explorar?pais=co", "#/fiesta/petronio-alvarez", "#/guardadas", "#/datos"]) {
+      await open(page, hash);
+      // The CSP refuses injected <style>; CSSOM writes are allowed.
+      const overflow = await page.evaluate(() => {
+        for (const el of [document.body, ...document.body.querySelectorAll<HTMLElement>("*")]) el.style.setProperty("letter-spacing", "0.04em", "important");
+        return document.documentElement.scrollWidth - document.documentElement.clientWidth;
+      });
+      expect(overflow, `320 px ${hash} with wider text`).toBeLessThanOrEqual(0);
+    }
+  });
 });

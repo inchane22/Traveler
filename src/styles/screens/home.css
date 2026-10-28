@@ -50,6 +50,8 @@
 .poster {
   position: relative;
   display: grid;
+  /* minmax(0, …): the track never grows to its widest word, so the poster stays inside 320 px. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--sp-2);
   padding: 0 var(--sp-4) var(--sp-4);
   border: var(--rule) solid var(--ink);
@@ -81,6 +83,9 @@
 .poster__name {
   font-size: var(--fs-3xl);
   line-height: 0.92;
+  /* «Independencia» at display size is about as wide as the poster at 320 px. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .poster__place {
