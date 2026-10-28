@@ -156,3 +156,9 @@ test.describe("Explorar", () => {
     await expect(page).toHaveURL(/#\/explorar\?pais=co$/);
   });
 });
+
+// BE-05: a garbled month (year 0000) passes the router's shape check; the screen must still render.
+test("a link with mes=0000-01 still renders Explorar", async ({ page }) => {
+  await open(page, "#/explorar?pais=co&mes=0000-01");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+});

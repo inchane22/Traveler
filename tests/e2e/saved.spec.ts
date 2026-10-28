@@ -70,3 +70,13 @@ test.describe("Guardadas and language", () => {
     await expect(page.locator(".mg-head").first()).toHaveText("L");
   });
 });
+
+test("UI-2: a saved pending postponement says a new date is coming, not that it ended", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("traveler.saved", JSON.stringify(["petronio-alvarez"])));
+  await open(page, "#/guardadas");
+  const row = page.getByTestId("saved-list").locator('[data-slug="petronio-alvarez"]');
+  await expect(row).toContainText("Nueva fecha por anunciar");
+  await expect(row).toContainText("Fecha original: 1–31 ago 2026");
+  await expect(row).not.toContainText("Ya terminó");
+  await expect(row).not.toContainText("Ventana probable");
+});

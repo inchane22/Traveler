@@ -64,6 +64,7 @@
   "ics.calendarName": "Fiestas de {country} | Traveler",
 
   "date.window": "Ventana probable: {range}",
+  "date.originalWindow": "Fecha original: {range}",
   "date.unknown": "Fecha por anunciar",
   "date.moonEstimate": "Estimada, puede variar un día: depende de la luna hasta el anuncio oficial.",
 
@@ -83,6 +84,7 @@
   "countdown.ongoing.other": "En curso, quedan {count} días",
   "countdown.lastDay": "En curso, último día",
   "countdown.ended": "Ya terminó",
+  "countdown.postponed": "Nueva fecha por anunciar",
   "countdown.unknown": "Sin fecha aún",
 
   "save.save": "Guardar",

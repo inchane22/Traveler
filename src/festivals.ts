@@ -1,5 +1,5 @@
 // Ranking, visibility, upcoming and filters over a country's festivals. Pure: shared by app and scripts.
-import { addDays, addMonths, effectiveEnd, effectiveStart, occurrenceFor, overlaps, resolveRule, type ISO, type Occurrence, type RuleContext } from "./dates.ts";
+import { addDays, addMonths, effectiveEnd, effectiveStart, occurrenceFor, overlaps, parseISODate, resolveRule, type ISO, type Occurrence, type RuleContext } from "./dates.ts";
 import type { CountryFile, Festival, FestivalType } from "./schema.ts";
 import { scoreFestival, type ScoreResult, type ScoringConfig } from "./score.ts";
 
@@ -50,7 +50,7 @@ const YEARS_BACK = 1;
 const YEARS_AHEAD = 3;
 
 /** A postponed edition with no new dates yet: still the news a traveler needs (RF-07). */
-function isPendingPostponement(occ: Occurrence): boolean {
+export function isPendingPostponement(occ: Occurrence): boolean {
   return occ.origin === "edition" && occ.status === "aplazada" && !occ.start;
 }
 
@@ -159,7 +159,17 @@ export function applyFilters(entries: readonly FestivalEntry[], filters: Filters
 /** RF-03: a festival belongs to every month its days (or its window) touch, not only its first. */
 function inMonth(occ: Occurrence, month: string): boolean {
   const start = `${month}-01`;
+  if (!isCivilDate(start)) return false; // a garbled link never throws (BE-05)
   return overlaps({ start: effectiveStart(occ), end: effectiveEnd(occ) }, { start, end: addDays(addMonths(start, 1), -1) });
+}
+
+function isCivilDate(iso: string): boolean {
+  try {
+    parseISODate(iso);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function ctxForEntry(entry: FestivalEntry, all: readonly FestivalEntry[]): RuleContext {

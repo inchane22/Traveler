@@ -1,7 +1,7 @@
 // Shared pieces: type tags, status and confidence marks (shape + text, never color alone),
 // date bands, countdowns, save toggles, notices and empty states.
 import type { Occurrence } from "../dates.ts";
-import type { FestivalEntry } from "../festivals.ts";
+import { isPendingPostponement, type FestivalEntry } from "../festivals.ts";
 import { h, s, type Child } from "../h.ts";
 import { countryName } from "../ics.ts";
 import type { Confidence, Festival, FestivalType, Lang, Status } from "../schema.ts";
@@ -94,6 +94,7 @@ export function posterBand(occ: Occurrence | null): HTMLElement {
 
 export function occurrenceDates(occ: Occurrence | null, lang: Lang, t: Ctx["t"], withYear = true): string {
   if (occ?.start && occ.end) return range(occ.start, occ.end, lang, withYear);
+  if (occ?.window && isPendingPostponement(occ)) return t("date.originalWindow", { range: range(occ.window.start, occ.window.end, lang, withYear) });
   if (occ?.window) return t("date.window", { range: range(occ.window.start, occ.window.end, lang, withYear) });
   return t("date.unknown");
 }
@@ -109,6 +110,8 @@ export function countdownText(cd: Countdown, t: Ctx["t"]): string {
       return cd.daysLeft === 0 ? t("countdown.lastDay") : t("countdown.ongoing", { count: cd.daysLeft });
     case "ended":
       return t("countdown.ended");
+    case "postponed":
+      return t("countdown.postponed");
     case "unknown":
       return t("countdown.unknown");
   }

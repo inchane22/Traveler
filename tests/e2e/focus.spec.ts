@@ -86,3 +86,47 @@ for (const hash of ["#/fiesta/carnaval-barranquilla", "#/explorar?pais=co"]) {
     expect(covered).toBeLessThanOrEqual(256 * 0.25);
   });
 }
+
+// UI-1: the correction is for Tab-reachable controls only. <main tabindex=-1> spans the whole page,
+// so treating it as an obscured control scrolled the skip link to the footer and a tap on text away.
+async function twoFrames(page: Page): Promise<void> {
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+}
+
+for (const hash of ["#/pais/co", "#/fiesta/carnaval-barranquilla"]) {
+  test(`skip link lands on the content, not the footer (${hash})`, async ({ page }) => {
+    await open(page, hash);
+    await page.locator("#skip").focus();
+    await page.keyboard.press("Enter");
+    await twoFrames(page);
+    expect(await page.evaluate(() => document.activeElement?.id)).toBe("main");
+    expect(await page.evaluate(() => window.scrollY)).toBeLessThan(150);
+  });
+}
+
+for (const hash of ["#/datos", "#/fiesta/carnaval-barranquilla", "#/explorar?pais=co"]) {
+  test(`a click on body text leaves the page where it is (${hash})`, async ({ page }) => {
+    await open(page, hash);
+    await page.evaluate(() => window.scrollTo(0, 600));
+    await twoFrames(page);
+    expect(await page.evaluate(() => window.scrollY)).toBe(600);
+    // Mouse at a point, not locator.click(): that scrolls the target into view on its own.
+    const point = await page.evaluate(() => {
+      for (const el of document.querySelectorAll<HTMLElement>("main h2, main p")) {
+        if (el.closest("a, button, label, input, select, [tabindex]:not(main)")) continue;
+        const r = el.getBoundingClientRect();
+        if (r.width === 0 || r.top <= 120 || r.bottom >= window.innerHeight - 120) continue;
+        const x = r.left + Math.min(r.width / 2, 20);
+        const y = r.top + r.height / 2;
+        // Only plain text on top: a festival row's stretched link would navigate instead.
+        const top = document.elementFromPoint(x, y);
+        if (top && el.contains(top) && !top.closest("a, button, label")) return { x, y };
+      }
+      return null;
+    });
+    expect(point).not.toBeNull();
+    await page.mouse.click(point!.x, point!.y);
+    await twoFrames(page);
+    expect(Math.abs((await page.evaluate(() => window.scrollY)) - 600)).toBeLessThanOrEqual(2);
+  });
+}

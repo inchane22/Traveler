@@ -286,3 +286,16 @@ test.describe("RF-07 and RF-19 on served fixture data", () => {
     await expect(page.locator(".when__band")).toHaveClass(/band--hatched/);
   });
 });
+
+// UI-2: a postponed edition with no new dates, its old window already past (Petronio 2026, the
+// source points at November). It is not over and the August window is no longer probable.
+test("a pending postponement reads as a new date to come, not as ended", async ({ page }) => {
+  await open(page, "#/fiesta/petronio-alvarez");
+  const when = page.locator(".when");
+  await expect(when).toContainText("Nueva fecha por anunciar");
+  await expect(when).toContainText("Fecha original: 1–31 ago 2026");
+  await expect(when).not.toContainText("Ya terminó");
+  await expect(when).not.toContainText("Ventana probable");
+  await expect(when).not.toContainText("Calculada con la regla");
+  await expect(when.locator(".mg-head")).toHaveCount(0);
+});

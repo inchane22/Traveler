@@ -52,9 +52,12 @@ const CLEARANCE = 8;
 /**
  * WCAG 2.2 SC 2.4.11: browsers scroll a focused control into the viewport, not clear of sticky
  * bars (scroll-padding covers jumps, not every engine's focus scroll). After the browser's own
- * scroll, a control still painted under a bar is scrolled out from under it.
+ * scroll, a control still painted under a bar is scrolled out from under it. Only Tab-reachable
+ * controls: <main tabindex=-1> (skip link, a tap on text) and the focused h1 span far more than a
+ * bar, and moving them would throw the page to the footer (UI-1).
  */
 function keepClearOfChrome(el: HTMLElement): void {
+  if (el.tabIndex < 0) return;
   requestAnimationFrame(() => {
     const r = el.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) return;
@@ -64,6 +67,7 @@ function keepClearOfChrome(el: HTMLElement): void {
       const style = getComputedStyle(bar);
       if (style.display === "none" || (style.position !== "fixed" && style.position !== "sticky")) continue;
       const b = bar.getBoundingClientRect();
+      if (r.height >= window.innerHeight - b.height) return; // no scroll can clear it
       const top = Math.max(r.top, b.top);
       const bottom = Math.min(r.bottom, b.bottom);
       const left = Math.max(r.left, b.left);
@@ -95,10 +99,11 @@ export function boot(): void {
     skip: requireEl<HTMLAnchorElement>("skip"),
   };
 
-  const deviceZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  // Read on every check, not once: a traveller's open app can cross into another zone.
+  const deviceZone = (): string => Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
   const override = todayOverride(location.search);
   // Re-read on wake and every minute: an installed app left open overnight must not keep yesterday.
-  let today: ISO = override ?? todayIn(deviceZone);
+  let today: ISO = override ?? todayIn(deviceZone());
   const store: Store = createStore();
   let i18n: I18n = createI18n(MESSAGES, store.get("lang") ?? detectLang(navigator.languages));
   const siteUrl = `${location.origin}${import.meta.env.BASE_URL}`;
@@ -344,10 +349,13 @@ export function boot(): void {
 
   if (!override) {
     const refreshToday = (): void => {
-      const now = todayIn(deviceZone);
+      const now = todayIn(deviceZone());
       if (now === today) return;
       today = now;
+      const y = window.scrollY;
       render(false);
+      // A new day is a new resource key: async screens show a skeleton, so restore once settled.
+      if (els.main.querySelector("[aria-busy='true']")) pendingScroll = y;
     };
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible") refreshToday();

@@ -64,6 +64,7 @@
   "ics.calendarName": "Festivals in {country} | Traveler",
 
   "date.window": "Likely window: {range}",
+  "date.originalWindow": "Original dates: {range}",
   "date.unknown": "Date to be announced",
   "date.moonEstimate": "Estimated, may shift by a day: it depends on the moon until the official announcement.",
 
@@ -83,6 +84,7 @@
   "countdown.ongoing.other": "On now, {count} days left",
   "countdown.lastDay": "On now, last day",
   "countdown.ended": "Already over",
+  "countdown.postponed": "New date to be announced",
   "countdown.unknown": "No date yet",
 
   "save.save": "Save",

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
-import { applyFilters, buildEntries, isVisible, upcoming, occurrencesBetween, ctxFor } from "../../src/festivals.ts";
+import { applyFilters, buildEntries, isPendingPostponement, isVisible, nextOccurrence, upcoming, occurrencesBetween, ctxFor } from "../../src/festivals.ts";
 import { CountryFile } from "../../src/schema.ts";
 import type { ScoringConfig } from "../../src/score.ts";
 
@@ -75,5 +75,24 @@ describe("filters", () => {
       ["feria-de-las-flores", true],
       ["petronio-alvarez", true],
     ]);
+  });
+});
+
+describe("garbled links never throw", () => {
+  // BE-05: the router accepts any four-digit year; year 0000 is no civil date.
+  test("a month in year 0000 matches nothing instead of throwing", () => {
+    expect(applyFilters(entries, { months: ["0000-01"] }, TODAY)).toEqual([]);
+  });
+});
+
+describe("pending postponement (UI-2)", () => {
+  const live = CountryFile.parse(JSON.parse(readFileSync("data/countries/co.json", "utf8")));
+  const petronio = live.festivals.find((f) => f.slug === "petronio-alvarez");
+
+  test("the dateless postponed Petronio 2026 is a pending postponement after its old window", () => {
+    if (!petronio) throw new Error("missing");
+    const occ = nextOccurrence(petronio, TODAY, ctxFor(live));
+    expect(occ).toMatchObject({ year: 2026, status: "aplazada" });
+    expect(occ && isPendingPostponement(occ)).toBe(true);
   });
 });

@@ -45,7 +45,8 @@ const isISO = (v: string): boolean => {
     return false;
   }
 };
-const isMonth = (v: string): boolean => /^\d{4}-(0[1-9]|1[0-2])$/.test(v);
+// A month is only kept when its first day is a civil date (year 0000 is not: BE-05).
+const isMonth = (v: string): boolean => /^\d{4}-(0[1-9]|1[0-2])$/.test(v) && isISO(`${v}-01`);
 const isType = (v: string): v is FestivalType => (FESTIVAL_TYPES as readonly string[]).includes(v);
 export const isRegion = (v: unknown): v is RegionId => typeof v === "string" && (REGIONS as readonly string[]).includes(v);
 

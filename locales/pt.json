@@ -64,6 +64,7 @@
   "ics.calendarName": "Festas · {country} | Traveler",
 
   "date.window": "Janela provável: {range}",
+  "date.originalWindow": "Data original: {range}",
   "date.unknown": "Data a anunciar",
   "date.moonEstimate": "Estimada, pode variar um dia: depende da lua até o anúncio oficial.",
 
@@ -83,6 +84,7 @@
   "countdown.ongoing.other": "Acontecendo, faltam {count} dias",
   "countdown.lastDay": "Acontecendo, último dia",
   "countdown.ended": "Já terminou",
+  "countdown.postponed": "Nova data a anunciar",
   "countdown.unknown": "Ainda sem data",
 
   "save.save": "Salvar",

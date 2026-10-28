@@ -28,3 +28,17 @@ test("countdowns move on at local midnight in an app left open", async ({ page }
   await page.clock.runFor("02:00");
   await expect(number).toHaveText(String(before - 1));
 });
+
+test("the midnight re-render keeps the reader's place on a ficha (UI-3)", async ({ page }) => {
+  await page.clock.install({ time: new Date("2026-10-26T23:59:00-05:00") });
+  await page.goto("/#/fiesta/carnaval-barranquilla");
+  await settled(page);
+  await page.evaluate(() => window.scrollTo(0, 700));
+  expect(await page.evaluate(() => window.scrollY)).toBe(700);
+  const countdown = page.locator(".when [data-countdown]");
+  const before = await countdown.textContent();
+  await page.clock.runFor("02:00");
+  await expect(countdown).not.toHaveText(before ?? "");
+  await settled(page);
+  expect(Math.abs((await page.evaluate(() => window.scrollY)) - 700)).toBeLessThanOrEqual(2);
+});

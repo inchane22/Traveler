@@ -2,7 +2,7 @@
 // their status and confidence, score breakdown, key events, street tips, sources and the
 // sticky «Guardar» / «Agregar al calendario» bar in the thumb zone.
 import { effectiveEnd, effectiveStart, type ISO, type Occurrence } from "../dates.ts";
-import type { FestivalEntry } from "../festivals.ts";
+import { isPendingPostponement, type FestivalEntry } from "../festivals.ts";
 import { h, type Child } from "../h.ts";
 import { countryName } from "../ics.ts";
 import type { Festival, KeyEvent, Lang, LocalizedText, Rule, ScoreInputs, Source } from "../schema.ts";
@@ -288,7 +288,9 @@ function whenBlock(entry: FestivalEntry, ctx: Ctx): HTMLElement {
   const longRange = occ?.start && occ.end ? (occ.start === occ.end ? longDate(occ.start, ctx.lang) : `${longDate(occ.start, ctx.lang)} – ${longDate(occ.end, ctx.lang)}`) : null;
   const eventDates = (occ?.edition?.key_events ?? []).map((e) => e.date).filter((d): d is ISO => !!d);
   const note = text(occ?.edition?.note, ctx.lang);
-  const mark = occ && kind !== "none" ? { start: effectiveStart(occ), end: effectiveEnd(occ), mod: kind === "window" ? ("window" as const) : isUnconfirmed(occ) ? ("hatched" as const) : ("solid" as const) } : null;
+  // A pending postponement keeps only its original window: no rule line, no past month grid.
+  const pending = !!occ && isPendingPostponement(occ);
+  const mark = occ && kind !== "none" && !pending ? { start: effectiveStart(occ), end: effectiveEnd(occ), mod: kind === "window" ? ("window" as const) : isUnconfirmed(occ) ? ("hatched" as const) : ("solid" as const) } : null;
   return h(
     "section",
     { class: `when type--${entry.festival.type}${occ?.status === "cancelada" ? " is-cancelled" : ""}`, "aria-labelledby": "when-title" },
@@ -298,7 +300,7 @@ function whenBlock(entry: FestivalEntry, ctx: Ctx): HTMLElement {
     occ ? h("p", { class: "marks marks--lg" }, statusBadge(occ.status, ctx.t), confidenceMark(occ.confidence, ctx.t, true)) : null,
     moonNote(occ, ctx.t),
     note ? h("p", { class: "when__note" }, note) : null,
-    !source && occ ? h("p", { class: "when__rule" }, ctx.t("festival.fromRule", { rule: ruleText(entry.festival.rule, ctx.lang, ctx, occ.year) })) : null,
+    !source && occ && !pending ? h("p", { class: "when__rule" }, ctx.t("festival.fromRule", { rule: ruleText(entry.festival.rule, ctx.lang, ctx, occ.year) })) : null,
     countdownBlock(occ, ctx),
     mark ? monthGrid(mark, eventDates, ctx) : null,
   );

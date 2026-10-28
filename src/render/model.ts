@@ -2,7 +2,7 @@
 // (lazy, cached per country). Scores come from config/scoring.json bundled by Vite.
 import type { PublicIndex, IndexCountry } from "../../scripts/build-data.ts";
 import { addDays, addMonths, diffDays, effectiveEnd, effectiveStart, type ISO, type Occurrence } from "../dates.ts";
-import { applyFilters, buildEntries, isVisible, sortByDate, type FestivalEntry, type FilterHit, type Filters, type Scope } from "../festivals.ts";
+import { applyFilters, buildEntries, isPendingPostponement, isVisible, sortByDate, type FestivalEntry, type FilterHit, type Filters, type Scope } from "../festivals.ts";
 import type { ChangelogEntry, CountryFile, FestivalType, KeyEvent, Source } from "../schema.ts";
 import type { ScoringConfig } from "../score.ts";
 import scoringJson from "../../config/scoring.json";
@@ -179,10 +179,13 @@ export type Countdown =
   | { kind: "today" }
   | { kind: "ongoing"; daysLeft: number }
   | { kind: "ended" }
+  | { kind: "postponed" }
   | { kind: "unknown" };
 
 export function countdown(occ: Occurrence | null, today: ISO): Countdown {
   if (!occ) return { kind: "unknown" };
+  // Its old window says nothing about when it happens now: not «ended», a new date is coming.
+  if (isPendingPostponement(occ)) return { kind: "postponed" };
   const start = occ.start ?? occ.window?.start;
   const end = occ.end ?? occ.window?.end;
   if (!start || !end) return { kind: "unknown" };
