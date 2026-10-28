@@ -1,6 +1,6 @@
 // The three scripts as CI runs them: separate node processes, recorded responses, no network, no key.
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { FIXTURES, githubOutput, REFRESH_FIXTURES, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
@@ -16,6 +16,8 @@ function run(script: string, args: readonly string[], cwd: string, env: Record<s
 describe("pipeline CLIs (offline)", () => {
   test("refresh: --fixtures with --dry-run writes the proposals and exits 0; then check-trap catches the trap", () => {
     const root = tempRepo({ countries: ["co"] });
+    // The recorded responses were captured against the PRD-era CO file: replay them against that frozen copy.
+    cpSync(join(REPO, "tests", "fixtures", "prd", "co.json"), join(root, "data", "countries", "co.json"));
     const out = join(root, "gh");
     writeFileSync(out, "");
     const r = run("refresh.ts", ["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], root, { GITHUB_OUTPUT: out, TRAP_SECRET: SECRET });

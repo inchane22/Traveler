@@ -217,16 +217,23 @@ function sourcesSection(occ: Occurrence | null, entry: FestivalEntry, ctx: Ctx):
   );
 }
 
-function issueUrl(template: string, entry: FestivalEntry, field: string, source: string | undefined, title: string, repo: string): string {
-  const q = new URLSearchParams({ template, title, festival: entry.festival.slug, field, ...(source ? { source } : {}) });
+/** GitHub issue form link; keys other than `template` and `title` are field ids of the form (RF-17). */
+function issueUrl(repo: string, template: string, title: string, fields: Readonly<Record<string, string | undefined>>): string {
+  const q = new URLSearchParams({ template, title });
+  for (const [id, value] of Object.entries(fields)) if (value) q.set(id, value);
   return `https://github.com/${repo}/issues/new?${q.toString()}`;
 }
 
 function reportSection(entry: FestivalEntry, ctx: Ctx): HTMLElement {
-  const occ = entry.occurrence;
-  const year = occ?.year ?? "";
-  const src = primarySource(occ)?.url;
+  const year = entry.occurrence?.year;
+  const slug = entry.festival.slug;
   const name = festivalName(entry.festival, "es");
+  const errorUrl = issueUrl(ctx.repo, "reportar-error.yml", `[Error de datos] ${name}${year ? ` ${year}` : ""}`, {
+    fiesta: slug,
+    campo: year ? `editions.${year}.start/end` : undefined,
+    fuente: primarySource(entry.occurrence)?.url,
+  });
+  const contentUrl = issueUrl(ctx.repo, "reportar-contenido.yml", `[Contenido] ${name}`, { fiesta: slug });
   return h(
     "section",
     { class: "section report", "aria-labelledby": "report-title" },
@@ -235,8 +242,8 @@ function reportSection(entry: FestivalEntry, ctx: Ctx): HTMLElement {
     h(
       "ul",
       { class: "report__links" },
-      h("li", null, externalLink(issueUrl("reportar-error.yml", entry, `editions.${year}.start/end`, src, `[Error] ${name} ${year}`, ctx.repo), ctx.t("report.error"), ctx.t, "btn btn--secondary")),
-      h("li", null, externalLink(issueUrl("reportar-contenido.yml", entry, "street_tip/etiquette", src, `[Contenido] ${name}`, ctx.repo), ctx.t("report.content"), ctx.t, "btn btn--secondary")),
+      h("li", null, externalLink(errorUrl, ctx.t("report.error"), ctx.t, "btn btn--secondary")),
+      h("li", null, externalLink(contentUrl, ctx.t("report.content"), ctx.t, "btn btn--secondary")),
     ),
   );
 }
@@ -245,12 +252,18 @@ function advisorySection(entry: FestivalEntry, ctx: Ctx): HTMLElement | null {
   const origin = ctx.store.get("origin");
   const adv = advisoryFor(origin, entry.country);
   if (!adv || !origin) return null;
+  const params = { origin: countryName(origin, ctx.lang), country: countryName(entry.country, ctx.lang) };
+  // Literal keys on both branches so the i18n test sees them.
+  const consular = adv.kind === "consular";
+  const lede = consular ? ctx.t("advisory.bodyConsular", params) : ctx.t("advisory.body", params);
+  const label = consular ? ctx.t("advisory.consular") : ctx.t("advisory.link", params);
   return h(
     "section",
     { class: "section advisory", "aria-labelledby": "advisory-title" },
     sectionHeading(ctx.t("advisory.title"), "advisory-title"),
-    h("p", { class: "section__lede" }, ctx.t("advisory.body", { origin: countryName(origin, ctx.lang), country: countryName(entry.country, ctx.lang) })),
-    externalLink(adv.url, adv.publisher ?? ctx.t("advisory.link", { origin: countryName(origin, ctx.lang) }), ctx.t, "btn btn--secondary"),
+    h("p", { class: "section__lede" }, lede),
+    externalLink(adv.url, label, ctx.t, "btn btn--secondary"),
+    adv.publisher ? h("p", { class: "advisory__publisher" }, adv.publisher) : null,
   );
 }
 

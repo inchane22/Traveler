@@ -1,7 +1,11 @@
 // Ficha: RF-06 content, RF-07 status, RF-08 confidence labels, sources one tap away, RF-17 reports,
 // RF-12 deep links to every screen.
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 import { open } from "./helpers.ts";
+
+const ROOT = join(import.meta.dirname, "../..");
 
 test.use({ serviceWorkers: "block" });
 
@@ -50,17 +54,26 @@ test.describe("Ficha", () => {
     await expect(when.locator(".when__band")).toHaveClass(/band--hatched/);
   });
 
-  test("RF-17: report links prefill the GitHub issue form", async ({ page }) => {
+  test("RF-17: report links prefill the GitHub issue form by its field ids", async ({ page }) => {
     await open(page, "#/fiesta/carnaval-barranquilla");
-    const error = page.getByRole("link", { name: /Reportar un error/ });
-    const href = new URL((await error.getAttribute("href")) ?? "");
-    expect(href.origin + href.pathname).toMatch(/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/issues\/new$/);
-    expect(href.searchParams.get("template")).toBe("reportar-error.yml");
-    expect(href.searchParams.get("festival")).toBe("carnaval-barranquilla");
-    expect(href.searchParams.get("field")).toBe("editions.2027.start/end");
-    expect(href.searchParams.get("source")).toMatch(/^https:\/\//);
-    const content = new URL((await page.getByRole("link", { name: /Reportar contenido/ }).getAttribute("href")) ?? "");
+    const hrefOf = async (name: RegExp): Promise<URL> => new URL((await page.getByRole("link", { name }).getAttribute("href")) ?? "");
+    const error = await hrefOf(/Reportar un error/);
+    expect(error.origin + error.pathname).toMatch(/^https:\/\/github\.com\/[\w.-]+\/[\w.-]+\/issues\/new$/);
+    expect(error.searchParams.get("template")).toBe("reportar-error.yml");
+    expect(error.searchParams.get("fiesta")).toBe("carnaval-barranquilla");
+    expect(error.searchParams.get("campo")).toBe("editions.2027.start/end");
+    expect(error.searchParams.get("fuente")).toMatch(/^https:\/\//);
+    const content = await hrefOf(/Reportar contenido/);
     expect(content.searchParams.get("template")).toBe("reportar-contenido.yml");
+    expect(content.searchParams.get("fiesta")).toBe("carnaval-barranquilla");
+    // Every prefilled key is a field id the issue form declares (the form ignores anything else).
+    for (const url of [error, content]) {
+      const yaml = readFileSync(join(ROOT, ".github/ISSUE_TEMPLATE", url.searchParams.get("template") ?? ""), "utf8");
+      const ids = new Set([...yaml.matchAll(/^\s+id:\s*([\w-]+)\s*$/gm)].map((m) => m[1]));
+      const keys = [...url.searchParams.keys()].filter((k) => k !== "template" && k !== "title");
+      expect(keys.length).toBeGreaterThan(0);
+      expect(keys.filter((k) => !ids.has(k))).toEqual([]);
+    }
   });
 
   test("Guardar and «Agregar al calendario» stay in reach at the bottom", async ({ page }) => {

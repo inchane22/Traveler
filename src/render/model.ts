@@ -6,6 +6,8 @@ import { applyFilters, buildEntries, isVisible, sortByDate, type FestivalEntry, 
 import type { ChangelogEntry, CountryFile, FestivalType, Source } from "../schema.ts";
 import type { ScoringConfig } from "../score.ts";
 import scoringJson from "../../config/scoring.json";
+import { origins as advisoryOrigins } from "../../config/advisories.json";
+import { parseOrigins, pickAdvisory, type Advisory } from "./advisory.ts";
 
 export type { PublicIndex, IndexCountry };
 
@@ -245,40 +247,13 @@ export function haversineKm(a: { lat: number; lon: number }, b: { lat: number; l
   return 2 * 6371 * Math.asin(Math.min(1, Math.sqrt(x)));
 }
 
-// ---------- Travel advisories (R6): config/advisories.json may not exist yet ----------
+// ---------- Travel advisories (R6): only `origins` is imported, so Vite drops `unverified` from the bundle ----------
 
-const advisoryModules = import.meta.glob("../../config/advisories.json", { eager: true, import: "default" });
-const advisories = (Object.values(advisoryModules)[0] ?? null) as unknown;
+const advisoryTable = parseOrigins(advisoryOrigins);
 
-export interface Advisory {
-  url: string;
-  publisher?: string;
-}
-
-function asAdvisory(v: unknown): Advisory | null {
-  if (typeof v === "string") return { url: v };
-  if (typeof v === "object" && v !== null) {
-    const o = v as Record<string, unknown>;
-    if (typeof o.url === "string") return { url: o.url, ...(typeof o.publisher === "string" ? { publisher: o.publisher } : {}) };
-  }
-  return null;
-}
-
-/** Official advisory page of the user's origin country, specific to the destination when listed. */
+/** Official page of the user's origin country for this destination (see advisory.ts). */
 export function advisoryFor(origin: string | null, destination: string): Advisory | null {
-  if (!origin || typeof advisories !== "object" || advisories === null) return null;
-  const root = advisories as Record<string, unknown>;
-  const table = (typeof root.origins === "object" && root.origins !== null ? root.origins : root) as Record<string, unknown>;
-  const entry = table[origin] ?? table[origin.toLowerCase()];
-  if (!entry || typeof entry !== "object") return asAdvisory(entry);
-  const e = entry as Record<string, unknown>;
-  const dests = (e.destinations ?? e.countries) as Record<string, unknown> | undefined;
-  const specific = dests ? asAdvisory(dests[destination] ?? dests[destination.toLowerCase()]) : null;
-  const general = asAdvisory(e.fallback ?? e.default ?? e.general ?? e);
-  const pick = specific ?? general;
-  if (!pick) return null;
-  const publisher = pick.publisher ?? (typeof e.publisher === "string" ? e.publisher : undefined);
-  return { url: pick.url, ...(publisher ? { publisher } : {}) };
+  return pickAdvisory(advisoryTable, origin, destination);
 }
 
 // ---------- Resources: settled values are read synchronously, so a re-render never flashes a skeleton ----------

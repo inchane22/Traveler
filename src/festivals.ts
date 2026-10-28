@@ -117,9 +117,16 @@ export function applyFilters(entries: readonly FestivalEntry[], filters: Filters
   const from = filters.from ?? today;
   const to = filters.to ?? addMonths(today, 12);
   const hits: FilterHit[] = [];
+  // One RuleContext per country for this call, built from the same entries as before.
+  const contexts = new Map<string, RuleContext>();
   for (const entry of entries) {
     if (filters.types?.length && !filters.types.includes(entry.festival.type)) continue;
-    const occs = occurrencesBetween(entry.festival, from, to, ctxForEntry(entry, entries));
+    let ctx = contexts.get(entry.country);
+    if (!ctx) {
+      ctx = ctxForEntry(entry, entries);
+      contexts.set(entry.country, ctx);
+    }
+    const occs = occurrencesBetween(entry.festival, from, to, ctx);
     const occ = occs.find((o) => !filters.months?.length || filters.months.includes(effectiveStart(o).slice(0, 7)));
     if (!occ) continue;
     hits.push({ entry, occurrence: occ, possible: !occ.start });

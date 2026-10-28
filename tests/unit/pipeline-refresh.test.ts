@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
 import { describe, expect, test } from "vitest";
@@ -13,7 +13,7 @@ import { buildQueue, compareItems, reasonsFor } from "../../scripts/lib/queue.ts
 import { runRefresh, type RefreshDeps } from "../../scripts/lib/refresh-run.ts";
 import { dataChangeCount, PR_MAX_CHANGES, selectForPr } from "../../scripts/lib/select.ts";
 import type { ReviewedChange } from "../../scripts/lib/validate.ts";
-import { config, countries, githubOutput, json, message, readJsonFile, REFRESH_FIXTURES, refreshOptions, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
+import { config, countries, githubOutput, json, message, readJsonFile, REFRESH_FIXTURES, refreshOptions, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
 import type { RefreshReport } from "../../scripts/lib/report.ts";
 
 const deps = (over: Partial<RefreshDeps> = {}): RefreshDeps => ({
@@ -27,10 +27,16 @@ const deps = (over: Partial<RefreshDeps> = {}): RefreshDeps => ({
 const find = (list: readonly ReviewedChange[], slug: string, field: string) => list.find((c) => c.slug === slug && c.field === field);
 const coFile = (root: string) => CountryFile.parse(readJsonFile(join(root, "data", "countries", "co.json")));
 const edition = (root: string, slug: string, year: string) => coFile(root).festivals.find((f) => f.slug === slug)!.editions[year];
+/** The recorded responses were captured against the PRD-era CO file, so the H4 scenarios replay against that frozen copy. */
+const prdRepo = (): string => {
+  const root = tempRepo();
+  cpSync(join(REPO, "tests", "fixtures", "prd", "co.json"), join(root, "data", "countries", "co.json"));
+  return root;
+};
 
 describe("refresh with recorded responses (H4 acceptance)", () => {
   test("--dry-run: each recorded scenario ends where the PRD says, and only proposals are written", async () => {
-    const root = tempRepo();
+    const root = prdRepo();
     const before = readFileSync(join(root, "data", "countries", "co.json"), "utf8");
     const out = join(root, "gh");
     writeFileSync(out, "");
@@ -70,7 +76,7 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
   });
 
   test("without --dry-run: accepted changes are applied immutably, flagged and rejected ones are not", async () => {
-    const root = tempRepo();
+    const root = prdRepo();
     const archived: string[] = [];
     const archiver: Archiver = { capture: (url) => (archived.push(url), Promise.resolve(`https://web.archive.org/web/20261026000000/${url}`)) };
     const changelogBefore = readJsonFile<unknown[]>(join(root, "data", "changelog.json")).length;

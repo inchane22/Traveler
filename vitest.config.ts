@@ -7,7 +7,8 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       include: ["src/**/*.ts", "scripts/lib/**/*.ts"],
-      exclude: ["src/render/**", "src/app.ts", "src/main.ts", "src/sw-register.ts"],
+      // src/h.ts is DOM-only; the e2e suite covers it.
+      exclude: ["src/render/**", "src/app.ts", "src/main.ts", "src/sw-register.ts", "src/h.ts"],
       thresholds: { lines: 80, functions: 80, branches: 75, statements: 80 },
     },
   },

@@ -6,6 +6,7 @@ import { join, resolve } from "node:path";
 import { parseFlags, UsageError } from "./lib/args.ts";
 import { listProposals, readJson, readJsonOr, stdLogger, type Logger } from "./lib/io.ts";
 import { findTraps, parseFingerprints, type Fingerprintable } from "./lib/trap.ts";
+import { isMainModule } from "./lib/is-main.ts";
 
 const CHANGE_LISTS = ["applied", "confirmations", "flagged", "rejected", "deferred", "changes"] as const;
 
@@ -60,5 +61,5 @@ export function main(argv: readonly string[], env: NodeJS.ProcessEnv, root = pro
   return 1;
 }
 
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const isMain = isMainModule(import.meta.url);
 if (isMain) process.exit(main(process.argv.slice(2), process.env));

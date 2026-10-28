@@ -5,10 +5,11 @@
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { onboardArgs, UsageError } from "./lib/args.ts";
-import { fileUsageStore, memoryUsageStore, UsageFile } from "./lib/budget.ts";
+import { fileUsageStore, memoryUsageStore, readUsageFallback, UsageFile, withUsageFallback } from "./lib/budget.ts";
 import { anthropicTransport, fixtureDirTransport } from "./lib/client.ts";
 import { readJson, readJsonOr, stdLogger, writeJson, type Logger } from "./lib/io.ts";
 import { runOnboard } from "./lib/onboard-run.ts";
+import { isMainModule } from "./lib/is-main.ts";
 
 export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root = process.cwd(), log: Logger = stdLogger): Promise<number> {
   let args;
@@ -23,9 +24,12 @@ export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root
   }
   const offline = args.fixtures !== null;
   const usagePath = join(root, "data", "usage.json");
-  const usage = offline
+  const base = offline
     ? memoryUsageStore(UsageFile.parse(readJsonOr(usagePath, [])))
     : fileUsageStore(usagePath, { read: readJson, write: writeJson, exists: existsSync });
+  // Same budget as refresh: the last run artifact's usage.json counts too (USAGE_FALLBACK_PATH).
+  const fallback = readUsageFallback(env.USAGE_FALLBACK_PATH, { read: readJson, exists: existsSync }, log);
+  const usage = withUsageFallback(base, fallback, { persist: !offline, log });
   const result = await runOnboard(
     {
       root,
@@ -42,7 +46,7 @@ export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root
   return result.exitCode;
 }
 
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const isMain = isMainModule(import.meta.url);
 if (isMain) {
   main(process.argv.slice(2), process.env).then(
     (code) => process.exit(code),

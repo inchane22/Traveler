@@ -4,7 +4,7 @@ import { buildEntries } from "../../src/festivals.ts";
 import type { CountryFile, Festival } from "../../src/schema.ts";
 import type { ScoringConfig, Tier } from "../../src/score.ts";
 
-export type QueueReason = "soon" | "unconfirmed" | "stale" | "manual";
+export type QueueReason = "soon" | "unconfirmed" | "stale" | "manual" | "news";
 
 export interface QueueItem {
   country: string;
@@ -25,6 +25,8 @@ export interface QueueOptions {
   perCountry: number;
   only?: string;
   country?: string;
+  /** R9 news sweep: every festival starting within this many days (ongoing ones too), nothing else. */
+  sweepWithin?: number;
 }
 
 export const SOON_DAYS = 180;
@@ -50,14 +52,20 @@ export function compareItems(a: QueueItem, b: QueueItem): number {
   return days || (TIER_ORDER[String(a.tier)] ?? 9) - (TIER_ORDER[String(b.tier)] ?? 9) || a.country.localeCompare(b.country) || a.slug.localeCompare(b.slug);
 }
 
+/** R9: the sweep looks at editions that start within `within` days or are under way. */
+export function inSweep(daysToStart: number, within: number): boolean {
+  return Number.isFinite(daysToStart) && daysToStart <= within;
+}
+
 /** Candidates for one country, before ordering and caps. `force` (from --only) skips the entry rules. */
-export function candidates(country: CountryFile, config: ScoringConfig, today: ISO, force?: string): QueueItem[] {
+export function candidates(country: CountryFile, config: ScoringConfig, today: ISO, force?: string, sweepWithin?: number): QueueItem[] {
   return buildEntries(country, config, today).flatMap((entry) => {
     const occ = entry.occurrence;
     const daysToStart = occ ? diffDays(today, effectiveStart(occ)) : Number.POSITIVE_INFINITY;
     const status = occ?.status ?? "por_anunciar";
     const lastVerified = occ?.edition?.last_verified ?? null;
-    const rules = reasonsFor(daysToStart, status, lastVerified, today);
+    const rules: QueueReason[] =
+      sweepWithin === undefined ? reasonsFor(daysToStart, status, lastVerified, today) : inSweep(daysToStart, sweepWithin) ? ["news"] : [];
     const reasons: QueueReason[] = entry.festival.slug === force && !rules.length ? ["manual"] : rules;
     if (!reasons.length) return [];
     return [
@@ -81,7 +89,7 @@ export function buildQueue(countries: readonly CountryFile[], config: ScoringCon
   const wanted = opts.country?.toUpperCase();
   const all = countries
     .filter((c) => !wanted || c.country === wanted)
-    .flatMap((c) => candidates(c, config, today, opts.only))
+    .flatMap((c) => candidates(c, config, today, opts.only, opts.sweepWithin))
     .filter((item) => !opts.only || item.slug === opts.only)
     .sort(compareItems);
   const perCountry = new Map<string, number>();

@@ -48,7 +48,7 @@ describe("domains (R2, R7)", () => {
     expect(tierOf("https://blog.example.com/n", coPolicy)).toBe("C");
     expect(tierOf("http://www.pasto.gov.co/n", coPolicy)).toBe("C");
     expect(isBlocked("https://www.viagogo.com/e", coPolicy)).toBe(true);
-    expect(firstPassDomains(coPolicy)).toEqual(["carnavaldebarranquilla.org", "gov.co", "colombia.travel", "unesco.org"]);
+    expect(firstPassDomains(coPolicy)).toEqual(["carnavaldebarranquilla.org", "gov.co", "colombia.travel", "unesco.org", "festivalvallenato.com", "carnavaldepasto.org"]);
   });
 
   test("a country without config falls back to its government suffixes and UNESCO", () => {
@@ -135,8 +135,9 @@ describe("language helpers (R3, R9)", () => {
     expect(isSupportedLang("fr")).toBe(false);
   });
 
-  test("news sweep terms: local language first, then English, 45 days out", () => {
-    expect(newsTerms("es")).toEqual(["cancelado", "aplazado", "suspendido", "cancelled", "postponed", "suspended"]);
+  test("news sweep terms: local language first, then English and Portuguese, 45 days out", () => {
+    expect(newsTerms("es")).toEqual(["cancelado", "aplazado", "suspendido", "cancelled", "postponed", "suspended", "adiado", "suspenso"]);
+    expect(newsTerms("pt")).toEqual(["cancelado", "adiado", "suspenso", "cancelled", "postponed", "suspended"]);
     expect(needsNewsSweep(45)).toBe(true);
     expect(needsNewsSweep(46)).toBe(false);
   });

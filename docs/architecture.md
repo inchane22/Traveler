@@ -15,7 +15,7 @@ shapes; this file fixes the interfaces between modules that are built in paralle
 | `src/i18n.ts`, `locales/*.json` | ui | `t(key, params)`; every visible string lives in `locales/`. |
 | `src/render/**`, `src/app.ts`, `src/router.ts`, `src/store.ts`, `src/search.ts`, `src/styles/**`, `index.html`, `public/sw.js` | ui | vanilla TS, DOM built with `h()` (textContent only). |
 | `scripts/build-data.ts` | core | validates `data/countries/*.json`, writes `data/index.json` and `public/data/**`. |
-| `scripts/refresh.ts`, `scripts/onboard.ts`, `scripts/lib/**` | pipeline | Claude API behind a client interface; tests replay recorded responses. |
+| `scripts/refresh.ts`, `scripts/onboard.ts`, `scripts/check-links.ts`, `scripts/lib/**` | pipeline | Claude API behind a client interface; tests replay recorded responses. Link checks go through a fetch interface with a fake in tests. Entry points use `isMainModule(import.meta.url)` from `scripts/lib/is-main.ts` (paths with spaces and symlinks). |
 | `.github/**`, `README.md` | ops | workflows pinned by SHA; README holds the key rotation runbook. |
 
 Core modules (`schema`, `dates`, `score`, `festivals`, `ics`) never touch the DOM or `fs`, so both the
@@ -77,11 +77,36 @@ Locale keys the calendar code reads (ui adds them to every `locales/*.json`):
 
 ```
 pnpm refresh -- [--dry-run] [--only=<slug>] [--country=<cc>] [--today=YYYY-MM-DD] [--fixtures=<dir>]
+                [--sweep=news [--within=<days>]]
 pnpm onboard -- --country=<cc> [--dry-run] [--today=YYYY-MM-DD] [--fixtures=<dir>]
 node scripts/check-trap.ts        # fails if a trap proposal (R12) is present; needs TRAP_SECRET
+node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 only on 404/410
 ```
+
+- `--sweep=news` (R9): only festivals whose next edition starts within `--within` days (1 to 45,
+  default 45), ongoing ones included, queue reason `news`. The research prompt asks for news with
+  «cancelado», «aplazado», «suspendido» in the local language plus the English and Portuguese
+  terms. A sweep never carries the R12 trap and does not count as the month's weekly run
+  (`weekly_runs` in `data/usage.json`). Report: `sweep_within` in the JSON, «Barrido de noticias»
+  heading in the Markdown. Workflow cadence: Monday weekly, Tuesday and Friday 45 days, other days
+  7 days.
+- `check-links`: HEAD then GET for every whole https string in `config/advisories.json` and every
+  source, archive, score source and rule table URL in `data/countries/*.json`. 2xx/3xx ok, 404/410
+  broken; 401/403/418/429/5xx, network errors and bot-challenge pages are `unknown`. Writes
+  `proposals/links-<date>.md` and `proposals/links-<date>.json` (`LinksReport` in
+  `scripts/lib/links.ts`).
+- R13 in refresh (only with `LINKS_REPORT_PATH`, a report at most 7 days old): an edition whose
+  sources are all lost (original 404/410 and no `archive_url`, or a broken one) drops one
+  confidence level (`applyLostSources`), with a changelog entry `field: "confidence"` listing the
+  lost URLs; that entry makes the downgrade happen once. No `last_verified` or `sequence` change.
+  Report: `link_downgrades`.
+- RF-18 in apply: an edition stored for the first time starts at `sequence` 1 when its dates or
+  status differ from the rule-based event calendars already had (`firstEditionSequence`), and every
+  change of dates or status still bumps it.
 
 Env: `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`), `MAX_FESTIVALS_PER_RUN`
 (40), `MONTHLY_BUDGET_USD` (20), `ARCHIVE_ACCESS_KEY` / `ARCHIVE_SECRET_KEY` (optional, R13),
-`TRAP_SECRET` (R12). Outputs: `proposals/<date>.json`, `proposals/<date>.md` (PR body), and with
+`TRAP_SECRET` (R12), `USAGE_FALLBACK_PATH` (optional, refresh and onboard: a `usage.json` from the
+last run artifact; per month the higher total wins, and online runs write the merged history to
+`data/usage.json` before the first call), `LINKS_REPORT_PATH` (optional, refresh: R13 above). Outputs: `proposals/<date>.json`, `proposals/<date>.md` (PR body), and with
 `$GITHUB_OUTPUT` set: `changes=<n>` and `branch=refresh/<date>` (or `onboard/<cc>`).

@@ -87,7 +87,9 @@ describe("prompts built from our own data", () => {
     const near = researchUserPrompt(item("independencia-cartagena"), co);
     expect(near).toContain("Fiestas de la Independencia de Cartagena");
     expect(near).toMatch(/«cancelado», «aplazado», «suspendido», «cancelled», «postponed», «suspended»/);
-    expect(near).toContain("no stored edition for this year");
+    expect(near).toContain("- status: tentativa (confidence prensa)");
+    expect(near).toContain("- start: none; end: none");
+    expect(researchUserPrompt(item("negros-y-blancos"), co)).toContain("no stored edition for this year");
     const far = researchUserPrompt(item("carnaval-barranquilla"), co);
     expect(far).not.toContain("«cancelado»");
     expect(far).toContain("key event lectura-del-bando: 2027-01-16");

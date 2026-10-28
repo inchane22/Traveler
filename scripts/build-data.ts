@@ -5,6 +5,7 @@ import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync,
 import { join } from "node:path";
 import { CountryFile, type CountryFile as Country } from "../src/schema.ts";
 import { scoreFestival, type ScoringConfig } from "../src/score.ts";
+import { isMainModule } from "./lib/is-main.ts";
 
 export interface IndexCountry {
   code: string;
@@ -69,7 +70,7 @@ export function buildIndex(countries: readonly Country[], config: ScoringConfig,
   };
 }
 
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const isMain = isMainModule(import.meta.url);
 if (isMain) {
   const includeDrafts = process.env.INCLUDE_DRAFTS === "1";
   const config = JSON.parse(readFileSync("config/scoring.json", "utf8")) as ScoringConfig;

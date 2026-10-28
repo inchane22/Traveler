@@ -1,5 +1,7 @@
 // Applies accepted changes to a country file, immutably, and builds the changelog entries.
 // Never deletes a festival or an edition; the result must validate as a CountryFile before it is written.
+import { occurrenceFor, type Occurrence, type RuleContext } from "../../src/dates.ts";
+import { ctxFor } from "../../src/festivals.ts";
 import { ChangelogEntry, CountryFile, type Confidence, type Edition, type Festival, type ISODate, type Source } from "../../src/schema.ts";
 import { quoteQualifier, quoteYears } from "./evidence.ts";
 import { keyEventId, type ReviewedChange } from "./validate.ts";
@@ -70,7 +72,18 @@ function applyToScore(festival: Festival, change: ReviewedChange): Festival["sco
   return { ...festival.score, [criterion]: { measure: change.new, ...base } } as Festival["score"];
 }
 
-function applyToFestival(festival: Festival, changes: readonly ReviewedChange[], today: ISODate, archived: ReadonlyMap<string, string>): Festival {
+/**
+ * RF-18: SEQUENCE of an edition stored for the first time. Subscribed calendars already hold the
+ * rule-based event at SEQUENCE 0, so when the dates or the status they show change, the new
+ * edition starts at 1. A window-only rule published no event, so there is nothing to supersede.
+ */
+export function firstEditionSequence(published: Occurrence | null, next: Occurrence | null): number {
+  if (!published?.start || !published.end) return 0;
+  const same = !!next && next.start === published.start && next.end === published.end && next.status === published.status;
+  return same ? 0 : 1;
+}
+
+function applyToFestival(festival: Festival, changes: readonly ReviewedChange[], today: ISODate, archived: ReadonlyMap<string, string>, ctx: RuleContext): Festival {
   let next = festival;
   const touched = new Map<string, { sources: Source[]; bump: boolean }>();
   for (const change of changes) {
@@ -90,7 +103,14 @@ function applyToFestival(festival: Festival, changes: readonly ReviewedChange[],
   const editions = { ...next.editions };
   for (const [key, t] of touched) {
     const e = editions[key]!;
-    editions[key] = { ...e, sources: mergeSources(e.sources, t.sources), last_verified: today, sequence: e.sequence + (t.bump ? 1 : 0) };
+    const updated: Edition = { ...e, sources: mergeSources(e.sources, t.sources), last_verified: today };
+    const bumped = e.sequence + (t.bump ? 1 : 0);
+    // Every change of dates or status bumps; a first edition also starts at 1 when it changes
+    // what calendars already show from the rule, whatever kind the change was classified as.
+    const first = festival.editions[key]
+      ? 0
+      : firstEditionSequence(occurrenceFor(festival, Number(key), ctx), occurrenceFor({ ...next, editions: { ...editions, [key]: updated } }, Number(key), ctx));
+    editions[key] = { ...updated, sequence: Math.max(bumped, first) };
   }
   return { ...next, editions };
 }
@@ -104,10 +124,11 @@ export function applyChanges(country: CountryFile, changes: readonly ReviewedCha
   for (const slug of bySlug.keys()) {
     if (!country.festivals.some((f) => f.slug === slug)) throw new Error(`${country.country}: unknown festival ${slug}`);
   }
+  const ctx = ctxFor(country);
   const next = {
     ...country,
     generated_at: today,
-    festivals: country.festivals.map((f) => (bySlug.has(f.slug) ? applyToFestival(f, bySlug.get(f.slug)!, today, archived) : f)),
+    festivals: country.festivals.map((f) => (bySlug.has(f.slug) ? applyToFestival(f, bySlug.get(f.slug)!, today, archived, ctx) : f)),
   };
   const parsed = CountryFile.safeParse(next);
   if (!parsed.success) throw new Error(`${country.country}: result does not validate: ${parsed.error.issues.map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}`);

@@ -400,6 +400,12 @@
   margin-block-start: var(--sp-1);
 }
 
+.advisory__publisher {
+  margin-block-start: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
 /* Sticky action bar: Guardar + Agregar al calendario stay in reach. */
 .actionbar {
   position: sticky;

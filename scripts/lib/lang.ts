@@ -83,9 +83,9 @@ export function needsNewsSweep(daysToStart: number): boolean {
   return daysToStart <= NEWS_SWEEP_DAYS;
 }
 
-/** Search terms for the sweep: local language first, then English, no duplicates. */
+/** Search terms for the sweep: local language first, then English and Portuguese, no duplicates. */
 export function newsTerms(lang: Lang): string[] {
-  return [...new Set([...NEWS_TERMS[lang], ...NEWS_TERMS.en])];
+  return [...new Set([...NEWS_TERMS[lang], ...NEWS_TERMS.en, ...NEWS_TERMS.pt])];
 }
 
 /** Stems (accent-free, lowercase) that make a quote say a festival was cancelled or postponed. */

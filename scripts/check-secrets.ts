@@ -3,6 +3,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { isMainModule } from "./lib/is-main.ts";
 
 const PREFIX = ["sk", "ant", ""].join("-");
 // A real key is the prefix plus a long token body; the bare prefix in docs is not a leak.
@@ -35,7 +36,7 @@ export function findLeaks(paths: readonly string[], read: (p: string) => string)
   });
 }
 
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const isMain = isMainModule(import.meta.url);
 if (isMain) {
   const files = [...trackedFiles(), ...walk("dist")];
   const leaks = findLeaks(files, (p) => readFileSync(p, "utf8"));

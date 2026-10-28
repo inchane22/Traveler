@@ -42,6 +42,17 @@ op run --env-file=.env.op -- pnpm onboard -- --country=PE --dry-run
 
 `--dry-run` escribe `proposals/AAAA-MM-DD.json` y `proposals/AAAA-MM-DD.md` (ignorados por git) y no toca `data/`. Las variables están en [.env.example](.env.example); nunca crees un `.env` o `.env.local` con valores.
 
+Barrido de noticias (R9) y chequeo de enlaces (R6, R13):
+
+```bash
+pnpm refresh -- --dry-run --sweep=news --fixtures=tests/fixtures/pipeline              # fiestas a 45 días o menos
+pnpm refresh -- --dry-run --sweep=news --within=7 --fixtures=tests/fixtures/pipeline   # última semana
+node scripts/check-links.ts                       # proposals/links-AAAA-MM-DD.md y .json; sale 1 solo si hay 404/410
+LINKS_REPORT_PATH=proposals/links-2026-10-26.json pnpm refresh -- --dry-run --fixtures=tests/fixtures/pipeline
+```
+
+`--sweep=news` solo procesa las fiestas que empiezan dentro de la ventana (las que están en curso también) y busca «cancelado», «aplazado» y «suspendido» en el idioma local más sus equivalentes en inglés y portugués. Nunca lleva la propuesta trampa (R12) ni cuenta como la corrida semanal del mes. `LINKS_REPORT_PATH` apunta al `.json` de `check-links` (máximo 7 días de antigüedad): una edición cuyas fuentes dan todas 404 o 410 y no tienen copia archivada baja su confianza un nivel, una sola vez (R13). Sin esa variable, `refresh` no toca la confianza. Con ella, R13 recorre todos los archivos de país aunque la corrida use `--only` o `--country`, así que un PR de una sola fiesta puede traer también bajas de confianza. `USAGE_FALLBACK_PATH` apunta a un `usage.json` de otra corrida; se usa el total más alto de cada mes (ver «Presupuesto»).
+
 ## Estructura
 
 ```text
@@ -49,7 +60,7 @@ src/            app y lógica pura (schema, dates, score, festivals, ics), sin D
 locales/        todo texto visible (es, en, pt)
 data/           countries/<cc>.json, index.json (generado y versionado), changelog.json, usage.json
 config/         pesos del puntaje, dominios oficiales y jerarquía de fuentes por país
-scripts/        build-data, build-calendars, refresh, onboard, check-secrets, check-trap; lib/ del pipeline
+scripts/        build-data, build-calendars, refresh, onboard, check-secrets, check-trap, check-links; lib/ del pipeline
 tests/          unit/, e2e/ (Playwright + axe), fixtures/ (respuestas grabadas de la API)
 .github/        workflows, formularios de issue, plantilla de PR, Dependabot
 ```
@@ -70,15 +81,17 @@ El detalle de cada módulo y quién lo puede tocar está en [docs/architecture.m
 | Workflow | Cuándo | Permisos | Qué hace |
 | --- | --- | --- | --- |
 | `ci.yml` | cada PR y cada push a `main` | `contents: read` | typecheck, Vitest con cobertura, build, `check-secrets`, índice sin cambios, `check-trap`, Playwright + axe, Lighthouse CI. Check requerido: `ci` |
-| `refresh.yml` | lunes 11:00 UTC; manual con `only` y `country` | `contents: write`, `pull-requests: write` | `pnpm refresh`, valida con `build-data`, abre `refresh/AAAA-MM-DD` con `needs-review` |
-| `onboard.yml` | día 1, 11:00 UTC; manual con `country` | `contents: write`, `pull-requests: write` | crea el borrador del país y abre `onboard/<cc>` con `needs-review` |
+| `refresh.yml` | lunes 11:00 UTC verificación completa; martes y viernes `--sweep=news`; domingo, miércoles, jueves y sábado `--sweep=news --within=7` (R9); manual con `only`, `country` y `sweep` | `contents: write`, `pull-requests: write`; el job `usage` solo `actions: read` | `pnpm refresh`, valida con `build-data`, abre `refresh/AAAA-MM-DD` con `needs-review`. El lunes corre antes `check-links` para R13 |
+| `onboard.yml` | día 1, 11:00 UTC; manual con `country` | `contents: write`, `pull-requests: write`; el job `usage` solo `actions: read` | crea el borrador del país y abre `onboard/<cc>` con `needs-review` |
+| `links.yml` | domingo 10:00 UTC; manual | `contents: read` | `node scripts/check-links.ts` sobre `config/advisories.json` y las fuentes de `data/`; falla (la alerta de R6) solo con un 404 o 410; el reporte queda en el resumen de la corrida y en el artefacto |
+| `usage-fallback.yml` | lo llaman `refresh.yml` y `onboard.yml` | `actions: read` | entrega el `usage.json` del último artefacto `usage` de `main` (R10) |
 | `deploy.yml` | push a `main`; manual solo desde `main` | build: `contents: read`, `pages: read`; deploy: `pages: write`, `id-token: write` | build con `BASE_PATH=/<repo>/`, `check-trap` de respaldo, publica en Pages |
 
-Todas las acciones de terceros están fijadas por SHA con la versión en un comentario; Dependabot las actualiza los martes. `refresh` y `onboard` comparten el grupo de concurrencia `ai-pipeline`: nunca corren a la vez y una corrida nueva espera, no cancela, a la que ya está gastando.
+Todas las acciones de terceros están fijadas por SHA con la versión en un comentario; Dependabot las actualiza los martes. Para fijar una acción nueva, saca el SHA del tag con `gh api repos/<owner>/<acción>/git/ref/tags/<versión> --jq .object.sha` (así se fijó `actions/download-artifact` v8.0.2); nunca lo escribas de memoria. Hay una corrida de `refresh` por día como máximo, así que dos corridas nunca comparten la rama `refresh/AAAA-MM-DD`; un `workflow_dispatch` el mismo día que una programada sí la comparte y actualiza ese PR. `refresh` y `onboard` comparten el grupo de concurrencia `ai-pipeline`: nunca corren a la vez y una corrida nueva espera, no cancela, a la que ya está gastando.
 
 **Qué entra en un PR de IA.** `data/countries/*.json`, `data/changelog.json`, `data/usage.json` y `data/index.json` regenerado (onboard: solo el archivo del país y, si existen, `config/official-domains/<cc>.json` y `config/sources/<cc>.json`). El índice va incluido porque CI lo compara con el que genera `build-data`, y una verificación que cambia `last_verified` sin él fallaría. La descripción es `proposals/<fecha>.md` más la lista de revisión de [la plantilla de PR](.github/pull_request_template.md), porque GitHub no aplica la plantilla a PRs creados por API. Se abre PR si hay cambios propuestos o si cambió algún archivo de datos: una verificación que solo actualiza `last_verified` también entra, para que no aparezca el aviso de datos viejos a los 30 días (RF-13).
 
-**Presupuesto y `usage.json` (decisión).** `data/usage.json` viaja en el mismo PR que los datos. Si una corrida no cambia datos no se abre PR («Sin cambios no se abre PR», PRD) y su gasto queda solo en el artefacto de la corrida, 90 días. Consecuencia: el tope `MONTHLY_BUDGET_USD` lee el `usage.json` de `main` y subcuenta las corridas sin cambios y los PRs aún sin fusionar. Es un tope blando; el tope duro es el límite de gasto del workspace en la Claude Console. Revisa el PR de cada lunes antes del lunes siguiente: dos PRs de refresh abiertos chocan en los mismos archivos, y el nuevo reemplaza al viejo, así que cierra el viejo.
+**Presupuesto y `usage.json` (decisión).** El tope duro es el límite de gasto del workspace en la Claude Console; `MONTHLY_BUDGET_USD` es el tope blando del script. `data/usage.json` viaja en el mismo PR que los datos, así que un PR sin fusionar, o una corrida sin cambios que no abre PR («Sin cambios no se abre PR», PRD), dejaría su gasto fuera de `main`. Para no perderlo, cada corrida de `refresh` u `onboard` que cambia `data/usage.json` lo sube también como artefacto con el nombre fijo `usage` (90 días), y la siguiente corrida lo baja con el job `usage` (`usage-fallback.yml`, solo `actions: read`), lo pasa en `USAGE_FALLBACK_PATH` y usa, mes por mes, el total más alto entre ese archivo y el de `main`. El total combinado se escribe en `data/usage.json` antes de la primera llamada, así que el artefacto nunca baja. Si el job `usage` falla o no hay artefacto, la corrida sigue con el `usage.json` de `main` y lo avisa en el log. Las corridas sin gasto no suben artefacto: el anterior sigue siendo el último. Revisa el PR de cada lunes antes del lunes siguiente: dos PRs de refresh abiertos chocan en los mismos archivos (con `usage.json` incluido), así que cierra el viejo.
 
 **CI en los PRs de IA.** Con el `GITHUB_TOKEN` el PR lo abre `github-actions[bot]`, y GitHub no dispara otros workflows por eventos de ese token: `ci.yml` no corre solo. Para dispararlo, cierra y vuelve a abrir el PR. Con la GitHub App del paso 11 de la configuración, CI corre solo. No uses un token personal (PAT): el autor del PR serías tú, GitHub no deja aprobar un PR propio y `main` no aceptaría el merge.
 
@@ -141,7 +154,7 @@ Con sospecha de fuga, el paso 1 va primero y sin esperar. En una rotación progr
 | 2-4 | Crea una key nueva en el mismo workspace, con nombre `traveler-ci-AAAA-MM`. |
 | 4-6 | `gh secret set ANTHROPIC_API_KEY --repo <owner>/<repo>` y pega la key cuando la pida. |
 | 6-8 | 1Password: ítem `Dev/traveler`, campo `ANTHROPIC_API_KEY`, pega el valor nuevo desde la app. Limpia el portapapeles. |
-| 8-13 | `gh workflow run refresh.yml -f only=carnaval-barranquilla` y `gh run watch`: el paso «Run weekly verification» debe pasar. En local: `op run --env-file=.env.op -- pnpm refresh -- --dry-run --only=carnaval-barranquilla`. |
+| 8-13 | `gh workflow run refresh.yml -f only=carnaval-barranquilla` y `gh run watch`: el paso «Run weekly verification or news sweep» debe pasar. En local: `op run --env-file=.env.op -- pnpm refresh -- --dry-run --only=carnaval-barranquilla`. |
 | 13-15 | En la Console, el uso nuevo cae en la key nueva y la vieja no registra uso. Anota la fecha abajo. |
 
 Con sospecha de fuga, además: revisa el gasto del workspace de los últimos días, cierra la alerta de secret scanning como revocada y busca la key en el historial sin imprimirla: `git log --all --oneline -E -G 'sk-ant-[A-Za-z0-9_-]{20,}'` (solo lista commits). Rotar la key es la corrección; reescribir el historial es opcional.
@@ -161,14 +174,14 @@ El día 1, junto al onboarding, unos 30 minutos. Un indicador que pasa dos seman
 | R3 | Cambios marcados «revisar idioma» | más de 20% | descripciones de los PRs de IA |
 | R4 | Fiestas lunares sin fila para los próximos 12 meses | 1 o más | reglas `lunisolar_table` en `data/countries/` |
 | R5 | Reportes de contenido sin atender más de 48 h | 1 o más | issues con `contenido` |
-| R6 | Enlaces de advertencias de viaje rotos | 1 o más | chequeo semanal de enlaces |
+| R6 | Enlaces de advertencias de viaje rotos | 1 o más | corrida de `links.yml` en rojo; su resumen lista los rotos y los «sin verificar» |
 | R7 | Cambios marcados por el detector de instrucciones | 1 o más | descripciones de los PRs de IA |
 | R8 | Gasto diario sobre 3 veces el promedio de 7 días | cualquier día | uso del workspace en la Console |
 | R9 | Horas entre el anuncio oficial y el cambio publicado | más de 72 | `data/changelog.json` contra la fuente |
 | R10 | Gasto del mes | 80% del tope | `data/usage.json`, artefactos de las corridas y Console |
 | R11 | Candidatas de fuentes no mediáticas por onboarding; las 5 mejores de un país en la misma ciudad | menos de 50%; sí | PR de onboarding del mes |
 | R12 | Propuestas trampa rechazadas | menos de 100% | paso «Trap proposal check» en CI de los PRs del mes |
-| R13 | Fuentes de Nivel 1 sin copia archivada | 1 o más | `archive_url` en `data/countries/` |
+| R13 | Fuentes de Nivel 1 sin copia archivada | 1 o más | `archive_url` en `data/countries/`; bajas de confianza en la sección «Fuentes perdidas» de los PRs del lunes |
 
 **Trampa (R12).** Si aprobaste la propuesta trampa del mes, CI la bloqueó, pero la revisión falló: durante el mes siguiente cada PR de datos necesita un segundo revisor.
 
@@ -185,6 +198,7 @@ Un error encontrado se corrige con un PR, activa el segundo revisor un mes y sum
 - Búsqueda web: US$10 por cada 1.000 búsquedas, más los tokens del contenido que traen, que se cobran como entrada. Una búsqueda con error no se cobra ([docs](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
 - Modelo por defecto `claude-sonnet-5-5`: US$2 por millón de tokens de entrada y US$10 por millón de salida [tabla de modelos de Anthropic al 2026-10-06; confírmalo en la [página de precios](https://platform.claude.com/docs/en/about-claude/pricing)].
 - Estimación: 40 fiestas, 5 búsquedas cada una y 4 corridas al mes son 800 búsquedas, unos US$8 más tokens. Cada onboarding suma de 10 a 20 búsquedas más tokens [estimación del PRD].
+- Barridos de noticias (R9): unas 26 corridas más al mes. La mayoría no encuentra fiestas en su ventana y no hace ninguna llamada; cada fiesta que entra cuesta lo mismo que en la verificación semanal (búsqueda más extracción). Cuentan contra `MONTHLY_BUDGET_USD` y la degradación del 80% también los limita [estimación propia, sin medir].
 - Corte: el script lleva la cuenta en `data/usage.json` contra `MONTHLY_BUDGET_USD` (20 por defecto). Avisa al 50% y al 80%; desde el 80% solo verifica fiestas de Nivel 1 a 60 días o menos; al 100% se detiene (R10). El límite del workspace en la Console es el tope duro.
 - Para gastar menos: las versiones de búsqueda con filtrado dinámico (`web_search_20260209` o posterior) dejan fuera del contexto lo irrelevante, y la Message Batches API cobra la búsqueda al mismo precio.
 
@@ -193,4 +207,5 @@ Un error encontrado se corrige con un PR, activa el segundo revisor un mes y sum
 - Nombres exactos de los menús de la Console para keys de service account y para revocar una key.
 - Si el workspace Default admite límites de tasa: la documentación solo dice que no admite límite de gasto.
 - Si Pages en repo privado está incluido en tu plan.
-- Las carpetas de `tests/fixtures/` y el nombre del resumen de onboarding en `proposals/` los define el pipeline; los workflows toman el `.md` más reciente si no encuentran `proposals/<fecha>.md`.
+- Las carpetas de `tests/fixtures/` y el nombre del resumen de onboarding en `proposals/` los define el pipeline; los workflows toman el `.md` más reciente (sin contar `links-*.md`) si no encuentran `proposals/<fecha>.md`.
+- El job `usage` y el paso de R13 en `refresh.yml` no se han corrido en GitHub: se validaron con `actionlint` y con pruebas locales del script, no con una corrida real.

@@ -51,6 +51,13 @@ describe("locale files", () => {
     for (const lang of LANGS) expect(families.filter((k) => !has(ALL[lang], k)), lang).toEqual([]);
   });
 
+  test("conectividad copy never places the airport inside the city (BAQ is in Soledad)", () => {
+    for (const lang of LANGS) {
+      const hits = Object.entries(ALL[lang]).filter(([k, v]) => k.includes("conectividad") && /en la ciudad|in the city|in town|na cidade/i.test(v));
+      expect(hits, lang).toEqual([]);
+    }
+  });
+
   test("the calendar build finds every key it requires", () => {
     for (const lang of LANGS) expect(REQUIRED_KEYS.filter((k) => !has(ALL[lang], k)), lang).toEqual([]);
   });

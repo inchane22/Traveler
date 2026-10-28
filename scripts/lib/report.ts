@@ -1,5 +1,6 @@
 // proposals/<date>.json (everything the run decided, with reasons) and proposals/<date>.md (PR body).
 import type { BudgetLevel } from "./budget.ts";
+import type { LinkDowngrade } from "./links.ts";
 import { details, mdLink, mdTable, mdText } from "./markdown.ts";
 import type { QueueReason } from "./queue.ts";
 import type { Selection } from "./select.ts";
@@ -44,6 +45,10 @@ export interface RefreshReport {
   rejected: ReviewedChange[];
   deferred: ReviewedChange[];
   not_found: Array<{ country: string; slug: string; fields: string[] }>;
+  /** R9 news sweep: the day window (`--sweep=news --within`); absent on the weekly run. */
+  sweep_within?: number;
+  /** R13: editions whose sources are all gone, one confidence level down (from LINKS_REPORT_PATH). */
+  link_downgrades?: LinkDowngrade[];
 }
 
 const FIELD_LABEL: Record<string, string> = { start: "inicio", end: "fin", status: "estado", confidence: "confianza" };
@@ -95,12 +100,22 @@ function checklist(changes: readonly ReviewedChange[]): string {
 
 export function renderRefreshMarkdown(r: RefreshReport): string {
   const parts: string[] = [];
-  parts.push(`## Verificación semanal ${r.date}`);
+  parts.push(r.sweep_within !== undefined ? `## Barrido de noticias ${r.date} (fiestas a ${r.sweep_within} días o menos)` : `## Verificación semanal ${r.date}`);
   parts.push(
     `Cambios propuestos por la IA y validados en código (fuente citada, cita literal, ventana de la regla, dominios). ` +
       `Nada llega al sitio hasta que una persona apruebe este PR. Modelo: \`${mdText(r.model, 40)}\`${r.dry_run ? " · ensayo (--dry-run)" : ""}.`,
   );
   if (r.stopped) parts.push(`> **La corrida se detuvo:** ${mdText(r.stopped, 300)}`);
+  if (r.link_downgrades?.length) {
+    const lines = r.link_downgrades.map(
+      (d) => `- ${d.country} · ${mdText(d.slug, 60)} ${d.year} · confianza ${mdText(d.old)} → ${mdText(d.new)} · ${d.urls.map((u) => mdLink("fuente perdida", u)).join(", ")}`,
+    );
+    parts.push(
+      `### Fuentes perdidas, confianza un nivel abajo (R13) (${r.link_downgrades.length})`,
+      "Todas las fuentes de estas ediciones dan 404 o 410 y no tienen copia archivada. Si encuentras la página nueva o una copia, agrégala y restaura la confianza en este PR.",
+      lines.join("\n"),
+    );
+  }
   if (r.applied.length) {
     parts.push(`### Cambios (${r.applied.length})`, mdTable(HEADER, r.applied.map(row)));
     const list = checklist(r.applied);

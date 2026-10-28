@@ -115,9 +115,9 @@ describe("eventFor", () => {
     );
   });
 
-  test("Cartagena 2026, derived from its rule, is TENTATIVE and carries the tentative mark", () => {
+  test("Cartagena 2026, a tentative edition without dates, takes the rule's days, is TENTATIVE and carries the tentative mark", () => {
     const cartagena = entry("independencia-cartagena");
-    expect(cartagena.occurrence).toMatchObject({ start: "2026-11-10", status: "tentativa", origin: "rule" });
+    expect(cartagena.occurrence).toMatchObject({ start: "2026-11-10", end: "2026-11-16", status: "tentativa", confidence: "patron", origin: "edition" });
     const ev = mustEvent(cartagena);
     expect(ev.status).toBe("TENTATIVE");
     expect(ev.summary).toBe("[Por confirmar] Fiestas de la Independencia de Cartagena");
@@ -157,10 +157,11 @@ describe("eventFor", () => {
   });
 
   test("festivals with only a probable window, or no occurrence, produce no event", () => {
-    const vallenato = entry("festival-vallenato");
-    expect(vallenato.occurrence?.start).toBeUndefined();
-    expect(eventFor(vallenato, "es", t, SITE)).toBeNull();
-    expect(eventFor({ ...vallenato, occurrence: null }, "es", t, SITE)).toBeNull();
+    const petronio = entry("petronio-alvarez");
+    expect(petronio.occurrence?.start).toBeUndefined();
+    expect(petronio.occurrence?.window).toBeDefined();
+    expect(eventFor(petronio, "es", t, SITE)).toBeNull();
+    expect(eventFor({ ...petronio, occurrence: null }, "es", t, SITE)).toBeNull();
   });
 
   test("no unconfirmed event is ever exported without its mark", () => {

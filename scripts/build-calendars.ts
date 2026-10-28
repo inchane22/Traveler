@@ -10,6 +10,7 @@ import { buildCalendar, calendarPath, countryName, eventFor, formatDtstamp, type
 import { Confidence, ISODate, Lang, Status, type CountryFile } from "../src/schema.ts";
 import type { ScoringConfig } from "../src/score.ts";
 import { loadCountries } from "./build-data.ts";
+import { isMainModule } from "./lib/is-main.ts";
 
 export const LANGS: readonly Lang[] = Lang.options;
 export const MONTHS_BACK = 2;
@@ -157,7 +158,7 @@ export function writeCalendars(files: readonly CalendarFile[], outDir: string): 
   }
 }
 
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const isMain = isMainModule(import.meta.url);
 if (isMain) {
   try {
     const includeDrafts = process.env.INCLUDE_DRAFTS === "1";

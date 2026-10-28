@@ -31,10 +31,21 @@ env:
   PNPM_VERSION: "10.33.3"
 
 jobs:
+  # R10: same budget as refresh.yml, so onboarding also counts the last run artifact's usage.json
+  # (reusable job with actions: read only; this job keeps its permissions).
+  usage:
+    name: usage fallback
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      actions: read
+    uses: ./.github/workflows/usage-fallback.yml
+
   onboard:
     name: onboard
-    # Drafts are always based on main; a dispatch from another branch is refused.
-    if: github.ref == 'refs/heads/main'
+    needs: usage
+    # Drafts are always based on main; a dispatch from another branch is refused. Runs even when
+    # the usage job failed: the fallback is an extra safeguard, not a precondition.
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -98,6 +109,19 @@ jobs:
         if: steps.pick.outputs.country != ''
         run: pnpm install --frozen-lockfile
 
+      - name: Prepare the usage fallback
+        id: fallback
+        if: steps.pick.outputs.country != ''
+        env:
+          USAGE_JSON: ${{ needs.usage.outputs.json }}
+        run: |
+          path=""
+          if [ -n "${USAGE_JSON}" ]; then
+            path="${RUNNER_TEMP}/usage-fallback.json"
+            printf '%s\n' "${USAGE_JSON}" > "${path}"
+          fi
+          echo "path=${path}" >> "${GITHUB_OUTPUT}"
+
       - name: Run onboarding
         id: onboard
         if: steps.pick.outputs.country != ''
@@ -110,12 +134,29 @@ jobs:
           ARCHIVE_SECRET_KEY: ${{ secrets.ARCHIVE_SECRET_KEY }}
           TRAP_SECRET: ${{ secrets.TRAP_SECRET }}
           COUNTRY: ${{ steps.pick.outputs.country }}
+          USAGE_FALLBACK_PATH: ${{ steps.fallback.outputs.path }}
         run: |
           if [ -z "${ANTHROPIC_API_KEY}" ]; then
             echo "::error::Repository secret ANTHROPIC_API_KEY is not set (README, first-time setup)."
             exit 1
           fi
           pnpm onboard -- "--country=${COUNTRY}"
+
+      # R10: snapshot data/usage.json now, before the pull request step switches branches. The next
+      # run's usage job reads the "usage" artifact. The script writes the merged total before its
+      # first call, so a changed file is never below the previous artifact; an unchanged one is
+      # not uploaded and the previous artifact stays the latest.
+      - name: Snapshot usage for the next run
+        id: usage
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain -- data/usage.json)" ]; then
+            mkdir -p "${RUNNER_TEMP}/usage"
+            cp data/usage.json "${RUNNER_TEMP}/usage/usage.json"
+            echo "changed=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "changed=false" >> "${GITHUB_OUTPUT}"
+          fi
 
       - name: Validate data and regenerate data/index.json
         if: steps.pick.outputs.country != ''
@@ -227,4 +268,13 @@ jobs:
             proposals/
             data/usage.json
           if-no-files-found: warn
+          retention-days: 90
+
+      - name: Upload usage for the next run (R10)
+        if: always() && steps.usage.outputs.changed == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: usage
+          path: ${{ runner.temp }}/usage/usage.json
+          if-no-files-found: error
           retention-days: 90

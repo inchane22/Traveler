@@ -2,7 +2,7 @@
 // Without --dry-run it also applies accepted changes; it never merges anything.
 import { join } from "node:path";
 import { ctxFor } from "../../src/festivals.ts";
-import { ChangelogEntry, Proposal, type CountryFile } from "../../src/schema.ts";
+import { ChangelogEntry, CountryFile, Proposal } from "../../src/schema.ts";
 import type { ScoringConfig } from "../../src/score.ts";
 import { loadCountries } from "../build-data.ts";
 import { applyChanges, changelogEntries } from "./apply.ts";
@@ -13,6 +13,7 @@ import { firstPassDomains, loadDomainPolicy, type DomainPolicy } from "./domains
 import { extract } from "./extract.ts";
 import { extractionContext, researchUserPrompt } from "./festival-context.ts";
 import { appendGithubOutput, loadPrompt, readJson, readJsonOr, writeJson, writeText, type Logger } from "./io.ts";
+import { applyLostSources, type LinkDowngrade, type LinkVerdict } from "./links.ts";
 import { buildQueue, type QueueItem } from "./queue.ts";
 import { buildRefreshReport, renderRefreshMarkdown, type FestivalLog, type RefreshReport } from "./report.ts";
 import { research } from "./research.ts";
@@ -32,6 +33,10 @@ export interface RefreshOptions {
   budgetUsd: number;
   trapSecret?: string;
   githubOutput?: string;
+  /** R9 news sweep: only festivals starting within this many days; never carries the R12 trap. */
+  sweepWithin?: number;
+  /** R13: verdicts from a fresh check-links report; without it no source downgrade is made. */
+  links?: ReadonlyMap<string, LinkVerdict>;
 }
 
 export interface RefreshDeps {
@@ -122,18 +127,30 @@ function readChangelog(path: string): ChangelogEntry[] {
   return ChangelogEntry.array().parse(readJsonOr(path, []));
 }
 
+/** R13 over every country file; the same objects come back when nothing is lost. */
+function lostSources(countries: readonly CountryFile[], links: ReadonlyMap<string, LinkVerdict> | undefined, changelog: readonly ChangelogEntry[], today: string): { countries: CountryFile[]; downgrades: LinkDowngrade[]; entries: ChangelogEntry[] } {
+  if (!links) return { countries: [...countries], downgrades: [], entries: [] };
+  const results = countries.map((c) => applyLostSources(c, links, changelog, today));
+  return { countries: results.map((r) => r.country), downgrades: results.flatMap((r) => r.downgrades), entries: results.flatMap((r) => r.entries) };
+}
+
 export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promise<RefreshResult> {
   const config = readJson(join(opts.root, "config", "scoring.json")) as ScoringConfig;
-  const countries = loadCountries(join(opts.root, "data", "countries"));
-  if (opts.only && !countries.some((c) => c.festivals.some((f) => f.slug === opts.only))) {
+  const stored = loadCountries(join(opts.root, "data", "countries"));
+  if (opts.only && !stored.some((c) => c.festivals.some((f) => f.slug === opts.only))) {
     deps.log.error(`--only=${opts.only}: no festival with that slug`);
     return { exitCode: 1, report: null, files: [], calls: 0 };
   }
-  const queue = buildQueue(countries, config, opts.today, { max: opts.maxFestivals, perCountry: opts.perCountry, only: opts.only, country: opts.country });
+  const r13 = lostSources(stored, opts.links, readChangelog(join(opts.root, "data", "changelog.json")), opts.today);
+  const countries = r13.countries;
+  for (const d of r13.downgrades) deps.log.warn(`R13: ${d.country}/${d.slug} ${d.year}: every source is gone (404/410, no archive copy); confidence ${d.old} -> ${d.new}`);
+  const sweep = opts.sweepWithin;
+  const queue = buildQueue(countries, config, opts.today, { max: opts.maxFestivals, perCountry: opts.perCountry, only: opts.only, country: opts.country, ...(sweep !== undefined ? { sweepWithin: sweep } : {}) });
   const month = opts.today.slice(0, 7);
-  const guard = createBudgetGuard({ month, budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log });
+  const guard = createBudgetGuard({ month, budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log, weekly: sweep === undefined });
   const policies = new Map(countries.map((c) => [c.country, loadDomainPolicy(opts.root, c.country)]));
-  deps.log.info(`refresh ${opts.today}: ${queue.length} festival(s) queued${opts.dryRun ? " (dry run)" : ""}`);
+  const mode = sweep !== undefined ? ` (news sweep, ${sweep} days)` : "";
+  deps.log.info(`refresh ${opts.today}: ${queue.length} festival(s) queued${mode}${opts.dryRun ? " (dry run)" : ""}`);
 
   const logs: FestivalLog[] = [];
   const changes: ReviewedChange[] = [];
@@ -182,7 +199,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   // R12 trap: first run of the month, only when it can blend in with real changes and its
   // fingerprint has somewhere to go ($GITHUB_OUTPUT). Never written to the repo.
   const realChanges = changes.filter((c) => c.verdict === "accepted" && c.kind === "change").length;
-  const trap = opts.trapSecret && guard.firstRunOfMonth && opts.githubOutput && !stopped && realChanges > 0
+  const trap = opts.trapSecret && sweep === undefined && guard.firstRunOfMonth && opts.githubOutput && !stopped && realChanges > 0
     ? makeTrap({ secret: opts.trapSecret, month, today: opts.today, countries, config, policies })
     : null;
   if (opts.trapSecret && guard.firstRunOfMonth && !trap) deps.log.info("R12: no trap this run (needs $GITHUB_OUTPUT, a real change and a dated upcoming edition)");
@@ -198,11 +215,13 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
       budget: { month, usd: usage.usd, budget_usd: opts.budgetUsd, level: guard.level(), searches: usage.searches },
       festivals: logs,
       not_found: notFound,
+      ...(sweep !== undefined ? { sweep_within: sweep } : {}),
+      ...(r13.downgrades.length ? { link_downgrades: r13.downgrades } : {}),
     },
     selection,
   );
   const exitCode = stopped || fatal ? 1 : 0;
-  const count = dataChangeCount(selection);
+  const count = dataChangeCount(selection) + r13.downgrades.length;
   const output = { changes: stopped ? 0 : count, branch: `refresh/${opts.today}`, flagged: selection.flagged.length };
   if (count === 0 && selection.flagged.length === 0) {
     deps.log.info(`refresh ${opts.today}: no changes (${selection.rejected.length} rejected); nothing written`);
@@ -212,10 +231,10 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
 
   const files = writeProposals(opts.root, `${opts.today}`, report);
   if (!opts.dryRun && !stopped) {
-    files.push(...(await applyRun(opts, deps, countries, [...selection.applied, ...selection.confirmations])));
+    files.push(...(await applyRun(opts, deps, stored, countries, [...selection.applied, ...selection.confirmations], r13.entries)));
   }
   appendGithubOutput(opts.githubOutput, { ...output, ...(trap ? { trap_fingerprint: fingerprint(opts.trapSecret!, trap) } : {}) });
-  deps.log.info(`refresh ${opts.today}: ${selection.applied.length} change(s), ${selection.confirmations.length} confirmation(s), ${selection.flagged.length} to review, ${selection.rejected.length} rejected`);
+  deps.log.info(`refresh ${opts.today}: ${selection.applied.length} change(s), ${selection.confirmations.length} confirmation(s), ${selection.flagged.length} to review, ${selection.rejected.length} rejected, ${r13.downgrades.length} R13 downgrade(s)`);
   return { exitCode, report, files, calls: guard.calls };
 }
 
@@ -227,17 +246,19 @@ export function writeProposals(root: string, name: string, report: RefreshReport
   return [json, md];
 }
 
-async function applyRun(opts: RefreshOptions, deps: RefreshDeps, countries: readonly CountryFile[], accepted: readonly ReviewedChange[]): Promise<string[]> {
+/** `stored` is what is on disk; `countries` may already carry the R13 downgrades. */
+async function applyRun(opts: RefreshOptions, deps: RefreshDeps, stored: readonly CountryFile[], countries: readonly CountryFile[], accepted: readonly ReviewedChange[], r13Entries: readonly ChangelogEntry[]): Promise<string[]> {
   const archived = await archiveAll(deps.archiver, accepted.flatMap((c) => c.sources.map((s) => s.url)));
   const files: string[] = [];
-  for (const country of countries) {
+  countries.forEach((country, i) => {
     const next = applyChanges(country, accepted, opts.today, archived);
-    if (next === country) continue;
+    if (next === stored[i]) return;
+    const valid = CountryFile.parse(next);
     const path = join(opts.root, "data", "countries", `${country.country.toLowerCase()}.json`);
-    writeJson(path, next);
+    writeJson(path, valid);
     files.push(path);
-  }
-  const entries = changelogEntries(accepted, opts.today);
+  });
+  const entries = [...r13Entries, ...changelogEntries(accepted, opts.today)];
   if (entries.length) {
     const path = join(opts.root, "data", "changelog.json");
     writeJson(path, [...readChangelog(path), ...entries]);

@@ -107,7 +107,7 @@ export async function runOnboard(opts: OnboardOptions, deps: OnboardDeps): Promi
   if (!opts.dryRun && existsSync(dataPath)) return fail(`onboard ${cc}: ${dataPath} already exists; refresh verifies it, onboarding never overwrites a country`);
   const config = readJson(join(opts.root, "config", "scoring.json")) as ScoringConfig;
   const policy = withGovernmentFallback(loadDomainPolicy(opts.root, cc));
-  const guard = createBudgetGuard({ month: opts.today.slice(0, 7), budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log });
+  const guard = createBudgetGuard({ month: opts.today.slice(0, 7), budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log, weekly: false });
   const key = `onboard/${cc}`;
 
   let draft: OnboardingDraft;

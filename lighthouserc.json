@@ -4,7 +4,11 @@
       "staticDistDir": "./dist",
       "url": ["http://localhost/index.html"],
       "numberOfRuns": 3,
-      "settings": { "preset": "perf", "formFactor": "mobile", "screenEmulation": { "mobile": true, "width": 390, "height": 844, "deviceScaleFactor": 3 } }
+      "settings": {
+        "onlyCategories": ["performance", "accessibility"],
+        "formFactor": "mobile",
+        "screenEmulation": { "mobile": true, "width": 390, "height": 844, "deviceScaleFactor": 3 }
+      }
     },
     "assert": {
       "assertions": {

@@ -149,6 +149,8 @@ describe("countryEvents", () => {
         "carnaval-barranquilla-2027@traveler",
         "carnaval-riosucio-2027@traveler",
         "feria-de-cali-2026@traveler",
+        "festival-tambores-palenque-2026@traveler",
+        "festival-vallenato-2027@traveler",
         "independencia-cartagena-2026@traveler",
         "negros-y-blancos-2027@traveler",
         "san-pacho-2026@traveler",
@@ -158,7 +160,7 @@ describe("countryEvents", () => {
   });
 
   test("window-only festivals (por anunciar) are skipped", () => {
-    expect(events.some((e) => e.uid.startsWith("festival-vallenato"))).toBe(false);
+    expect(events.some((e) => e.uid.startsWith("feria-de-las-flores"))).toBe(false);
     expect(events.some((e) => e.uid.startsWith("petronio-alvarez"))).toBe(false);
   });
 
@@ -184,7 +186,7 @@ describe("buildCountryCalendars", () => {
 
   test("writes Spanish, English and Portuguese feeds for the country", () => {
     expect(files.map((f) => f.path)).toEqual(["calendars/co.ics", "calendars/co.en.ics", "calendars/co.pt.ics"]);
-    expect(files.map((f) => f.events)).toEqual([7, 7, 7]);
+    expect(files.map((f) => f.events)).toEqual([9, 9, 9]);
   });
 
   test("names each feed in its language and stamps it with generated_at", () => {
@@ -202,7 +204,7 @@ describe("buildCountryCalendars", () => {
     for (const [i, lang] of (["es", "en", "pt"] as const).entries()) {
       const ics = unfold(files[i]?.content ?? "");
       const blocks = ics.split("BEGIN:VEVENT").slice(1);
-      expect(blocks.length).toBe(7);
+      expect(blocks.length).toBe(9);
       for (const block of blocks) {
         const summary = /\r\nSUMMARY:(.*)\r\n/.exec(block)?.[1] ?? "";
         if (block.includes("\r\nSTATUS:TENTATIVE\r\n")) expect(summary).toMatch(PREFIXES[lang]);

@@ -3,6 +3,7 @@ import { todayIn } from "../../src/dates.ts";
 import { ISODate } from "../../src/schema.ts";
 import { DEFAULT_BUDGET_USD } from "./budget.ts";
 import { modelFromEnv } from "./client.ts";
+import { NEWS_SWEEP_DAYS } from "./lang.ts";
 import { DEFAULT_MAX, DEFAULT_PER_COUNTRY } from "./queue.ts";
 
 export interface CommonOptions {
@@ -20,6 +21,8 @@ export interface RefreshArgs extends CommonOptions {
   maxFestivals: number;
   perCountry: number;
   trapSecret: string | undefined;
+  /** R9 news sweep (`--sweep=news`): only festivals starting within this many days. */
+  sweepWithin?: number;
 }
 
 export interface OnboardArgs extends CommonOptions {
@@ -33,7 +36,7 @@ export class UsageError extends Error {
   }
 }
 
-const KNOWN = new Set(["dry-run", "only", "country", "today", "fixtures", "proposals", "verbose"]);
+const KNOWN = new Set(["dry-run", "only", "country", "today", "fixtures", "proposals", "verbose", "sweep", "within"]);
 
 export function parseFlags(argv: readonly string[]): Map<string, string | true> {
   const flags = new Map<string, string | true>();
@@ -85,14 +88,30 @@ export function refreshArgs(argv: readonly string[], env: NodeJS.ProcessEnv, now
   const country = str(flags, "country")?.toUpperCase();
   if (only && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(only)) throw new UsageError(`--only must be a festival slug, got ${only}`);
   if (country && !/^[A-Z]{2}$/.test(country)) throw new UsageError(`--country must be an ISO 3166-1 alpha-2 code, got ${country}`);
+  const sweepWithin = sweepDays(flags);
   return {
     ...common(flags, env, now),
     ...(only ? { only } : {}),
     ...(country ? { country } : {}),
+    ...(sweepWithin !== undefined ? { sweepWithin } : {}),
     maxFestivals: positiveInt(env.MAX_FESTIVALS_PER_RUN, DEFAULT_MAX, "MAX_FESTIVALS_PER_RUN"),
     perCountry: DEFAULT_PER_COUNTRY,
     trapSecret: env.TRAP_SECRET?.trim() || undefined,
   };
+}
+
+/** `--sweep=news [--within=<days>]`: days from 1 to 45 (R9 cadence), 45 by default. */
+function sweepDays(flags: Map<string, string | true>): number | undefined {
+  const sweep = str(flags, "sweep");
+  const within = str(flags, "within");
+  if (sweep === undefined) {
+    if (within !== undefined) throw new UsageError("--within only applies to --sweep=news");
+    return undefined;
+  }
+  if (sweep !== "news") throw new UsageError(`--sweep must be "news", got ${sweep}`);
+  const days = positiveInt(within, NEWS_SWEEP_DAYS, "--within");
+  if (days > NEWS_SWEEP_DAYS) throw new UsageError(`--within must be ${NEWS_SWEEP_DAYS} days or less, got ${days}`);
+  return days;
 }
 
 export function onboardArgs(argv: readonly string[], env: NodeJS.ProcessEnv, now = new Date()): OnboardArgs {

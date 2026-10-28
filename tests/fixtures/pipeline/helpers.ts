@@ -1,9 +1,10 @@
 // Shared test helpers for the AI pipeline suites: a throwaway copy of the repo data (tests never
 // touch data/countries/*.json) and small builders for Messages API responses.
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { onTestFinished } from "vitest";
 import { loadCountries } from "../../../scripts/build-data.ts";
 import type { Message } from "../../../scripts/lib/client.ts";
 import { loadDomainPolicy } from "../../../scripts/lib/domains.ts";
@@ -36,9 +37,19 @@ export function festival(cc: string, slug: string): Festival {
   return found;
 }
 
-/** Copy of config/ and data/ in a temp dir. `countries` limits which country files are copied. */
+/** Removes a temp dir when the current test ends; outside a test body the caller owns cleanup. */
+function removeAfterTest(dir: string): void {
+  try {
+    onTestFinished(() => rmSync(dir, { recursive: true, force: true }));
+  } catch {
+    // onTestFinished throws outside a running test (e.g. a describe-level call); nothing to hook.
+  }
+}
+
+/** Copy of config/ and data/ in a temp dir, removed after the test. `countries` limits which country files are copied. */
 export function tempRepo(opts: { countries?: readonly string[] } = {}): string {
   const root = mkdtempSync(join(tmpdir(), "traveler-pipeline-"));
+  removeAfterTest(root);
   cpSync(join(REPO, "config"), join(root, "config"), { recursive: true });
   mkdirSync(join(root, "data", "countries"), { recursive: true });
   for (const cc of opts.countries ?? ["bo", "co", "pe"]) {

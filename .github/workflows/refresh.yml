@@ -1,13 +1,25 @@
-# Weekly AI verification (PRD «Actualización con IA», RF-15, R10, R12).
+# Weekly AI verification (PRD «Actualización con IA», RF-15, R10, R12) and the R9 news sweep.
 # The AI proposes, a person approves: this job only opens a PR labelled needs-review.
 # It never merges and never deploys; deploy.yml runs from main after a human merge.
 name: refresh
 
+# One run per day at most, so two runs never share the refresh/<date> branch:
+# Monday the full verification, Tuesday and Friday the news sweep of festivals 45 days out or
+# less, the other days the sweep of festivals in their last week (R9). The run step maps each
+# cron string to its flags; keep both lists in sync.
 on:
   schedule:
-    - cron: "0 11 * * 1" # Mondays 11:00 UTC
+    - cron: "0 11 * * 1" # Mondays 11:00 UTC: weekly verification
+    - cron: "0 11 * * 2,5" # Tuesdays and Fridays: --sweep=news (45 days)
+    - cron: "0 11 * * 0,3,4,6" # other days: --sweep=news --within=7 (last week)
   workflow_dispatch:
     inputs:
+      sweep:
+        description: "none = verificación semanal, news = barrido de noticias a 45 días, news-7 = última semana / run mode"
+        required: false
+        type: choice
+        options: ["none", "news", "news-7"]
+        default: "none"
       only:
         description: "Solo esta fiesta (slug), p. ej. carnaval-barranquilla / only this festival"
         required: false
@@ -38,10 +50,23 @@ env:
   PNPM_VERSION: "10.33.3"
 
 jobs:
+  # R10: data/usage.json travels in the PR, so an unmerged PR (or a run without PR) would drop its
+  # spend. This job hands the last run's usage.json to refresh, which keeps the higher total per
+  # month. Reading another run's artifact needs actions: read, so it lives in its own job and the
+  # refresh job keeps its permissions. The Console workspace spend limit stays the hard cap.
+  usage:
+    name: usage fallback
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      actions: read
+    uses: ./.github/workflows/usage-fallback.yml
+
   refresh:
     name: refresh
-    # Proposals are always based on main; a dispatch from another branch is refused.
-    if: github.ref == 'refs/heads/main'
+    needs: usage
+    # Proposals are always based on main; a dispatch from another branch is refused. Runs even
+    # when the usage job failed: the fallback is an extra safeguard, not a precondition.
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -65,7 +90,56 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Run weekly verification
+      - name: Pick the run mode
+        id: mode
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          SWEEP_INPUT: ${{ inputs.sweep }}
+        run: |
+          mode=weekly
+          case "${SCHEDULE}" in
+            "") ;;
+            "0 11 * * 1") mode=weekly ;;
+            "0 11 * * 2,5") mode=news ;;
+            "0 11 * * 0,3,4,6") mode=news-7 ;;
+            *) echo "::error::Unknown schedule '${SCHEDULE}': add it to this step."; exit 1 ;;
+          esac
+          case "${SWEEP_INPUT}" in
+            ""|none) ;;
+            news|news-7) mode="${SWEEP_INPUT}" ;;
+            *) echo "::error::'sweep' must be none, news or news-7."; exit 1 ;;
+          esac
+          echo "mode=${mode}" >> "${GITHUB_OUTPUT}"
+          echo "- Mode: ${mode}" >> "${GITHUB_STEP_SUMMARY}"
+
+      # R13 needs this week's link verdicts; links.yml raises the R6 alert, here a broken link only
+      # feeds the confidence downgrade. No secret reaches this step.
+      - name: Check links for R13 (weekly run only)
+        id: links
+        if: steps.mode.outputs.mode == 'weekly'
+        continue-on-error: true
+        run: |
+          day="$(date -u +%F)"
+          if ! node scripts/check-links.ts "--today=${day}"; then
+            echo "::warning::check-links reported broken links; see proposals/links-${day}.md in the artifact."
+          fi
+          if [ -f "proposals/links-${day}.json" ]; then
+            echo "path=${PWD}/proposals/links-${day}.json" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Prepare the usage fallback
+        id: fallback
+        env:
+          USAGE_JSON: ${{ needs.usage.outputs.json }}
+        run: |
+          path=""
+          if [ -n "${USAGE_JSON}" ]; then
+            path="${RUNNER_TEMP}/usage-fallback.json"
+            printf '%s\n' "${USAGE_JSON}" > "${path}"
+          fi
+          echo "path=${path}" >> "${GITHUB_OUTPUT}"
+
+      - name: Run weekly verification or news sweep
         id: refresh
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -77,6 +151,9 @@ jobs:
           TRAP_SECRET: ${{ secrets.TRAP_SECRET }}
           ONLY_SLUG: ${{ inputs.only }}
           ONLY_COUNTRY: ${{ inputs.country }}
+          MODE: ${{ steps.mode.outputs.mode }}
+          USAGE_FALLBACK_PATH: ${{ steps.fallback.outputs.path }}
+          LINKS_REPORT_PATH: ${{ steps.links.outputs.path }}
         run: |
           if [ -z "${ANTHROPIC_API_KEY}" ]; then
             echo "::error::Repository secret ANTHROPIC_API_KEY is not set (README, first-time setup)."
@@ -98,7 +175,29 @@ jobs:
             fi
             args+=("--country=${ONLY_COUNTRY^^}")
           fi
+          case "${MODE}" in
+            weekly) ;;
+            news) args+=("--sweep=news") ;;
+            news-7) args+=("--sweep=news" "--within=7") ;;
+            *) echo "::error::Unknown mode '${MODE}'."; exit 1 ;;
+          esac
           pnpm refresh -- "${args[@]}"
+
+      # R10: snapshot data/usage.json now, before the pull request step switches branches. The next
+      # run's usage job reads the "usage" artifact. The script writes the merged total before its
+      # first call, so a changed file is never below the previous artifact; an unchanged one is
+      # not uploaded and the previous artifact stays the latest.
+      - name: Snapshot usage for the next run
+        id: usage
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain -- data/usage.json)" ]; then
+            mkdir -p "${RUNNER_TEMP}/usage"
+            cp data/usage.json "${RUNNER_TEMP}/usage/usage.json"
+            echo "changed=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "changed=false" >> "${GITHUB_OUTPUT}"
+          fi
 
       # Schema validation of every country file, and the committed index that ci.yml checks
       # for drift. A proposal that breaks the schema stops here, before any PR exists.
@@ -145,7 +244,7 @@ jobs:
           body="${RUNNER_TEMP}/pr-body.md"
           proposal="proposals/${day}.md"
           if [ ! -f "${proposal}" ]; then
-            proposal="$(find proposals -maxdepth 1 -type f -name '*.md' -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2- || true)"
+            proposal="$(find proposals -maxdepth 1 -type f -name '*.md' ! -name 'links-*' -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2- || true)"
           fi
           if [ -n "${proposal}" ] && [ -f "${proposal}" ]; then
             cat "${proposal}" > "${body}"
@@ -224,4 +323,13 @@ jobs:
             proposals/
             data/usage.json
           if-no-files-found: warn
+          retention-days: 90
+
+      - name: Upload usage for the next run (R10)
+        if: always() && steps.usage.outputs.changed == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: usage
+          path: ${{ runner.temp }}/usage/usage.json
+          if-no-files-found: error
           retention-days: 90
