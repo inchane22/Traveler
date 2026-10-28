@@ -17,7 +17,7 @@
       "rule": { "type": "fixed", "start": "10-31", "end": "11-02" },
       "editions": {
         "2026": {
-          "status": "confirmada",
+          "status": "tentativa",
           "confidence": "oficial",
           "key_events": [
             { "id": "desfile-alebrijes", "name": { "es": "Desfile de Alebrijes Monumentales", "en": "Monumental Alebrijes Parade", "pt": "Desfile de Alebrijes Monumentais" }, "date": "2026-10-17", "confidence": "oficial" },
@@ -30,8 +30,8 @@
             { "url": "https://www.publimetro.com.mx/noticias/2026/10/21/dia-de-muertos-2026-en-cdmx-fechas-horarios-del-desfile-catrina-gigante-y-actividades-gratis/", "publisher": "Publimetro", "accessed": "2026-10-26", "tier": "B", "quote": "se realizará el sábado 31 de octubre, a partir de las 14:00 horas" }
           ],
           "last_verified": "2026-10-26",
-          "sequence": 0,
-          "note": { "es": "La Ofrenda Monumental abre el 29 de octubre según el sitio oficial y el 30 según Publimetro.", "en": "The Monumental Offering opens October 29 per the official site and October 30 per Publimetro.", "pt": "A Oferenda Monumental abre em 29 de outubro segundo o site oficial e em 30 segundo o Publimetro." }
+          "sequence": 1,
+          "note": { "es": "El Gobierno de la CDMX confirma la temporada 2026 y fecha sus eventos, pero no publica inicio ni fin de la fiesta; los días siguen el patrón (31 de octubre a 2 de noviembre). La Ofrenda Monumental abre el 29 de octubre según el sitio oficial y el 30 según Publimetro.", "en": "Mexico City's government confirms the 2026 season and dates its events, but publishes no start or end for the festival; the days follow the pattern (October 31 to November 2). The Monumental Offering opens October 29 per the official site and October 30 per Publimetro.", "pt": "O Governo da CDMX confirma a temporada 2026 e data seus eventos, mas não publica início nem fim da festa; os dias seguem o padrão (31 de outubro a 2 de novembro). A Oferenda Monumental abre em 29 de outubro segundo o site oficial e em 30 segundo o Publimetro." }
         }
       },
       "score": {
@@ -78,7 +78,7 @@
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 1000000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.publimetro.com.mx/jalisco/2026/10/12/la-fe-pudo-mas-y-un-millon-acompano-a-la-virgen-de-zapopan-pese-a-alerta-por-simon/", "note": { "es": "Estimación de la Arquidiócesis de Guadalajara; hubo alerta de lluvia por el huracán Simon.", "en": "Estimate by the Archdiocese of Guadalajara; there was a rain alert from Hurricane Simon.", "pt": "Estimativa da Arquidiocese de Guadalajara; houve alerta de chuva pelo furacão Simon." } },
-        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/la-romeria-the-pilgrimage-ritual-cycle-of-la-llevada-the-carrying-of-the-virgin-of-zapopan-01400", "note": { "es": "Peregrinación a pie por la calle; la UNESCO habla de más de dos millones de participantes.", "en": "Walking pilgrimage through the streets; UNESCO cites more than two million participants.", "pt": "Peregrinação a pé pelas ruas; a UNESCO fala em mais de dois milhões de participantes." } },
+        "calle": null,
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/la-romeria-the-pilgrimage-ritual-cycle-of-la-llevada-the-carrying-of-the-virgin-of-zapopan-01400", "note": { "es": "Inscrita en 2018.", "en": "Inscribed in 2018.", "pt": "Inscrita em 2018." } },
         "conectividad": { "measure": "internacional", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Guadalajara_International_Airport", "note": { "es": "Aeropuerto de la zona metropolitana, en Tlajomulco.", "en": "Metro-area airport, in Tlajomulco.", "pt": "Aeroporto da região metropolitana, em Tlajomulco." } },
         "local": { "measure": "gran_ciudad", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Zapopan" }
@@ -99,7 +99,7 @@
       "editions": {},
       "score": {
         "convocatoria": null,
-        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/parachicos-in-the-traditional-january-feast-of-chiapa-de-corzo-00399", "note": { "es": "Procesiones con los santos por toda la ciudad.", "en": "Processions with the saints all over town.", "pt": "Procissões com os santos por toda a cidade." } },
+        "calle": null,
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/parachicos-in-the-traditional-january-feast-of-chiapa-de-corzo-00399", "note": { "es": "Parachicos, inscritos en 2010.", "en": "Parachicos, inscribed in 2010.", "pt": "Parachicos, inscritos em 2010." } },
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/%C3%81ngel_Albino_Corzo_International_Airport", "note": { "es": "TGZ está en el municipio; su única ruta internacional (Houston) se reanuda el 28 de octubre de 2026.", "en": "TGZ is in the municipality; its only international route (Houston) resumes on October 28, 2026.", "pt": "TGZ fica no município; sua única rota internacional (Houston) volta em 28 de outubro de 2026." } },
         "local": { "measure": "pueblo", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Chiapa_de_Corzo,_Chiapas" }

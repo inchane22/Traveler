@@ -171,11 +171,29 @@ describe("other rule shapes", () => {
     expect(resolveRule({ type: "relative_to", ref: "nope", anchor: "end", offset: 1, duration_days: 2 }, 2027, noRefs)).toBeNull();
   });
 
+  test("a tentative edition without dates keeps the rule dates, labeled as pattern", () => {
+    const f = festival({
+      rule: { type: "fixed", start: "11-10", end: "11-16" },
+      editions: { "2026": { status: "tentativa", confidence: "prensa", key_events: [], sources: [{ url: "https://www.eluniversal.com.co/x", publisher: "El Universal", accessed: "2026-10-26" }], sequence: 0 } },
+    });
+    expect(occurrenceFor(f, 2026, noRefs)).toMatchObject({ start: "2026-11-10", end: "2026-11-16", status: "tentativa", confidence: "patron", origin: "edition" });
+  });
+
   test("an edition with status but no dates keeps the rule window and the edition status", () => {
     const f = festival({
       rule: { type: "announced", window: { start: "08-01", end: "08-31" } },
       editions: { "2027": { status: "aplazada", confidence: "prensa", key_events: [], sources: [{ url: "https://radionacional.co/x", publisher: "Radio Nacional", accessed: "2026-10-26" }], sequence: 1 } },
     });
     expect(occurrenceFor(f, 2027, noRefs)).toMatchObject({ status: "aplazada", window: { start: "2027-08-01", end: "2027-08-31" } });
+  });
+});
+
+describe("schema guards", () => {
+  test("a confirmed edition needs its dates and a source", async () => {
+    const { Edition } = await import("../../src/schema.ts");
+    const src = [{ url: "https://a.org/x", publisher: "A", accessed: "2026-10-26" }];
+    expect(Edition.safeParse({ status: "confirmada", confidence: "oficial", sources: src }).success).toBe(false);
+    expect(Edition.safeParse({ status: "confirmada", confidence: "oficial", start: "2027-01-02", end: "2027-01-07", sources: [] }).success).toBe(false);
+    expect(Edition.safeParse({ status: "confirmada", confidence: "oficial", start: "2027-01-02", end: "2027-01-07", sources: src }).success).toBe(true);
   });
 });

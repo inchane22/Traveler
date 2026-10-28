@@ -150,7 +150,7 @@
         "2026": {
           "start": "2026-08-01",
           "end": "2026-08-01",
-          "status": "confirmada",
+          "status": "tentativa",
           "confidence": "prensa",
           "key_events": [],
           "sources": [
@@ -170,11 +170,11 @@
             }
           ],
           "last_verified": "2026-10-26",
-          "sequence": 0,
+          "sequence": 1,
           "note": {
-            "es": "En 2026 la entrada se postergó dos veces por conflictos sociales y bloqueos, y salió el 1 de agosto, lejos de la fecha habitual antes de la Trinidad.",
-            "en": "In 2026 the parade was postponed twice by social unrest and road blockades and took place on 1 August, far from its usual pre-Trinity date.",
-            "pt": "Em 2026 a entrada foi adiada duas vezes por conflitos sociais e bloqueios e saiu em 1º de agosto, longe da data habitual antes da Trindade."
+            "es": "En 2026 la entrada se postergó dos veces por conflictos sociales y bloqueos, y salió el 1 de agosto, lejos de la fecha habitual antes de la Trinidad. Solo hay fuentes de nivel C para esa fecha.",
+            "en": "In 2026 the entrada was postponed twice because of social unrest and road blockades, and took place on August 1, far from its usual date before Trinity. Only tier C sources give that date.",
+            "pt": "Em 2026 a entrada foi adiada duas vezes por conflitos sociais e bloqueios, e saiu em 1º de agosto, longe da data habitual antes da Trindade. Só há fontes de nível C para essa data."
           }
         }
       },
@@ -251,9 +251,7 @@
       },
       "editions": {
         "2026": {
-          "start": "2026-08-14",
-          "end": "2026-08-16",
-          "status": "confirmada",
+          "status": "tentativa",
           "confidence": "prensa",
           "key_events": [
             {
@@ -311,7 +309,12 @@
             }
           ],
           "last_verified": "2026-10-26",
-          "sequence": 0
+          "sequence": 1,
+          "note": {
+            "es": "Los Tiempos confirma la entrada del 14 de agosto; ninguna fuente A o B fecha el cierre, así que los días siguen el patrón (14 a 16 de agosto).",
+            "en": "Los Tiempos confirms the August 14 entrada; no A or B source dates the close, so the days follow the pattern (August 14 to 16).",
+            "pt": "Los Tiempos confirma a entrada de 14 de agosto; nenhuma fonte A ou B data o encerramento, então os dias seguem o padrão (14 a 16 de agosto)."
+          }
         }
       },
       "score": {
@@ -329,8 +332,7 @@
         },
         "conectividad": {
           "measure": "ninguno",
-          "confidence": "oficial",
-          "source": "https://en.wikipedia.org/wiki/Jorge_Wilstermann_International_Airport",
+          "confidence": "estimacion",
           "note": {
             "es": "Quillacollo no tiene aeropuerto; CBB está en Cochabamba, a unos 13 km.",
             "en": "Quillacollo has no airport; CBB is in Cochabamba, about 13 km away.",

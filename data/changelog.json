@@ -1,1 +1,812 @@
-[]
+[
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "confidence",
+    "old": "prensa",
+    "new": "oficial",
+    "source_urls": ["https://www.cali.gov.co/publicaciones/193104/cali-la-ciudad-de-los-grandes-eventos-se-prepara-para-vivir-un-segundo-semestre-historico/", "https://www.lafm.com.co/actualidad/feria-de-cali-si-se-realizara-pese-al-terremoto-alcalde-alejandro-eder-confirmo-el-evento-408792"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "start",
+    "old": null,
+    "new": "2027-04-28",
+    "source_urls": ["https://www.larepublica.co/ocio/el-festival-de-la-leyenda-vallenata-prepara-una-edicion-historica-para-2027-4479547"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "end",
+    "old": null,
+    "new": "2027-05-01",
+    "source_urls": ["https://www.larepublica.co/ocio/el-festival-de-la-leyenda-vallenata-prepara-una-edicion-historica-para-2027-4479547"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "status",
+    "old": null,
+    "new": "confirmada",
+    "source_urls": ["https://www.larepublica.co/ocio/el-festival-de-la-leyenda-vallenata-prepara-una-edicion-historica-para-2027-4479547"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-tambores-palenque",
+    "field": "start",
+    "old": null,
+    "new": "2026-10-09",
+    "source_urls": ["https://www.semana.com/mejor-colombia/articulo/los-tambores-vuelven-a-sonar-en-san-basilio-de-palenque-asi-sera-el-festival-que-celebra-la-memoria-y-resistencia-del-pueblo-afrocolombiano/202601/", "https://radionacional.co/noticias-colombia/festivales-en-octubre-ferias-y-eventos-culturales-en-colombia", "https://www.radionacional.co/emisoras-de-la-reconciliacion/san-basilio-de-palenque-celebro-el-festival-de-tambores-y-expresiones"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-tambores-palenque",
+    "field": "end",
+    "old": null,
+    "new": "2026-10-12",
+    "source_urls": ["https://www.semana.com/mejor-colombia/articulo/los-tambores-vuelven-a-sonar-en-san-basilio-de-palenque-asi-sera-el-festival-que-celebra-la-memoria-y-resistencia-del-pueblo-afrocolombiano/202601/", "https://radionacional.co/noticias-colombia/festivales-en-octubre-ferias-y-eventos-culturales-en-colombia", "https://www.radionacional.co/emisoras-de-la-reconciliacion/san-basilio-de-palenque-celebro-el-festival-de-tambores-y-expresiones"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-tambores-palenque",
+    "field": "status",
+    "old": null,
+    "new": "confirmada",
+    "source_urls": ["https://www.semana.com/mejor-colombia/articulo/los-tambores-vuelven-a-sonar-en-san-basilio-de-palenque-asi-sera-el-festival-que-celebra-la-memoria-y-resistencia-del-pueblo-afrocolombiano/202601/", "https://radionacional.co/noticias-colombia/festivales-en-octubre-ferias-y-eventos-culturales-en-colombia", "https://www.radionacional.co/emisoras-de-la-reconciliacion/san-basilio-de-palenque-celebro-el-festival-de-tambores-y-expresiones"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "status",
+    "old": null,
+    "new": "tentativa",
+    "source_urls": ["https://www.eluniversal.com.co/farandula/2026/09/16/fiestas-de-la-independencia-2026-la-agenda-oficial-y-artistas-confirmados/", "https://www.eluniversal.com.co/cartagena/2026/10/19/alcaldia-de-cartagena-decreta-3-dias-civicos-para-las-fiestas-de-independencia-estos-son/", "https://ipcc.gov.co/cartagena-alista-sus-obras-para-las-fiestas-de-independencia-2026-macrofiguras-para-un-museo-a-cielo-abierto-y-carrozas-para-el-bando/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "start",
+    "old": null,
+    "new": "2026-07-31",
+    "source_urls": ["https://www.medellin.gov.co/es/sala-de-prensa/noticias/proyeccion-feria-de-las-flores-2026/", "https://telemedellin.tv/?p=191725"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "end",
+    "old": null,
+    "new": "2026-08-09",
+    "source_urls": ["https://www.medellin.gov.co/es/sala-de-prensa/noticias/proyeccion-feria-de-las-flores-2026/", "https://telemedellin.tv/?p=191725"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "status",
+    "old": null,
+    "new": "confirmada",
+    "source_urls": ["https://www.medellin.gov.co/es/sala-de-prensa/noticias/proyeccion-feria-de-las-flores-2026/", "https://telemedellin.tv/?p=191725"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "status",
+    "old": null,
+    "new": "aplazada",
+    "source_urls": ["https://radionacional.co/cultura/el-sector-cultural-renace-festivales-aplazados-por-el-terremoto-cuentan-con-nuevas-fechas", "https://www.cali.gov.co/cultura/publicaciones/193597/comunicado-a-la-opinion-publica/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "key_events.baila-la-calle",
+    "old": null,
+    "new": "2027-02-04",
+    "source_urls": ["https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "key_events.gran-parada-de-tradicion",
+    "old": null,
+    "new": "2027-02-07",
+    "source_urls": ["https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "key_events.gran-parada-de-comparsas",
+    "old": null,
+    "new": "2027-02-08",
+    "source_urls": ["https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "key_events.martes-de-carnaval",
+    "old": null,
+    "new": "2027-02-09",
+    "source_urls": ["https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "key_events.dia-central",
+    "old": null,
+    "new": "2026-11-11",
+    "source_urls": ["https://www.eluniversal.com.co/farandula/2026/09/16/fiestas-de-la-independencia-2026-la-agenda-oficial-y-artistas-confirmados/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "key_events.gran-desfile-de-independencia",
+    "old": null,
+    "new": "2026-11-12",
+    "source_urls": ["https://www.eluniversal.com.co/farandula/2026/09/16/cartagena-presenta-oficialmente-la-agenda-de-las-fiestas-2026/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "key_events.festival-nautico-y-bololo-del-arsenal",
+    "old": null,
+    "new": "2026-11-13",
+    "source_urls": ["https://www.eluniversal.com.co/farandula/2026/09/16/fiestas-de-la-independencia-2026-la-agenda-oficial-y-artistas-confirmados/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "key_events.cabildo-de-getsemani-y-coronacion",
+    "old": null,
+    "new": "2026-11-15",
+    "source_urls": ["https://www.eluniversal.com.co/farandula/2026/09/16/fiestas-de-la-independencia-2026-la-agenda-oficial-y-artistas-confirmados/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "key_events.reinado-intercorregimental",
+    "old": null,
+    "new": "2026-11-16",
+    "source_urls": ["https://www.eluniversal.com.co/farandula/2026/09/16/fiestas-de-la-independencia-2026-la-agenda-oficial-y-artistas-confirmados/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "key_events.desfile-chivas-y-flores",
+    "old": null,
+    "new": "2026-08-01",
+    "source_urls": ["https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "key_events.avenida-primavera",
+    "old": null,
+    "new": "2026-08-02",
+    "source_urls": ["https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "key_events.desfile-autos-clasicos-y-antiguos",
+    "old": null,
+    "new": "2026-08-07",
+    "source_urls": ["https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "key_events.desfile-de-silleteros",
+    "old": null,
+    "new": "2026-08-09",
+    "source_urls": ["https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.convocatoria",
+    "old": 700000,
+    "new": 1950000,
+    "source_urls": ["https://www.cali.gov.co/galeria/32472/la-68-feria-de-cali-cerro-con-balance-historico-1950000-asistentes-y-45-millones-de-dolares-para-la-economia-de-la-ciudad/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.convocatoria",
+    "old": 137672,
+    "new": 227727,
+    "source_urls": ["https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.reconocimiento",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://colombia.justia.com/nacionales/leyes/ley-739-de-2002/gdoc/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "score.reconocimiento",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.eluniversal.com.co/cultural/2026/07/17/cartagena-celebra-sus-fiestas-de-independencia-ya-son-patrimonio-nacional/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "score.convocatoria",
+    "old": null,
+    "new": 300000,
+    "source_urls": ["https://telemedellin.tv/?p=132129"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "score.calle",
+    "old": null,
+    "new": "mayoria_gratis",
+    "source_urls": ["https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "score.reconocimiento",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.medellin.gov.co/es/sala-de-prensa/noticias/la-cultura-silletera-patrimonio-cultural-inmaterial-de-la-nacion-y-orgullo-de-medellin/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "score.convocatoria",
+    "old": null,
+    "new": 800000,
+    "source_urls": ["https://www.cali.gov.co/publicaciones/188479/exito-total-mas-de-800000-personas-vibraron-con-el-festival-petronio-alvarez-2025/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "score.reconocimiento",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.dmsjuridica.com/buscador_20179478954/legislacion/leyes/2020/11/24/ley-1472-de-2011/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.convocatoria.confidence",
+    "old": "prensa",
+    "new": "estimacion",
+    "source_urls": ["https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.reconocimiento.source",
+    "old": null,
+    "new": "https://ich.unesco.org/en/RL/carnival-of-barranquilla-00051",
+    "source_urls": ["https://ich.unesco.org/en/RL/carnival-of-barranquilla-00051"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.conectividad.confidence",
+    "old": "oficial",
+    "new": "prensa",
+    "source_urls": ["https://en.wikipedia.org/wiki/Ernesto_Cortissoz_International_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.conectividad.source",
+    "old": null,
+    "new": "https://en.wikipedia.org/wiki/Ernesto_Cortissoz_International_Airport",
+    "source_urls": ["https://en.wikipedia.org/wiki/Ernesto_Cortissoz_International_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.convocatoria.qualifier",
+    "old": "about",
+    "new": "more_than",
+    "source_urls": ["https://forbes.co/2026/01/07/actualidad/carnaval-de-negros-y-blancos-atrajo-mas-de-250-000-turistas-a-pasto/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.convocatoria.unit",
+    "old": "tourists",
+    "new": "attendees",
+    "source_urls": ["https://forbes.co/2026/01/07/actualidad/carnaval-de-negros-y-blancos-atrajo-mas-de-250-000-turistas-a-pasto/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.convocatoria.source",
+    "old": "https://www.diariodelsur.com.co/?p=468063",
+    "new": "https://forbes.co/2026/01/07/actualidad/carnaval-de-negros-y-blancos-atrajo-mas-de-250-000-turistas-a-pasto/",
+    "source_urls": ["https://forbes.co/2026/01/07/actualidad/carnaval-de-negros-y-blancos-atrajo-mas-de-250-000-turistas-a-pasto/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.reconocimiento.source",
+    "old": null,
+    "new": "https://ich.unesco.org/en/RL/carnaval-de-negros-y-blancos-00287",
+    "source_urls": ["https://ich.unesco.org/en/RL/carnaval-de-negros-y-blancos-00287"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.conectividad.confidence",
+    "old": "oficial",
+    "new": "prensa",
+    "source_urls": ["https://en.wikipedia.org/wiki/Antonio_Nari%C3%B1o_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.conectividad.source",
+    "old": null,
+    "new": "https://en.wikipedia.org/wiki/Antonio_Nari%C3%B1o_Airport",
+    "source_urls": ["https://en.wikipedia.org/wiki/Antonio_Nari%C3%B1o_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.convocatoria.qualifier",
+    "old": "more_than",
+    "new": "exact",
+    "source_urls": ["https://www.cali.gov.co/galeria/32472/la-68-feria-de-cali-cerro-con-balance-historico-1950000-asistentes-y-45-millones-de-dolares-para-la-economia-de-la-ciudad/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.convocatoria.confidence",
+    "old": "estimacion",
+    "new": "oficial",
+    "source_urls": ["https://www.cali.gov.co/galeria/32472/la-68-feria-de-cali-cerro-con-balance-historico-1950000-asistentes-y-45-millones-de-dolares-para-la-economia-de-la-ciudad/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.convocatoria.source",
+    "old": "https://www.farandahotels.com/en/blog/descubre-la-feria-de-cali-2026-fechas-alojamiento",
+    "new": "https://www.cali.gov.co/galeria/32472/la-68-feria-de-cali-cerro-con-balance-historico-1950000-asistentes-y-45-millones-de-dolares-para-la-economia-de-la-ciudad/",
+    "source_urls": ["https://www.cali.gov.co/galeria/32472/la-68-feria-de-cali-cerro-con-balance-historico-1950000-asistentes-y-45-millones-de-dolares-para-la-economia-de-la-ciudad/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.conectividad.confidence",
+    "old": "oficial",
+    "new": "prensa",
+    "source_urls": ["https://en.wikipedia.org/wiki/Alfonso_Bonilla_Arag%C3%B3n_International_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.conectividad.source",
+    "old": null,
+    "new": "https://en.wikipedia.org/wiki/Alfonso_Bonilla_Arag%C3%B3n_International_Airport",
+    "source_urls": ["https://en.wikipedia.org/wiki/Alfonso_Bonilla_Arag%C3%B3n_International_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.convocatoria.unit",
+    "old": "tourists",
+    "new": "visitors",
+    "source_urls": ["https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.convocatoria.year",
+    "old": 2022,
+    "new": 2024,
+    "source_urls": ["https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.convocatoria.source",
+    "old": "https://www.pulzo.com/nacion/cuantos-turistas-asistieron-festival-vallenato-55-PP1396134A",
+    "new": "https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162",
+    "source_urls": ["https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.conectividad.confidence",
+    "old": "oficial",
+    "new": "prensa",
+    "source_urls": ["https://en.wikipedia.org/wiki/Alfonso_L%C3%B3pez_Pumarejo_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.conectividad.source",
+    "old": null,
+    "new": "https://en.wikipedia.org/wiki/Alfonso_L%C3%B3pez_Pumarejo_Airport",
+    "source_urls": ["https://en.wikipedia.org/wiki/Alfonso_L%C3%B3pez_Pumarejo_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "san-pacho",
+    "field": "score.reconocimiento.source",
+    "old": null,
+    "new": "https://ich.unesco.org/en/RL/festival-of-saint-francis-of-assisi-quibdo-00640",
+    "source_urls": ["https://ich.unesco.org/en/RL/festival-of-saint-francis-of-assisi-quibdo-00640"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-tambores-palenque",
+    "field": "score.reconocimiento.source",
+    "old": null,
+    "new": "https://ich.unesco.org/en/RL/cultural-space-of-palenque-de-san-basilio-00102",
+    "source_urls": ["https://ich.unesco.org/en/RL/cultural-space-of-palenque-de-san-basilio-00102"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-riosucio",
+    "field": "score.convocatoria.year",
+    "old": 2023,
+    "new": 2025,
+    "source_urls": ["https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-riosucio",
+    "field": "score.convocatoria.confidence",
+    "old": "oficial",
+    "new": "estimacion",
+    "source_urls": ["https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-riosucio",
+    "field": "score.reconocimiento.source",
+    "old": null,
+    "new": "https://vlex.com.co/vid/ley-1736-21-noviembre-545971446",
+    "source_urls": ["https://vlex.com.co/vid/ley-1736-21-noviembre-545971446"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "score.conectividad.confidence",
+    "old": "oficial",
+    "new": "prensa",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "score.conectividad.source",
+    "old": null,
+    "new": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "score.conectividad.confidence",
+    "old": "oficial",
+    "new": "prensa",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "score.conectividad.source",
+    "old": null,
+    "new": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "score.conectividad.confidence",
+    "old": "oficial",
+    "new": "prensa",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "score.conectividad.source",
+    "old": null,
+    "new": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "note",
+    "old": null,
+    "new": "El organizador marca el Martes de Carnaval (9 de febrero) «a confirmar»; el resto del programa tiene fecha.",
+    "source_urls": ["https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.convocatoria.note",
+    "old": null,
+    "new": "Suma eventos presenciales y transmisiones; en persona, la ciudad recibió más de 820.000 visitantes (2026).",
+    "source_urls": ["https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.reconocimiento.note",
+    "old": null,
+    "new": "Lista Representativa de la UNESCO desde 2008 (obra maestra en 2003).",
+    "source_urls": ["https://ich.unesco.org/en/RL/carnival-of-barranquilla-00051"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.conectividad.note",
+    "old": null,
+    "new": "BAQ está en Soledad, en el área metropolitana, con vuelos a Miami y Panamá.",
+    "source_urls": ["https://en.wikipedia.org/wiki/Ernesto_Cortissoz_International_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.convocatoria.note",
+    "old": null,
+    "new": "Cifra de la Gobernación de Nariño para el 2 al 7 de enero de 2026; el texto dice personas, no turistas.",
+    "source_urls": ["https://forbes.co/2026/01/07/actualidad/carnaval-de-negros-y-blancos-atrajo-mas-de-250-000-turistas-a-pasto/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.reconocimiento.note",
+    "old": null,
+    "new": "Lista Representativa de la UNESCO desde 2009.",
+    "source_urls": ["https://ich.unesco.org/en/RL/carnaval-de-negros-y-blancos-00287"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.conectividad.note",
+    "old": null,
+    "new": "PSO está en Chachagüí, a 35 km de Pasto, y solo tiene vuelos nacionales.",
+    "source_urls": ["https://en.wikipedia.org/wiki/Antonio_Nari%C3%B1o_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "note",
+    "old": "Confirmada tras el sismo; programa diario pendiente.",
+    "new": "Fechas de la agenda oficial de la Alcaldía, publicada el 24 de junio, antes del sismo del 10 de agosto; tras el sismo, el alcalde confirmó la Feria para diciembre. Programa diario pendiente.",
+    "source_urls": ["https://www.cali.gov.co/publicaciones/193104/cali-la-ciudad-de-los-grandes-eventos-se-prepara-para-vivir-un-segundo-semestre-historico/", "https://www.lafm.com.co/actualidad/feria-de-cali-si-se-realizara-pese-al-terremoto-alcalde-alejandro-eder-confirmo-el-evento-408792"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.convocatoria.note",
+    "old": "Fuente comercial, débil.",
+    "new": "Titular del balance de la Alcaldía para la Feria 68, sin método; parece sumar la asistencia de todos los eventos. Corfecali cuenta más de 450.000 en los eventos oficiales.",
+    "source_urls": ["https://www.cali.gov.co/galeria/32472/la-68-feria-de-cali-cerro-con-balance-historico-1950000-asistentes-y-45-millones-de-dolares-para-la-economia-de-la-ciudad/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.conectividad.note",
+    "old": null,
+    "new": "CLO está entre Palmira y Cali.",
+    "source_urls": ["https://en.wikipedia.org/wiki/Alfonso_Bonilla_Arag%C3%B3n_International_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "note",
+    "old": null,
+    "new": "Edición 60, de Rey de Reyes. Las fechas las dio el presidente de la Fundación a la prensa en septiembre de 2026; el sitio del festival aún no publica el calendario.",
+    "source_urls": ["https://www.larepublica.co/ocio/el-festival-de-la-leyenda-vallenata-prepara-una-edicion-historica-para-2027-4479547", "https://festivalvallenato.com/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.convocatoria.note",
+    "old": "Edición 55.",
+    "new": "Cámara de Comercio de Valledupar, edición 57; el DANE habla de unos 227.000 asistentes en su nota previa a la edición 2026.",
+    "source_urls": ["https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.conectividad.note",
+    "old": null,
+    "new": "VUP solo tiene vuelos nacionales.",
+    "source_urls": ["https://en.wikipedia.org/wiki/Alfonso_L%C3%B3pez_Pumarejo_Airport"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "san-pacho",
+    "field": "score.reconocimiento.note",
+    "old": null,
+    "new": "Lista Representativa de la UNESCO desde 2012.",
+    "source_urls": ["https://ich.unesco.org/en/RL/festival-of-saint-francis-of-assisi-quibdo-00640"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-tambores-palenque",
+    "field": "note",
+    "old": null,
+    "new": "Edición 41, ya celebrada.",
+    "source_urls": ["https://www.semana.com/mejor-colombia/articulo/los-tambores-vuelven-a-sonar-en-san-basilio-de-palenque-asi-sera-el-festival-que-celebra-la-memoria-y-resistencia-del-pueblo-afrocolombiano/202601/", "https://radionacional.co/noticias-colombia/festivales-en-octubre-ferias-y-eventos-culturales-en-colombia", "https://www.radionacional.co/emisoras-de-la-reconciliacion/san-basilio-de-palenque-celebro-el-festival-de-tambores-y-expresiones"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "festival-tambores-palenque",
+    "field": "score.reconocimiento.note",
+    "old": null,
+    "new": "La inscripción de 2008 es del espacio cultural de Palenque de San Basilio, no del festival.",
+    "source_urls": ["https://ich.unesco.org/en/RL/cultural-space-of-palenque-de-san-basilio-00102"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-riosucio",
+    "field": "note",
+    "old": null,
+    "new": "Fechas publicadas antes del sismo del 10 de agosto de 2026, que golpeó a Caldas; aún no hay confirmación posterior.",
+    "source_urls": ["https://www.lapatria.com/caldas/el-carnaval-de-riosucio-vuelve-sacar-los-cachos-fecha-y-hora-de-instalacion-de-la-republica", "https://www.paho.org/es/documentos/informe-situacion-2-colombia-terremoto-agosto-2026-10-agosto-2026"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-riosucio",
+    "field": "score.convocatoria.note",
+    "old": "Visitantes esperados en 2023.",
+    "new": "Visitantes esperados para la edición 2025; es un pronóstico, no un conteo.",
+    "source_urls": ["https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "carnaval-riosucio",
+    "field": "score.reconocimiento.note",
+    "old": null,
+    "new": "La Ley 1736 de 2014 lo declara Patrimonio Cultural y Artístico de la Nación (copia en vLex).",
+    "source_urls": ["https://vlex.com.co/vid/ley-1736-21-noviembre-545971446"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "note",
+    "old": null,
+    "new": "La agenda oficial va de octubre a mediados de noviembre y no fija un día de inicio, así que los días son los del patrón (10 a 16 de noviembre). Días cívicos: 11, 12 y 13 de noviembre (Decreto 0478).",
+    "source_urls": ["https://www.eluniversal.com.co/farandula/2026/09/16/cartagena-presenta-oficialmente-la-agenda-de-las-fiestas-2026/", "https://www.eluniversal.com.co/cartagena/2026/10/19/alcaldia-de-cartagena-decreta-3-dias-civicos-para-las-fiestas-de-independencia-estos-son/"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "score.conectividad.note",
+    "old": null,
+    "new": "CTG, Aeropuerto Internacional Rafael Núñez.",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "note",
+    "old": null,
+    "new": "Edición 2026, ya celebrada.",
+    "source_urls": ["https://www.medellin.gov.co/es/sala-de-prensa/noticias/proyeccion-feria-de-las-flores-2026/", "https://telemedellin.tv/?p=191725"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "score.conectividad.note",
+    "old": null,
+    "new": "MDE, José María Córdova, está en Rionegro; el Olaya Herrera de la ciudad es solo nacional.",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "note",
+    "old": null,
+    "new": "Suspendida el 10 de agosto por el sismo; iba del 12 al 17 de agosto. La Secretaría de Cultura apuntó a noviembre, sin fecha anunciada.",
+    "source_urls": ["https://www.cali.gov.co/cultura/publicaciones/193597/comunicado-a-la-opinion-publica/", "https://www.elpais.com.co/cali/julian-arteaga-secretario-de-cultura-el-arte-y-las-expresiones-culturales-son-necesarias-para-que-la-ciudad-sane-0400.html"]
+  },
+  {
+    "date": "2026-10-26",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "score.conectividad.note",
+    "old": null,
+    "new": "CLO está entre Palmira y Cali.",
+    "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  }
+]

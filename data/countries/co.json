@@ -24,20 +24,25 @@
           "key_events": [
             { "id": "lectura-del-bando", "name": { "es": "Lectura del Bando", "en": "Reading of the Bando", "pt": "Leitura do Bando" }, "date": "2027-01-16", "confidence": "oficial" },
             { "id": "guacherna", "name": { "es": "Guacherna", "en": "Guacherna night parade", "pt": "Guacherna" }, "date": "2027-01-29", "rule": { "type": "relative_to", "ref": "carnaval-barranquilla", "anchor": "start", "offset": -8, "duration_days": 1 }, "confidence": "oficial" },
-            { "id": "batalla-de-flores", "name": { "es": "Batalla de Flores", "en": "Battle of Flowers", "pt": "Batalha de Flores" }, "date": "2027-02-06", "confidence": "oficial" }
+            { "id": "batalla-de-flores", "name": { "es": "Batalla de Flores", "en": "Battle of Flowers", "pt": "Batalha de Flores" }, "date": "2027-02-06", "confidence": "oficial" },
+            { "id": "baila-la-calle", "name": { "es": "Baila la Calle", "en": "Baila la Calle street dancing", "pt": "Baila la Calle" }, "date": "2027-02-04", "end": "2027-02-07", "confidence": "oficial" },
+            { "id": "gran-parada-de-tradicion", "name": { "es": "Gran Parada de Tradición", "en": "Grand Parade of Tradition", "pt": "Grande Desfile da Tradição" }, "date": "2027-02-07", "confidence": "oficial" },
+            { "id": "gran-parada-de-comparsas", "name": { "es": "Gran Parada de Comparsas", "en": "Grand Comparsas Parade", "pt": "Grande Desfile de Comparsas" }, "date": "2027-02-08", "confidence": "oficial" },
+            { "id": "martes-de-carnaval", "name": { "es": "Martes de Carnaval", "en": "Carnival Tuesday", "pt": "Terça-feira de Carnaval" }, "date": "2027-02-09", "confidence": "patron" }
           ],
           "sources": [
-            { "url": "https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/", "publisher": "Carnaval de Barranquilla S.A.S.", "accessed": "2026-10-26", "tier": "A" }
+            { "url": "https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/", "publisher": "Carnaval de Barranquilla S.A.S.", "accessed": "2026-10-26", "tier": "A", "quote": "Carnaval de Barranquilla 2027 · 6, 7, 8 y 9 de febrero" }
           ],
           "last_verified": "2026-10-26",
-          "sequence": 0
+          "sequence": 0,
+          "note": { "es": "El organizador marca el Martes de Carnaval (9 de febrero) «a confirmar»; el resto del programa tiene fecha.", "en": "The organizer lists Carnival Tuesday (February 9) as «to be confirmed»; the rest of the program is dated.", "pt": "O organizador marca a Terça-feira de Carnaval (9 de fevereiro) como «a confirmar»; o resto da programação tem data." }
         }
       },
       "score": {
-        "convocatoria": { "measure": { "attendance": 6000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428" },
+        "convocatoria": { "measure": { "attendance": 6000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "estimacion", "source": "https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428", "note": { "es": "Suma eventos presenciales y transmisiones; en persona, la ciudad recibió más de 820.000 visitantes (2026).", "en": "Counts in-person events plus broadcasts; in person, the city received more than 820,000 visitors (2026).", "pt": "Soma eventos presenciais e transmissões; presencialmente, a cidade recebeu mais de 820.000 visitantes (2026)." } },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.valoraanalitik.com/?p=555318", "note": { "es": "380 de más de 500 eventos gratuitos (2026)", "en": "380 of 500+ events were free (2026)", "pt": "380 de mais de 500 eventos gratuitos (2026)" } },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/carnival-of-barranquilla-00051", "note": { "es": "Lista Representativa de la UNESCO desde 2008 (obra maestra en 2003).", "en": "On UNESCO's Representative List since 2008 (Masterpiece in 2003).", "pt": "Na Lista Representativa da UNESCO desde 2008 (obra-prima em 2003)." } },
+        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://en.wikipedia.org/wiki/Ernesto_Cortissoz_International_Airport", "note": { "es": "BAQ está en Soledad, en el área metropolitana, con vuelos a Miami y Panamá.", "en": "BAQ is in Soledad, in the metro area, with flights to Miami and Panama.", "pt": "BAQ fica em Soledad, na região metropolitana, com voos para Miami e Panamá." } },
         "local": { "measure": "gran_ciudad", "confidence": "oficial" }
       },
       "street_tip": { "es": "El Carnaval de la 44 y las verbenas de barrio son gratis y es donde baila la ciudad.", "en": "Carnaval de la 44 and the neighborhood verbenas are free, and that is where the city dances.", "pt": "O Carnaval de la 44 e as verbenas de bairro são gratuitos e é ali que a cidade dança." }
@@ -54,10 +59,10 @@
       "rule": { "type": "fixed", "start": "01-02", "end": "01-07" },
       "editions": {},
       "score": {
-        "convocatoria": { "measure": { "attendance": 250000, "qualifier": "about", "unit": "tourists", "year": 2026 }, "confidence": "prensa", "source": "https://www.diariodelsur.com.co/?p=468063" },
+        "convocatoria": { "measure": { "attendance": 250000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://forbes.co/2026/01/07/actualidad/carnaval-de-negros-y-blancos-atrajo-mas-de-250-000-turistas-a-pasto/", "note": { "es": "Cifra de la Gobernación de Nariño para el 2 al 7 de enero de 2026; el texto dice personas, no turistas.", "en": "Figure from the Nariño Governor's Office for January 2 to 7, 2026; the text says people, not tourists.", "pt": "Número do Governo de Nariño para 2 a 7 de janeiro de 2026; o texto diz pessoas, não turistas." } },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
-        "conectividad": { "measure": "nacional", "confidence": "oficial" },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/carnaval-de-negros-y-blancos-00287", "note": { "es": "Lista Representativa de la UNESCO desde 2009.", "en": "On UNESCO's Representative List since 2009.", "pt": "Na Lista Representativa da UNESCO desde 2009." } },
+        "conectividad": { "measure": "nacional", "confidence": "prensa", "source": "https://en.wikipedia.org/wiki/Antonio_Nari%C3%B1o_Airport", "note": { "es": "PSO está en Chachagüí, a 35 km de Pasto, y solo tiene vuelos nacionales.", "en": "PSO is in Chachagüí, 35 km from Pasto, with domestic flights only.", "pt": "PSO fica em Chachagüí, a 35 km de Pasto, e só tem voos nacionais." } },
         "local": { "measure": "intermedia", "confidence": "oficial" }
       },
       "street_tip": { "es": "El 5 de enero es el Día de Negritos y el 6 el Desfile Magno; lleva ropa que se pueda manchar.", "en": "January 5 is the Day of the Blacks and January 6 the Grand Parade; wear clothes you don't mind ruining.", "pt": "Em 5 de janeiro é o Dia dos Negritos e em 6 o Desfile Magno; use roupa que possa sujar." }
@@ -77,21 +82,22 @@
           "start": "2026-12-25",
           "end": "2026-12-30",
           "status": "confirmada",
-          "confidence": "prensa",
+          "confidence": "oficial",
           "key_events": [],
           "sources": [
-            { "url": "https://www.lafm.com.co/actualidad/feria-de-cali-si-se-realizara-pese-al-terremoto-alcalde-alejandro-eder-confirmo-el-evento-408792", "publisher": "La FM", "accessed": "2026-10-26", "tier": "B" }
+            { "url": "https://www.cali.gov.co/publicaciones/193104/cali-la-ciudad-de-los-grandes-eventos-se-prepara-para-vivir-un-segundo-semestre-historico/", "publisher": "Alcaldía de Santiago de Cali", "accessed": "2026-10-26", "tier": "A", "quote": "25 al 30 de diciembre" },
+            { "url": "https://www.lafm.com.co/actualidad/feria-de-cali-si-se-realizara-pese-al-terremoto-alcalde-alejandro-eder-confirmo-el-evento-408792", "publisher": "La FM", "accessed": "2026-10-26", "tier": "B", "quote": "confirmó este lunes que la Feria de Cali se realizará en diciembre de 2026, pese a la emergencia" }
           ],
           "last_verified": "2026-10-26",
           "sequence": 0,
-          "note": { "es": "Confirmada tras el sismo; programa diario pendiente.", "en": "Confirmed after the earthquake; daily program pending.", "pt": "Confirmada após o terremoto; programação diária pendente." }
+          "note": { "es": "Fechas de la agenda oficial de la Alcaldía, publicada el 24 de junio, antes del sismo del 10 de agosto; tras el sismo, el alcalde confirmó la Feria para diciembre. Programa diario pendiente.", "en": "Dates from City Hall's official agenda, published on June 24, before the August 10 earthquake; after the earthquake, the mayor confirmed the Feria for December. Daily program pending.", "pt": "Datas da agenda oficial da Prefeitura, publicada em 24 de junho, antes do terremoto de 10 de agosto; depois do terremoto, o prefeito confirmou a Feira para dezembro. Programação diária pendente." }
         }
       },
       "score": {
-        "convocatoria": { "measure": { "attendance": 700000, "qualifier": "more_than", "unit": "attendees", "year": 2025 }, "confidence": "estimacion", "source": "https://www.farandahotels.com/en/blog/descubre-la-feria-de-cali-2026-fechas-alojamiento", "note": { "es": "Fuente comercial, débil.", "en": "Commercial source, weak.", "pt": "Fonte comercial, fraca." } },
+        "convocatoria": { "measure": { "attendance": 1950000, "qualifier": "exact", "unit": "attendees", "year": 2025 }, "confidence": "oficial", "source": "https://www.cali.gov.co/galeria/32472/la-68-feria-de-cali-cerro-con-balance-historico-1950000-asistentes-y-45-millones-de-dolares-para-la-economia-de-la-ciudad/", "note": { "es": "Titular del balance de la Alcaldía para la Feria 68, sin método; parece sumar la asistencia de todos los eventos. Corfecali cuenta más de 450.000 en los eventos oficiales.", "en": "Headline of City Hall's balance for the 68th Feria, with no method; it seems to add up attendance across all events. Corfecali counts more than 450,000 at the official events.", "pt": "Manchete do balanço da Prefeitura para a 68ª Feira, sem método; parece somar a presença em todos os eventos. A Corfecali conta mais de 450.000 nos eventos oficiais." } },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
         "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://en.wikipedia.org/wiki/Alfonso_Bonilla_Arag%C3%B3n_International_Airport", "note": { "es": "CLO está entre Palmira y Cali.", "en": "CLO is between Palmira and Cali.", "pt": "CLO fica entre Palmira e Cali." } },
         "local": { "measure": "gran_ciudad", "confidence": "oficial" }
       },
       "street_tip": { "es": "El Salsódromo del 25 de diciembre se ve gratis desde la calle si llegas temprano.", "en": "The December 25 Salsódromo can be watched free from the street if you arrive early.", "pt": "O Salsódromo de 25 de dezembro pode ser visto de graça da rua se você chegar cedo." }
@@ -106,12 +112,27 @@
       "nearest_airport": "VUP",
       "type": "musica",
       "rule": { "type": "announced", "window": { "start": "04-25", "end": "05-05" } },
-      "editions": {},
+      "editions": {
+        "2027": {
+          "start": "2027-04-28",
+          "end": "2027-05-01",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.larepublica.co/ocio/el-festival-de-la-leyenda-vallenata-prepara-una-edicion-historica-para-2027-4479547", "publisher": "La República", "accessed": "2026-10-26", "tier": "B", "quote": "se realizará entre el 28 de abril y el primero de mayo del próximo año." },
+            { "url": "https://festivalvallenato.com/", "publisher": "Fundación Festival de la Leyenda Vallenata", "accessed": "2026-10-26", "tier": "A", "quote": "Academia, Diseño y Patrimonio se articulan para crear la imagen del 60º Festival de la Leyenda Vallenata" }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "Edición 60, de Rey de Reyes. Las fechas las dio el presidente de la Fundación a la prensa en septiembre de 2026; el sitio del festival aún no publica el calendario.", "en": "60th edition, a Rey de Reyes year. The Foundation's president gave the dates to the press in September 2026; the festival site has not published the calendar yet.", "pt": "60ª edição, de Rey de Reyes. O presidente da Fundação deu as datas à imprensa em setembro de 2026; o site do festival ainda não publica o calendário." }
+        }
+      },
       "score": {
-        "convocatoria": { "measure": { "attendance": 137672, "qualifier": "exact", "unit": "tourists", "year": 2022 }, "confidence": "prensa", "source": "https://www.pulzo.com/nacion/cuantos-turistas-asistieron-festival-vallenato-55-PP1396134A", "note": { "es": "Edición 55.", "en": "55th edition.", "pt": "55ª edição." } },
+        "convocatoria": { "measure": { "attendance": 227727, "qualifier": "exact", "unit": "visitors", "year": 2024 }, "confidence": "prensa", "source": "https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162", "note": { "es": "Cámara de Comercio de Valledupar, edición 57; el DANE habla de unos 227.000 asistentes en su nota previa a la edición 2026.", "en": "Valledupar Chamber of Commerce, 57th edition; DANE cites about 227,000 attendees in its note ahead of the 2026 edition.", "pt": "Câmara de Comércio de Valledupar, 57ª edição; o DANE fala em cerca de 227.000 participantes na nota anterior à edição 2026." } },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
-        "reconocimiento": null,
-        "conectividad": { "measure": "nacional", "confidence": "oficial" },
+        "reconocimiento": { "measure": "nacional", "confidence": "prensa", "source": "https://colombia.justia.com/nacionales/leyes/ley-739-de-2002/gdoc/", "note": { "es": "La Ley 739 de 2002 lo declara Patrimonio Cultural de la Nación (copia en Justia).", "en": "Law 739 of 2002 declares it National Cultural Heritage (copy on Justia).", "pt": "A Lei 739 de 2002 o declara Patrimônio Cultural da Nação (cópia no Justia)." } },
+        "conectividad": { "measure": "nacional", "confidence": "prensa", "source": "https://en.wikipedia.org/wiki/Alfonso_L%C3%B3pez_Pumarejo_Airport", "note": { "es": "VUP solo tiene vuelos nacionales.", "en": "VUP has domestic flights only.", "pt": "VUP só tem voos nacionais." } },
         "local": { "measure": "intermedia", "confidence": "oficial" }
       },
       "street_tip": { "es": "Las parrandas en las casas y la plaza Alfonso López son el corazón fuera de la tarima.", "en": "House parrandas and Alfonso López square are the heart of it, away from the main stage.", "pt": "As parrandas nas casas e a praça Alfonso López são o coração da festa fora do palco." }
@@ -130,7 +151,7 @@
       "score": {
         "convocatoria": null,
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/festival-of-saint-francis-of-assisi-quibdo-00640", "note": { "es": "Lista Representativa de la UNESCO desde 2012.", "en": "On UNESCO's Representative List since 2012.", "pt": "Na Lista Representativa da UNESCO desde 2012." } },
         "conectividad": { "measure": "nacional", "confidence": "oficial" },
         "local": { "measure": "intermedia", "confidence": "oficial" }
       },
@@ -147,11 +168,27 @@
       "nearest_airport": "CTG",
       "type": "musica",
       "rule": { "type": "announced", "window": { "start": "10-08", "end": "10-20" } },
-      "editions": {},
+      "editions": {
+        "2026": {
+          "start": "2026-10-09",
+          "end": "2026-10-12",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.semana.com/mejor-colombia/articulo/los-tambores-vuelven-a-sonar-en-san-basilio-de-palenque-asi-sera-el-festival-que-celebra-la-memoria-y-resistencia-del-pueblo-afrocolombiano/202601/", "publisher": "Semana", "accessed": "2026-10-26", "tier": "B", "quote": "Del 9 al 12 de octubre se realizará la edición 41 de esta tradicional fiesta." },
+            { "url": "https://radionacional.co/noticias-colombia/festivales-en-octubre-ferias-y-eventos-culturales-en-colombia", "publisher": "Radio Nacional de Colombia", "accessed": "2026-10-26", "tier": "B", "quote": "Del 9 al 12 de octubre" },
+            { "url": "https://www.radionacional.co/emisoras-de-la-reconciliacion/san-basilio-de-palenque-celebro-el-festival-de-tambores-y-expresiones", "publisher": "Radio Nacional de Colombia", "accessed": "2026-10-26", "tier": "B", "quote": "San Basilio de Palenque celebró el Festival de Tambores y Expresiones Culturales" }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "Edición 41, ya celebrada.", "en": "41st edition, already held.", "pt": "41ª edição, já realizada." }
+        }
+      },
       "score": {
         "convocatoria": null,
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/cultural-space-of-palenque-de-san-basilio-00102", "note": { "es": "La inscripción de 2008 es del espacio cultural de Palenque de San Basilio, no del festival.", "en": "The 2008 inscription covers the cultural space of Palenque de San Basilio, not the festival itself.", "pt": "A inscrição de 2008 é do espaço cultural de Palenque de San Basilio, não do festival." } },
         "conectividad": { "measure": "ninguno", "confidence": "oficial" },
         "local": { "measure": "pueblo", "confidence": "oficial" }
       },
@@ -175,16 +212,17 @@
           "confidence": "prensa",
           "key_events": [],
           "sources": [
-            { "url": "https://www.lapatria.com/caldas/el-carnaval-de-riosucio-vuelve-sacar-los-cachos-fecha-y-hora-de-instalacion-de-la-republica", "publisher": "La Patria", "accessed": "2026-10-26", "tier": "B" }
+            { "url": "https://www.lapatria.com/caldas/el-carnaval-de-riosucio-vuelve-sacar-los-cachos-fecha-y-hora-de-instalacion-de-la-republica", "publisher": "La Patria", "accessed": "2026-10-26", "tier": "B", "quote": "Del 1 al 6 de enero de 2027: Carnaval de Riosucio 2027." }
           ],
           "last_verified": "2026-10-26",
-          "sequence": 0
+          "sequence": 0,
+          "note": { "es": "Fechas publicadas antes del sismo del 10 de agosto de 2026, que golpeó a Caldas; aún no hay confirmación posterior.", "en": "Dates published before the August 10, 2026 earthquake, which hit Caldas; no later confirmation yet.", "pt": "Datas publicadas antes do terremoto de 10 de agosto de 2026, que atingiu Caldas; ainda não há confirmação posterior." }
         }
       },
       "score": {
-        "convocatoria": { "measure": { "attendance": 30000, "qualifier": "about", "unit": "visitors", "year": 2023 }, "confidence": "oficial", "source": "https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos", "note": { "es": "Visitantes esperados en 2023.", "en": "Expected visitors in 2023.", "pt": "Visitantes esperados em 2023." } },
+        "convocatoria": { "measure": { "attendance": 30000, "qualifier": "about", "unit": "visitors", "year": 2025 }, "confidence": "estimacion", "source": "https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos", "note": { "es": "Visitantes esperados para la edición 2025; es un pronóstico, no un conteo.", "en": "Visitors expected for the 2025 edition; a forecast, not a count.", "pt": "Visitantes esperados para a edição 2025; é uma previsão, não uma contagem." } },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "nacional", "confidence": "prensa" },
+        "reconocimiento": { "measure": "nacional", "confidence": "prensa", "source": "https://vlex.com.co/vid/ley-1736-21-noviembre-545971446", "note": { "es": "La Ley 1736 de 2014 lo declara Patrimonio Cultural y Artístico de la Nación (copia en vLex).", "en": "Law 1736 of 2014 declares it National Cultural and Artistic Heritage (copy on vLex).", "pt": "A Lei 1736 de 2014 o declara Patrimônio Cultural e Artístico da Nação (cópia no vLex)." } },
         "conectividad": { "measure": "ninguno", "confidence": "oficial" },
         "local": { "measure": "pueblo", "confidence": "oficial" }
       },
@@ -200,12 +238,33 @@
       "nearest_airport": "CTG",
       "type": "fiesta_nacional",
       "rule": { "type": "fixed", "start": "11-10", "end": "11-16" },
-      "editions": {},
+      "editions": {
+        "2026": {
+          "status": "tentativa",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "dia-central", "name": { "es": "Día central: sesión solemne y ofrenda floral", "en": "Main day: formal session and floral offering", "pt": "Dia central: sessão solene e oferenda floral" }, "date": "2026-11-11", "confidence": "prensa" },
+            { "id": "gran-desfile-de-independencia", "name": { "es": "Gran Desfile de Independencia", "en": "Grand Independence Parade", "pt": "Grande Desfile da Independência" }, "date": "2026-11-12", "confidence": "prensa" },
+            { "id": "festival-nautico-y-bololo-del-arsenal", "name": { "es": "Festival Náutico y Bololó del Arsenal", "en": "Nautical Festival and Bololó del Arsenal", "pt": "Festival Náutico e Bololó del Arsenal" }, "date": "2026-11-13", "confidence": "prensa" },
+            { "id": "cabildo-de-getsemani-y-coronacion", "name": { "es": "Cabildo de Getsemaní y coronación del Reinado Popular", "en": "Cabildo de Getsemaní and Popular Pageant coronation", "pt": "Cabildo de Getsemaní e coroação do Reinado Popular" }, "date": "2026-11-15", "confidence": "prensa" },
+            { "id": "reinado-intercorregimental", "name": { "es": "Coronación del Reinado Intercorregimental, cierre de la agenda oficial", "en": "Intercorregimental Pageant coronation, end of the official program", "pt": "Coroação do Reinado Intercorregimental, encerramento da agenda oficial" }, "date": "2026-11-16", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.eluniversal.com.co/farandula/2026/09/16/fiestas-de-la-independencia-2026-la-agenda-oficial-y-artistas-confirmados/", "publisher": "El Universal", "accessed": "2026-10-26", "tier": "B", "quote": "El 11 de noviembre, fecha central de la celebración, se realizarán la Sesión Solemne del Concejo Distrital, la Ofrenda Floral" },
+            { "url": "https://www.eluniversal.com.co/cartagena/2026/10/19/alcaldia-de-cartagena-decreta-3-dias-civicos-para-las-fiestas-de-independencia-estos-son/", "publisher": "El Universal", "accessed": "2026-10-26", "tier": "B", "quote": "La Alcaldía de Cartagena declaró cívicos los días 11, 12 y 13 de noviembre de 2026." },
+            { "url": "https://www.eluniversal.com.co/farandula/2026/09/16/cartagena-presenta-oficialmente-la-agenda-de-las-fiestas-2026/", "publisher": "El Universal", "accessed": "2026-10-26", "tier": "B", "quote": "Gran Desfile de Independencia (Avenida Santander - 10:00 a.m. a 12:00 p.m.)" },
+            { "url": "https://ipcc.gov.co/cartagena-alista-sus-obras-para-las-fiestas-de-independencia-2026-macrofiguras-para-un-museo-a-cielo-abierto-y-carrozas-para-el-bando/", "publisher": "Instituto de Patrimonio y Cultura de Cartagena", "accessed": "2026-10-26", "tier": "A", "quote": "Fiestas de Independencia del 11 de Noviembre de 2026" }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "La agenda oficial va de octubre a mediados de noviembre y no fija un día de inicio, así que los días son los del patrón (10 a 16 de noviembre). Días cívicos: 11, 12 y 13 de noviembre (Decreto 0478).", "en": "The official program runs from October to mid-November and sets no start day, so the days follow the pattern (November 10 to 16). Civic holidays: November 11, 12 and 13 (Decree 0478).", "pt": "A agenda oficial vai de outubro a meados de novembro e não fixa um dia de início, então os dias seguem o padrão (10 a 16 de novembro). Feriados cívicos: 11, 12 e 13 de novembro (Decreto 0478)." }
+        }
+      },
       "score": {
         "convocatoria": null,
         "calle": { "measure": "mixta", "confidence": "estimacion" },
-        "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "reconocimiento": { "measure": "nacional", "confidence": "prensa", "source": "https://www.eluniversal.com.co/cultural/2026/07/17/cartagena-celebra-sus-fiestas-de-independencia-ya-son-patrimonio-nacional/", "note": { "es": "El Consejo Nacional de Patrimonio aprobó su inclusión en la Lista Representativa nacional el 17 de julio de 2026; falta la resolución del Ministerio.", "en": "The National Heritage Council approved its inclusion on the national Representative List on July 17, 2026; the Ministry's resolution is pending.", "pt": "O Conselho Nacional de Patrimônio aprovou sua inclusão na Lista Representativa nacional em 17 de julho de 2026; falta a resolução do Ministério." } },
+        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "CTG, Aeropuerto Internacional Rafael Núñez.", "en": "CTG, Rafael Núñez International Airport.", "pt": "CTG, Aeroporto Internacional Rafael Núñez." } },
         "local": { "measure": "gran_ciudad", "confidence": "oficial" }
       },
       "street_tip": { "es": "Los desfiles y bandos del 11 de noviembre se viven en los barrios populares, fuera de la ciudad amurallada.", "en": "The November 11 parades and bandos are lived in the working-class neighborhoods, outside the walled city.", "pt": "Os desfiles e bandos de 11 de novembro acontecem nos bairros populares, fora da cidade murada." }
@@ -220,12 +279,33 @@
       "nearest_airport": "MDE",
       "type": "cosecha_temporada",
       "rule": { "type": "announced", "window": { "start": "07-25", "end": "08-15" } },
-      "editions": {},
+      "editions": {
+        "2026": {
+          "start": "2026-07-31",
+          "end": "2026-08-09",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "desfile-chivas-y-flores", "name": { "es": "Desfile de Chivas y Flores", "en": "Chivas and Flowers Parade", "pt": "Desfile de Chivas e Flores" }, "date": "2026-08-01", "confidence": "prensa" },
+            { "id": "avenida-primavera", "name": { "es": "Avenida Primavera", "en": "Avenida Primavera", "pt": "Avenida Primavera" }, "date": "2026-08-02", "confidence": "prensa" },
+            { "id": "desfile-autos-clasicos-y-antiguos", "name": { "es": "Desfile de Autos Clásicos y Antiguos", "en": "Classic and Vintage Car Parade", "pt": "Desfile de Carros Clássicos e Antigos" }, "date": "2026-08-07", "confidence": "prensa" },
+            { "id": "desfile-de-silleteros", "name": { "es": "Desfile de Silleteros", "en": "Silleteros Parade", "pt": "Desfile de Silleteros" }, "date": "2026-08-09", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.medellin.gov.co/es/sala-de-prensa/noticias/proyeccion-feria-de-las-flores-2026/", "publisher": "Alcaldía de Medellín", "accessed": "2026-10-26", "tier": "A", "quote": "se realizará del 31 de julio al 9 de agosto" },
+            { "url": "https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/", "publisher": "El Espectador", "accessed": "2026-10-26", "tier": "B", "quote": "69.º Desfile de Silleteros: domingo 9 de agosto." },
+            { "url": "https://telemedellin.tv/?p=191725", "publisher": "Telemedellín", "accessed": "2026-10-26", "tier": "B", "quote": "Fueron 10 días con más de 100 actividades durante la Feria de las Flores 2026." }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "Edición 2026, ya celebrada.", "en": "2026 edition, already held.", "pt": "Edição 2026, já realizada." }
+        }
+      },
       "score": {
-        "convocatoria": null,
-        "calle": null,
-        "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "convocatoria": { "measure": { "attendance": 300000, "qualifier": "more_than", "unit": "visitors", "year": 2025 }, "confidence": "prensa", "source": "https://telemedellin.tv/?p=132129", "note": { "es": "Visitantes nacionales y extranjeros en 2025; para 2026 solo hay una cifra esperada antes del evento.", "en": "Domestic and foreign visitors in 2025; for 2026 there is only a figure expected before the event.", "pt": "Visitantes nacionais e estrangeiros em 2025; para 2026 só há um número esperado antes do evento." } },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/", "note": { "es": "Más de la mitad de los más de 200 eventos de 2026 fueron gratuitos, y los 21 tablados, todos; el Súper Concierto tuvo boleta.", "en": "More than half of the 200-plus events in 2026 were free, and all 21 tablados; the Súper Concierto was ticketed.", "pt": "Mais da metade dos mais de 200 eventos de 2026 foi gratuita, e todos os 21 tablados; o Súper Concierto foi pago." } },
+        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://www.medellin.gov.co/es/sala-de-prensa/noticias/la-cultura-silletera-patrimonio-cultural-inmaterial-de-la-nacion-y-orgullo-de-medellin/", "note": { "es": "La cultura silletera es Patrimonio Cultural Inmaterial de la Nación (2014); la declaratoria cubre a los silleteros, no toda la Feria.", "en": "The silletero culture is National Intangible Cultural Heritage (2014); the declaration covers the silleteros, not the whole Feria.", "pt": "A cultura silletera é Patrimônio Cultural Imaterial da Nação (2014); a declaração cobre os silleteros, não toda a Feira." } },
+        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "MDE, José María Córdova, está en Rionegro; el Olaya Herrera de la ciudad es solo nacional.", "en": "MDE, José María Córdova, is in Rionegro; the in-city Olaya Herrera is domestic only.", "pt": "MDE, José María Córdova, fica em Rionegro; o Olaya Herrera da cidade é só nacional." } },
         "local": { "measure": "gran_ciudad", "confidence": "oficial" }
       }
     },
@@ -239,12 +319,26 @@
       "nearest_airport": "CLO",
       "type": "musica",
       "rule": { "type": "announced", "window": { "start": "08-01", "end": "08-31" } },
-      "editions": {},
+      "editions": {
+        "2026": {
+          "status": "aplazada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://radionacional.co/cultura/el-sector-cultural-renace-festivales-aplazados-por-el-terremoto-cuentan-con-nuevas-fechas", "publisher": "Radio Nacional de Colombia", "accessed": "2026-10-26", "tier": "B", "quote": "sí se desarrollará durante el segundo semestre de 2026, aunque su fecha aún está por anunciarse" },
+            { "url": "https://www.cali.gov.co/cultura/publicaciones/193597/comunicado-a-la-opinion-publica/", "publisher": "Alcaldía de Santiago de Cali", "accessed": "2026-10-26", "tier": "A", "quote": "suspender la realización de la edición número 30 del Festival de Música del Pacífico Petronio Álvarez" },
+            { "url": "https://www.elpais.com.co/cali/julian-arteaga-secretario-de-cultura-el-arte-y-las-expresiones-culturales-son-necesarias-para-que-la-ciudad-sane-0400.html", "publisher": "El País", "accessed": "2026-10-26", "tier": "B", "quote": "entendemos que nuestra agenda cultural va a estar muy apretada en noviembre, pero lo haremos y vamos a anunciar la fecha prontamente." }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "Suspendida el 10 de agosto por el sismo; iba del 12 al 17 de agosto. La Secretaría de Cultura apuntó a noviembre, sin fecha anunciada.", "en": "Suspended on August 10 because of the earthquake; it was set for August 12 to 17. The Culture Secretariat aimed for November, with no date announced.", "pt": "Suspenso em 10 de agosto pelo terremoto; seria de 12 a 17 de agosto. A Secretaria de Cultura apontou novembro, sem data anunciada." }
+        }
+      },
       "score": {
-        "convocatoria": null,
+        "convocatoria": { "measure": { "attendance": 800000, "qualifier": "more_than", "unit": "attendees", "year": 2025 }, "confidence": "oficial", "source": "https://www.cali.gov.co/publicaciones/188479/exito-total-mas-de-800000-personas-vibraron-con-el-festival-petronio-alvarez-2025/", "note": { "es": "Balance de la Alcaldía para los seis días de la edición 2025.", "en": "City Hall's balance for the six days of the 2025 edition.", "pt": "Balanço da Prefeitura para os seis dias da edição 2025." } },
         "calle": null,
-        "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
+        "reconocimiento": { "measure": "nacional", "confidence": "prensa", "source": "https://www.dmsjuridica.com/buscador_20179478954/legislacion/leyes/2020/11/24/ley-1472-de-2011/", "note": { "es": "La Ley 1472 de 2011 lo declara Patrimonio Cultural de la Nación (copia en DMS Jurídica).", "en": "Law 1472 of 2011 declares it National Cultural Heritage (copy on DMS Jurídica).", "pt": "A Lei 1472 de 2011 o declara Patrimônio Cultural da Nação (cópia no DMS Jurídica)." } },
+        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "CLO está entre Palmira y Cali.", "en": "CLO is between Palmira and Cali.", "pt": "CLO fica entre Palmira e Cali." } },
         "local": { "measure": "gran_ciudad", "confidence": "oficial" }
       }
     }

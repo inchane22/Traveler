@@ -36,7 +36,7 @@
       },
       "score": {
         "convocatoria": { "measure": { "attendance": 8000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-02/rio-espera-receber-8-milhoes-de-folioes-para-o-carnaval", "note": { "es": "Proyección previa a la fiesta, no balance final.", "en": "Pre-event projection, not a final count.", "pt": "Projeção anterior à festa, não balanço final." } },
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-02/rio-espera-receber-8-milhoes-de-folioes-para-o-carnaval", "note": { "es": "6,8 de los 8 millones esperados iban a blocos de calle (2026).", "en": "6.8 of the 8 million expected were at street blocos (2026).", "pt": "6,8 dos 8 milhões esperados estavam nos blocos de rua (2026)." } },
+        "calle": null,
         "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://planalto.gov.br/ccivil_03/_ato2023-2026/2023/Lei/L14567.htm", "note": { "es": "Ley 14.567/2023: escuelas de samba y sus desfiles, cultura nacional.", "en": "Law 14,567/2023: samba schools and their parades as national culture.", "pt": "Lei 14.567/2023: escolas de samba e seus desfiles, cultura nacional." } },
         "conectividad": { "measure": "internacional", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Rio_de_Janeiro/Gale%C3%A3o_International_Airport" },
         "local": { "measure": "gran_ciudad", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Rio_de_Janeiro" }
@@ -130,7 +130,7 @@
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 2300000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.oliberal.com/belem/cerca-de-2-3-milh-es-de-pessoas-acompanharam-o-cirio-neste-domingo-11-1.1181573", "note": { "es": "Estimación preliminar de la Diretoria da Festa de Nazaré.", "en": "Preliminary estimate by the festival board.", "pt": "Estimativa preliminar da Diretoria da Festa de Nazaré." } },
-        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/cirio-de-nazare-the-taper-of-our-lady-of-nazareth-in-the-city-of-belem-para-00602", "note": { "es": "Procesión por la calle en la que participa casi toda la ciudad.", "en": "Street procession joined by almost the whole city.", "pt": "Procissão de rua da qual participa quase toda a cidade." } },
+        "calle": null,
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/cirio-de-nazare-the-taper-of-our-lady-of-nazareth-in-the-city-of-belem-para-00602", "note": { "es": "Inscrito en 2013.", "en": "Inscribed in 2013.", "pt": "Inscrito em 2013." } },
         "conectividad": { "measure": "internacional", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Bel%C3%A9m_International_Airport" },
         "local": { "measure": "gran_ciudad", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Bel%C3%A9m" }

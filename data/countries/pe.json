@@ -25,13 +25,13 @@
       "rule": {
         "type": "announced",
         "window": {
-          "start": "01-31",
+          "start": "02-01",
           "end": "02-15"
         }
       },
       "editions": {
         "2026": {
-          "start": "2026-01-31",
+          "start": "2026-01-16",
           "end": "2026-02-10",
           "status": "confirmada",
           "confidence": "prensa",
@@ -85,6 +85,13 @@
               "publisher": "Agencia Andina",
               "accessed": "2026-10-26",
               "tier": "B",
+              "quote": "Este viernes 16 de enero comienza oficialmente la Festividad de la Virgen de la Candelaria 2026 en la ciudad de Puno"
+            },
+            {
+              "url": "https://andina.pe/agencia/noticia-puno-fiesta-desfiles-y-concursos-empieza-festividad-de-virgen-de-candelaria-1059144.aspx",
+              "publisher": "Agencia Andina",
+              "accessed": "2026-10-26",
+              "tier": "B",
               "quote": "Los días 9 y 10 de febrero serán dedicados a la parada y veneración en octava de la Virgen de la Candelaria."
             },
             {
@@ -103,11 +110,11 @@
             }
           ],
           "last_verified": "2026-10-26",
-          "sequence": 0,
+          "sequence": 1,
           "note": {
-            "es": "La festividad abre oficialmente a mediados de enero (16 ene 2026); aquí van los días de concursos, día central y octava.",
-            "en": "The festivity officially opens in mid-January (16 Jan 2026); this span covers the contests, the main day and the octave.",
-            "pt": "A festa abre oficialmente em meados de janeiro (16 jan 2026); este período cobre os concursos, o dia central e a oitava."
+            "es": "La festividad abrió oficialmente el 16 de enero de 2026 y cerró con la octava del 9 y 10 de febrero; los concursos de danzas fueron del 31 de enero al 8 de febrero.",
+            "en": "The festivity officially opened on January 16, 2026 and closed with the octave on February 9 and 10; the dance contests ran from January 31 to February 8.",
+            "pt": "A festividade abriu oficialmente em 16 de janeiro de 2026 e terminou com a oitava de 9 e 10 de fevereiro; os concursos de dança foram de 31 de janeiro a 8 de fevereiro."
           }
         }
       },
@@ -203,21 +210,7 @@
         }
       },
       "score": {
-        "convocatoria": {
-          "measure": {
-            "attendance": 100000,
-            "qualifier": "about",
-            "unit": "visitors",
-            "year": 2019
-          },
-          "confidence": "prensa",
-          "source": "https://elperuano.pe/noticia/298765-inti-raymi-2026-miles-de-visitantes-llegaron-a-cusco-para-participar-en-la-gran-fiesta-del-sol",
-          "note": {
-            "es": "Última cifra con año: 2019. No hay balance publicado de 2026.",
-            "en": "Latest figure with a year: 2019. No 2026 count has been published.",
-            "pt": "Último número com ano: 2019. Não há balanço publicado de 2026."
-          }
-        },
+        "convocatoria": null,
         "calle": {
           "measure": "mixta",
           "confidence": "prensa",
@@ -320,16 +313,7 @@
           }
         },
         "calle": null,
-        "reconocimiento": {
-          "measure": "nacional",
-          "confidence": "prensa",
-          "source": "https://www.bloomberglinea.com/latinoamerica/peru/cuando-son-los-carnavales-de-peru-este-2025/",
-          "note": {
-            "es": "La declaratoria de 2017 cubre la copla y el contrapunto del carnaval, no la fiesta entera.",
-            "en": "The 2017 declaration covers the carnival's copla and contrapunto singing, not the whole festival.",
-            "pt": "A declaração de 2017 cobre a copla e o contraponto do carnaval, não a festa inteira."
-          }
-        },
+        "reconocimiento": null,
         "conectividad": {
           "measure": "nacional",
           "confidence": "oficial",

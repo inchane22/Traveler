@@ -1,6 +1,6 @@
 {
   "country": "CO",
-  "A": ["carnavaldebarranquilla.org", "gov.co", "colombia.travel", "unesco.org"],
+  "A": ["carnavaldebarranquilla.org", "gov.co", "colombia.travel", "unesco.org", "festivalvallenato.com", "carnavaldepasto.org"],
   "B": [
     "eltiempo.com",
     "elespectador.com",
@@ -16,7 +16,11 @@
     "canaltrece.com.co",
     "caracol.com.co",
     "rcnradio.com",
-    "lafm.com.co"
+    "lafm.com.co",
+    "larepublica.co",
+    "forbes.co",
+    "valoraanalitik.com",
+    "telemedellin.tv"
   ],
   "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
 }

@@ -192,7 +192,13 @@ export function occurrenceFor(festival: Festival, year: number, ctx: RuleContext
     };
   }
   const window = resolved ? (resolved.kind === "window" ? resolved.window : { start: resolved.start, end: resolved.end }) : undefined;
+  // An edition without stored dates: a tentative one keeps the rule's dates (still a pattern);
+  // postponed, cancelled or unannounced ones only keep the window.
   if (edition) {
+    if (edition.status === "tentativa" && resolved && resolved.kind !== "window") {
+      const confidence = resolved.estimated ? "estimacion" : "patron";
+      return { year, start: resolved.start, end: resolved.end, status: "tentativa", confidence, estimated: resolved.estimated, origin: "edition", edition };
+    }
     return { year, ...(window ? { window } : {}), status: edition.status, confidence: edition.confidence, estimated: false, origin: "edition", edition };
   }
   if (!resolved) return { year, status: "por_anunciar", confidence: "estimacion", estimated: false, origin: "rule" };

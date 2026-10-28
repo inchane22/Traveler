@@ -5,7 +5,8 @@ import { CountryFile } from "../../src/schema.ts";
 import type { ScoringConfig } from "../../src/score.ts";
 
 const config = JSON.parse(readFileSync("config/scoring.json", "utf8")) as ScoringConfig;
-const co = CountryFile.parse(JSON.parse(readFileSync("data/countries/co.json", "utf8")));
+// Frozen PRD acceptance data (the CO file as the PRD tables were written); live data moves on.
+const co = CountryFile.parse(JSON.parse(readFileSync("tests/fixtures/prd/co.json", "utf8")));
 const TODAY = "2026-10-26";
 const entries = buildEntries(co, config, TODAY);
 const countryScope = { kind: "country", code: "CO" } as const;

@@ -4,7 +4,8 @@ import { classify, scoreFestival, type ScoringConfig } from "../../src/score.ts"
 import { CountryFile, type ScoreInputs } from "../../src/schema.ts";
 
 const config = JSON.parse(readFileSync("config/scoring.json", "utf8")) as ScoringConfig;
-const co = CountryFile.parse(JSON.parse(readFileSync("data/countries/co.json", "utf8")));
+// Frozen PRD acceptance data (the CO file as the PRD tables were written); live data moves on.
+const co = CountryFile.parse(JSON.parse(readFileSync("tests/fixtures/prd/co.json", "utf8")));
 const bySlug = (slug: string) => {
   const f = co.festivals.find((x) => x.slug === slug);
   if (!f) throw new Error(slug);

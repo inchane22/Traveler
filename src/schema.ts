@@ -115,7 +115,8 @@ export const Edition = z
   })
   .strict()
   .refine((e) => !e.start || !e.end || e.start <= e.end, "start after end")
-  .refine((e) => !["confirmada", "aplazada", "cancelada"].includes(e.status) || e.sources.length > 0, "status needs a source");
+  .refine((e) => !["confirmada", "aplazada", "cancelada"].includes(e.status) || e.sources.length > 0, "status needs a source")
+  .refine((e) => e.status !== "confirmada" || (!!e.start && !!e.end), "a confirmed edition needs start and end");
 
 const measured = <T extends z.ZodTypeAny>(shape: T) =>
   z
