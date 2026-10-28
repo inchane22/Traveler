@@ -62,10 +62,3 @@ export function createI18n(all: Readonly<Record<Lang, Messages>>, lang: Lang): I
 
   return { lang, t, has: (key) => lookup(key) !== undefined };
 }
-
-/** Keys present in one dictionary but not the other (used by tests to keep es/en/pt in sync). */
-export function keyDiff(a: Messages, b: Messages): { missing: string[]; extra: string[] } {
-  const ka = new Set(Object.keys(a));
-  const kb = new Set(Object.keys(b));
-  return { missing: [...ka].filter((k) => !kb.has(k)).sort(), extra: [...kb].filter((k) => !ka.has(k)).sort() };
-}

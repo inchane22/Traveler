@@ -3,7 +3,7 @@
 import type { PublicIndex, IndexCountry } from "../../scripts/build-data.ts";
 import { addDays, addMonths, diffDays, effectiveEnd, effectiveStart, type ISO, type Occurrence } from "../dates.ts";
 import { applyFilters, buildEntries, isVisible, sortByDate, type FestivalEntry, type FilterHit, type Filters, type Scope } from "../festivals.ts";
-import type { ChangelogEntry, CountryFile, FestivalType, Source } from "../schema.ts";
+import type { ChangelogEntry, CountryFile, FestivalType, KeyEvent, Source } from "../schema.ts";
 import type { ScoringConfig } from "../score.ts";
 import scoringJson from "../../config/scoring.json";
 import { origins as advisoryOrigins } from "../../config/advisories.json";
@@ -198,6 +198,64 @@ export function primarySource(occ: Occurrence | null): Source | undefined {
   return occ?.edition?.sources[0];
 }
 
+const QUOTE_LANGS = ["es", "pt", "en"] as const;
+const monthNames = new Map<number, string[]>();
+
+function namesOfMonth(month: number): string[] {
+  let names = monthNames.get(month);
+  if (!names) {
+    names = [...new Set(QUOTE_LANGS.map((lang) => new Intl.DateTimeFormat(lang, { month: "long", timeZone: "UTC" }).format(Date.UTC(2023, month - 1, 1)).toLocaleLowerCase()))];
+    monthNames.set(month, names);
+  }
+  return names;
+}
+
+/** The quote names that civil day: the ISO form, or the day number and the month's name («9 de agosto», «6, 7, 8 y 9 de febrero», «August 9»). */
+export function quoteMentions(quote: string | undefined, iso: ISO): boolean {
+  if (!quote) return false;
+  if (quote.includes(iso)) return true;
+  const text = quote.toLocaleLowerCase();
+  const day = String(Number(iso.slice(8, 10)));
+  if (!new RegExp(`(^|\\D)0?${day}(\\D|$)`).test(text)) return false;
+  return namesOfMonth(Number(iso.slice(5, 7))).some((name) => text.includes(name));
+}
+
+/** First source whose quote names one of these days (and, when given, one of these names). */
+export function sourceQuoting(sources: readonly Source[], days: readonly ISO[], names: readonly string[] = []): Source | undefined {
+  const fold = (v: string): string => v.normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase();
+  const wanted = names.map(fold).filter(Boolean);
+  return sources.find((s) => days.some((d) => quoteMentions(s.quote, d)) && (!wanted.length || wanted.some((n) => fold(s.quote ?? "").includes(n))));
+}
+
+/**
+ * The source of the dates shown, only when the edition stores its own dates. An edition without
+ * dates (a tentative one, or a postponed one keeping the window) shows the rule's dates, and its
+ * sources back the status, not those days. Among the sources, the first that quotes the start or
+ * the end wins; the edition's first source is the fallback.
+ */
+export function dateSource(occ: Occurrence | null): Source | undefined {
+  const edition = occ?.edition;
+  if (!edition?.start || !edition.end) return undefined;
+  return sourceQuoting(edition.sources, [edition.start, edition.end]) ?? primarySource(occ);
+}
+
+/**
+ * The source a key-event date opens. KeyEvent stores no source of its own, so: none for a date by
+ * pattern or estimate (it never borrows the publisher of the edition, even when that page lists
+ * the festival's days); else a source whose quote names the event and its day (a quote that only
+ * gives the festival's range does not back a parade on its last day); else the edition's first
+ * source only when the event is as certain as the edition. Without one, the date shows as plain
+ * text with its confidence mark.
+ */
+export function eventSource(event: KeyEvent, occ: Occurrence | null): Source | undefined {
+  const edition = occ?.edition;
+  if (!edition || !event.date || (event.confidence !== "oficial" && event.confidence !== "prensa")) return undefined;
+  const days = event.end && event.end !== event.date ? [event.date, event.end] : [event.date];
+  const quoted = sourceQuoting(edition.sources, days, Object.values(event.name).filter((n): n is string => typeof n === "string"));
+  if (quoted) return quoted;
+  return event.confidence === edition.confidence ? primarySource(occ) : undefined;
+}
+
 /** Days since a civil date; null when the date is unknown. */
 export function ageInDays(iso: ISO | null | undefined, today: ISO): number | null {
   return iso ? Math.max(0, diffDays(iso, today)) : null;
@@ -250,6 +308,14 @@ export function haversineKm(a: { lat: number; lon: number }, b: { lat: number; l
 // ---------- Travel advisories (R6): only `origins` is imported, so Vite drops `unverified` from the bundle ----------
 
 const advisoryTable = parseOrigins(advisoryOrigins);
+
+/** Origins with at least one verified official page; Ajustes names them so a gap is never silent. */
+export function coveredOrigins(): string[] {
+  return Object.entries(advisoryTable)
+    .filter(([, o]) => o.fallback !== null || Object.keys(o.destinations).length > 0)
+    .map(([code]) => code)
+    .sort();
+}
 
 /** Official page of the user's origin country for this destination (see advisory.ts). */
 export function advisoryFor(origin: string | null, destination: string): Advisory | null {

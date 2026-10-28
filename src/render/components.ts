@@ -6,9 +6,9 @@ import { h, s, type Child } from "../h.ts";
 import { countryName } from "../ics.ts";
 import type { Confidence, Festival, FestivalType, Lang, Status } from "../schema.ts";
 import type { Ctx } from "./context.ts";
-import { range } from "./format.ts";
+import { range, relativeDays, shortDate } from "./format.ts";
 import { icon, type IconName } from "./icons.ts";
-import { clearFailed, countdown, DataError, dateKind, isUnconfirmed, type Countdown, type Resource } from "./model.ts";
+import { clearFailed, countdown, DataError, dateKind, isStale, isUnconfirmed, type Countdown, type IndexCountry, type Resource } from "./model.ts";
 
 export function festivalName(f: Festival, lang: Lang): string {
   return f.names[lang];
@@ -78,10 +78,18 @@ export function confidenceMark(c: Confidence, t: Ctx["t"], withPrefix = false): 
 }
 
 /** Solid = confirmed, hatched = not confirmed, outline = only a probable window (same code as the timeline). */
-export function dateBand(occ: Occurrence | null, type: FestivalType): HTMLElement {
+export function bandMod(occ: Occurrence | null): "solid" | "hatched" | "window" {
   const kind = dateKind(occ);
-  const mod = kind === "window" || kind === "none" ? "window" : isUnconfirmed(occ) ? "hatched" : "solid";
-  return h("span", { class: `band band--${mod} type--${type}`, "aria-hidden": "true" });
+  return kind === "window" || kind === "none" ? "window" : isUnconfirmed(occ) ? "hatched" : "solid";
+}
+
+export function dateBand(occ: Occurrence | null, type: FestivalType): HTMLElement {
+  return h("span", { class: `band band--${bandMod(occ)} type--${type}`, "aria-hidden": "true" });
+}
+
+/** Poster band (hero, ficha header): the wide band carries the same date code as rows and the timeline. */
+export function posterBand(occ: Occurrence | null): HTMLElement {
+  return h("span", { class: `poster__band band--${bandMod(occ)}`, "aria-hidden": "true" });
 }
 
 export function occurrenceDates(occ: Occurrence | null, lang: Lang, t: Ctx["t"], withYear = true): string {
@@ -165,10 +173,13 @@ export interface EmptyAction {
   href?: string;
   onClick?: () => void;
   primary?: boolean;
+  /** External https link: opens in a new tab and says so with this screen-reader text. */
+  newTab?: string;
 }
 
 export function actionButton(a: EmptyAction, key?: string): HTMLElement {
   const cls = `btn ${a.primary ? "btn--primary" : "btn--secondary"}`;
+  if (a.href && a.newTab) return h("a", { class: `${cls} link--external`, href: a.href, external: true, "data-key": key ?? null }, a.label, h("span", { class: "sr-only" }, ` ${a.newTab}`), icon("external"));
   if (a.href) return h("a", { class: cls, href: a.href, "data-key": key ?? null }, a.label);
   return h("button", { type: "button", class: cls, onclick: () => a.onClick?.(), "data-key": key ?? null }, a.label);
 }
@@ -201,6 +212,34 @@ export function skeleton(kind: "home" | "list" | "detail"): HTMLElement {
 /** https only, new tab, rel=noopener noreferrer (h() enforces it); says so to screen readers. */
 export function externalLink(href: string, label: Child, t: Ctx["t"], cls = "link"): HTMLElement {
   return h("a", { href, external: true, class: `${cls} link--external` }, label, h("span", { class: "sr-only" }, ` ${t("link.newTab")}`), icon("external"));
+}
+
+/** GitHub issue form link; keys other than `template` and `title` are field ids of the form (RF-17, R11). */
+export function issueUrl(repo: string, template: string, title: string, fields: Readonly<Record<string, string | undefined>>): string {
+  const q = new URLSearchParams({ template, title });
+  for (const [id, value] of Object.entries(fields)) if (value) q.set(id, value);
+  return `https://github.com/${repo}/issues/new?${q.toString()}`;
+}
+
+/** R11 «Sugerir una fiesta»: the suggestion form, with the country prefilled when one is in view. */
+export function suggestAction(ctx: Ctx, country?: string): EmptyAction {
+  return { label: ctx.t("suggest.link"), href: issueUrl(ctx.repo, "sugerir-fiesta.yml", ctx.t("suggest.issueTitle"), { pais: country }), newTab: ctx.t("link.newTab") };
+}
+
+/** RF-13: data older than 30 days (or never verified) warns wherever its dates are shown. */
+export function staleNotice(info: IndexCountry | undefined, ctx: Ctx): HTMLElement | null {
+  if (!info || !isStale(info.last_verified, ctx.today)) return null;
+  return notice(
+    "warn",
+    "alert",
+    h(
+      "p",
+      null,
+      info.last_verified
+        ? ctx.t("fresh.stale", { country: countryName(info.code, ctx.lang), date: shortDate(info.last_verified, ctx.lang), days: relativeDays(info.last_verified, ctx.today, ctx.lang) })
+        : ctx.t("fresh.never", { country: countryName(info.code, ctx.lang) }),
+    ),
+  );
 }
 
 export function errorState(error: unknown, ctx: Ctx): HTMLElement {

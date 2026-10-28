@@ -35,10 +35,35 @@ app and Node scripts import them. Relative imports keep the `.ts` extension (Nod
 Freshness of a country = `last_verified` in the index (latest edition verification). Stale when
 older than 30 days (RF-13).
 
+## Engine and data rules (review fixes, 2026-10-28)
+
+- `FestivalEntry.ruleCtx` (optional): `buildEntries` attaches the whole country's `RuleContext`, and
+  `applyFilters` uses it, so a `relative_to` rule resolves the same in Home, Explorar and the Ficha
+  even when the referenced festival is hidden. Hand-built entries fall back to their own subset.
+- `nextOccurrence`: a postponed (`aplazada`) edition without new dates stays the next occurrence
+  after its old window, until the following year's edition stores dates (or a year passes). Its
+  window is kept (it is the original one). `upcoming` leaves out occurrences that already ended, so
+  it never reaches «Lo próximo». Cancelled editions are not held.
+- Month filter (`mes=`): a festival matches every month its dates or window touch.
+- `MonthDay` rejects days a month never has; a fixed `02-29` rule has no edition in a common year,
+  and a `02-29` window edge falls to `02-28`. Time zones must be IANA zones the platform knows.
+- Score figures: `oficial` and `prensa` need `source` (and may carry `quote`); an unsourced figure is
+  `estimacion`. `build-data` also checks that `oficial` sits on config/official-domains, `prensa` on
+  an A or B source, declared source tiers match config/sources, lunisolar tables reach 12 months
+  ahead (R4), and a `publicado` country has `MIN_SOURCED_FESTIVALS` (3) dated A/B-sourced festivals.
+- `share_a` counts an edition only when a source config/sources ranks A has a quote stating the
+  stored start or end day.
+- Names and city (`Identity`): one plain line, at most 120 characters, no control, bidi or
+  zero-width characters. They are fenced when they go into a research prompt.
+- The extraction call sees only citations (URL, title, cited text), never the research model's prose.
+- `pnpm build` runs `scripts/check-csp.ts` (exact CSP in `dist/index.html`) before the secret scan;
+  the secret scan fails closed when git cannot list files or a file cannot be read.
+
 ## Runtime hooks for tests
 
-- `?today=YYYY-MM-DD` on the page URL fixes «today» (read once at boot). Otherwise today is the
-  device's civil date.
+- `?today=YYYY-MM-DD` on the page URL fixes «today» and shows a «Fecha simulada» banner with a link
+  back to the real date. Otherwise today is the device's civil date, re-read on wake, on focus and
+  every minute, so an installed app left open overnight rolls over at local midnight.
 - Hash routes: `#/` home, `#/explorar?…`, `#/pais/<cc>` (lowercase), `#/fiesta/<slug>`,
   `#/guardadas`, `#/ajustes`, `#/datos`.
 - Explorer state in the hash query: `pais=co,pe&mes=2027-02,2027-03&tipo=carnaval&nivel=2&desde=2027-02-01&hasta=2027-02-10`.
@@ -79,7 +104,8 @@ Locale keys the calendar code reads (ui adds them to every `locales/*.json`):
 pnpm refresh -- [--dry-run] [--only=<slug>] [--country=<cc>] [--today=YYYY-MM-DD] [--fixtures=<dir>]
                 [--sweep=news [--within=<days>]]
 pnpm onboard -- --country=<cc> [--dry-run] [--today=YYYY-MM-DD] [--fixtures=<dir>]
-node scripts/check-trap.ts        # fails if a trap proposal (R12) is present; needs TRAP_SECRET
+node scripts/check-trap.ts        # fails if a trap proposal (R12) is present; needs TRAP_SECRET and TRAP_FINGERPRINTS
+                                  # (refresh.yml appends each month's fingerprint to that secret with the app token)
 node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 only on 404/410
 ```
 

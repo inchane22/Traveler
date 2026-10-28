@@ -94,6 +94,16 @@ describe("createStore with working storage", () => {
     expect(store.persistent()).toBe(true);
   });
 
+  // SEC-14: another page on the same github.io origin can write traveler.* keys.
+  test("a stored region scope must be a known region", () => {
+    const foreign = createStore(memoryStorage({ "traveler.scope": JSON.stringify({ kind: "region", region: "atlantis" }) }));
+    expect(foreign.get("scope")).toBeNull();
+    const known = createStore(memoryStorage({ "traveler.scope": JSON.stringify({ kind: "region", region: "sudamerica" }) }));
+    expect(known.get("scope")).toEqual({ kind: "region", region: "sudamerica" });
+    known.set("scope", { kind: "region", region: "narnia" } as unknown as { kind: "region"; region: "europa" });
+    expect(known.get("scope")).toEqual({ kind: "region", region: "sudamerica" });
+  });
+
   test("get returns copies, so callers cannot mutate the store", () => {
     const store = createStore(memoryStorage());
     store.toggleSaved("san-pacho");

@@ -10,7 +10,8 @@ const SCREENS: [string, string][] = [
   ["Inicio (país)", "#/pais/co"],
   ["Inicio (mundo)", "#/"],
   ["Explorar", "#/explorar?pais=co"],
-  ["Explorar con fechas", "#/explorar?pais=co&nivel=2&desde=2027-04-28&hasta=2027-05-10"],
+  // Travel dates that catch both dated rows and window-only rows (.tag--possible).
+  ["Explorar con fechas", "#/explorar?pais=co&nivel=2&desde=2027-07-28&hasta=2027-08-10"],
   ["Explorar vacío", "#/explorar?pais=co&mes=2027-03"],
   ["Ficha confirmada", "#/fiesta/carnaval-barranquilla"],
   ["Ficha tentativa", "#/fiesta/independencia-cartagena"],
@@ -82,14 +83,17 @@ for (const scheme of ["light", "dark"] as const) {
 }
 
 test.describe("targets and keyboard", () => {
-  test("controls are at least 44 × 44 px", async ({ page }) => {
-    for (const hash of ["#/pais/co", "#/explorar?pais=co", "#/fiesta/carnaval-barranquilla", "#/ajustes"]) {
+  // PRD «Pulgar primero»: controls and primary links (date and source links included, ux-F09).
+  test("controls and primary links are at least 44 × 44 px", async ({ page }) => {
+    const links = [".when__range.link--source", ".event__date.link--source", ".source__link", ".link--small", ".section__foot a", ".footer a", ".freshness a", ".log__what a", ".log__sources a", ".fresh__name a"];
+    for (const hash of ["#/pais/co", "#/explorar?pais=co", "#/fiesta/carnaval-barranquilla", "#/fiesta/independencia-cartagena", "#/ajustes", "#/datos"]) {
       await open(page, hash);
-      const small = await page.evaluate(() =>
-        [...document.querySelectorAll<HTMLElement>(".btn, .chip, .navlink, .save, .icon-btn, .option, .switch, .segmented__opt, .scope-btn, .radio, .wordmark")]
+      const small = await page.evaluate((extra) =>
+        [...document.querySelectorAll<HTMLElement>([".btn, .chip, .navlink, .save, .icon-btn, .option, .switch, .segmented__opt, .scope-btn, .radio, .wordmark", ...extra].join(", "))]
           .filter((el) => el.offsetParent !== null)
           .map((el) => ({ el: el.className, text: el.textContent?.trim().slice(0, 30), w: el.getBoundingClientRect().width, h: el.getBoundingClientRect().height }))
           .filter((r) => r.w < 43.5 || r.h < 43.5),
+        links,
       );
       expect(small, hash).toEqual([]);
     }
@@ -113,11 +117,15 @@ test.describe("targets and keyboard", () => {
   });
 
   test("no horizontal scroll at phone width", async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    for (const hash of ["#/pais/co", "#/explorar?pais=co", "#/fiesta/carnaval-barranquilla", "#/guardadas", "#/ajustes", "#/datos"]) {
-      await open(page, hash);
-      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-      expect(overflow, hash).toBeLessThanOrEqual(0);
+    // #/datos prints raw changelog values (URLs, JSON) and the fichas print notes and quotes.
+    const hashes = ["#/pais/co", "#/explorar?pais=co", "#/fiesta/carnaval-barranquilla", "#/fiesta/independencia-cartagena", "#/fiesta/petronio-alvarez", "#/guardadas", "#/ajustes", "#/datos"];
+    for (const width of [320, 390]) {
+      await page.setViewportSize({ width, height: 844 });
+      for (const hash of hashes) {
+        await open(page, hash);
+        const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+        expect(overflow, `${width} px ${hash}`).toBeLessThanOrEqual(0);
+      }
     }
   });
 });

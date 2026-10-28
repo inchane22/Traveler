@@ -8,6 +8,16 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   background: var(--paper);
+  /* WCAG 2.4.11: focus scrolling and anchor jumps stop clear of the masthead and the bottom nav. */
+  scroll-padding-block: calc(var(--header-h) + var(--rule)) calc(var(--nav-h) + var(--rule) + env(safe-area-inset-bottom, 0px));
+}
+
+html:has(body[data-screen="festival"]) {
+  scroll-padding-block-end: calc(var(--nav-h) + var(--rule) + env(safe-area-inset-bottom, 0px) + var(--actionbar-h));
+}
+
+html:has(body[data-screen="explore"]) {
+  scroll-padding-block-start: calc(var(--header-h) + var(--rule) + var(--summary-h));
 }
 
 body {
@@ -308,6 +318,15 @@ svg {
 
   .bottomnav {
     display: none;
+  }
+
+  /* No bottom nav on wide screens: only the ficha's action bar sits at the bottom. */
+  html {
+    scroll-padding-block-end: 0;
+  }
+
+  html:has(body[data-screen="festival"]) {
+    scroll-padding-block-end: var(--actionbar-h);
   }
 
   .footer {

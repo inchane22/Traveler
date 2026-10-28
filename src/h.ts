@@ -21,6 +21,21 @@ export function safeExternalUrl(url: string): string | null {
   }
 }
 
+const URL_ATTRS = new Set(["href", "src", "action", "formaction", "xlink:href", "poster", "srcset"]);
+const SAFE_SCHEMES = new Set(["https:", "http:", "mailto:", "webcal:", "blob:"]);
+
+/**
+ * Any URL-bearing attribute: relative paths and same-document hashes pass, and so do https, http,
+ * mailto, webcal (calendar feeds) and blob (local .ics downloads). javascript:, data:, vbscript:
+ * and every other scheme are refused, so a future caller cannot turn data into a script link.
+ */
+export function safeAttrUrl(value: string): boolean {
+  const trimmed = value.trim();
+  const scheme = /^([a-z][a-z0-9+.-]*):/i.exec(trimmed.replace(/[\u0000-\u0020]/g, ""));
+  if (!scheme) return true; // relative or #hash: resolved against the site itself
+  return SAFE_SCHEMES.has(`${(scheme[1] ?? "").toLowerCase()}:`);
+}
+
 function append(parent: Node, child: Child): void {
   if (child === null || child === undefined || child === false) return;
   if (Array.isArray(child)) {
@@ -48,6 +63,8 @@ function applyAttrs(el: Element, attrs: Attrs | undefined): void {
     }
     if (typeof value === "function" || typeof value === "object") continue;
     if (name === "style") continue;
+    if (/^on/i.test(name)) continue; // string handlers would be inline script (and CSP blocks them anyway)
+    if (URL_ATTRS.has(name.toLowerCase()) && !safeAttrUrl(String(value))) continue;
     el.setAttribute(name, value === true ? "" : String(value));
   }
 }

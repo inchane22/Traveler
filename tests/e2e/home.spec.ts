@@ -1,6 +1,6 @@
 // Inicio: RF-01 «Lo próximo», RF-05 timeline with an equivalent list, RF-13 freshness and stale notice.
 import { expect, test } from "@playwright/test";
-import { open } from "./helpers.ts";
+import { open, settled } from "./helpers.ts";
 
 test.use({ serviceWorkers: "block" });
 
@@ -42,6 +42,14 @@ test.describe("Inicio", () => {
     await expect(page.getByRole("switch", { name: "Incluir Nivel 2" })).toHaveAttribute("aria-checked", "true");
   });
 
+  // ux-F10: «Lo no confirmado lleva trama diagonal», on the hero's big band too (Cartagena is tentative).
+  test("the hero band of an unconfirmed festival is hatched, never the solid «confirmada» band", async ({ page }) => {
+    await open(page, "#/pais/co");
+    const band = page.getByTestId("next-festival").locator(".poster__band");
+    await expect(band).toHaveClass(/band--hatched/);
+    expect(await band.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("repeating-linear-gradient");
+  });
+
   test("RF-13: shows when the data was verified, and a stale notice after 30 days", async ({ page }) => {
     await open(page, "#/pais/co");
     await expect(page.locator(".freshness").first()).toContainText("Verificado hoy");
@@ -51,9 +59,25 @@ test.describe("Inicio", () => {
     await expect(page.locator(".notice--warn")).toContainText("se verificaron por última vez el 26 oct 2026");
   });
 
-  test("RF-13: Colombia's partial source coverage is flagged", async ({ page }) => {
+  // R2: under 60% of dates with an A source the country is flagged. The committed share moves with
+  // the data, so one run reads it as published and one serves the same index with the share lowered.
+  test("RF-13: partial source coverage is flagged under 60% and only then", async ({ page }) => {
     await open(page, "#/pais/co");
+    const index = (await (await page.request.get("/data/index.json")).json()) as { countries: { code: string; share_a: number }[] };
+    const share = index.countries.find((c) => c.code === "CO")?.share_a;
+    expect(typeof share).toBe("number");
+    await expect(page.locator(".freshness--partial")).toHaveCount((share ?? 0) < 0.6 ? 1 : 0);
+
+    await page.route("**/data/index.json", async (route) => {
+      const response = await route.fetch();
+      const json = (await response.json()) as typeof index;
+      const countries = json.countries.map((c) => (c.code === "CO" ? { ...c, share_a: 0.5 } : c));
+      await route.fulfill({ response, json: { ...json, countries } });
+    });
+    await page.reload();
+    await settled(page);
     await expect(page.locator(".freshness--partial")).toContainText("Cobertura parcial");
+    await expect(page.locator(".freshness--partial")).toContainText("50");
   });
 
   test("offers webcal, Google and Outlook subscriptions for the country", async ({ page }) => {

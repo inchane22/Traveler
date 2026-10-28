@@ -39,10 +39,6 @@ export function monthShort(iso: ISO, lang: Lang): string {
   return dtf(lang, { month: "short" }).format(toUTCms(iso)).replace(/\.$/, "");
 }
 
-export function monthName(iso: ISO, lang: Lang): string {
-  return dtf(lang, { month: "long" }).format(toUTCms(iso));
-}
-
 export function dayNumber(iso: ISO): string {
   return String(Number(iso.slice(8, 10)));
 }
@@ -53,13 +49,13 @@ export function relativeDays(from: ISO, today: ISO, lang: Lang): string {
 }
 
 /** Narrow weekday names starting at `weekStart` (1 = Monday, 6 = Saturday, 7 = Sunday). */
-export function weekdayHeaders(lang: Lang, weekStart: number): { narrow: string; long: string }[] {
+export function weekdayHeaders(lang: Lang, weekStart: number): { narrow: string }[] {
   // 2023-01-01 was a Sunday; day index 0..6 = Sun..Sat.
   const first = weekStart % 7;
   return Array.from({ length: 7 }, (_, i) => {
     const dow = (first + i) % 7;
     const ms = Date.UTC(2023, 0, 1 + dow);
-    return { narrow: dtf(lang, { weekday: "narrow" }).format(ms), long: dtf(lang, { weekday: "long" }).format(ms) };
+    return { narrow: dtf(lang, { weekday: "narrow" }).format(ms) };
   });
 }
 

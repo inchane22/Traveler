@@ -1,8 +1,10 @@
 // App chrome: masthead (wordmark, back on detail screens, top nav on desktop), bottom nav on
 // phones (thumb zone), footer and the notices strip (offline).
+import type { ISO } from "../dates.ts";
 import { h } from "../h.ts";
 import type { Route } from "../router.ts";
 import type { Ctx } from "./context.ts";
+import { shortDate } from "./format.ts";
 import { brandMark, icon, type IconName } from "./icons.ts";
 
 type NavId = "home" | "explore" | "saved" | "settings";
@@ -96,6 +98,16 @@ export function renderSkipLink(el: HTMLAnchorElement, ctx: Ctx, main: HTMLElemen
     event.preventDefault();
     main.focus();
   };
+}
+
+/** SEC-13: the ?today= test hook changes every countdown, so it is always visible, with a way out. */
+export function todayOverrideNotice(date: ISO, realHref: string, ctx: Ctx): HTMLElement {
+  return h(
+    "div",
+    { class: "notice notice--info notice--today", "data-testid": "today-override" },
+    icon("calendar"),
+    h("div", { class: "notice__body" }, h("p", null, ctx.t("today.override", { date: shortDate(date, ctx.lang) }), " ", h("a", { href: realHref, class: "link" }, ctx.t("today.useReal")))),
+  );
 }
 
 export function offlineNotice(ctx: Ctx): HTMLElement {

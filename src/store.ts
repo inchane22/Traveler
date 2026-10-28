@@ -3,6 +3,7 @@
 // the app working for the session when the device refuses to persist.
 import type { Lang } from "./schema.ts";
 import { isLang } from "./i18n.ts";
+import { isRegion, type RegionId } from "./router.ts";
 
 export interface StorageLike {
   getItem(key: string): string | null;
@@ -11,7 +12,7 @@ export interface StorageLike {
 }
 
 export type WeekStart = 1 | 6 | 7;
-export type ScopePref = { kind: "world" } | { kind: "region"; region: string } | { kind: "country"; code: string };
+export type ScopePref = { kind: "world" } | { kind: "region"; region: RegionId } | { kind: "country"; code: string };
 
 export interface Prefs {
   saved: string[];
@@ -45,7 +46,8 @@ function sanitize<K extends keyof Prefs>(key: K, value: unknown): Prefs[K] | und
       if (typeof value !== "object" || value === null) return undefined;
       const v = value as Record<string, unknown>;
       if (v.kind === "world") return { kind: "world" } as Prefs[K];
-      if (v.kind === "region" && typeof v.region === "string") return { kind: "region", region: v.region } as Prefs[K];
+      // Only known regions: localStorage is shared with every page on the same origin.
+      if (v.kind === "region" && isRegion(v.region)) return { kind: "region", region: v.region } as Prefs[K];
       if (v.kind === "country" && isCountry(v.code)) return { kind: "country", code: v.code } as Prefs[K];
       return undefined;
     }

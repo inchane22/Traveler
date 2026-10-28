@@ -136,12 +136,16 @@
   font-weight: 750;
 }
 
+/* Changelog values are raw data (URLs, slugs, JSON) with no break opportunities: the tracks are
+   minmax(0, 1fr) and the text breaks anywhere, so its min-content cannot widen the page. */
 .log {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .log__item {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.2rem;
   padding-block: var(--sp-3);
   border-block-end: 1px solid var(--hairline);
@@ -156,6 +160,11 @@
 .log__field {
   font-size: var(--fs-sm);
   color: var(--ink-2);
+}
+
+.log__what,
+.log__change {
+  overflow-wrap: anywhere;
 }
 
 .log__change {

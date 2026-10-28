@@ -15,18 +15,21 @@ import {
   emptyState,
   externalLink,
   festivalName,
+  issueUrl,
   moonNote,
   notice,
   occurrenceDates,
+  posterBand,
   saveButton,
   sectionHeading,
+  staleNotice,
   statusBadge,
   typeTag,
 } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { compactNumber, dayMonth, fullNumber, longDate, range, relativeDays, shortDate } from "./format.ts";
 import { icon } from "./icons.ts";
-import { advisoryFor, dateKind, isUnconfirmed, loadFestival, primarySource, resource, type FestivalData } from "./model.ts";
+import { advisoryFor, countryInfo, dateKind, dateSource, eventSource, isUnconfirmed, loadFestival, primarySource, resource, type FestivalData } from "./model.ts";
 import { monthGrid } from "./monthgrid.ts";
 
 const DEFAULT_REPO = "inchane22/traveler";
@@ -144,7 +147,19 @@ function scoreSection(entry: FestivalEntry, ctx: Ctx): HTMLElement {
   );
 }
 
-function keyEvents(events: readonly KeyEvent[], source: Source | undefined, ctx: Ctx): HTMLElement | null {
+/** The date of a key event and, when no source backs that day, where it comes from instead. */
+function eventDate(ev: KeyEvent, occ: Occurrence | null, ctx: Ctx): { date: HTMLElement; why: HTMLElement | null } {
+  if (!ev.date) return { date: h("span", { class: "event__date" }, ctx.t("status.por_anunciar")), why: null };
+  const label = ev.end && ev.end !== ev.date ? range(ev.date, ev.end, ctx.lang) : longDate(ev.date, ctx.lang);
+  const source = eventSource(ev, occ);
+  if (source) return { date: sourcedDate(label, source, ctx, "event__date"), why: null };
+  // No source backs this day: say where it comes from instead of borrowing the edition's publisher.
+  const why = ev.rule ? ctx.t("festival.fromRule", { rule: ruleText(ev.rule, ctx.lang, ctx, Number(ev.date.slice(0, 4))) }) : ctx.t("festival.eventUnsourced");
+  return { date: sourcedDate(label, undefined, ctx, "event__date"), why: h("span", { class: "event__rule" }, why) };
+}
+
+function keyEvents(occ: Occurrence | null, ctx: Ctx): HTMLElement | null {
+  const events = occ?.edition?.key_events ?? [];
   if (!events.length) return null;
   const sorted = [...events].sort((a, b) => (a.date ?? "9999").localeCompare(b.date ?? "9999"));
   return h(
@@ -154,19 +169,15 @@ function keyEvents(events: readonly KeyEvent[], source: Source | undefined, ctx:
     h(
       "ol",
       { class: "events" },
-      sorted.map((ev) =>
-        h(
+      sorted.map((ev) => {
+        const { date, why } = eventDate(ev, occ, ctx);
+        return h(
           "li",
           { class: "event" },
           h("span", { class: "event__name" }, text(ev.name, ctx.lang) ?? ev.id),
-          h(
-            "span",
-            { class: "event__when" },
-            ev.date ? sourcedDate(ev.end && ev.end !== ev.date ? range(ev.date, ev.end, ctx.lang) : longDate(ev.date, ctx.lang), source, ctx, "event__date") : h("span", { class: "event__date" }, ctx.t("status.por_anunciar")),
-            confidenceMark(ev.confidence, ctx.t),
-          ),
-        ),
-      ),
+          h("span", { class: "event__when" }, date, confidenceMark(ev.confidence, ctx.t), why),
+        );
+      }),
     ),
   );
 }
@@ -217,23 +228,17 @@ function sourcesSection(occ: Occurrence | null, entry: FestivalEntry, ctx: Ctx):
   );
 }
 
-/** GitHub issue form link; keys other than `template` and `title` are field ids of the form (RF-17). */
-function issueUrl(repo: string, template: string, title: string, fields: Readonly<Record<string, string | undefined>>): string {
-  const q = new URLSearchParams({ template, title });
-  for (const [id, value] of Object.entries(fields)) if (value) q.set(id, value);
-  return `https://github.com/${repo}/issues/new?${q.toString()}`;
-}
-
 function reportSection(entry: FestivalEntry, ctx: Ctx): HTMLElement {
   const year = entry.occurrence?.year;
   const slug = entry.festival.slug;
   const name = festivalName(entry.festival, "es");
-  const errorUrl = issueUrl(ctx.repo, "reportar-error.yml", `[Error de datos] ${name}${year ? ` ${year}` : ""}`, {
+  // Title prefixes match the issue templates in .github (triage reads them), so they stay Spanish.
+  const errorUrl = issueUrl(ctx.repo, "reportar-error.yml", ctx.t("report.errorIssueTitle", { name: year ? `${name} ${year}` : name }), {
     fiesta: slug,
     campo: year ? `editions.${year}.start/end` : undefined,
     fuente: primarySource(entry.occurrence)?.url,
   });
-  const contentUrl = issueUrl(ctx.repo, "reportar-contenido.yml", `[Contenido] ${name}`, { fiesta: slug });
+  const contentUrl = issueUrl(ctx.repo, "reportar-contenido.yml", ctx.t("report.contentIssueTitle", { name }), { fiesta: slug });
   return h(
     "section",
     { class: "section report", "aria-labelledby": "report-title" },
@@ -250,9 +255,17 @@ function reportSection(entry: FestivalEntry, ctx: Ctx): HTMLElement {
 
 function advisorySection(entry: FestivalEntry, ctx: Ctx): HTMLElement | null {
   const origin = ctx.store.get("origin");
+  if (!origin || origin === entry.country) return null; // no origin chosen, or a trip at home
   const adv = advisoryFor(origin, entry.country);
-  if (!adv || !origin) return null;
   const params = { origin: countryName(origin, ctx.lang), country: countryName(entry.country, ctx.lang) };
+  if (!adv) {
+    return h(
+      "section",
+      { class: "section advisory", "aria-labelledby": "advisory-title" },
+      sectionHeading(ctx.t("advisory.title"), "advisory-title"),
+      h("p", { class: "section__lede advisory__missing" }, ctx.t("advisory.missing", params)),
+    );
+  }
   // Literal keys on both branches so the i18n test sees them.
   const consular = adv.kind === "consular";
   const lede = consular ? ctx.t("advisory.bodyConsular", params) : ctx.t("advisory.body", params);
@@ -269,7 +282,7 @@ function advisorySection(entry: FestivalEntry, ctx: Ctx): HTMLElement | null {
 
 function whenBlock(entry: FestivalEntry, ctx: Ctx): HTMLElement {
   const occ = entry.occurrence;
-  const source = primarySource(occ);
+  const source = dateSource(occ);
   const kind = dateKind(occ);
   const dates = occurrenceDates(occ, ctx.lang, ctx.t);
   const longRange = occ?.start && occ.end ? (occ.start === occ.end ? longDate(occ.start, ctx.lang) : `${longDate(occ.start, ctx.lang)} – ${longDate(occ.end, ctx.lang)}`) : null;
@@ -325,18 +338,19 @@ function content(data: FestivalData, ctx: Ctx): Child {
   const original = f.names.local !== name ? f.names.local : null;
   return [
     country.status === "borrador" ? notice("draft", "alert", h("p", null, ctx.t("draft.banner"))) : null,
+    staleNotice(countryInfo(data.index, entry.country), ctx),
     cancelledNotice(entry, ctx),
     h(
       "header",
       { class: `fhead type--${f.type}` },
-      h("span", { class: "poster__band", "aria-hidden": "true" }),
+      posterBand(entry.occurrence),
       h("p", { class: "fhead__type" }, typeTag(f.type, ctx.t), h("span", { class: "tag" }, ctx.t(`tier.${String(entry.score.tier)}`))),
       h("h1", { class: `screen-title fhead__name display${entry.occurrence?.status === "cancelada" ? " is-struck" : ""}`, tabindex: "-1" }, name),
       original ? h("p", { class: "fhead__original" }, ctx.t("festival.original"), " ", h("span", { class: "fhead__original-name" }, original)) : null,
       h("p", { class: "fhead__place" }, icon("pin"), `${f.city}, ${countryName(entry.country, ctx.lang)}`),
     ),
     whenBlock(entry, ctx),
-    keyEvents(entry.occurrence?.edition?.key_events ?? [], primarySource(entry.occurrence), ctx),
+    keyEvents(entry.occurrence, ctx),
     streetSection(f, ctx),
     scoreSection(entry, ctx),
     sourcesSection(entry.occurrence, entry, ctx),

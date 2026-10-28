@@ -55,6 +55,9 @@
   --tap: 2.75rem; /* 44px */
   --header-h: 3.5rem;
   --nav-h: 4rem;
+  /* Sticky bars around the content: a button row plus padding and rule (scroll-padding, 2.4.11). */
+  --actionbar-h: calc(var(--tap) + 2 * var(--sp-2) + var(--rule));
+  --summary-h: calc(var(--tap) + 2 * var(--sp-1) + 2 * var(--rule-thin));
   --rule: 3px;
   --rule-thin: 2px;
   --radius-pill: 999px;

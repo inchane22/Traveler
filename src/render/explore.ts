@@ -15,7 +15,9 @@ import {
   occurrenceDates,
   placeLine,
   saveButton,
+  staleNotice,
   statusBadge,
+  suggestAction,
   typeTag,
   type EmptyAction,
 } from "./components.ts";
@@ -129,8 +131,18 @@ function nearList(hits: readonly FilterHit[], ctx: Ctx): HTMLElement {
   return h("ul", { class: "fest-list fest-list--near" }, withDist.map(({ hit, km }) => row(hit, ctx, km)));
 }
 
+interface Candidate {
+  label: string;
+  next: ExploreState;
+}
+
+/**
+ * «Vacíos que orientan»: every way out is counted with the same filters as the chips, only the
+ * ones that give results are offered, each with its count, best first. Clearing every filter is
+ * the last resort; with nothing published at all, suggesting a festival is the only way out.
+ */
 function emptyActions(f: ExploreState, data: ExploreData, ctx: Ctx, go: (next: ExploreState) => void): EmptyAction[] {
-  const actions: EmptyAction[] = [];
+  const candidates: Candidate[] = [];
   if (f.months.length) {
     const neighbors = new Set<string>();
     for (const m of f.months) {
@@ -139,17 +151,27 @@ function emptyActions(f: ExploreState, data: ExploreData, ctx: Ctx, go: (next: E
     }
     const months = [...new Set([...f.months, ...neighbors])].sort();
     const label = [...neighbors].filter((m) => !f.months.includes(m)).sort().map((m) => monthShort(`${m}-01`, ctx.lang)).join(", ");
-    actions.push({ label: ctx.t("explore.neighborMonths", { months: label }), primary: true, onClick: () => go({ ...f, months }) });
+    candidates.push({ label: ctx.t("explore.neighborMonths", { months: label }), next: { ...f, months } });
   }
-  if (!f.tier2) actions.push({ label: ctx.t("filters.tier2On"), primary: !actions.length, onClick: () => go({ ...f, tier2: true }) });
+  if (!f.tier2) candidates.push({ label: ctx.t("filters.tier2On"), next: { ...f, tier2: true } });
+  if (f.types.length) candidates.push({ label: ctx.t("explore.clearTypes"), next: { ...f, types: [] } });
+  if (f.months.length) candidates.push({ label: ctx.t("explore.clearMonths"), next: { ...f, months: [] } });
   const otherCountries = data.index.countries.filter((c) => !f.countries.includes(c.code));
-  if (f.countries.length && otherCountries.length) actions.push({ label: ctx.t("explore.allCountries"), onClick: () => go({ ...f, countries: [] }) });
+  if (f.countries.length && otherCountries.length) candidates.push({ label: ctx.t("explore.allCountries"), next: { ...f, countries: [] } });
   if (f.from || f.to) {
     const { from: _from, to: _to, ...rest } = f;
-    actions.push({ label: ctx.t("explore.clearDates"), onClick: () => go(rest) });
+    candidates.push({ label: ctx.t("explore.clearDates"), next: rest });
   }
-  actions.push({ label: ctx.t("filters.clear"), onClick: () => go({ ...EMPTY_FILTERS }) });
-  return actions;
+  const counted = candidates
+    .map((c) => ({ ...c, count: run(data.all, c.next, ctx.today).length }))
+    .filter((c) => c.count > 0)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
+  const clearAll = { ...EMPTY_FILTERS, sort: f.sort };
+  const clearCount = run(data.all, clearAll, ctx.today).length;
+  const actions: EmptyAction[] = counted.map((c, i) => ({ label: ctx.t("explore.withCount", { label: c.label, count: c.count }), primary: i === 0, onClick: () => go(c.next) }));
+  if (clearCount > 0 && hasActiveFilters(f)) actions.push({ label: ctx.t("explore.withCount", { label: ctx.t("filters.clear"), count: clearCount }), primary: !actions.length, onClick: () => go(clearAll) });
+  return [...actions, suggestAction(ctx, f.countries.length === 1 ? f.countries[0] : undefined)];
 }
 
 function travelDates(f: ExploreState, count: number, ctx: Ctx, go: (next: ExploreState) => void): HTMLElement {
@@ -270,7 +292,10 @@ function content(f: ExploreState, data: ExploreData, ctx: Ctx): Child {
     : emptyState(ctx.t("explore.emptyTitle"), ctx.t("explore.emptyBody"), emptyActions(f, data, ctx, go));
 
   const worldHint = f.countries.length ? null : h("p", { class: "explore-hint" }, icon("globe"), ctx.t("explore.worldHint"));
-  return [filters, summary, worldHint, h("div", { class: "results", "data-testid": "results" }, results)];
+  // RF-13: the warning travels with the dates. Chosen countries, or every country the list shows.
+  const shown = f.countries.length ? f.countries : [...new Set(hits.map((hit) => hit.entry.country))];
+  const stale = data.index.countries.filter((c) => shown.includes(c.code)).map((c) => staleNotice(c, ctx));
+  return [stale, filters, summary, worldHint, h("div", { class: "results", "data-testid": "results" }, results)];
 }
 
 export function renderExplore(f: ExploreState, ctx: Ctx): HTMLElement {

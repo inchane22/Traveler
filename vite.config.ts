@@ -1,8 +1,10 @@
 import { readFileSync } from "node:fs";
 import { defineConfig, type Plugin } from "vite";
 
-const CSP =
-  "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; " +
+// No data: images: icons are inline SVG elements and the CSS embeds no data URLs (SEC-16).
+// frame-ancestors cannot be set from a meta tag and GitHub Pages sends no custom headers.
+export const CSP =
+  "default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; " +
   "font-src 'self'; base-uri 'self'; form-action 'none'";
 
 /** Fonts the first screen paints with: preloaded so the swap lands before data renders (LCP, CLS). */
@@ -53,8 +55,52 @@ function productionHead(): Plugin {
   };
 }
 
+type Messages = Record<string, string>;
+const LOCALES = ["es", "en", "pt"] as const;
+
+const escapeHtml = (v: string): string => v.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+
+/**
+ * The page the service worker answers with when it has no cached shell (first visit cut short).
+ * Static and script-free, so its text comes from locales/*.json at build time, in every language.
+ */
+export function offlinePage(messages: Readonly<Record<(typeof LOCALES)[number], Messages>>, base: string): string {
+  const blocks = LOCALES.map((lang) => {
+    const m = messages[lang];
+    const t = (key: string): string => escapeHtml(m[key] ?? messages.es[key] ?? key);
+    return `<section lang="${lang}"><h1>${t("offline.pageTitle")}</h1><p>${t("offline.pageBody")}</p><p><a href="${escapeHtml(base)}">${t("offline.pageRetry")}</a></p></section>`;
+  }).join("\n");
+  return [
+    "<!doctype html>",
+    '<html lang="es">',
+    "<head>",
+    '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width, initial-scale=1">',
+    '<meta name="color-scheme" content="light dark">',
+    `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'">`,
+    `<title>${escapeHtml(messages.es["offline.pageTitle"] ?? "Traveler")} | Traveler</title>`,
+    "</head>",
+    "<body>",
+    blocks,
+    "</body>",
+    "</html>",
+    "",
+  ].join("\n");
+}
+
+function offlineFallback(): Plugin {
+  return {
+    name: "traveler-offline-page",
+    apply: "build",
+    generateBundle() {
+      const messages = Object.fromEntries(LOCALES.map((lang) => [lang, JSON.parse(readFileSync(`locales/${lang}.json`, "utf8")) as Messages])) as Record<(typeof LOCALES)[number], Messages>;
+      this.emitFile({ type: "asset", fileName: "offline.html", source: offlinePage(messages, process.env.BASE_PATH ?? "/") });
+    },
+  };
+}
+
 export default defineConfig({
   base: process.env.BASE_PATH ?? "/",
   build: { target: "es2022", assetsInlineLimit: 0 },
-  plugins: [productionHead()],
+  plugins: [productionHead(), offlineFallback()],
 });

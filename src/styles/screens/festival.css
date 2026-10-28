@@ -340,6 +340,12 @@
   font-weight: 700;
 }
 
+.event__rule {
+  flex-basis: 100%;
+  font-size: var(--fs-xs);
+  color: var(--ink-2);
+}
+
 .street__tip {
   font-size: var(--fs-lg);
   line-height: 1.45;
@@ -411,6 +417,7 @@
   position: sticky;
   inset-block-end: calc(var(--nav-h) + var(--rule) + env(safe-area-inset-bottom, 0px));
   z-index: 15;
+  min-block-size: var(--actionbar-h);
   margin-block-start: var(--sp-6);
   margin-inline: calc(-1 * var(--gutter));
   padding: var(--sp-2) var(--gutter);

@@ -6,9 +6,19 @@ import { LANGS } from "../i18n.ts";
 import type { Lang } from "../schema.ts";
 import { countryItems } from "../search.ts";
 import type { WeekStart } from "../store.ts";
+import { countryName } from "../ics.ts";
 import { notice } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { icon } from "./icons.ts";
+import { coveredOrigins } from "./model.ts";
+
+/** «Canadá, España y Reino Unido»: the origins with a verified official advisory link. */
+function coveredList(ctx: Ctx): string {
+  const names = coveredOrigins()
+    .map((code) => countryName(code, ctx.lang))
+    .sort((a, b) => a.localeCompare(b, ctx.lang));
+  return new Intl.ListFormat(ctx.lang, { type: "conjunction" }).format(names);
+}
 
 function radioGroup<T extends string | number>(
   name: string,
@@ -99,7 +109,7 @@ export function renderSettings(ctx: Ctx): HTMLElement {
         "div",
         { class: "setting" },
         h("label", { for: "origin", class: "setting__legend display" }, ctx.t("settings.origin")),
-        h("p", { class: "setting__hint", id: "origin-hint" }, ctx.t("settings.originHint")),
+        h("p", { class: "setting__hint", id: "origin-hint" }, ctx.t("settings.originHint"), " ", ctx.t("settings.originCovered", { countries: coveredList(ctx) })),
         h("div", { class: "select-wrap" }, select, icon("chevronDown")),
       ),
       radioGroup<WeekStart>("week", ctx.t("settings.weekStart"), weekOptions, ctx.weekStart, (v) => {

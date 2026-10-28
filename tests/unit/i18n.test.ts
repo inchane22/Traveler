@@ -2,7 +2,7 @@
 import { describe, expect, test } from "vitest";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { createI18n, detectLang, isLang, keyDiff, LANGS, type Messages } from "../../src/i18n.ts";
+import { createI18n, detectLang, isLang, LANGS, type Messages } from "../../src/i18n.ts";
 import { FESTIVAL_TYPES, REGIONS } from "../../src/router.ts";
 import { CRITERIA } from "../../src/score.ts";
 import { Confidence, Status } from "../../src/schema.ts";
@@ -13,6 +13,12 @@ const ROOT = join(import.meta.dirname, "../..");
 const load = (lang: Lang): Messages => JSON.parse(readFileSync(join(ROOT, "locales", `${lang}.json`), "utf8")) as Messages;
 const ALL: Record<Lang, Messages> = { es: load("es"), en: load("en"), pt: load("pt") };
 const has = (m: Messages, key: string): boolean => key in m || `${key}.one` in m || `${key}.other` in m;
+/** Keys present in one dictionary but not the other (keeps es/en/pt in sync). */
+function keyDiff(a: Messages, b: Messages): { missing: string[]; extra: string[] } {
+  const ka = new Set(Object.keys(a));
+  const kb = new Set(Object.keys(b));
+  return { missing: [...ka].filter((k) => !kb.has(k)).sort(), extra: [...kb].filter((k) => !ka.has(k)).sort() };
+}
 const placeholders = (s: string): string[] => [...new Set([...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1] ?? ""))].sort();
 
 describe("locale files", () => {
@@ -47,8 +53,32 @@ describe("locale files", () => {
       ...CRITERIA.flatMap((c) => [`criterion.${c}`, `about.criterion.${c}`]),
       ...["1", "2", "provisional", "hidden"].map((t) => `tier.${t}`),
       ...["solid", "hatched", "window"].map((m) => `timeline.pattern.${m}`),
+      // Changelog fields and parts in words (Sobre los datos), never the raw field ids.
+      ...["start", "end", "status", "confidence", "note"].map((f) => `log.field.${f}`),
+      ...["confidence", "source", "note", "qualifier", "unit", "year"].map((p) => `log.part.${p}`),
+      ...["exact", "about", "more_than"].map((q) => `log.qualifier.${q}`),
+      // Static offline page emitted by vite.config.ts.
+      ...["offline.pageTitle", "offline.pageBody", "offline.pageRetry"],
     ];
     for (const lang of LANGS) expect(families.filter((k) => !has(ALL[lang], k)), lang).toEqual([]);
+  });
+
+  // ux-F11: Portuguese contracts «em/de» with the article of a name (na Colômbia, do Peru), which
+  // Intl.DisplayNames does not give, so no pt sentence puts a bare preposition before a name.
+  test("pt never puts «em», «de» or «a» right before a place placeholder", () => {
+    const bad = Object.entries(ALL.pt).filter(([, v]) => /\b(em|de|a)\s+\{(country|origin|scope)\}/i.test(v));
+    expect(bad).toEqual([]);
+    expect(ALL.pt["home.titleIn"]).not.toMatch(/\b(em|de)$/);
+  });
+
+  // ux-F12: date certainty and score tier are different facts and never share a word.
+  test.each(LANGS)("%s labels the tentative status and the provisional tier differently", (lang) => {
+    expect(ALL[lang]["status.tentativa"]).not.toBe(ALL[lang]["tier.provisional"]);
+  });
+
+  // GitHub issue titles are a contract with .github/ISSUE_TEMPLATE (triage filters by them).
+  test.each(["report.errorIssueTitle", "report.contentIssueTitle", "suggest.issueTitle"])("%s is the same in every language", (key) => {
+    expect(new Set(LANGS.map((lang) => ALL[lang][key])).size).toBe(1);
   });
 
   test("conectividad copy never places the airport inside the city (BAQ is in Soledad)", () => {

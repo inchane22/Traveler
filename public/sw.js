@@ -1,10 +1,13 @@
 // Traveler service worker (hand-written, no build step).
-// - Navigations: network first, cached shell when offline.
-// - data/*.json and calendars/*.ics: network first (fresh dates matter), cache as fallback.
+// - Navigations to the app (scope root, index.html): network first, cached shell when offline.
+//   Only an HTML response of the scope root is ever stored as the shell, so opening a data file or
+//   a calendar feed as a page cannot replace it. Without a shell the static offline.html answers.
+// - Navigations to data/ and calendars/ are left to the browser (the worker does not answer them).
+// - data/*.json and calendars/*.ics fetched by the app: network first (fresh dates matter), cache as fallback.
 // - Other same-origin files (hashed JS/CSS, fonts, icons): stale-while-revalidate.
 // Works under any base path: everything is resolved against the registration scope.
 
-const VERSION = "v1";
+const VERSION = "v2"; // v2 evicts shells poisoned by data navigations (v1 stored any document)
 const SHELL = `traveler-shell-${VERSION}`;
 const DATA = `traveler-data-${VERSION}`;
 const ASSETS = `traveler-assets-${VERSION}`;
@@ -13,6 +16,7 @@ const MAX_ASSETS = 80;
 
 const scope = new URL(self.registration.scope);
 const shellUrl = scope.href;
+const offlineUrl = new URL("offline.html", scope).href;
 
 function isSameOrigin(url) {
   return url.origin === scope.origin && url.pathname.startsWith(scope.pathname);
@@ -21,6 +25,15 @@ function isSameOrigin(url) {
 function isData(url) {
   const rel = url.pathname.slice(scope.pathname.length);
   return rel.startsWith("data/") || rel.startsWith("calendars/");
+}
+
+function isShellPath(url) {
+  const rel = url.pathname.slice(scope.pathname.length);
+  return url.pathname.startsWith(scope.pathname) && (rel === "" || rel === "index.html");
+}
+
+function isHtml(response) {
+  return (response.headers.get("content-type") ?? "").toLowerCase().startsWith("text/html");
 }
 
 function assetUrlsIn(html) {
@@ -42,10 +55,16 @@ async function trim(cacheName, max) {
 
 async function precache() {
   const response = await fetch(shellUrl, { cache: "no-cache" });
-  if (!response.ok) return;
+  if (!response.ok || !isHtml(response)) return;
   const html = await response.clone().text();
   const shell = await caches.open(SHELL);
   await shell.put(shellUrl, response);
+  try {
+    const offline = await fetch(offlineUrl, { cache: "no-cache" });
+    if (offline.ok && isHtml(offline)) await shell.put(offlineUrl, offline);
+  } catch {
+    // The offline page is a last resort; the cached shell is what normally answers.
+  }
   const assets = await caches.open(ASSETS);
   await Promise.all(
     assetUrlsIn(html).map(async (href) => {
@@ -79,7 +98,8 @@ async function networkFirst(request, cacheName, cacheKey) {
     if (response.ok) await cache.put(cacheKey ?? request, response.clone());
     return response;
   } catch (error) {
-    const cached = await cache.match(cacheKey ?? request, { ignoreSearch: cacheName === SHELL });
+    // ignoreVary: entries stored by precache() carry no Origin header, page requests do.
+    const cached = await cache.match(cacheKey ?? request, { ignoreSearch: cacheName === SHELL, ignoreVary: true });
     if (cached) return cached;
     throw error;
   }
@@ -88,21 +108,21 @@ async function networkFirst(request, cacheName, cacheKey) {
 async function navigation(request) {
   try {
     const response = await fetch(request);
-    if (response.ok) {
+    if (response.ok && isShellPath(new URL(request.url)) && isHtml(response)) {
       const cache = await caches.open(SHELL);
       await cache.put(shellUrl, response.clone());
     }
     return response;
   } catch {
-    const cached = await caches.match(shellUrl, { cacheName: SHELL });
-    if (cached) return cached;
-    return new Response("Sin conexión / Offline", { status: 503, headers: { "Content-Type": "text/plain; charset=utf-8" } });
+    const shell = await caches.open(SHELL);
+    const cached = (await shell.match(shellUrl, { ignoreSearch: true, ignoreVary: true })) ?? (await shell.match(offlineUrl, { ignoreVary: true }));
+    return cached ?? Response.error();
   }
 }
 
 async function staleWhileRevalidate(event) {
   const cache = await caches.open(ASSETS);
-  const cached = await cache.match(event.request);
+  const cached = await cache.match(event.request, { ignoreVary: true });
   const refresh = fetch(event.request)
     .then(async (response) => {
       if (response.ok && response.type === "basic") {
@@ -127,6 +147,7 @@ self.addEventListener("fetch", (event) => {
   if (!isSameOrigin(url)) return;
 
   if (request.mode === "navigate") {
+    if (isData(url)) return; // a data file or feed opened as a page: the browser fetches it, nothing is cached
     event.respondWith(navigation(request));
     return;
   }

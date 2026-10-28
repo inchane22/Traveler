@@ -90,6 +90,27 @@
   font-size: var(--fs-sm);
 }
 
+/* PRD «Pulgar primero»: 44 px tall targets for every primary link. Standalone links become a 44 px
+   row; links inside a sentence grow their hit area with vertical padding, which leaves the line
+   boxes (and so the text layout) where they were. */
+.event__date.link--source,
+.when__range.link--source,
+.source__link,
+.section__foot .link,
+.footer .link,
+.log__sources .link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap);
+}
+
+.link--small,
+.freshness .link,
+.log__what .link,
+.fresh__name .link {
+  padding-block: calc((var(--tap) - 1em) / 2);
+}
+
 .link--external svg,
 .link--source svg {
   display: inline-block;

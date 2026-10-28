@@ -3,7 +3,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
-import { open } from "./helpers.ts";
+import { downloadText, open, unfold } from "./helpers.ts";
 
 const ROOT = join(import.meta.dirname, "../..");
 
@@ -27,7 +27,13 @@ test.describe("Ficha", () => {
     await expect(dateLink).toHaveAttribute("target", "_blank");
     await expect(dateLink).toHaveAttribute("rel", "noopener noreferrer");
     await expect(dateLink).toHaveAccessibleName(/6–9 feb 2027.*fuente: Carnaval de Barranquilla/i);
-    for (const link of await page.locator(".event__date").all()) await expect(link).toHaveAttribute("href", /^https:\/\//);
+    // A key-event date opens its source; a day no source gives (ux-F05) says why instead.
+    for (const ev of await page.locator(".event").all()) {
+      const date = ev.locator(".event__date");
+      if ((await date.getAttribute("href")) === null) await expect(ev.locator(".event__rule")).not.toBeEmpty();
+      else await expect(date).toHaveAttribute("href", /^https:\/\//);
+    }
+    await expect(page.locator("a.event__date")).toHaveCount(6);
   });
 
   test("RF-06: sources list the publisher and the verification date", async ({ page }) => {
@@ -45,14 +51,19 @@ test.describe("Ficha", () => {
     await expect(page.locator(".crit")).toHaveCount(5);
   });
 
-  test("RF-07/08: a date from the rule is tentative, by pattern, and says where it comes from", async ({ page }) => {
-    await open(page, "#/fiesta/independencia-cartagena");
-    const when = page.locator(".when");
-    await expect(when.locator(".status")).toHaveText("Tentativa");
-    await expect(when.locator(".conf")).toHaveText("Fuente: Patrón");
-    await expect(when.locator(".when__rule")).toContainText("regla");
-    await expect(when.locator(".when__band")).toHaveClass(/band--hatched/);
-  });
+  // Cartagena 2026: a tentative edition with sources but no dates of its own (the days come from
+  // the rule). Negros y Blancos: no edition at all. Neither date may pose as sourced.
+  for (const slug of ["independencia-cartagena", "negros-y-blancos"]) {
+    test(`RF-07/08: a date from the rule is tentative, by pattern, and says where it comes from (${slug})`, async ({ page }) => {
+      await open(page, `#/fiesta/${slug}`);
+      const when = page.locator(".when");
+      await expect(when.locator(".status")).toHaveText("Tentativa");
+      await expect(when.locator(".conf")).toHaveText("Fuente: Patrón");
+      await expect(when.locator(".when__rule")).toContainText("regla");
+      await expect(when.locator(".when__band")).toHaveClass(/band--hatched/);
+      await expect(when.locator(".when__range")).not.toHaveAttribute("href", /.*/);
+    });
+  }
 
   test("RF-17: report links prefill the GitHub issue form by its field ids", async ({ page }) => {
     await open(page, "#/fiesta/carnaval-barranquilla");
@@ -95,6 +106,74 @@ test.describe("Ficha", () => {
     await expect(page.locator(".advisory a")).toHaveAttribute("href", "https://www.gov.uk/foreign-travel-advice/colombia");
   });
 
+  // ux-F14: a chosen origin without a verified page says so instead of showing nothing.
+  test("R6: an origin without a verified advisory link says so, and Ajustes names the covered ones", async ({ page }) => {
+    await page.addInitScript(() => {
+      try {
+        // Japan has no entry in config/advisories.json (neither a Colombia page nor a general one).
+        localStorage.setItem("traveler.origin", JSON.stringify("JP"));
+      } catch {
+        /* storage blocked: the test then fails on the missing section */
+      }
+    });
+    await open(page, "#/fiesta/carnaval-barranquilla");
+    await expect(page.locator(".advisory")).toContainText("Aún no tenemos el enlace verificado de Japón");
+    await expect(page.locator(".advisory a")).toHaveCount(0);
+    await open(page, "#/ajustes");
+    await expect(page.locator("#origin-hint")).toContainText("Reino Unido");
+    await expect(page.locator("#origin-hint")).toContainText("Estados Unidos");
+    await expect(page.locator("#origin-hint")).not.toContainText("Japón");
+  });
+
+  test("R6: a trip inside the home country shows no advisory section", async ({ page }) => {
+    await page.addInitScript(() => {
+      try {
+        localStorage.setItem("traveler.origin", JSON.stringify("CO"));
+      } catch {
+        /* storage blocked: no origin, no section either */
+      }
+    });
+    await open(page, "#/fiesta/carnaval-barranquilla");
+    await expect(page.locator(".advisory")).toHaveCount(0);
+  });
+
+  // ux-F07: the stale warning travels with the dates, to deep links and the explorer.
+  test("RF-13: a ficha and Explorar warn when the country's data is stale", async ({ page }) => {
+    await open(page, "#/fiesta/carnaval-barranquilla");
+    await expect(page.locator(".notice--warn")).toHaveCount(0);
+    await open(page, "#/fiesta/carnaval-barranquilla", "2026-12-10");
+    await expect(page.locator(".notice--warn")).toContainText("se verificaron por última vez el 26 oct 2026");
+    await open(page, "#/explorar?pais=co&mes=2027-02", "2026-12-10");
+    await expect(page.locator(".notice--warn")).toContainText("se verificaron por última vez el 26 oct 2026");
+  });
+
+  // ux-F05, DH-07: «Toda fecha abre su fuente», and only a source that backs that date.
+  test("RF-08: a key-event date links only to a source that backs it", async ({ page }) => {
+    await open(page, "#/fiesta/carnaval-barranquilla");
+    const martes = page.locator(".event").filter({ hasText: "Martes de Carnaval" });
+    await expect(martes.locator(".conf")).toHaveText("Patrón");
+    await expect(martes.locator("a")).toHaveCount(0);
+    await expect(page.locator(".event").filter({ hasText: "Batalla de Flores" }).locator("a.event__date")).toHaveAttribute("href", /^https:\/\//);
+
+    // Feria de las Flores 2026: only the Silleteros date is quoted (El Espectador); the official
+    // page gives the feria's range, not the parades, so the other press dates stay plain text.
+    await open(page, "#/fiesta/feria-de-las-flores", "2026-07-01");
+    await expect(page.locator(".event").filter({ hasText: "Desfile de Silleteros" }).locator("a.event__date")).toHaveAttribute("href", /elespectador\.com/);
+    for (const name of ["Desfile de Chivas y Flores", "Avenida Primavera", "Desfile de Autos Clásicos y Antiguos"]) {
+      await expect(page.locator(".event").filter({ hasText: name }).locator("a"), name).toHaveCount(0);
+    }
+  });
+
+  // ux-F10: «Lo no confirmado lleva trama diagonal», on the big band too.
+  test("the ficha header band is hatched when the date is not confirmed", async ({ page }) => {
+    await open(page, "#/fiesta/independencia-cartagena");
+    const band = page.locator(".fhead .poster__band");
+    await expect(band).toHaveClass(/band--hatched/);
+    expect(await band.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("repeating-linear-gradient");
+    await open(page, "#/fiesta/carnaval-barranquilla");
+    await expect(page.locator(".fhead .poster__band")).toHaveClass(/band--solid/);
+  });
+
   test("an unknown festival shows a not-found state with actions", async ({ page }) => {
     await open(page, "#/fiesta/no-existe");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -106,6 +185,34 @@ test.describe("Ficha", () => {
     await page.locator(".masthead").getByRole("button", { name: "Volver" }).click();
     await expect(page).toHaveURL(/#\/explorar/);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Explorar");
+  });
+
+  // code-F4: festival links are plain anchors; «Volver» must be a real Back, not a push to Explorar.
+  test("«Volver» on a ficha opened from Inicio goes back to Inicio without a new history entry", async ({ page }) => {
+    await open(page, "#/pais/co");
+    await page.getByTestId("next-festival").getByRole("link").click();
+    await expect(page).toHaveURL(/#\/fiesta\//);
+    const length = await page.evaluate(() => history.length);
+    await page.locator(".masthead").getByRole("button", { name: "Volver" }).click();
+    await expect(page).toHaveURL(/#\/pais\/co$/);
+    expect(await page.evaluate(() => history.length)).toBe(length);
+  });
+
+  test("«Volver» on a ficha opened from Guardadas goes back to Guardadas", async ({ page }) => {
+    await page.addInitScript(() => {
+      try {
+        localStorage.setItem("traveler.saved", JSON.stringify(["feria-de-cali"]));
+      } catch {
+        /* the list is then empty and the click below fails */
+      }
+    });
+    await open(page, "#/guardadas");
+    await page.locator("main").getByRole("link", { name: "Feria de Cali", exact: true }).click();
+    await expect(page).toHaveURL(/#\/fiesta\/feria-de-cali$/);
+    const length = await page.evaluate(() => history.length);
+    await page.locator(".masthead").getByRole("button", { name: "Volver" }).click();
+    await expect(page).toHaveURL(/#\/guardadas$/);
+    expect(await page.evaluate(() => history.length)).toBe(length);
   });
 
   test("«Volver» after browsing returns to the exact list it came from", async ({ page }) => {
@@ -137,5 +244,45 @@ test.describe("RF-12: deep links open each screen directly", () => {
   test("filters from a shared link are applied", async ({ page }) => {
     await open(page, "#/explorar?pais=co&tipo=carnaval");
     await expect(page.getByRole("button", { name: /^Carnaval/ })).toHaveAttribute("aria-pressed", "true");
+  });
+});
+
+// prd-F15: no published festival is cancelled or moon-dependent right now, so these tests serve a
+// copy of the country file with one of each: RF-07 (struck through, with its source, CANCELLED in
+// the .ics) and RF-19 (a sighting-dependent date is an estimate).
+test.describe("RF-07 and RF-19 on served fixture data", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.route("**/data/countries/co.json", async (route) => {
+      const response = await route.fetch();
+      const json = (await response.json()) as { festivals: { slug: string; editions?: Record<string, Record<string, unknown>> }[] };
+      const festivals = json.festivals.map((f) => {
+        const cali = f.editions?.["2026"];
+        if (f.slug === "feria-de-cali" && cali) return { ...f, editions: { ...f.editions, "2026": { ...cali, status: "cancelada", sequence: Number(cali.sequence ?? 0) + 1 } } };
+        if (f.slug === "san-pacho") {
+          const table = { "2026": { start: "2026-12-10", end: "2026-12-12" }, "2027": { start: "2027-11-30", end: "2027-12-02" } };
+          return { ...f, rule: { type: "lunisolar_table", calendar: "islamic", sighting_dependent: true, table, table_source: "https://www.timeanddate.com/holidays/colombia/" } };
+        }
+        return f;
+      });
+      await route.fulfill({ response, json: { ...json, festivals } });
+    });
+  });
+
+  test("RF-07: a cancelled edition is struck through, links its source and exports CANCELLED", async ({ page }) => {
+    await open(page, "#/fiesta/feria-de-cali");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveClass(/is-struck/);
+    await expect(page.locator(".when .status")).toHaveText("Cancelada");
+    await expect(page.locator(".notice--cancel a")).toHaveAttribute("href", /^https:\/\//);
+    await page.getByRole("button", { name: "Agregar al calendario" }).click();
+    const { text } = await downloadText(page, page.getByTestId("ics-download"));
+    const ics = unfold(text);
+    expect(ics).toContain("STATUS:CANCELLED");
+    expect(ics).toMatch(/SUMMARY:\[Cancelada\]/);
+  });
+
+  test("RF-19: a moon-dependent date says it is an estimate that may shift by a day", async ({ page }) => {
+    await open(page, "#/fiesta/san-pacho");
+    await expect(page.locator(".moon-note")).toHaveText(/^Estimada, puede variar un día/);
+    await expect(page.locator(".when__band")).toHaveClass(/band--hatched/);
   });
 });

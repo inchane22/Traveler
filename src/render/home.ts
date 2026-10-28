@@ -15,14 +15,17 @@ import {
   notice,
   occurrenceDates,
   placeLine,
+  posterBand,
   sectionHeading,
+  staleNotice,
   statusBadge,
+  suggestAction,
   typeTag,
 } from "./components.ts";
 import type { Ctx } from "./context.ts";
-import { percent, relativeDays, shortDate } from "./format.ts";
+import { percent, relativeDays } from "./format.ts";
 import { icon } from "./icons.ts";
-import { countdown, countryInfo, isStale, loadScope, PARTIAL_SHARE, resource, timelineHits, type IndexCountry, type ScopeData } from "./model.ts";
+import { countdown, countryInfo, loadScope, PARTIAL_SHARE, resource, timelineHits, type IndexCountry, type ScopeData } from "./model.ts";
 import { openScopeSheet } from "./scope.ts";
 import { subscribeBlock } from "./subscribe.ts";
 import { legend, timeline } from "./timeline.ts";
@@ -46,7 +49,7 @@ function hero(entry: FestivalEntry, ctx: Ctx): HTMLElement {
   return h(
     "article",
     { class: `poster type--${f.type}${cancelled ? " is-cancelled" : ""}`, "data-testid": "next-festival" },
-    h("span", { class: "poster__band", "aria-hidden": "true" }),
+    posterBand(occ),
     h("div", { class: "poster__top" }, typeTag(f.type, ctx.t), h("span", { class: "poster__kicker" }, ctx.t("home.next"))),
     h(
       "h2",
@@ -110,21 +113,6 @@ function coverageNote(info: IndexCountry | undefined, ctx: Ctx): HTMLElement | n
   return h("p", { class: "freshness freshness--partial" }, icon("alert"), ctx.t("fresh.partial", { share: percent(info.share_a, ctx.lang) }));
 }
 
-function staleNotice(info: IndexCountry | undefined, ctx: Ctx): HTMLElement | null {
-  if (!info || !isStale(info.last_verified, ctx.today)) return null;
-  return notice(
-    "warn",
-    "alert",
-    h(
-      "p",
-      null,
-      info.last_verified
-        ? ctx.t("fresh.stale", { country: countryName(info.code, ctx.lang), date: shortDate(info.last_verified, ctx.lang), days: relativeDays(info.last_verified, ctx.today, ctx.lang) })
-        : ctx.t("fresh.never", { country: countryName(info.code, ctx.lang) }),
-    ),
-  );
-}
-
 function tier2Switch(scope: Scope, query: HomeQuery, ctx: Ctx): HTMLElement {
   return h(
     "button",
@@ -149,6 +137,7 @@ function unpublished(code: string, data: ScopeData, ctx: Ctx): HTMLElement {
       primary: i === 0,
     })),
     { label: ctx.t("home.seeWorld"), href: ctx.href({ name: "home", query: { tier2: false } }) },
+    suggestAction(ctx, code),
   ]);
 }
 
@@ -170,6 +159,7 @@ function content(scope: Scope, query: HomeQuery, data: ScopeData, ctx: Ctx): HTM
       : emptyState(ctx.t("home.emptyTitle"), ctx.t("home.emptyBody"), [
           ...(query.tier2 ? [] : [{ label: ctx.t("filters.tier2On"), onClick: () => ctx.navigate(routeFor(scope, { tier2: true })), primary: true }]),
           { label: ctx.t("home.seeWorld"), href: ctx.href({ name: "home", query: { tier2: true } }) },
+          suggestAction(ctx, scope.kind === "country" ? scope.code : undefined),
         ]),
     rest.length ? h("ol", { class: "next-list", "aria-label": ctx.t("home.alsoSoon") }, rest.map((e) => nextRow(e, ctx))) : null,
     freshness(data.index.countries, scope, ctx),

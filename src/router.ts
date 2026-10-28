@@ -47,7 +47,7 @@ const isISO = (v: string): boolean => {
 };
 const isMonth = (v: string): boolean => /^\d{4}-(0[1-9]|1[0-2])$/.test(v);
 const isType = (v: string): v is FestivalType => (FESTIVAL_TYPES as readonly string[]).includes(v);
-const isRegion = (v: string): v is RegionId => (REGIONS as readonly string[]).includes(v);
+export const isRegion = (v: unknown): v is RegionId => typeof v === "string" && (REGIONS as readonly string[]).includes(v);
 
 const list = (q: URLSearchParams, key: string): string[] =>
   [...new Set((q.get(key) ?? "").split(",").map((v) => v.trim()).filter(Boolean))];

@@ -30,3 +30,24 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ---------- Short viewports (landscape phones, 200 to 400% zoom) ---------- */
+/* Sticky chrome would cover most of the screen (WCAG 1.4.10 Reflow): every bar scrolls with the page. */
+
+@media (max-height: 30rem) {
+  html,
+  html:has(body[data-screen]) {
+    scroll-padding-block: 0;
+  }
+
+  .masthead,
+  .summary,
+  .actionbar,
+  .bottomnav {
+    position: static;
+  }
+
+  .footer {
+    padding-block-end: var(--sp-5);
+  }
+}
