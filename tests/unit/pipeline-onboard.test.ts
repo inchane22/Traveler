@@ -2,10 +2,11 @@ import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { CountryFile } from "../../src/schema.ts";
+import { dataProblems, loadCountries } from "../../scripts/build-data.ts";
 import { main as onboardMain } from "../../scripts/onboard.ts";
 import { memoryUsageStore } from "../../scripts/lib/budget.ts";
 import { fixtureDirTransport, loadFixtureSet, replayTransport } from "../../scripts/lib/client.ts";
-import { emptyPolicy, withGovernmentFallback } from "../../scripts/lib/domains.ts";
+import { emptyPolicy, loadDomainPolicy, withGovernmentFallback } from "../../scripts/lib/domains.ts";
 import { memoryLogger } from "../../scripts/lib/io.ts";
 import { mapFestival, OnboardingDraft, probableWindow, slugify, toRule, verifyEvidence, type DraftFestival, type MappedFestival } from "../../scripts/lib/onboard-draft.ts";
 import { onboardFlags, runOnboard, type OnboardOptions } from "../../scripts/lib/onboard-run.ts";
@@ -51,7 +52,8 @@ describe("onboarding PE with recorded responses (H5 acceptance)", () => {
     // Inti Raymi: the fixed rule and a press figure with its year are cited.
     const inti = bySlug["inti-raymi"]!;
     expect(inti.rule).toEqual({ type: "fixed", start: "06-24", end: "06-24" });
-    expect(inti.score.convocatoria).toMatchObject({ measure: { attendance: 60000, qualifier: "more_than", year: 2025 }, confidence: "prensa" });
+    // rpp.pe is tier C until a person writes config/sources/pe.json: an estimate, not «prensa» (BE-02).
+    expect(inti.score.convocatoria).toMatchObject({ measure: { attendance: 60000, qualifier: "more_than", year: 2025 }, confidence: "estimacion" });
 
     const report = result.report!;
     expect(report.dropped).toEqual(["fiesta-sin-codigo: subdivision PUNO is not an ISO 3166-2 code of PE"]);
@@ -63,6 +65,16 @@ describe("onboarding PE with recorded responses (H5 acceptance)", () => {
     expect(md).toContain("Descartadas (1)");
     // One open research pass (no allow-list for a new country), then one extraction.
     expect(result.files.map((f) => f.slice(root.length + 1)).sort()).toEqual(["data/countries/pe.json", `proposals/onboard-pe-${TODAY}.json`, `proposals/onboard-pe-${TODAY}.md`]);
+  });
+
+  test("the draft passes build-data without hand-written config, and the domain checks return once it is «publicado» (BE-02)", async () => {
+    const root = freshRoot();
+    expect((await runOnboard(opts(root), deps())).exitCode).toBe(0);
+    const loaded = loadCountries(join(root, "data", "countries"));
+    const policies = new Map(loaded.map((c) => [c.country, loadDomainPolicy(root, c.country)]));
+    expect(dataProblems(loaded, policies, TODAY)).toEqual([]);
+    const published = loaded.map((c) => (c.country === "PE" ? { ...c, status: "publicado" as const } : c));
+    expect(dataProblems(published, policies, TODAY).join("\n")).toMatch(/PE\/candelaria-puno 2027: .* declares tier A, config\/sources gives C/);
   });
 
   test("--dry-run writes only the proposals; an existing country is never overwritten", async () => {
@@ -134,6 +146,11 @@ describe("draft mapping", () => {
     expect(verifyEvidence({ ...e, quote: "cada 25 de junio" }, ctx)).toBeNull();
     expect(verifyEvidence({ ...e, source_url: "https://otro.pe/x" }, ctx)).toBeNull();
     expect(verifyEvidence(null, ctx)).toBeNull();
+    // BE-02: «prensa» needs an A or B source; a tier-C page backs an estimate at most.
+    const blog = { citations: [cite("https://blog.example.com/inti", "cada 24 de junio")], policy: ctx.policy };
+    expect(verifyEvidence({ ...e, source_url: "https://blog.example.com/inti" }, blog)).toMatchObject({ confidence: "estimacion" });
+    const press = { citations: blog.citations, policy: { ...ctx.policy, B: ["example.com"] } };
+    expect(verifyEvidence({ ...e, source_url: "https://blog.example.com/inti" }, press)).toMatchObject({ confidence: "prensa" });
   });
 
   test("identity checks: slug fallback, subdivision, coordinates, names, zone and airport", () => {

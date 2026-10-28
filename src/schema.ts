@@ -172,15 +172,17 @@ export const ScoreInputs = z
 
 /** Most names and cities fit in 60 characters; 120 leaves room without letting a paragraph in. */
 export const IDENTITY_MAX = 120;
-// C0/C1 controls (newlines included), bidi overrides and isolates, zero-width marks (SEC-07):
-// identity fields go into every research prompt, so they stay one plain line.
-const HIDDEN_CHARS = /[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u202a-\u202e\u2066-\u2069\ufeff]/;
+// Controls (Cc: C0/C1, newlines included), format characters (Cf: bidi overrides and isolates,
+// zero-width marks, soft hyphen, word joiner, the U+E0000 tag block) and the line and paragraph
+// separators U+2028/U+2029 (SEC-07, BE-06): identity fields go into every research prompt, so they
+// stay one plain line with nothing invisible in it.
+const HIDDEN_CHARS = /[\p{Cc}\p{Cf}\p{Zl}\p{Zp}]/u;
 /** A festival name or city: one plain line, bounded. */
 export const Identity = z
   .string()
   .min(1)
   .max(IDENTITY_MAX)
-  .refine((s) => !HIDDEN_CHARS.test(s), "control, bidi or zero-width characters are not allowed")
+  .refine((s) => !HIDDEN_CHARS.test(s), "control, format (bidi, zero-width, tag) or line-separator characters are not allowed")
   .refine((s) => s.trim() === s, "leading or trailing spaces");
 
 export const Festival = z

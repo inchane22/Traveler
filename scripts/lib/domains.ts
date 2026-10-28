@@ -121,8 +121,13 @@ export function defaultGovernmentDomains(country: string): string[] {
   return [`gov.${cc}`, `gob.${cc}`, `gub.${cc}`, `gouv.${cc}`, `go.${cc}`, "unesco.org"];
 }
 
+/** A person has written config for the country: some official, A or B domain is listed. */
+export function hasConfig(policy: DomainPolicy): boolean {
+  return policy.official.length > 0 || policy.A.length > 0 || policy.B.length > 0;
+}
+
 export function withGovernmentFallback(policy: DomainPolicy): DomainPolicy {
-  if (policy.official.length || policy.A.length) return policy;
+  if (hasConfig(policy)) return policy;
   const gov = defaultGovernmentDomains(policy.country);
   return { ...policy, official: gov, A: gov };
 }

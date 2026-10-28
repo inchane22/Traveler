@@ -7,7 +7,7 @@ import { addMonths, todayIn, type ISO } from "../src/dates.ts";
 import { CountryFile, MIN_SOURCED_FESTIVALS, type CountryFile as Country, type Edition } from "../src/schema.ts";
 import { CRITERIA, scoreFestival, type ScoringConfig } from "../src/score.ts";
 import { quoteStatesDate } from "./lib/date-parser.ts";
-import { isOfficial, loadDomainPolicy, tierOf, type DomainPolicy } from "./lib/domains.ts";
+import { hasConfig, isOfficial, loadDomainPolicy, tierOf, type DomainPolicy } from "./lib/domains.ts";
 import { isMainModule } from "./lib/is-main.ts";
 import { langFor } from "./lib/lang.ts";
 import { loadSensitiveTerms, sensitiveHits } from "./lib/sensitive.ts";
@@ -69,6 +69,8 @@ export const LUNAR_HORIZON_MONTHS = 12;
  * Checks the schema cannot make because they need config/: the declared tier matches
  * config/sources (R2), «oficial» figures sit on config/official-domains, «prensa» figures on an A
  * or B source, and every lunisolar table covers the next 12 months (R4). Empty means clean.
+ * A «borrador» with no config yet skips the three domain checks: onboarding ranked its sources
+ * with the government fallback, and the reviewer writes config/ before publishing (BE-02).
  */
 export function dataProblems(countries: readonly Country[], policies: ReadonlyMap<string, DomainPolicy>, today: ISO): string[] {
   const problems: string[] = [];
@@ -84,15 +86,16 @@ export function dataProblems(countries: readonly Country[], policies: ReadonlyMa
     if (c.status === "publicado" && sourced < MIN_SOURCED_FESTIVALS) {
       problems.push(`${c.country}: «publicado» needs ${MIN_SOURCED_FESTIVALS} festivals with a dated edition on an A or B source; has ${sourced}. Keep it «borrador».`);
     }
+    const checkDomains = c.status === "publicado" || hasConfig(policy);
     for (const f of c.festivals) {
       const where = `${c.country}/${f.slug}`;
-      for (const [year, e] of Object.entries(f.editions)) {
+      for (const [year, e] of checkDomains ? Object.entries(f.editions) : []) {
         for (const s of e.sources) {
           const tier = tierOf(s.url, policy);
           if (s.tier && s.tier !== tier) problems.push(`${where} ${year}: ${s.url} declares tier ${s.tier}, config/sources gives ${tier}`);
         }
       }
-      for (const key of CRITERIA) {
+      for (const key of checkDomains ? CRITERIA : []) {
         const m = f.score[key];
         if (!m?.source) continue;
         if (m.confidence === "oficial" && !isOfficial(m.source, policy)) problems.push(`${where} score.${key}: «oficial» needs a source on config/official-domains, got ${m.source}`);

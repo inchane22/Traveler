@@ -65,7 +65,7 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
 
     expect(result.files.map((f) => f.slice(root.length + 1)).sort()).toEqual(["proposals/2026-10-26.json", "proposals/2026-10-26.md"]);
     expect(readFileSync(join(root, "data", "countries", "co.json"), "utf8")).toBe(before);
-    expect(githubOutput(out)).toEqual({ changes: String(r.applied.length + r.confirmations.length), branch: "refresh/2026-10-26", flagged: "4" });
+    expect(githubOutput(out)).toEqual({ changes: String(r.applied.length + r.confirmations.length), branch: "refresh/2026-10-26", flagged: "4", unexpected: "0", verified: String(r.festivals.filter((f) => !["api_error", "error", "no_fixture", "skipped_budget", "not_run"].includes(f.outcome)).length) });
 
     const md = readFileSync(join(root, "proposals", "2026-10-26.md"), "utf8");
     expect(md).toContain("### Fechas de Nivel 1: pega lo que viste en la fuente");
@@ -135,10 +135,41 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
     expect(denied.exitCode).toBe(1);
     expect(denied.report!.stopped).toMatch(/credentials rejected/);
     expect(denied.report!.festivals.map((f) => f.outcome)).toEqual(["api_error", "not_run", "not_run"]);
-    // code-F2: an unexpected error in one festival is logged and the others still run.
-    const buggy = await runRefresh(refreshOptions(tempRepo(), { maxFestivals: 2 }), deps({ transport: failing(new TypeError("bug")) }));
-    expect(buggy.exitCode).toBe(0);
-    expect(buggy.report!.festivals.map((f) => [f.outcome, f.detail])).toEqual([["error", "bug"], ["error", "bug"]]);
+    // code-F2: an unexpected error in one festival is logged and the others still run; BE-04: when
+    // nothing was verified at all the run goes red, and the error detail still reaches proposals/.
+    const root = tempRepo();
+    const out = join(root, "gh");
+    writeFileSync(out, "");
+    const log = memoryLogger();
+    const buggy = await runRefresh(refreshOptions(root, { maxFestivals: 2, githubOutput: out }), deps({ transport: failing(new TypeError("bug\n::warning::x")), log }));
+    expect(buggy.exitCode).toBe(1);
+    expect(buggy.report!.festivals.map((f) => [f.outcome, f.detail])).toEqual([["error", "bug\n::warning::x"], ["error", "bug\n::warning::x"]]);
+    expect(githubOutput(out)).toMatchObject({ changes: "0", unexpected: "2", verified: "0" });
+    expect(existsSync(join(root, "proposals", `${TODAY}.json`))).toBe(true);
+    // One workflow annotation per failure, on one line, so the message cannot inject commands.
+    expect(log.lines.filter((l) => l.startsWith("::error::"))).toHaveLength(2);
+    expect(log.lines.find((l) => l.startsWith("::error::"))).toMatch(/^::error::[A-Z]{2}\/[a-z0-9-]+: unexpected error: bug%0A::warning::x$/);
+  });
+
+  test("one festival with an unexpected error does not fail a run that verified others (BE-04)", async () => {
+    const root = prdRepo();
+    const out = join(root, "gh");
+    writeFileSync(out, "");
+    const recorded = fixtureDirTransport(REFRESH_FIXTURES);
+    let first: string | null = null;
+    const flaky: MessagesTransport = {
+      create: (params, ctx) => {
+        first ??= ctx.key;
+        return ctx.key === first ? Promise.reject(new TypeError("bug")) : recorded.create(params, ctx);
+      },
+    };
+    const result = await runRefresh(refreshOptions(root, { githubOutput: out }), deps({ transport: flaky }));
+    expect(result.exitCode).toBe(0);
+    expect(result.report!.festivals.filter((f) => f.outcome === "error")).toHaveLength(1);
+    const gh = githubOutput(out);
+    expect(gh.unexpected).toBe("1");
+    expect(Number(gh.verified)).toBeGreaterThan(0);
+    expect(existsSync(join(root, "proposals", `${TODAY}.json`))).toBe(true);
   });
 
   test("a proposal that never validates, or is about another festival, is dropped with a log line", async () => {

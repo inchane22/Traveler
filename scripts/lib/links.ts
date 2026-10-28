@@ -150,17 +150,34 @@ const v4 = (ip: string): number[] | null => {
   return parts.length === 4 && parts.every((n) => Number.isInteger(n) && n >= 0 && n <= 255) ? parts : null;
 };
 
-/** Loopback, private, link-local, CGNAT, unspecified and multicast addresses (IPv4 and IPv6). */
+/**
+ * IPv4 inside an IPv6 literal: mapped (::ffff:0:0/96 and ::ffff:0:0:0/96), compatible (::/96) and
+ * NAT64 (64:ff9b::/96), dotted or in the hex form the URL parser rewrites them to (BE-03).
+ */
+const EMBEDDED_V4 = /^(?:::ffff:(?:0:)?|::|64:ff9b::)(?:(\d+\.\d+\.\d+\.\d+)|([0-9a-f]{1,4}):([0-9a-f]{1,4}))$/;
+
+function embeddedV4(addr: string): string | null {
+  const m = EMBEDDED_V4.exec(addr);
+  if (!m) return null;
+  if (m[1]) return m[1];
+  const hi = parseInt(m[2]!, 16);
+  const lo = parseInt(m[3]!, 16);
+  return `${hi >> 8}.${hi & 255}.${lo >> 8}.${lo & 255}`;
+}
+
+/**
+ * Loopback, private, link-local, CGNAT, unspecified and multicast addresses (IPv4 and IPv6), also
+ * when an IPv6 literal wraps one; 6to4 (2002::/16) and site-local (fec0::/10) are refused outright.
+ */
 export function isPrivateAddress(ip: string): boolean {
   const addr = ip.toLowerCase().replace(/^\[|\]$/g, "");
-  const mapped = /^::ffff:(\d+\.\d+\.\d+\.\d+)$/.exec(addr);
-  const p = v4(mapped ? mapped[1]! : addr);
+  const p = v4(embeddedV4(addr) ?? addr);
   if (p) {
     const [a, b] = p as [number, number];
     return a === 0 || a === 10 || a === 127 || a >= 224 || (a === 169 && b === 254) || (a === 172 && b >= 16 && b <= 31) || (a === 192 && b === 168) || (a === 100 && b >= 64 && b <= 127);
   }
   if (!addr.includes(":")) return false;
-  return addr === "::" || addr === "::1" || /^f[cd]/.test(addr) || /^fe[89ab]/.test(addr) || /^ff/.test(addr);
+  return addr === "::" || addr === "::1" || /^f[cd]/.test(addr) || /^fe[89a-f]/.test(addr) || /^ff/.test(addr) || /^2002:/.test(addr);
 }
 
 /** https, a public host name or address, and (with a resolver) only public addresses behind it. */

@@ -84,7 +84,11 @@ export interface Verified {
   confidence: Confidence;
 }
 
-/** A fact counts only with a cited, unblocked https source whose cited text holds the quote verbatim. */
+/**
+ * A fact counts only with a cited, unblocked https source whose cited text holds the quote verbatim.
+ * Its confidence follows the source: official is «oficial», A or B is «prensa», and a tier-C page
+ * backs an «estimacion» at most, which is what build-data accepts once config exists (BE-02).
+ */
 export function verifyEvidence(e: EvidenceT | null | undefined, ctx: VerifyContext): Verified | null {
   if (!e) return null;
   const check = checkSources([e.source_url], ctx.citations, ctx.policy);
@@ -92,7 +96,7 @@ export function verifyEvidence(e: EvidenceT | null | undefined, ctx: VerifyConte
   if (!source) return null;
   const texts = citedTextsFor([source], ctx.citations);
   if (!quoteIsVerbatim(e.quote, texts) || hasInjection([e.quote, ...texts]).length) return null;
-  return { source, quote: e.quote, confidence: source.official ? "oficial" : "prensa" };
+  return { source, quote: e.quote, confidence: source.official ? "oficial" : source.tier === "C" ? "estimacion" : "prensa" };
 }
 
 const MD = /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;

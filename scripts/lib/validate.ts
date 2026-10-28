@@ -207,12 +207,21 @@ export function reviewChange(change: Proposed, ctx: ReviewContext): ReviewedChan
     if (value !== "ninguna" && !needs.test(change.quote)) flags.push("revisar: la cita no menciona la declaratoria");
   }
 
-  // «oficial» needs an official domain; otherwise at most «prensa».
-  const official = check.cited.some((s) => s.official);
+  // Caps are measured on the source apply will store, so they agree with build-data's checks
+  // (BE-01): a score keeps one (the one holding the quote, else the first cited); an edition keeps
+  // every cited source. «oficial» needs an official domain; otherwise at most «prensa».
+  const isScore = change.field.startsWith("score.");
+  const storedSource = quoteSource ?? check.cited[0];
+  const official = isScore ? !!storedSource?.official : check.cited.some((s) => s.official);
   let confidence = change.confidence;
   if (!official && change.confidence === "oficial") {
     confidence = "prensa";
-    adjustments.push("confianza limitada a «prensa»: ninguna fuente está en los dominios oficiales");
+    adjustments.push("confianza limitada a «prensa»: ninguna fuente guardada está en los dominios oficiales");
+  }
+  // A score figure on «prensa» needs an A or B source; a tier-C one is at most «estimacion».
+  if (isScore && confidence === "prensa" && storedSource?.tier === "C") {
+    confidence = "estimacion";
+    adjustments.push("confianza limitada a «estimacion»: la fuente de la cita es de nivel C");
   }
   const finalValue = change.field === "confidence" && value === "oficial" && !official ? "prensa" : value;
   if (finalValue !== value) adjustments.push("«oficial» rebajado a «prensa»: ninguna fuente está en los dominios oficiales");

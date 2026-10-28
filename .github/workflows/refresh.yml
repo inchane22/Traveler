@@ -343,6 +343,23 @@ jobs:
         run: |
           echo "- ${PR_OPERATION}: ${PR_URL}" >> "${GITHUB_STEP_SUMMARY}"
 
+      # BE-04: a festival that failed with an unexpected error (a bug, not an API error) is logged
+      # and skipped so the PR for the others still opens; this step then turns the run red. A run
+      # that verified nothing already exited 1 in the refresh step. The detail is in the artifact.
+      - name: Fail on unexpected festival errors
+        if: steps.refresh.outputs.unexpected != '' && steps.refresh.outputs.unexpected != '0'
+        env:
+          UNEXPECTED: ${{ steps.refresh.outputs.unexpected }}
+          VERIFIED: ${{ steps.refresh.outputs.verified }}
+        run: |
+          if [[ ! "${UNEXPECTED}" =~ ^[0-9]+$ ]]; then
+            echo "::error::refresh wrote a non-numeric 'unexpected' output."
+            exit 1
+          fi
+          echo "- Unexpected errors: ${UNEXPECTED} festival(s), ${VERIFIED:-0} verified" >> "${GITHUB_STEP_SUMMARY}"
+          echo "::error::${UNEXPECTED} festival(s) failed with an unexpected error; see proposals/ in the refresh artifact."
+          exit 1
+
       - name: Upload proposals and usage
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

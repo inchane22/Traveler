@@ -23,9 +23,13 @@ export interface InjectionHit {
   excerpt: string;
 }
 
-/** Accent-free lowercase that keeps line breaks, so the role-marker pattern can see line starts. */
+/**
+ * Accent-free lowercase that keeps line breaks, so the role-marker pattern can see line starts.
+ * Invisible format characters (soft hyphen, zero-width, tags) are dropped so they cannot split a
+ * phrase (BE-06).
+ */
 function foldLines(text: string): string {
-  return text.normalize("NFD").replace(/\p{M}+/gu, "").toLowerCase().replace(/[^\S\n]+/g, " ").replace(/ *\n */g, "\n");
+  return text.normalize("NFD").replace(/[\p{M}\p{Cf}]+/gu, "").toLowerCase().replace(/[^\S\n]+/g, " ").replace(/ *\n */g, "\n");
 }
 
 /** Phrases found in `text`; empty when clean. Each pattern is tried on one line and across lines. */

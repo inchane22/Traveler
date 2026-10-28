@@ -187,9 +187,12 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
       }
       const failure = classifyOrUnexpected(error);
       if (failure.kind === "unexpected") {
-        // A bug or bad data in one festival (code-F2): log it and keep verifying the others.
+        // A bug or bad data in one festival (code-F2): log it and keep verifying the others. In
+        // Actions ($GITHUB_OUTPUT set) the line is a workflow annotation, so the run shows it (BE-04).
         logs.push({ ...baseLog(item), outcome: "error", detail: failure.message });
-        deps.log.error(`${item.country}/${item.slug}: unexpected error: ${failure.message}`);
+        const line = `${item.country}/${item.slug}: unexpected error: ${failure.message}`;
+        if (opts.githubOutput) deps.log.info(`::error::${annotationText(line)}`);
+        else deps.log.error(line);
         continue;
       }
       logs.push({ ...baseLog(item), outcome: failure.kind === "fixture" ? "no_fixture" : "api_error", detail: failure.message });
@@ -209,7 +212,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
     : null;
   if (opts.trapSecret && guard.firstRunOfMonth && !trap) deps.log.info("R12: no trap this run (needs $GITHUB_OUTPUT, a real change and a dated upcoming edition)");
 
-  const selection = demoteUnappliable(selectForPr(changes, trap), countries, opts.today, deps.log);
+  const selection = demoteUnappliable(selectForPr(changes, trap), countries, opts.today, deps.log, policies);
   const usage = guard.current();
   const report = buildRefreshReport(
     {
@@ -225,10 +228,14 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
     },
     selection,
   );
-  const exitCode = stopped || fatal ? 1 : 0;
+  // BE-04: unexpected errors alone do not fail a run that verified other festivals (their PR still
+  // opens; refresh.yml fails the job afterwards), but a run that verified nothing goes red.
+  const unexpected = logs.filter((l) => l.outcome === "error").length;
+  const verified = logs.filter((l) => VERIFIED.has(l.outcome)).length;
+  const exitCode = stopped || fatal || (unexpected > 0 && verified === 0) ? 1 : 0;
   const count = dataChangeCount(selection) + r13.downgrades.length;
-  const output = { changes: stopped ? 0 : count, branch: `refresh/${opts.today}`, flagged: selection.flagged.length };
-  if (count === 0 && selection.flagged.length === 0) {
+  const output = { changes: stopped ? 0 : count, branch: `refresh/${opts.today}`, flagged: selection.flagged.length, unexpected, verified };
+  if (count === 0 && selection.flagged.length === 0 && unexpected === 0) {
     deps.log.info(`refresh ${opts.today}: no changes (${selection.rejected.length} rejected); nothing written`);
     appendGithubOutput(opts.githubOutput, output);
     return { exitCode, report, files: [], calls: guard.calls };
@@ -243,6 +250,14 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   return { exitCode, report, files, calls: guard.calls };
 }
 
+/** Outcomes where the model answered: the pipeline worked for that festival, whatever it found. */
+const VERIFIED: ReadonlySet<FestivalLog["outcome"]> = new Set(["ok", "no_citations", "refusal", "truncated", "invalid_proposal"]);
+
+/** One-line workflow-command data: `%`, CR and LF escaped as Actions expects. */
+function annotationText(text: string): string {
+  return text.replace(/%/g, "%25").replace(/\r/g, "%0D").replace(/\n/g, "%0A");
+}
+
 function classifyOrUnexpected(error: unknown): ReturnType<typeof classifyApiError> | { kind: "unexpected"; message: string } {
   try {
     return classifyApiError(error);
@@ -252,11 +267,12 @@ function classifyOrUnexpected(error: unknown): ReturnType<typeof classifyApiErro
 }
 
 /**
- * Changes that would make a country file invalid move to «para revisar» with the validation
- * message, before the report and the files are written, so the run still opens its PR (code-F2).
+ * Changes that would make a country file invalid, or that build-data would then reject (BE-01),
+ * move to «para revisar» with the message, before the report and the files are written, so the
+ * run still opens its PR (code-F2).
  */
-export function demoteUnappliable(selection: Selection, countries: readonly CountryFile[], today: string, log: Logger): Selection {
-  const { failed } = trialApply(countries, [...selection.applied, ...selection.confirmations], today);
+export function demoteUnappliable(selection: Selection, countries: readonly CountryFile[], today: string, log: Logger, policies?: ReadonlyMap<string, DomainPolicy>): Selection {
+  const { failed } = trialApply(countries, [...selection.applied, ...selection.confirmations], today, policies);
   if (!failed.length) return selection;
   const bad = new Set(failed.map((f) => f.change));
   for (const f of failed) log.warn(`${f.change.country}/${f.change.slug} ${f.change.field}: not applied, sent to review: ${f.error}`);

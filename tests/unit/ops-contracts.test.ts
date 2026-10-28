@@ -29,6 +29,16 @@ describe("R12: the trap fingerprint is stored where ci.yml and deploy.yml read i
     expect(refresh).toContain("TRAP_SECRET: ${{ vars.PR_APP_CLIENT_ID != '' && secrets.TRAP_SECRET || '' }}");
   });
 
+  test("unexpected per-festival errors turn the run red only after the PR for the rest has opened (BE-04)", () => {
+    expect(read("scripts/lib/refresh-run.ts")).toMatch(/unexpected, verified/);
+    const gate = refresh.indexOf("- name: Fail on unexpected festival errors");
+    expect(gate).toBeGreaterThan(refresh.indexOf("- name: Report pull request"));
+    const step = refresh.slice(gate, refresh.indexOf("\n      - name:", gate + 1));
+    expect(step).toContain("steps.refresh.outputs.unexpected");
+    expect(step).toContain("exit 1");
+    expect(step).not.toContain("always()");
+  });
+
   test("ci.yml and deploy.yml check against the same secret", () => {
     for (const wf of [".github/workflows/ci.yml", ".github/workflows/deploy.yml"]) {
       expect(read(wf)).toContain("TRAP_FINGERPRINTS: ${{ secrets.TRAP_FINGERPRINTS }}");

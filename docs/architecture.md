@@ -51,10 +51,16 @@ older than 30 days (RF-13).
   `estimacion`. `build-data` also checks that `oficial` sits on config/official-domains, `prensa` on
   an A or B source, declared source tiers match config/sources, lunisolar tables reach 12 months
   ahead (R4), and a `publicado` country has `MIN_SOURCED_FESTIVALS` (3) dated A/B-sourced festivals.
+  A `borrador` with no config yet (no official, A or B domain: `hasConfig`) skips the three domain
+  checks, because onboarding ranked its sources with `withGovernmentFallback`; they apply again
+  once config exists or the country is `publicado`. Onboarding labels a figure `oficial` on an
+  official domain, `prensa` on an A or B one, and `estimacion` on a tier-C page.
 - `share_a` counts an edition only when a source config/sources ranks A has a quote stating the
   stored start or end day.
-- Names and city (`Identity`): one plain line, at most 120 characters, no control, bidi or
-  zero-width characters. They are fenced when they go into a research prompt.
+- Names and city (`Identity`): one plain line, at most 120 characters, no control (`Cc`), format
+  (`Cf`: bidi, zero-width, soft hyphen, word joiner, the U+E0000 tag block) or line/paragraph
+  separator characters. They are fenced when they go into a research prompt. The R7 injection
+  check drops `Cf` characters before matching, so they cannot split a phrase.
 - The extraction call sees only citations (URL, title, cited text), never the research model's prose.
 - `pnpm build` runs `scripts/check-csp.ts` (exact CSP in `dist/index.html`) before the secret scan;
   the secret scan fails closed when git cannot list files or a file cannot be read.
@@ -118,7 +124,10 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   7 days.
 - `check-links`: HEAD then GET for every whole https string in `config/advisories.json` and every
   source, archive, score source and rule table URL in `data/countries/*.json`. 2xx/3xx ok, 404/410
-  broken; 401/403/418/429/5xx, network errors and bot-challenge pages are `unknown`. Writes
+  broken; 401/403/418/429/5xx, network errors and bot-challenge pages are `unknown`. Every hop
+  must be a public https host: IPv4 wrapped in IPv6 (mapped `::ffff:`, compatible `::`, NAT64
+  `64:ff9b::`, dotted or hex) is unwrapped before the private-range check, and 6to4 (`2002::/16`)
+  and site-local (`fec0::/10`) literals are refused. Writes
   `proposals/links-<date>.md` and `proposals/links-<date>.json` (`LinksReport` in
   `scripts/lib/links.ts`).
 - R13 in refresh (only with `LINKS_REPORT_PATH`, a report at most 7 days old): an edition whose
@@ -126,6 +135,16 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   confidence level (`applyLostSources`), with a changelog entry `field: "confidence"` listing the
   lost URLs; that entry makes the downgrade happen once. No `last_verified` or `sequence` change.
   Report: `link_downgrades`.
+- Trial apply (code-F2, BE-01): before the report is written, the accepted changes are applied in
+  memory; one that breaks the schema, or adds a problem build-data's `dataProblems` would report,
+  moves to «para revisar» with the message, so the run still opens its PR. Confidence caps in
+  validation look at the source apply will store (the one holding the quote, else the first
+  cited): `oficial` needs it official, and a score `prensa` on a tier-C page becomes `estimacion`.
+  A score confirmation from a weaker source than the stored one changes nothing.
+- Unexpected per-festival errors (a bug, not an API error; BE-04): the festival is logged as
+  `error` and the run goes on; under Actions each one is a `::error::` annotation. Exit 1 when no
+  festival was verified at all; otherwise refresh exits 0 so the PR opens, and refresh.yml fails
+  the job afterwards when `unexpected` > 0. Proposals are written whenever there was one.
 - RF-18 in apply: an edition stored for the first time starts at `sequence` 1 when its dates or
   status differ from the rule-based event calendars already had (`firstEditionSequence`), and every
   change of dates or status still bumps it.
@@ -135,4 +154,6 @@ Env: `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`), `MAX_
 `TRAP_SECRET` (R12), `USAGE_FALLBACK_PATH` (optional, refresh and onboard: a `usage.json` from the
 last run artifact; per month the higher total wins, and online runs write the merged history to
 `data/usage.json` before the first call), `LINKS_REPORT_PATH` (optional, refresh: R13 above). Outputs: `proposals/<date>.json`, `proposals/<date>.md` (PR body), and with
-`$GITHUB_OUTPUT` set: `changes=<n>` and `branch=refresh/<date>` (or `onboard/<cc>`).
+`$GITHUB_OUTPUT` set: `changes=<n>` and `branch=refresh/<date>` (or `onboard/<cc>`); refresh also
+writes `flagged=<n>`, `unexpected=<n>` (festivals that failed with an unexpected error) and
+`verified=<n>` (festivals where the model answered).

@@ -2,7 +2,9 @@
 // Never deletes a festival or an edition; the result must validate as a CountryFile before it is written.
 import { occurrenceFor, type Occurrence, type RuleContext } from "../../src/dates.ts";
 import { ctxFor } from "../../src/festivals.ts";
+import { dataProblems } from "../build-data.ts";
 import { ChangelogEntry, CountryFile, type Confidence, type Edition, type Festival, type ISODate, type Source } from "../../src/schema.ts";
+import type { DomainPolicy } from "./domains.ts";
 import { quoteQualifier, quoteYears } from "./evidence.ts";
 import { keyEventId, type ReviewedChange } from "./validate.ts";
 
@@ -61,9 +63,11 @@ function unitOf(quote: string): "attendees" | "tourists" | "visitors" {
 }
 
 /**
- * A change replaces the measure; a confirmation only refreshes its source and confidence and keeps
- * the stored measure and note (SEC-01). A figure needs the year its quote states; without one the
- * change cannot be applied (validate flags it, so this only guards direct callers).
+ * A change replaces the measure; a confirmation keeps the stored measure (SEC-01). A confirmation
+ * from a weaker source than the stored one changes nothing, so a press article never takes the
+ * place of an official source (BE-01); an equal or stronger one replaces source and quote, and the
+ * stored note stays only while the source is the same. A figure needs the year its quote states;
+ * without one the change cannot be applied (validate flags it, so this only guards direct callers).
  */
 function applyToScore(festival: Festival, change: ReviewedChange): Festival["score"] {
   const criterion = change.field.slice("score.".length) as keyof Festival["score"];
@@ -71,8 +75,12 @@ function applyToScore(festival: Festival, change: ReviewedChange): Festival["sco
   const base = { confidence: change.confidence, ...(source ? { source } : {}), ...(change.quote_url ? { quote: change.quote } : {}) };
   const stored = festival.score[criterion];
   if (change.kind === "confirmation" && stored) {
-    const kept = { ...stored, confidence: higher(stored.confidence, change.confidence) };
-    return { ...festival.score, [criterion]: source ? { ...kept, source, ...(change.quote_url ? { quote: change.quote } : {}) } : kept } as Festival["score"];
+    if (!source || CONF_RANK[change.confidence] < CONF_RANK[stored.confidence]) return festival.score;
+    const { note, quote, ...rest } = stored;
+    const sameSource = source === stored.source;
+    const kept = { ...rest, confidence: change.confidence, source, ...(sameSource && note ? { note } : {}) };
+    const keptQuote = change.quote_url ? change.quote : sameSource ? quote : undefined;
+    return { ...festival.score, [criterion]: keptQuote ? { ...kept, quote: keptQuote } : kept } as Festival["score"];
   }
   if (criterion === "convocatoria") {
     const years = quoteYears(change.quote);
@@ -138,9 +146,11 @@ const message = (error: unknown): string => (error instanceof Error ? error.mess
 /**
  * Trial apply before anything is reported or written (code-F2, SEC-01): when a country's accepted
  * changes do not validate together, each one is tried alone and the ones that break the file are
- * returned in `failed`, so one bad change can no longer abort the whole run.
+ * returned in `failed`, so one bad change can no longer abort the whole run. With `policies`, a
+ * result that build-data's dataProblems would reject counts as broken too (BE-01); problems the
+ * country already had before the changes are not blamed on them.
  */
-export function trialApply(countries: readonly CountryFile[], changes: readonly ReviewedChange[], today: ISODate): SafeApply {
+export function trialApply(countries: readonly CountryFile[], changes: readonly ReviewedChange[], today: ISODate, policies?: ReadonlyMap<string, DomainPolicy>): SafeApply {
   const ok: ReviewedChange[] = [];
   const failed: SafeApply["failed"] = [];
   const known = new Set(countries.map((c) => c.country));
@@ -148,8 +158,14 @@ export function trialApply(countries: readonly CountryFile[], changes: readonly 
   for (const country of countries) {
     const mine = changes.filter((c) => c.country === country.country);
     if (!mine.length) continue;
+    const before = policies ? new Set(dataProblems([country], policies, today)) : null;
+    const tryApply = (subset: readonly ReviewedChange[]): void => {
+      const next = applyChanges(country, subset, today);
+      const added = before ? dataProblems([next], policies!, today).filter((p) => !before.has(p)) : [];
+      if (added.length) throw new Error(added.join("; "));
+    };
     try {
-      applyChanges(country, mine, today);
+      tryApply(mine);
       ok.push(...mine);
       continue;
     } catch {
@@ -157,7 +173,7 @@ export function trialApply(countries: readonly CountryFile[], changes: readonly 
     }
     const alone = mine.filter((c) => {
       try {
-        applyChanges(country, [c], today);
+        tryApply([c]);
         return true;
       } catch (error) {
         failed.push({ change: c, error: message(error) });
@@ -165,7 +181,7 @@ export function trialApply(countries: readonly CountryFile[], changes: readonly 
       }
     });
     try {
-      applyChanges(country, alone, today);
+      tryApply(alone);
       ok.push(...alone);
     } catch (error) {
       for (const c of alone) failed.push({ change: c, error: `en conjunto: ${message(error)}` });
