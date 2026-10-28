@@ -8,13 +8,12 @@
       "timezone": "America/Bogota",
       "festivals": 10,
       "last_verified": "2026-10-26",
-      "share_a": 0.67
+      "share_a": 0.5
     }
   ],
   "tier1": [
     "CO/carnaval-barranquilla",
-    "CO/negros-y-blancos",
-    "CO/feria-de-las-flores"
+    "CO/negros-y-blancos"
   ],
   "slugs": {
     "carnaval-barranquilla": "CO",

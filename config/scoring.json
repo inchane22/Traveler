@@ -12,7 +12,11 @@
     },
     "calle": { "max": 25, "levels": { "mayoria_gratis": 25, "mixta": 15, "mayoria_boleta": 5 } },
     "reconocimiento": { "max": 20, "levels": { "unesco": 20, "nacional": 12, "ninguna": 0 } },
-    "conectividad": { "max": 10, "levels": { "internacional": 10, "nacional": 6, "ninguno": 2 } },
+    "conectividad": {
+      "max": 10,
+      "levels": { "internacional": 10, "nacional": 6, "ninguno": 2 },
+      "rule": "DH-12: the airport that serves the city or its metropolitan area, at most 40 km by road from the festival coords (Soledad for Barranquilla, Palmira for Cali, Rionegro for Medellin, Chachagui for Pasto). internacional = scheduled international flights today; nacional = only domestic ones; ninguno = no airport within 40 km. Record the airport and the distance in the note."
+    },
     "local": { "max": 10, "levels": { "pueblo": 10, "intermedia": 6, "gran_ciudad": 3 } }
   },
   "thresholds": { "tier1": 65, "tier2": 45 },

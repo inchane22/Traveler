@@ -35,11 +35,11 @@
         }
       },
       "score": {
-        "convocatoria": { "measure": { "attendance": 8000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-02/rio-espera-receber-8-milhoes-de-folioes-para-o-carnaval", "note": { "es": "Proyección previa a la fiesta, no balance final.", "en": "Pre-event projection, not a final count.", "pt": "Projeção anterior à festa, não balanço final." } },
+        "convocatoria": { "measure": { "attendance": 8000000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-02/rio-espera-receber-8-milhoes-de-folioes-para-o-carnaval", "note": { "es": "Proyección previa a la fiesta, no balance final.", "en": "Pre-event projection, not a final count.", "pt": "Projeção anterior à festa, não balanço final." } },
         "calle": null,
         "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://planalto.gov.br/ccivil_03/_ato2023-2026/2023/Lei/L14567.htm", "note": { "es": "Ley 14.567/2023: escuelas de samba y sus desfiles, cultura nacional.", "en": "Law 14,567/2023: samba schools and their parades as national culture.", "pt": "Lei 14.567/2023: escolas de samba e seus desfiles, cultura nacional." } },
-        "conectividad": { "measure": "internacional", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Rio_de_Janeiro/Gale%C3%A3o_International_Airport" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Rio_de_Janeiro" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Rio_de_Janeiro/Gale%C3%A3o_International_Airport" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Rio_de_Janeiro" }
       },
       "street_tip": { "es": "Los blocos de calle son gratis y arrancan semanas antes; el Sambódromo es la parte con boleta, así que arma tus días con la agenda de blocos.", "en": "Street blocos are free and start weeks earlier; the Sambadrome is the ticketed part, so plan your days around the bloco schedule.", "pt": "Os blocos de rua são gratuitos e começam semanas antes; o Sambódromo é a parte com ingresso, então monte seus dias pela agenda dos blocos." }
     },
@@ -77,8 +77,8 @@
         "convocatoria": { "measure": { "attendance": 12000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://atarde.com.br/carnaval/carnaval-de-salvador-recebeu-mais-de-12-milhoes-de-folioes-nas-ruas-1380098", "note": { "es": "Cifra difundida por la Secretaría de Seguridad Pública de Bahía.", "en": "Figure released by the Bahia Public Security Secretariat.", "pt": "Número divulgado pela Secretaria da Segurança Pública da Bahia." } },
         "calle": null,
         "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/L15196.htm", "note": { "es": "Ley 15.196/2025, manifestación de la cultura nacional.", "en": "Law 15,196/2025, expression of national culture.", "pt": "Lei 15.196/2025, manifestação da cultura nacional." } },
-        "conectividad": { "measure": "internacional", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Salvador_Bahia_Airport" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Salvador,_Bahia" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Salvador_Bahia_Airport" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Salvador,_Bahia" }
       },
       "street_tip": { "es": "Ir de «pipoca», sin abadá, es gratis: sigue a los tríos eléctricos desde la acera en los circuitos Barra-Ondina o Campo Grande.", "en": "Going \"pipoca\", without an abadá, is free: follow the trios elétricos from the sidewalk on the Barra-Ondina or Campo Grande circuits.", "pt": "Ir de pipoca, sem abadá, é de graça: acompanhe os trios elétricos pela calçada nos circuitos Barra-Ondina ou Campo Grande." },
       "etiquette": { "es": "Los afoxés, como Filhos de Gandhy, llevan a la calle la tradición del candomblé: míralos desde fuera de la cuerda y pide permiso antes de fotografiar de cerca.", "en": "Afoxés such as Filhos de Gandhy bring candomblé tradition to the street: watch from outside the rope and ask before close-up photos.", "pt": "Os afoxés, como o Filhos de Gandhy, levam a tradição do candomblé para a rua: assista de fora da corda e peça licença antes de fotos de perto." }
@@ -98,7 +98,7 @@
           "status": "tentativa",
           "confidence": "patron",
           "key_events": [
-            { "id": "galo-da-madrugada", "name": { "es": "Galo da Madrugada", "en": "Galo da Madrugada parade", "pt": "Galo da Madrugada" }, "date": "2027-02-06", "rule": { "type": "relative_to", "ref": "carnaval-recife", "anchor": "start", "offset": 0, "duration_days": 1 }, "confidence": "prensa" }
+            { "id": "galo-da-madrugada", "name": { "es": "Galo da Madrugada", "en": "Galo da Madrugada parade", "pt": "Galo da Madrugada" }, "date": "2027-02-06", "rule": { "type": "relative_to", "ref": "carnaval-recife", "anchor": "start", "offset": 0, "duration_days": 1 }, "confidence": "estimacion" }
           ],
           "sources": [
             { "url": "https://portaldeprefeitura.com.br/entretenimento/galo-da-madrugada-anuncia-tema-do-carnaval-2027-e-homenageia-caboclo/633674/", "publisher": "Portal de Prefeitura", "accessed": "2026-10-26", "tier": "C", "quote": "O desfile está marcado para 6 de fevereiro, no Sábado de Zé Pereira." }
@@ -112,8 +112,8 @@
         "convocatoria": { "measure": { "attendance": 3700000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.diariodepernambuco.com.br/vida-urbana/2026/02/11707898-recife-apresenta-balanco-do-carnaval-2026-37-milhoes-de-folioes-nas-ruas-e-rs-28-bi-injetados-na-economia.html", "note": { "es": "Balance presentado por la Prefeitura do Recife.", "en": "Count presented by the Recife city government.", "pt": "Balanço apresentado pela Prefeitura do Recife." } },
         "calle": null,
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/frevo-performing-arts-of-the-carnival-of-recife-00603", "note": { "es": "Frevo, inscrito en 2012.", "en": "Frevo, inscribed in 2012.", "pt": "Frevo, inscrito em 2012." } },
-        "conectividad": { "measure": "internacional", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Recife/Guararapes%E2%80%93Gilberto_Freyre_International_Airport" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Recife" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Recife/Guararapes%E2%80%93Gilberto_Freyre_International_Airport" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Recife" }
       },
       "street_tip": { "es": "El sábado por la mañana el Galo da Madrugada llena el centro de Recife; ve con ropa ligera, agua y una sombrilla de frevo.", "en": "On Saturday morning the Galo da Madrugada fills downtown Recife; bring light clothes, water and a frevo umbrella.", "pt": "No sábado de manhã o Galo da Madrugada toma o centro do Recife; vá de roupa leve, água e uma sombrinha de frevo." }
     },
@@ -132,8 +132,8 @@
         "convocatoria": { "measure": { "attendance": 2300000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.oliberal.com/belem/cerca-de-2-3-milh-es-de-pessoas-acompanharam-o-cirio-neste-domingo-11-1.1181573", "note": { "es": "Estimación preliminar de la Diretoria da Festa de Nazaré.", "en": "Preliminary estimate by the festival board.", "pt": "Estimativa preliminar da Diretoria da Festa de Nazaré." } },
         "calle": null,
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/cirio-de-nazare-the-taper-of-our-lady-of-nazareth-in-the-city-of-belem-para-00602", "note": { "es": "Inscrito en 2013.", "en": "Inscribed in 2013.", "pt": "Inscrito em 2013." } },
-        "conectividad": { "measure": "internacional", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Bel%C3%A9m_International_Airport" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Bel%C3%A9m" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Bel%C3%A9m_International_Airport" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Bel%C3%A9m" }
       },
       "street_tip": { "es": "La Trasladação del sábado por la noche y la procesión del domingo por la mañana cruzan el centro de Belém; busca tu lugar en la ruta antes del amanecer.", "en": "Saturday night's Trasladação and Sunday morning's procession cross central Belém; claim your spot on the route before dawn.", "pt": "A Trasladação no sábado à noite e a procissão de domingo de manhã cruzam o centro de Belém; garanta seu lugar no percurso antes do amanhecer." },
       "etiquette": { "es": "Es un acto de fe: la cuerda es de los promesantes, no te metas en ella, y guarda silencio cuando pase la imagen de la Virgen.", "en": "It is an act of faith: the rope belongs to the pilgrims keeping vows, so stay off it, and keep quiet as the image of the Virgin passes.", "pt": "É um ato de fé: a corda é dos promesseiros, não entre nela, e faça silêncio quando a imagem da Virgem passar." }
@@ -150,11 +150,11 @@
       "rule": { "type": "nth_weekday", "month": 6, "weekday": 5, "n": -1, "duration_days": 3 },
       "editions": {},
       "score": {
-        "convocatoria": { "measure": { "attendance": 120000, "qualifier": "more_than", "unit": "visitors", "year": 2025 }, "confidence": "prensa", "source": "https://portalamazonia.com/turismo/festival-parintins-2025-visitas/", "note": { "es": "Balance del gobernador Wilson Lima, citado por prensa regional.", "en": "Governor Wilson Lima's count, as reported by regional press.", "pt": "Balanço do governador Wilson Lima, citado pela imprensa regional." } },
+        "convocatoria": { "measure": { "attendance": 120000, "qualifier": "more_than", "unit": "visitors", "year": 2025 }, "confidence": "estimacion", "source": "https://portalamazonia.com/turismo/festival-parintins-2025-visitas/", "note": { "es": "Balance del gobernador Wilson Lima, citado por prensa regional.", "en": "Governor Wilson Lima's count, as reported by regional press.", "pt": "Balanço do governador Wilson Lima, citado pela imprensa regional." } },
         "calle": null,
         "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://planalto.gov.br/ccivil_03/_ato2023-2026/2024/Lei/L14960.htm", "note": { "es": "Ley 14.960/2024, manifestación de la cultura nacional.", "en": "Law 14,960/2024, expression of national culture.", "pt": "Lei 14.960/2024, manifestação da cultura nacional." } },
-        "conectividad": { "measure": "nacional", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/J%C3%BAlio_Bel%C3%A9m_Airport" },
-        "local": { "measure": "intermedia", "confidence": "oficial", "source": "https://en.wikipedia.org/wiki/Parintins" }
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/J%C3%BAlio_Bel%C3%A9m_Airport" },
+        "local": { "measure": "intermedia", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Parintins" }
       },
       "street_tip": { "es": "Además del Bumbódromo, los ensayos en los currais de Garantido y Caprichoso en las semanas previas dejan ver la fiesta de cerca.", "en": "Beyond the Bumbódromo, rehearsals at the Garantido and Caprichoso currais in the weeks before let you see the festival up close.", "pt": "Além do Bumbódromo, os ensaios nos currais do Garantido e do Caprichoso nas semanas anteriores mostram a festa de perto." },
       "etiquette": { "es": "La fiesta cuenta historias y rituales de pueblos indígenas de la Amazonía: respeta a la hinchada rival y no uses esos rituales como disfraz.", "en": "The festival tells stories and rituals of Amazonian Indigenous peoples: respect the rival fans and don't turn those rituals into a costume.", "pt": "A festa conta histórias e rituais de povos indígenas da Amazônia: respeite a torcida rival e não transforme esses rituais em fantasia." }

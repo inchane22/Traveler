@@ -32,8 +32,8 @@
         "2026": {
           "start": "2026-02-14",
           "end": "2026-02-15",
-          "status": "confirmada",
-          "confidence": "prensa",
+          "status": "tentativa",
+          "confidence": "estimacion",
           "key_events": [
             {
               "id": "gran-peregrinacion",
@@ -98,7 +98,7 @@
         },
         "conectividad": {
           "measure": "nacional",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Juan_Mendoza_Airport",
           "note": {
             "es": "ORU solo tiene vuelos a Cochabamba; el internacional más cercano es El Alto (LPB).",
@@ -108,7 +108,7 @@
         },
         "local": {
           "measure": "intermedia",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Oruro"
         }
       },
@@ -151,7 +151,7 @@
           "start": "2026-08-01",
           "end": "2026-08-01",
           "status": "tentativa",
-          "confidence": "prensa",
+          "confidence": "estimacion",
           "key_events": [],
           "sources": [
             {
@@ -202,7 +202,7 @@
         },
         "conectividad": {
           "measure": "internacional",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/El_Alto_International_Airport",
           "note": {
             "es": "LPB está en El Alto, a unos 13 km del centro de La Paz.",
@@ -212,7 +212,7 @@
         },
         "local": {
           "measure": "gran_ciudad",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/La_Paz"
         }
       },
@@ -291,7 +291,7 @@
               "publisher": "Los Tiempos",
               "accessed": "2026-10-26",
               "tier": "B",
-              "quote": "reúne este 14 de agosto a peregrinos, músicos y danzarines."
+              "quote": "reúne este 14 de agosto a peregrinos, músicos y danzarines"
             },
             {
               "url": "https://eju.tv/?p=5041475",
@@ -322,7 +322,7 @@
         "calle": null,
         "reconocimiento": {
           "measure": "nacional",
-          "confidence": "prensa",
+          "confidence": "estimacion",
           "source": "https://bolivia.justia.com/nacionales/leyes/ley-2536-2003-2005/gdoc",
           "note": {
             "es": "Ley 2536 de 2003, leída en una copia de Justia y no en la Gaceta Oficial.",
@@ -341,7 +341,7 @@
         },
         "local": {
           "measure": "intermedia",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Quillacollo"
         }
       },
@@ -400,7 +400,7 @@
               "publisher": "eju.tv",
               "accessed": "2026-10-26",
               "tier": "C",
-              "quote": "Más de 65.000 danzarines de 160 fraternidades ya rinden homenaje a San Bartolomé."
+              "quote": "Más de 65.000 danzarines de 160 fraternidades ya rinden homenaje a San Bartolomé"
             },
             {
               "url": "https://www.opinion.com.bo/articulo/cultura/ch-utillos-memoria-mullu-punqu-entronizacion-santo-que-hoy-hace-bailar-potos/20260825181851995247.html",
@@ -443,12 +443,12 @@
         },
         "conectividad": {
           "measure": "nacional",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Captain_Nicolas_Rojas_Airport"
         },
         "local": {
           "measure": "intermedia",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Potos%C3%AD"
         }
       },

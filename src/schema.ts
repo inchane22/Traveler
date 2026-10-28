@@ -12,7 +12,21 @@ export const ISODate = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD")
   .refine(isRealDate, "not a calendar date");
-export const MonthDay = z.string().regex(/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, "expected MM-DD");
+/** Days per month in a leap year, so 02-29 is a valid month-day (resolved per year in src/dates.ts). */
+const MONTH_DAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] as const;
+export const MonthDay = z
+  .string()
+  .regex(/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/, "expected MM-DD")
+  .refine((s) => Number(s.slice(3)) <= MONTH_DAYS[Number(s.slice(0, 2)) - 1]!, "not a day of that month");
+/** IANA zone the platform can format with (an unknown zone throws RangeError in todayIn). */
+export const TimeZone = z.string().refine((zone) => {
+  try {
+    new Intl.DateTimeFormat("en", { timeZone: zone });
+    return zone.includes("/") || zone === "UTC";
+  } catch {
+    return false;
+  }
+}, "not an IANA time zone");
 export const CountryCode = z.string().regex(/^[A-Z]{2}$/, "ISO 3166-1 alpha-2");
 export const Subdivision = z.string().regex(/^[A-Z]{2}-[A-Z0-9]{1,3}$/, "ISO 3166-2");
 export const Slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -118,10 +132,22 @@ export const Edition = z
   .refine((e) => !["confirmada", "aplazada", "cancelada"].includes(e.status) || e.sources.length > 0, "status needs a source")
   .refine((e) => e.status !== "confirmada" || (!!e.start && !!e.end), "a confirmed edition needs start and end");
 
+/**
+ * A score figure. «oficial» and «prensa» name where the figure was read, so they need that source
+ * (CLAUDE.md: every figure carries a source); an unsourced figure can only be an «estimacion».
+ */
 const measured = <T extends z.ZodTypeAny>(shape: T) =>
   z
-    .object({ measure: shape, confidence: Confidence, source: HttpsUrl.optional(), note: LocalizedText.optional() })
+    .object({
+      measure: shape,
+      confidence: Confidence,
+      source: HttpsUrl.optional(),
+      /** Exact text seen at the source, when it was recorded (R1). */
+      quote: z.string().min(1).optional(),
+      note: LocalizedText.optional(),
+    })
     .strict()
+    .refine((m) => !["oficial", "prensa"].includes(m.confidence as string) || !!m.source, "an «oficial» or «prensa» figure needs a source")
     .nullable();
 
 /** Raw measures; points come from config/scoring.json. `null` = «por medir». */
@@ -144,13 +170,26 @@ export const ScoreInputs = z
   })
   .strict();
 
+/** Most names and cities fit in 60 characters; 120 leaves room without letting a paragraph in. */
+export const IDENTITY_MAX = 120;
+// C0/C1 controls (newlines included), bidi overrides and isolates, zero-width marks (SEC-07):
+// identity fields go into every research prompt, so they stay one plain line.
+const HIDDEN_CHARS = /[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u202a-\u202e\u2066-\u2069\ufeff]/;
+/** A festival name or city: one plain line, bounded. */
+export const Identity = z
+  .string()
+  .min(1)
+  .max(IDENTITY_MAX)
+  .refine((s) => !HIDDEN_CHARS.test(s), "control, bidi or zero-width characters are not allowed")
+  .refine((s) => s.trim() === s, "leading or trailing spaces");
+
 export const Festival = z
   .object({
     slug: Slug,
-    names: z.object({ local: z.string().min(1), es: z.string().min(1), en: z.string().min(1), pt: z.string().min(1) }).strict(),
-    city: z.string().min(1),
+    names: z.object({ local: Identity, es: Identity, en: Identity, pt: Identity }).strict(),
+    city: Identity,
     subdivision: Subdivision,
-    timezone: z.string().min(3),
+    timezone: TimeZone,
     coords: z.object({ lat: z.number().min(-90).max(90), lon: z.number().min(-180).max(180) }).strict(),
     nearest_airport: z.string().regex(/^[A-Z]{3}$/).optional(),
     type: FestivalType,
@@ -162,12 +201,15 @@ export const Festival = z
   })
   .strict();
 
+/** PRD R2: fewer festivals with a dated, A- or B-sourced edition keeps a country in «borrador» (checked by build-data). */
+export const MIN_SOURCED_FESTIVALS = 3;
+
 export const CountryFile = z
   .object({
     country: CountryCode,
     status: z.enum(["publicado", "borrador"]),
     generated_at: ISODate,
-    timezone: z.string().min(3),
+    timezone: TimeZone,
     region: z.enum(["sudamerica", "centroamerica_caribe", "norteamerica", "europa", "asia", "africa", "oceania"]),
     festivals: z.array(Festival),
   })

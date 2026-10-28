@@ -1,5 +1,5 @@
 // Ranking, visibility, upcoming and filters over a country's festivals. Pure: shared by app and scripts.
-import { addMonths, effectiveEnd, effectiveStart, occurrenceFor, overlaps, resolveRule, type ISO, type Occurrence, type RuleContext } from "./dates.ts";
+import { addDays, addMonths, effectiveEnd, effectiveStart, occurrenceFor, overlaps, resolveRule, type ISO, type Occurrence, type RuleContext } from "./dates.ts";
 import type { CountryFile, Festival, FestivalType } from "./schema.ts";
 import { scoreFestival, type ScoreResult, type ScoringConfig } from "./score.ts";
 
@@ -12,6 +12,8 @@ export interface FestivalEntry {
   occurrence: Occurrence | null;
   rank: number;
   inTopN: boolean;
+  /** Rules of the whole country, so `relative_to` resolves the same in every view (hidden refs too). */
+  ruleCtx?: RuleContext;
 }
 
 export type Scope = { kind: "world" } | { kind: "region"; region: CountryFile["region"] } | { kind: "country"; code: string };
@@ -47,13 +49,29 @@ export function ctxFor(country: CountryFile): RuleContext {
 const YEARS_BACK = 1;
 const YEARS_AHEAD = 3;
 
+/** A postponed edition with no new dates yet: still the news a traveler needs (RF-07). */
+function isPendingPostponement(occ: Occurrence): boolean {
+  return occ.origin === "edition" && occ.status === "aplazada" && !occ.start;
+}
+
+/**
+ * Next edition that has not ended. A postponed edition without new dates stays the next one after
+ * its old window passes, until the following year's edition has stored dates (ux-F01).
+ */
 export function nextOccurrence(festival: Festival, today: ISO, ctx: RuleContext): Occurrence | null {
   const year = Number(today.slice(0, 4));
+  let pending: Occurrence | null = null;
   for (let y = year - YEARS_BACK; y <= year + YEARS_AHEAD; y++) {
     const occ = occurrenceFor(festival, y, ctx);
-    if (occ && effectiveEnd(occ) >= today) return occ;
+    if (!occ) continue;
+    if (effectiveEnd(occ) >= today) {
+      // Only stored dates supersede: a dateless tentative edition shows the rule's dates, not news.
+      const superseded = !pending || occ.year - pending.year > 1 || (!!occ.edition?.start && !!occ.edition.end);
+      return superseded ? occ : pending;
+    }
+    pending = isPendingPostponement(occ) ? occ : null;
   }
-  return null;
+  return pending;
 }
 
 export function occurrencesBetween(festival: Festival, from: ISO, to: ISO, ctx: RuleContext): Occurrence[] {
@@ -79,6 +97,7 @@ export function buildEntries(country: CountryFile, config: ScoringConfig, today:
     occurrence: nextOccurrence(festival, today, ctx),
     rank: i + 1,
     inTopN: i < config.country_top_n,
+    ruleCtx: ctx,
   }));
 }
 
@@ -107,7 +126,7 @@ export function sortByDate(a: FestivalEntry, b: FestivalEntry): number {
 export function upcoming(entries: readonly FestivalEntry[], today: ISO, limit: number): FestivalEntry[] {
   const horizon = addMonths(today, 12);
   return entries
-    .filter((e) => e.occurrence && effectiveStart(e.occurrence) < horizon && e.occurrence.status !== "cancelada")
+    .filter((e) => e.occurrence && effectiveStart(e.occurrence) < horizon && effectiveEnd(e.occurrence) >= today && e.occurrence.status !== "cancelada")
     .sort(sortByDate)
     .slice(0, limit);
 }
@@ -117,23 +136,30 @@ export function applyFilters(entries: readonly FestivalEntry[], filters: Filters
   const from = filters.from ?? today;
   const to = filters.to ?? addMonths(today, 12);
   const hits: FilterHit[] = [];
-  // One RuleContext per country for this call, built from the same entries as before.
+  // Entries from buildEntries carry their country's full RuleContext; hand-built ones fall back to
+  // one context per country from the entries given.
   const contexts = new Map<string, RuleContext>();
   for (const entry of entries) {
     if (filters.types?.length && !filters.types.includes(entry.festival.type)) continue;
-    let ctx = contexts.get(entry.country);
+    let ctx = entry.ruleCtx ?? contexts.get(entry.country);
     if (!ctx) {
       ctx = ctxForEntry(entry, entries);
       contexts.set(entry.country, ctx);
     }
     const occs = occurrencesBetween(entry.festival, from, to, ctx);
-    const occ = occs.find((o) => !filters.months?.length || filters.months.includes(effectiveStart(o).slice(0, 7)));
+    const occ = occs.find((o) => !filters.months?.length || filters.months.some((m) => inMonth(o, m)));
     if (!occ) continue;
     hits.push({ entry, occurrence: occ, possible: !occ.start });
   }
   return hits.sort(
     (a, b) => effectiveStart(a.occurrence).localeCompare(effectiveStart(b.occurrence)) || a.entry.rank - b.entry.rank,
   );
+}
+
+/** RF-03: a festival belongs to every month its days (or its window) touch, not only its first. */
+function inMonth(occ: Occurrence, month: string): boolean {
+  const start = `${month}-01`;
+  return overlaps({ start: effectiveStart(occ), end: effectiveEnd(occ) }, { start, end: addDays(addMonths(start, 1), -1) });
 }
 
 function ctxForEntry(entry: FestivalEntry, all: readonly FestivalEntry[]): RuleContext {

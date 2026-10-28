@@ -36,9 +36,9 @@
       "score": {
         "convocatoria": { "measure": { "attendance": 6000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428" },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.valoraanalitik.com/?p=555318", "note": { "es": "380 de más de 500 eventos gratuitos (2026)", "en": "380 of 500+ events were free (2026)", "pt": "380 de mais de 500 eventos gratuitos (2026)" } },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "reconocimiento": { "measure": "unesco", "confidence": "estimacion" },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El Carnaval de la 44 y las verbenas de barrio son gratis y es donde baila la ciudad.", "en": "Carnaval de la 44 and the neighborhood verbenas are free, and that is where the city dances.", "pt": "O Carnaval de la 44 e as verbenas de bairro são gratuitos e é ali que a cidade dança." }
     },
@@ -55,10 +55,10 @@
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 250000, "qualifier": "about", "unit": "tourists", "year": 2026 }, "confidence": "prensa", "source": "https://www.diariodelsur.com.co/?p=468063" },
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
-        "conectividad": { "measure": "nacional", "confidence": "oficial" },
-        "local": { "measure": "intermedia", "confidence": "oficial" }
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "reconocimiento": { "measure": "unesco", "confidence": "estimacion" },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion" },
+        "local": { "measure": "intermedia", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El 5 de enero es el Día de Negritos y el 6 el Desfile Magno; lleva ropa que se pueda manchar.", "en": "January 5 is the Day of the Blacks and January 6 the Grand Parade; wear clothes you don't mind ruining.", "pt": "Em 5 de janeiro é o Dia dos Negritos e em 6 o Desfile Magno; use roupa que possa sujar." }
     },
@@ -91,8 +91,8 @@
         "convocatoria": { "measure": { "attendance": 700000, "qualifier": "more_than", "unit": "attendees", "year": 2025 }, "confidence": "estimacion", "source": "https://www.farandahotels.com/en/blog/descubre-la-feria-de-cali-2026-fechas-alojamiento", "note": { "es": "Fuente comercial, débil.", "en": "Commercial source, weak.", "pt": "Fonte comercial, fraca." } },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
         "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El Salsódromo del 25 de diciembre se ve gratis desde la calle si llegas temprano.", "en": "The December 25 Salsódromo can be watched free from the street if you arrive early.", "pt": "O Salsódromo de 25 de dezembro pode ser visto de graça da rua se você chegar cedo." }
     },
@@ -111,8 +111,8 @@
         "convocatoria": { "measure": { "attendance": 137672, "qualifier": "exact", "unit": "tourists", "year": 2022 }, "confidence": "prensa", "source": "https://www.pulzo.com/nacion/cuantos-turistas-asistieron-festival-vallenato-55-PP1396134A", "note": { "es": "Edición 55.", "en": "55th edition.", "pt": "55ª edição." } },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
         "reconocimiento": null,
-        "conectividad": { "measure": "nacional", "confidence": "oficial" },
-        "local": { "measure": "intermedia", "confidence": "oficial" }
+        "conectividad": { "measure": "nacional", "confidence": "estimacion" },
+        "local": { "measure": "intermedia", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Las parrandas en las casas y la plaza Alfonso López son el corazón fuera de la tarima.", "en": "House parrandas and Alfonso López square are the heart of it, away from the main stage.", "pt": "As parrandas nas casas e a praça Alfonso López são o coração da festa fora do palco." }
     },
@@ -129,10 +129,10 @@
       "editions": {},
       "score": {
         "convocatoria": null,
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
-        "conectividad": { "measure": "nacional", "confidence": "oficial" },
-        "local": { "measure": "intermedia", "confidence": "oficial" }
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "reconocimiento": { "measure": "unesco", "confidence": "estimacion" },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion" },
+        "local": { "measure": "intermedia", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Cada barrio franciscano sale con su comparsa y chirimía; el desfile de tu barrio anfitrión es abierto.", "en": "Each Franciscan neighborhood parades with its comparsa and chirimía band; the host neighborhood's parade is open to all.", "pt": "Cada bairro franciscano sai com sua comparsa e chirimía; o desfile do bairro anfitrião é aberto." },
       "etiquette": { "es": "Es una fiesta patronal: en misas y procesiones, silencio, ropa discreta y pide permiso antes de fotografiar.", "en": "It is a patron-saint feast: keep quiet and dress modestly at masses and processions, and ask before taking photos.", "pt": "É uma festa de padroeiro: nas missas e procissões, silêncio, roupa discreta e peça permissão antes de fotografar." }
@@ -150,10 +150,10 @@
       "editions": {},
       "score": {
         "convocatoria": null,
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial" },
-        "conectividad": { "measure": "ninguno", "confidence": "oficial" },
-        "local": { "measure": "pueblo", "confidence": "oficial" }
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "reconocimiento": { "measure": "unesco", "confidence": "estimacion" },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion" },
+        "local": { "measure": "pueblo", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Es un pueblo pequeño: los conciertos de tambor en la plaza y las ruedas de baile son abiertos.", "en": "It is a small village: the drum concerts in the square and the dance circles are open to everyone.", "pt": "É um povoado pequeno: os concertos de tambor na praça e as rodas de dança são abertos." },
       "etiquette": { "es": "Palenque es la comunidad, no un escenario: saluda, pide permiso para fotos y compra a la gente local.", "en": "Palenque is a community, not a stage: greet people, ask before photos and buy from locals.", "pt": "Palenque é uma comunidade, não um palco: cumprimente, peça licença para fotos e compre dos moradores." }
@@ -183,10 +183,10 @@
       },
       "score": {
         "convocatoria": { "measure": { "attendance": 30000, "qualifier": "about", "unit": "visitors", "year": 2023 }, "confidence": "oficial", "source": "https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos", "note": { "es": "Visitantes esperados en 2023.", "en": "Expected visitors in 2023.", "pt": "Visitantes esperados em 2023." } },
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "nacional", "confidence": "prensa" },
-        "conectividad": { "measure": "ninguno", "confidence": "oficial" },
-        "local": { "measure": "pueblo", "confidence": "oficial" }
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "reconocimiento": { "measure": "nacional", "confidence": "estimacion" },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion" },
+        "local": { "measure": "pueblo", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Solo en años impares. Las cuadrillas recitan en la plaza y el pueblo entero canta con ellas.", "en": "Odd years only. The cuadrillas recite in the square and the whole town sings along.", "pt": "Só em anos ímpares. As cuadrillas declamam na praça e a cidade inteira canta junto." }
     },
@@ -205,8 +205,8 @@
         "convocatoria": null,
         "calle": { "measure": "mixta", "confidence": "estimacion" },
         "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Los desfiles y bandos del 11 de noviembre se viven en los barrios populares, fuera de la ciudad amurallada.", "en": "The November 11 parades and bandos are lived in the working-class neighborhoods, outside the walled city.", "pt": "Os desfiles e bandos de 11 de novembro acontecem nos bairros populares, fora da cidade murada." }
     },
@@ -225,8 +225,8 @@
         "convocatoria": null,
         "calle": null,
         "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       }
     },
     {
@@ -244,8 +244,8 @@
         "convocatoria": null,
         "calle": null,
         "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "oficial" },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       }
     }
   ]

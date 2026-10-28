@@ -128,14 +128,25 @@ export function nthWeekday(year: number, month: number, dow: number, n: number):
   return parseISODate(date).m === month ? date : null;
 }
 
-function monthDay(year: number, md: string): ISO {
-  return `${year}-${md}`;
+export function isLeapYear(year: number): boolean {
+  return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 }
 
-function spanFrom(year: number, startMD: string, endMD: string): DateWindow {
-  const start = monthDay(year, startMD);
-  const end = endMD < startMD ? monthDay(year + 1, endMD) : monthDay(year, endMD);
-  return { start, end };
+/**
+ * A month-day in a year. 02-29 in a common year is no date at all: null for an exact rule (the
+ * festival has no edition that year), 02-28 for a probable window (`clampLeapDay`).
+ */
+function monthDay(year: number, md: string, clampLeapDay: boolean): ISO | null {
+  if (md === "02-29" && !isLeapYear(year)) return clampLeapDay ? `${year}-02-28` : null;
+  const iso = `${String(year).padStart(4, "0")}-${md}`;
+  parseISODate(iso); // throws on a month-day the schema should have rejected (04-31)
+  return iso;
+}
+
+function spanFrom(year: number, startMD: string, endMD: string, clampLeapDay: boolean): DateWindow | null {
+  const start = monthDay(year, startMD, clampLeapDay);
+  const end = endMD < startMD ? monthDay(year + 1, endMD, clampLeapDay) : monthDay(year, endMD, clampLeapDay);
+  return start && end ? { start, end } : null;
 }
 
 export function parityMatches(rule: Rule, year: number): boolean {
@@ -147,8 +158,10 @@ export function parityMatches(rule: Rule, year: number): boolean {
 export function resolveRule(rule: Rule, year: number, ctx: RuleContext): Resolved | null {
   if (!parityMatches(rule, year)) return null;
   switch (rule.type) {
-    case "fixed":
-      return { kind: "computed", ...spanFrom(year, rule.start, rule.end), estimated: false };
+    case "fixed": {
+      const span = spanFrom(year, rule.start, rule.end, false);
+      return span ? { kind: "computed", ...span, estimated: false } : null;
+    }
     case "easter_offset": {
       const sunday = easter(year, rule.calendar);
       return { kind: "computed", start: addDays(sunday, rule.start), end: addDays(sunday, rule.end), estimated: false };
@@ -167,8 +180,10 @@ export function resolveRule(rule: Rule, year: number, ctx: RuleContext): Resolve
       const row = rule.table[String(year)];
       return row ? { kind: "table", start: row.start, end: row.end, estimated: rule.sighting_dependent } : null;
     }
-    case "announced":
-      return { kind: "window", window: spanFrom(year, rule.window.start, rule.window.end) };
+    case "announced": {
+      const window = spanFrom(year, rule.window.start, rule.window.end, true);
+      return window ? { kind: "window", window } : null;
+    }
   }
 }
 

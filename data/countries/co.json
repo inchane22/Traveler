@@ -39,11 +39,11 @@
         }
       },
       "score": {
-        "convocatoria": { "measure": { "attendance": 6000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "estimacion", "source": "https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428", "note": { "es": "Suma eventos presenciales y transmisiones; en persona, la ciudad recibió más de 820.000 visitantes (2026).", "en": "Counts in-person events plus broadcasts; in person, the city received more than 820,000 visitors (2026).", "pt": "Soma eventos presenciais e transmissões; presencialmente, a cidade recebeu mais de 820.000 visitantes (2026)." } },
+        "convocatoria": { "measure": { "attendance": 820000, "qualifier": "more_than", "unit": "visitors", "year": 2026 }, "confidence": "prensa", "source": "https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428", "note": { "es": "Visitantes en persona (más de 820.000, 2026). El balance de 6 millones suma eventos presenciales y transmisiones, por eso no se usa.", "en": "In-person visitors (more than 820,000, 2026). The 6 million figure counts in-person events plus broadcasts, so it is not used.", "pt": "Visitantes presenciais (mais de 820.000, 2026). O balanço de 6 milhões soma eventos presenciais e transmissões, por isso não é usado." } },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.valoraanalitik.com/?p=555318", "note": { "es": "380 de más de 500 eventos gratuitos (2026)", "en": "380 of 500+ events were free (2026)", "pt": "380 de mais de 500 eventos gratuitos (2026)" } },
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/carnival-of-barranquilla-00051", "note": { "es": "Lista Representativa de la UNESCO desde 2008 (obra maestra en 2003).", "en": "On UNESCO's Representative List since 2008 (Masterpiece in 2003).", "pt": "Na Lista Representativa da UNESCO desde 2008 (obra-prima em 2003)." } },
-        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://en.wikipedia.org/wiki/Ernesto_Cortissoz_International_Airport", "note": { "es": "BAQ está en Soledad, en el área metropolitana, con vuelos a Miami y Panamá.", "en": "BAQ is in Soledad, in the metro area, with flights to Miami and Panama.", "pt": "BAQ fica em Soledad, na região metropolitana, com voos para Miami e Panamá." } },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ernesto_Cortissoz_International_Airport", "note": { "es": "BAQ está en Soledad, en el área metropolitana, con vuelos a Miami y Panamá.", "en": "BAQ is in Soledad, in the metro area, with flights to Miami and Panama.", "pt": "BAQ fica em Soledad, na região metropolitana, com voos para Miami e Panamá." } },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El Carnaval de la 44 y las verbenas de barrio son gratis y es donde baila la ciudad.", "en": "Carnaval de la 44 and the neighborhood verbenas are free, and that is where the city dances.", "pt": "O Carnaval de la 44 e as verbenas de bairro são gratuitos e é ali que a cidade dança." }
     },
@@ -60,10 +60,10 @@
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 250000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://forbes.co/2026/01/07/actualidad/carnaval-de-negros-y-blancos-atrajo-mas-de-250-000-turistas-a-pasto/", "note": { "es": "Cifra de la Gobernación de Nariño para el 2 al 7 de enero de 2026; el texto dice personas, no turistas.", "en": "Figure from the Nariño Governor's Office for January 2 to 7, 2026; the text says people, not tourists.", "pt": "Número do Governo de Nariño para 2 a 7 de janeiro de 2026; o texto diz pessoas, não turistas." } },
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/carnaval-de-negros-y-blancos-00287", "note": { "es": "Lista Representativa de la UNESCO desde 2009.", "en": "On UNESCO's Representative List since 2009.", "pt": "Na Lista Representativa da UNESCO desde 2009." } },
-        "conectividad": { "measure": "nacional", "confidence": "prensa", "source": "https://en.wikipedia.org/wiki/Antonio_Nari%C3%B1o_Airport", "note": { "es": "PSO está en Chachagüí, a 35 km de Pasto, y solo tiene vuelos nacionales.", "en": "PSO is in Chachagüí, 35 km from Pasto, with domestic flights only.", "pt": "PSO fica em Chachagüí, a 35 km de Pasto, e só tem voos nacionais." } },
-        "local": { "measure": "intermedia", "confidence": "oficial" }
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Antonio_Nari%C3%B1o_Airport", "note": { "es": "PSO está en Chachagüí, a 35 km de Pasto, y solo tiene vuelos nacionales.", "en": "PSO is in Chachagüí, 35 km from Pasto, with domestic flights only.", "pt": "PSO fica em Chachagüí, a 35 km de Pasto, e só tem voos nacionais." } },
+        "local": { "measure": "intermedia", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El 5 de enero es el Día de Negritos y el 6 el Desfile Magno; lleva ropa que se pueda manchar.", "en": "January 5 is the Day of the Blacks and January 6 the Grand Parade; wear clothes you don't mind ruining.", "pt": "Em 5 de janeiro é o Dia dos Negritos e em 6 o Desfile Magno; use roupa que possa sujar." }
     },
@@ -97,8 +97,8 @@
         "convocatoria": { "measure": { "attendance": 1950000, "qualifier": "exact", "unit": "attendees", "year": 2025 }, "confidence": "oficial", "source": "https://www.cali.gov.co/galeria/32472/la-68-feria-de-cali-cerro-con-balance-historico-1950000-asistentes-y-45-millones-de-dolares-para-la-economia-de-la-ciudad/", "note": { "es": "Titular del balance de la Alcaldía para la Feria 68, sin método; parece sumar la asistencia de todos los eventos. Corfecali cuenta más de 450.000 en los eventos oficiales.", "en": "Headline of City Hall's balance for the 68th Feria, with no method; it seems to add up attendance across all events. Corfecali counts more than 450,000 at the official events.", "pt": "Manchete do balanço da Prefeitura para a 68ª Feira, sem método; parece somar a presença em todos os eventos. A Corfecali conta mais de 450.000 nos eventos oficiais." } },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
         "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://en.wikipedia.org/wiki/Alfonso_Bonilla_Arag%C3%B3n_International_Airport", "note": { "es": "CLO está entre Palmira y Cali.", "en": "CLO is between Palmira and Cali.", "pt": "CLO fica entre Palmira e Cali." } },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Alfonso_Bonilla_Arag%C3%B3n_International_Airport", "note": { "es": "CLO está entre Palmira y Cali.", "en": "CLO is between Palmira and Cali.", "pt": "CLO fica entre Palmira e Cali." } },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El Salsódromo del 25 de diciembre se ve gratis desde la calle si llegas temprano.", "en": "The December 25 Salsódromo can be watched free from the street if you arrive early.", "pt": "O Salsódromo de 25 de dezembro pode ser visto de graça da rua se você chegar cedo." }
     },
@@ -120,20 +120,19 @@
           "confidence": "prensa",
           "key_events": [],
           "sources": [
-            { "url": "https://www.larepublica.co/ocio/el-festival-de-la-leyenda-vallenata-prepara-una-edicion-historica-para-2027-4479547", "publisher": "La República", "accessed": "2026-10-26", "tier": "B", "quote": "se realizará entre el 28 de abril y el primero de mayo del próximo año." },
-            { "url": "https://festivalvallenato.com/", "publisher": "Fundación Festival de la Leyenda Vallenata", "accessed": "2026-10-26", "tier": "A", "quote": "Academia, Diseño y Patrimonio se articulan para crear la imagen del 60º Festival de la Leyenda Vallenata" }
+            { "url": "https://www.larepublica.co/ocio/el-festival-de-la-leyenda-vallenata-prepara-una-edicion-historica-para-2027-4479547", "publisher": "La República", "accessed": "2026-10-26", "tier": "B", "quote": "se realizará entre el 28 de abril y el primero de mayo del próximo año." }
           ],
           "last_verified": "2026-10-26",
           "sequence": 0,
-          "note": { "es": "Edición 60, de Rey de Reyes. Las fechas las dio el presidente de la Fundación a la prensa en septiembre de 2026; el sitio del festival aún no publica el calendario.", "en": "60th edition, a Rey de Reyes year. The Foundation's president gave the dates to the press in September 2026; the festival site has not published the calendar yet.", "pt": "60ª edição, de Rey de Reyes. O presidente da Fundação deu as datas à imprensa em setembro de 2026; o site do festival ainda não publica o calendário." }
+          "note": { "es": "Edición 60, de Rey de Reyes. La República publicó las fechas; el sitio del festival aún no las confirma.", "en": "60th edition, a Rey de Reyes year. La República published the dates; the festival site has not confirmed them yet.", "pt": "60ª edição, de Rey de Reyes. La República publicou as datas; o site do festival ainda não as confirma." }
         }
       },
       "score": {
-        "convocatoria": { "measure": { "attendance": 227727, "qualifier": "exact", "unit": "visitors", "year": 2024 }, "confidence": "prensa", "source": "https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162", "note": { "es": "Cámara de Comercio de Valledupar, edición 57; el DANE habla de unos 227.000 asistentes en su nota previa a la edición 2026.", "en": "Valledupar Chamber of Commerce, 57th edition; DANE cites about 227,000 attendees in its note ahead of the 2026 edition.", "pt": "Câmara de Comércio de Valledupar, 57ª edição; o DANE fala em cerca de 227.000 participantes na nota anterior à edição 2026." } },
+        "convocatoria": { "measure": { "attendance": 227727, "qualifier": "exact", "unit": "visitors", "year": 2024 }, "confidence": "estimacion", "source": "https://www.colombia.com/turismo/noticias/festival-vallenato-en-valledupar-precio-de-vuelos-y-rutas-terrestres-579162", "note": { "es": "Cámara de Comercio de Valledupar, edición 57; el DANE habla de unos 227.000 asistentes en su nota previa a la edición 2026.", "en": "Valledupar Chamber of Commerce, 57th edition; DANE cites about 227,000 attendees in its note ahead of the 2026 edition.", "pt": "Câmara de Comércio de Valledupar, 57ª edição; o DANE fala em cerca de 227.000 participantes na nota anterior à edição 2026." } },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
-        "reconocimiento": { "measure": "nacional", "confidence": "prensa", "source": "https://colombia.justia.com/nacionales/leyes/ley-739-de-2002/gdoc/", "note": { "es": "La Ley 739 de 2002 lo declara Patrimonio Cultural de la Nación (copia en Justia).", "en": "Law 739 of 2002 declares it National Cultural Heritage (copy on Justia).", "pt": "A Lei 739 de 2002 o declara Patrimônio Cultural da Nação (cópia no Justia)." } },
-        "conectividad": { "measure": "nacional", "confidence": "prensa", "source": "https://en.wikipedia.org/wiki/Alfonso_L%C3%B3pez_Pumarejo_Airport", "note": { "es": "VUP solo tiene vuelos nacionales.", "en": "VUP has domestic flights only.", "pt": "VUP só tem voos nacionais." } },
-        "local": { "measure": "intermedia", "confidence": "oficial" }
+        "reconocimiento": { "measure": "nacional", "confidence": "estimacion", "source": "https://colombia.justia.com/nacionales/leyes/ley-739-de-2002/gdoc/", "note": { "es": "La Ley 739 de 2002 lo declara Patrimonio Cultural de la Nación (copia en Justia).", "en": "Law 739 of 2002 declares it National Cultural Heritage (copy on Justia).", "pt": "A Lei 739 de 2002 o declara Patrimônio Cultural da Nação (cópia no Justia)." } },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Alfonso_L%C3%B3pez_Pumarejo_Airport", "note": { "es": "VUP solo tiene vuelos nacionales.", "en": "VUP has domestic flights only.", "pt": "VUP só tem voos nacionais." } },
+        "local": { "measure": "intermedia", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Las parrandas en las casas y la plaza Alfonso López son el corazón fuera de la tarima.", "en": "House parrandas and Alfonso López square are the heart of it, away from the main stage.", "pt": "As parrandas nas casas e a praça Alfonso López são o coração da festa fora do palco." }
     },
@@ -150,10 +149,10 @@
       "editions": {},
       "score": {
         "convocatoria": null,
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/festival-of-saint-francis-of-assisi-quibdo-00640", "note": { "es": "Lista Representativa de la UNESCO desde 2012.", "en": "On UNESCO's Representative List since 2012.", "pt": "Na Lista Representativa da UNESCO desde 2012." } },
-        "conectividad": { "measure": "nacional", "confidence": "oficial" },
-        "local": { "measure": "intermedia", "confidence": "oficial" }
+        "conectividad": { "measure": "nacional", "confidence": "estimacion" },
+        "local": { "measure": "intermedia", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Cada barrio franciscano sale con su comparsa y chirimía; el desfile de tu barrio anfitrión es abierto.", "en": "Each Franciscan neighborhood parades with its comparsa and chirimía band; the host neighborhood's parade is open to all.", "pt": "Cada bairro franciscano sai com sua comparsa e chirimía; o desfile do bairro anfitrião é aberto." },
       "etiquette": { "es": "Es una fiesta patronal: en misas y procesiones, silencio, ropa discreta y pide permiso antes de fotografiar.", "en": "It is a patron-saint feast: keep quiet and dress modestly at masses and processions, and ask before taking photos.", "pt": "É uma festa de padroeiro: nas missas e procissões, silêncio, roupa discreta e peça permissão antes de fotografar." }
@@ -187,10 +186,10 @@
       },
       "score": {
         "convocatoria": null,
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
         "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/cultural-space-of-palenque-de-san-basilio-00102", "note": { "es": "La inscripción de 2008 es del espacio cultural de Palenque de San Basilio, no del festival.", "en": "The 2008 inscription covers the cultural space of Palenque de San Basilio, not the festival itself.", "pt": "A inscrição de 2008 é do espaço cultural de Palenque de San Basilio, não do festival." } },
-        "conectividad": { "measure": "ninguno", "confidence": "oficial" },
-        "local": { "measure": "pueblo", "confidence": "oficial" }
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion" },
+        "local": { "measure": "pueblo", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Es un pueblo pequeño: los conciertos de tambor en la plaza y las ruedas de baile son abiertos.", "en": "It is a small village: the drum concerts in the square and the dance circles are open to everyone.", "pt": "É um povoado pequeno: os concertos de tambor na praça e as rodas de dança são abertos." },
       "etiquette": { "es": "Palenque es la comunidad, no un escenario: saluda, pide permiso para fotos y compra a la gente local.", "en": "Palenque is a community, not a stage: greet people, ask before photos and buy from locals.", "pt": "Palenque é uma comunidade, não um palco: cumprimente, peça licença para fotos e compre dos moradores." }
@@ -221,10 +220,10 @@
       },
       "score": {
         "convocatoria": { "measure": { "attendance": 30000, "qualifier": "about", "unit": "visitors", "year": 2025 }, "confidence": "estimacion", "source": "https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos", "note": { "es": "Visitantes esperados para la edición 2025; es un pronóstico, no un conteo.", "en": "Visitors expected for the 2025 edition; a forecast, not a count.", "pt": "Visitantes esperados para a edição 2025; é uma previsão, não uma contagem." } },
-        "calle": { "measure": "mayoria_gratis", "confidence": "prensa" },
-        "reconocimiento": { "measure": "nacional", "confidence": "prensa", "source": "https://vlex.com.co/vid/ley-1736-21-noviembre-545971446", "note": { "es": "La Ley 1736 de 2014 lo declara Patrimonio Cultural y Artístico de la Nación (copia en vLex).", "en": "Law 1736 of 2014 declares it National Cultural and Artistic Heritage (copy on vLex).", "pt": "A Lei 1736 de 2014 o declara Patrimônio Cultural e Artístico da Nação (cópia no vLex)." } },
-        "conectividad": { "measure": "ninguno", "confidence": "oficial" },
-        "local": { "measure": "pueblo", "confidence": "oficial" }
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "reconocimiento": { "measure": "nacional", "confidence": "estimacion", "source": "https://vlex.com.co/vid/ley-1736-21-noviembre-545971446", "note": { "es": "La Ley 1736 de 2014 lo declara Patrimonio Cultural y Artístico de la Nación (copia en vLex).", "en": "Law 1736 of 2014 declares it National Cultural and Artistic Heritage (copy on vLex).", "pt": "A Lei 1736 de 2014 o declara Patrimônio Cultural e Artístico da Nação (cópia no vLex)." } },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion" },
+        "local": { "measure": "pueblo", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Solo en años impares. Las cuadrillas recitan en la plaza y el pueblo entero canta con ellas.", "en": "Odd years only. The cuadrillas recite in the square and the whole town sings along.", "pt": "Só em anos ímpares. As cuadrillas declamam na praça e a cidade inteira canta junto." }
     },
@@ -250,7 +249,7 @@
             { "id": "reinado-intercorregimental", "name": { "es": "Coronación del Reinado Intercorregimental, cierre de la agenda oficial", "en": "Intercorregimental Pageant coronation, end of the official program", "pt": "Coroação do Reinado Intercorregimental, encerramento da agenda oficial" }, "date": "2026-11-16", "confidence": "prensa" }
           ],
           "sources": [
-            { "url": "https://www.eluniversal.com.co/farandula/2026/09/16/fiestas-de-la-independencia-2026-la-agenda-oficial-y-artistas-confirmados/", "publisher": "El Universal", "accessed": "2026-10-26", "tier": "B", "quote": "El 11 de noviembre, fecha central de la celebración, se realizarán la Sesión Solemne del Concejo Distrital, la Ofrenda Floral" },
+            { "url": "https://www.eluniversal.com.co/farandula/2026/09/16/fiestas-de-la-independencia-2026-la-agenda-oficial-y-artistas-confirmados/", "publisher": "El Universal", "accessed": "2026-10-26", "tier": "B", "quote": "el 11 de noviembre, fecha central de la celebración, se realizarán la Sesión Solemne del Concejo Distrital, la Ofrenda Floral" },
             { "url": "https://www.eluniversal.com.co/cartagena/2026/10/19/alcaldia-de-cartagena-decreta-3-dias-civicos-para-las-fiestas-de-independencia-estos-son/", "publisher": "El Universal", "accessed": "2026-10-26", "tier": "B", "quote": "La Alcaldía de Cartagena declaró cívicos los días 11, 12 y 13 de noviembre de 2026." },
             { "url": "https://www.eluniversal.com.co/farandula/2026/09/16/cartagena-presenta-oficialmente-la-agenda-de-las-fiestas-2026/", "publisher": "El Universal", "accessed": "2026-10-26", "tier": "B", "quote": "Gran Desfile de Independencia (Avenida Santander - 10:00 a.m. a 12:00 p.m.)" },
             { "url": "https://ipcc.gov.co/cartagena-alista-sus-obras-para-las-fiestas-de-independencia-2026-macrofiguras-para-un-museo-a-cielo-abierto-y-carrozas-para-el-bando/", "publisher": "Instituto de Patrimonio y Cultura de Cartagena", "accessed": "2026-10-26", "tier": "A", "quote": "Fiestas de Independencia del 11 de Noviembre de 2026" }
@@ -264,8 +263,8 @@
         "convocatoria": null,
         "calle": { "measure": "mixta", "confidence": "estimacion" },
         "reconocimiento": { "measure": "nacional", "confidence": "prensa", "source": "https://www.eluniversal.com.co/cultural/2026/07/17/cartagena-celebra-sus-fiestas-de-independencia-ya-son-patrimonio-nacional/", "note": { "es": "El Consejo Nacional de Patrimonio aprobó su inclusión en la Lista Representativa nacional el 17 de julio de 2026; falta la resolución del Ministerio.", "en": "The National Heritage Council approved its inclusion on the national Representative List on July 17, 2026; the Ministry's resolution is pending.", "pt": "O Conselho Nacional de Patrimônio aprovou sua inclusão na Lista Representativa nacional em 17 de julho de 2026; falta a resolução do Ministério." } },
-        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "CTG, Aeropuerto Internacional Rafael Núñez.", "en": "CTG, Rafael Núñez International Airport.", "pt": "CTG, Aeroporto Internacional Rafael Núñez." } },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "CTG, Aeropuerto Internacional Rafael Núñez.", "en": "CTG, Rafael Núñez International Airport.", "pt": "CTG, Aeroporto Internacional Rafael Núñez." } },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Los desfiles y bandos del 11 de noviembre se viven en los barrios populares, fuera de la ciudad amurallada.", "en": "The November 11 parades and bandos are lived in the working-class neighborhoods, outside the walled city.", "pt": "Os desfiles e bandos de 11 de novembro acontecem nos bairros populares, fora da cidade murada." }
     },
@@ -294,7 +293,7 @@
           "sources": [
             { "url": "https://www.medellin.gov.co/es/sala-de-prensa/noticias/proyeccion-feria-de-las-flores-2026/", "publisher": "Alcaldía de Medellín", "accessed": "2026-10-26", "tier": "A", "quote": "se realizará del 31 de julio al 9 de agosto" },
             { "url": "https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/", "publisher": "El Espectador", "accessed": "2026-10-26", "tier": "B", "quote": "69.º Desfile de Silleteros: domingo 9 de agosto." },
-            { "url": "https://telemedellin.tv/?p=191725", "publisher": "Telemedellín", "accessed": "2026-10-26", "tier": "B", "quote": "Fueron 10 días con más de 100 actividades durante la Feria de las Flores 2026." }
+            { "url": "https://telemedellin.tv/?p=191725", "publisher": "Telemedellín", "accessed": "2026-10-26", "tier": "B", "quote": "Fueron 10 días con más de 100 actividades durante la Feria de las Flores 2026" }
           ],
           "last_verified": "2026-10-26",
           "sequence": 0,
@@ -304,9 +303,9 @@
       "score": {
         "convocatoria": { "measure": { "attendance": 300000, "qualifier": "more_than", "unit": "visitors", "year": 2025 }, "confidence": "prensa", "source": "https://telemedellin.tv/?p=132129", "note": { "es": "Visitantes nacionales y extranjeros en 2025; para 2026 solo hay una cifra esperada antes del evento.", "en": "Domestic and foreign visitors in 2025; for 2026 there is only a figure expected before the event.", "pt": "Visitantes nacionais e estrangeiros em 2025; para 2026 só há um número esperado antes do evento." } },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.elespectador.com/turismo/programacion-de-la-feria-de-las-flores-2026-cuando-son-los-desfiles-conciertos-y-mas/", "note": { "es": "Más de la mitad de los más de 200 eventos de 2026 fueron gratuitos, y los 21 tablados, todos; el Súper Concierto tuvo boleta.", "en": "More than half of the 200-plus events in 2026 were free, and all 21 tablados; the Súper Concierto was ticketed.", "pt": "Mais da metade dos mais de 200 eventos de 2026 foi gratuita, e todos os 21 tablados; o Súper Concierto foi pago." } },
-        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://www.medellin.gov.co/es/sala-de-prensa/noticias/la-cultura-silletera-patrimonio-cultural-inmaterial-de-la-nacion-y-orgullo-de-medellin/", "note": { "es": "La cultura silletera es Patrimonio Cultural Inmaterial de la Nación (2014); la declaratoria cubre a los silleteros, no toda la Feria.", "en": "The silletero culture is National Intangible Cultural Heritage (2014); the declaration covers the silleteros, not the whole Feria.", "pt": "A cultura silletera é Patrimônio Cultural Imaterial da Nação (2014); a declaração cobre os silleteros, não toda a Feira." } },
-        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "MDE, José María Córdova, está en Rionegro; el Olaya Herrera de la ciudad es solo nacional.", "en": "MDE, José María Córdova, is in Rionegro; the in-city Olaya Herrera is domestic only.", "pt": "MDE, José María Córdova, fica em Rionegro; o Olaya Herrera da cidade é só nacional." } },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "reconocimiento": { "measure": "ninguna", "confidence": "oficial", "source": "https://www.medellin.gov.co/es/sala-de-prensa/noticias/la-cultura-silletera-patrimonio-cultural-inmaterial-de-la-nacion-y-orgullo-de-medellin/", "note": { "es": "La declaratoria de 2014 (Patrimonio Cultural Inmaterial de la Nación) nombra a la cultura silletera, no a la Feria; la Feria no tiene declaratoria propia registrada.", "en": "The 2014 declaration (National Intangible Cultural Heritage) names the silletero culture, not the Feria; no declaration of the Feria itself is on file.", "pt": "A declaração de 2014 (Patrimônio Cultural Imaterial da Nação) nomeia a cultura silletera, não a Feira; não há declaração própria da Feira registrada." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "MDE, José María Córdova, está en Rionegro; el Olaya Herrera de la ciudad es solo nacional.", "en": "MDE, José María Córdova, is in Rionegro; the in-city Olaya Herrera is domestic only.", "pt": "MDE, José María Córdova, fica em Rionegro; o Olaya Herrera da cidade é só nacional." } },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       }
     },
     {
@@ -331,15 +330,15 @@
           ],
           "last_verified": "2026-10-26",
           "sequence": 0,
-          "note": { "es": "Suspendida el 10 de agosto por el sismo; iba del 12 al 17 de agosto. La Secretaría de Cultura apuntó a noviembre, sin fecha anunciada.", "en": "Suspended on August 10 because of the earthquake; it was set for August 12 to 17. The Culture Secretariat aimed for November, with no date announced.", "pt": "Suspenso em 10 de agosto pelo terremoto; seria de 12 a 17 de agosto. A Secretaria de Cultura apontou novembro, sem data anunciada." }
+          "note": { "es": "Suspendida el 10 de agosto por el sismo. La Secretaría de Cultura apuntó a noviembre, sin fecha anunciada.", "en": "Suspended on August 10 because of the earthquake. The Culture Secretariat aimed for November, with no date announced.", "pt": "Suspenso em 10 de agosto pelo terremoto. A Secretaria de Cultura apontou novembro, sem data anunciada." }
         }
       },
       "score": {
         "convocatoria": { "measure": { "attendance": 800000, "qualifier": "more_than", "unit": "attendees", "year": 2025 }, "confidence": "oficial", "source": "https://www.cali.gov.co/publicaciones/188479/exito-total-mas-de-800000-personas-vibraron-con-el-festival-petronio-alvarez-2025/", "note": { "es": "Balance de la Alcaldía para los seis días de la edición 2025.", "en": "City Hall's balance for the six days of the 2025 edition.", "pt": "Balanço da Prefeitura para os seis dias da edição 2025." } },
         "calle": null,
-        "reconocimiento": { "measure": "nacional", "confidence": "prensa", "source": "https://www.dmsjuridica.com/buscador_20179478954/legislacion/leyes/2020/11/24/ley-1472-de-2011/", "note": { "es": "La Ley 1472 de 2011 lo declara Patrimonio Cultural de la Nación (copia en DMS Jurídica).", "en": "Law 1472 of 2011 declares it National Cultural Heritage (copy on DMS Jurídica).", "pt": "A Lei 1472 de 2011 o declara Patrimônio Cultural da Nação (cópia no DMS Jurídica)." } },
-        "conectividad": { "measure": "internacional", "confidence": "prensa", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "CLO está entre Palmira y Cali.", "en": "CLO is between Palmira and Cali.", "pt": "CLO fica entre Palmira e Cali." } },
-        "local": { "measure": "gran_ciudad", "confidence": "oficial" }
+        "reconocimiento": { "measure": "nacional", "confidence": "estimacion", "source": "https://www.dmsjuridica.com/buscador_20179478954/legislacion/leyes/2020/11/24/ley-1472-de-2011/", "note": { "es": "La Ley 1472 de 2011 lo declara Patrimonio Cultural de la Nación (copia en DMS Jurídica).", "en": "Law 1472 of 2011 declares it National Cultural Heritage (copy on DMS Jurídica).", "pt": "A Lei 1472 de 2011 o declara Patrimônio Cultural da Nação (cópia no DMS Jurídica)." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia", "note": { "es": "CLO está entre Palmira y Cali.", "en": "CLO is between Palmira and Cali.", "pt": "CLO fica entre Palmira e Cali." } },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
       }
     }
   ]

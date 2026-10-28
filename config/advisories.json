@@ -4,7 +4,13 @@
     "US": {
       "name": "United States",
       "publisher": "U.S. Department of State",
-      "destinations": {},
+      "destinations": {
+        "CO": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.col.html",
+        "PE": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.per.html",
+        "BR": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.bra.html",
+        "BO": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.bol.html",
+        "MX": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.mex.html"
+      },
       "fallback": null
     },
     "GB": {
@@ -83,7 +89,7 @@
       "name": "Peru",
       "publisher": "Ministerio de Relaciones Exteriores del Perú",
       "destinations": {},
-      "fallback": null
+      "fallback": "https://www.gob.pe/162-viajar-fuera-del-peru"
     },
     "CO": {
       "name": "Colombia",
@@ -131,42 +137,6 @@
     }
   },
   "unverified": [
-    {
-      "origin": "US",
-      "destination": "CO",
-      "url": "https://travel.state.gov/en/international-travel/travel-advisories/colombia.html",
-      "note": "HTTP 403 to WebFetch and curl; Cloudflare bot challenge in a browser. URL taken from the search index. The official State Dept API (cadataapi.state.gov/api/TravelAdvisories, fetched) lists Colombia at Level 3, dated 2026-03-30, with link https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.col.html."
-    },
-    {
-      "origin": "US",
-      "destination": "PE",
-      "url": "https://travel.state.gov/en/international-travel/travel-advisories/peru.html",
-      "note": "HTTP 403 / Cloudflare challenge. URL from the search index. State Dept API lists Peru at Level 2, dated 2026-09-03, link .../travel-advisories/destination.per.html."
-    },
-    {
-      "origin": "US",
-      "destination": "BR",
-      "url": "https://travel.state.gov/en/international-travel/travel-advisories/brazil.html",
-      "note": "HTTP 403 / Cloudflare challenge. URL from the search index. State Dept API lists Brazil at Level 2, dated 2026-08-30, link .../travel-advisories/destination.bra.html."
-    },
-    {
-      "origin": "US",
-      "destination": "BO",
-      "url": "https://travel.state.gov/en/international-travel/travel-advisories/bolivia.html",
-      "note": "HTTP 403 / Cloudflare challenge. URL from the search index. State Dept API lists Bolivia at Level 2, dated 2026-08-17, link .../travel-advisories/destination.bol.html."
-    },
-    {
-      "origin": "US",
-      "destination": "MX",
-      "url": "https://travel.state.gov/en/international-travel/travel-advisories/mexico.html",
-      "note": "HTTP 403 / Cloudflare challenge. URL from the search index. State Dept API lists Mexico at Level 2, dated 2026-05-28, link .../travel-advisories/destination.mex.html."
-    },
-    {
-      "origin": "US",
-      "destination": null,
-      "url": "https://travel.state.gov/en/international-travel/travel-advisories.html",
-      "note": "Fallback candidate (advisories index). Not opened: same 403 / Cloudflare block. Path inferred from the per-country URLs above, so treat it as unconfirmed."
-    },
     {
       "origin": "MX",
       "destination": "CO",
@@ -220,12 +190,10 @@
       "destination": "MX",
       "url": "https://www.gob.pe/institucion/rree/noticias/759315-recomendaciones-para-viajar-a-mexico",
       "note": "Cancillería del Perú note on entry refusals in Mexico (Nota Informativa 317-23, 2023 per search snippets). HTTP 418 to WebFetch."
-    },
-    {
-      "origin": "PE",
-      "destination": null,
-      "url": "https://www.gob.pe/162-viajar-fuera-del-peru",
-      "note": "Fallback candidate: Cancillería orientation 'Viajar fuera del Perú'. HTTP 418 to WebFetch; 'Acceso restringido' in a browser on two attempts. Peru publishes no standing per-destination advisories for CO, BR or BO that search could find."
     }
-  ]
+  ],
+  "verified_notes": {
+    "US": "2026-10-28: links read from the State Department travel advisory data API (cadataapi.state.gov/api/TravelAdvisories), field Link per country. The pages themselves answer 403 to scripts (Cloudflare).",
+    "PE": "2026-10-28: gob.pe/162 fetched, title «Viajar fuera del Perú - Orientación - Ministerio de Relaciones Exteriores». Peru publishes no per-destination advisories for CO, BR, BO or MX, so the fallback is the general orientation page."
+  }
 }

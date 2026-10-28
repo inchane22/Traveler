@@ -25,8 +25,8 @@
       "rule": {
         "type": "announced",
         "window": {
-          "start": "02-01",
-          "end": "02-15"
+          "start": "01-10",
+          "end": "02-20"
         }
       },
       "editions": {
@@ -142,7 +142,7 @@
         },
         "conectividad": {
           "measure": "ninguno",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Inca_Manco_C%C3%A1pac_International_Airport",
           "note": {
             "es": "Puno no tiene aeropuerto; el más cercano es JUL, en Juliaca, con vuelos solo a Lima.",
@@ -152,7 +152,7 @@
         },
         "local": {
           "measure": "intermedia",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Puno"
         }
       },
@@ -233,12 +233,12 @@
         },
         "conectividad": {
           "measure": "internacional",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Alejandro_Velasco_Astete_International_Airport"
         },
         "local": {
           "measure": "intermedia",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Cusco"
         }
       },
@@ -316,12 +316,12 @@
         "reconocimiento": null,
         "conectividad": {
           "measure": "nacional",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Mayor_General_FAP_Armando_Revoredo_Iglesias_Airport"
         },
         "local": {
           "measure": "intermedia",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Cajamarca"
         }
       },
@@ -453,12 +453,12 @@
         },
         "conectividad": {
           "measure": "internacional",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Jorge_Ch%C3%A1vez_International_Airport"
         },
         "local": {
           "measure": "gran_ciudad",
-          "confidence": "oficial",
+          "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Lima"
         }
       },
