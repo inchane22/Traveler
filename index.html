@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f8f1e3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#171624" media="(prefers-color-scheme: dark)" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>Traveler</title>
+  </head>
+  <body>
+    <a id="skip" class="skip-link" href="#main"></a>
+    <div class="app">
+      <header id="masthead" class="masthead">
+        <div class="masthead__inner">
+          <a href="#/" class="wordmark"
+            ><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" class="wordmark__mark"><path d="M2 4h20L12 21z" fill="currentColor"></path><path d="M7.5 8.5h9L12 16z" class="wordmark__hole"></path></svg
+            ><span>Traveler</span></a
+          >
+        </div>
+      </header>
+      <div id="notices" class="notices"></div>
+      <main id="main" class="main" tabindex="-1">
+        <div class="skeleton" aria-hidden="true">
+          <div class="skel skel--title"></div>
+          <div class="skel skel--hero"></div>
+          <div class="skel skel--row"></div>
+          <div class="skel skel--row"></div>
+        </div>
+      </main>
+      <footer id="footer" class="footer"></footer>
+      <nav id="bottomnav" class="bottomnav"><div class="skel skel--nav"></div></nav>
+    </div>
+    <div id="live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

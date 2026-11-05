@@ -1,0 +1,160 @@
+/*
+ * Design tokens. Ink and paper carry the interface; color appears only where a festival type is
+ * named (5 hues, validated all-pairs for CVD in both themes: worst ΔE 8.2 light / 8.9 dark,
+ * normal-vision ≥ 17, every hue ≥ 3:1 on its surface). Text never wears a type color.
+ */
+:root {
+  color-scheme: light;
+
+  /* Paper and ink */
+  --paper: #f8f1e3;
+  --paper-raised: #fffbf3;
+  --paper-sunk: #efe5d2;
+  --ink: #1c1a2b;
+  --ink-2: #4a4658;
+  --ink-3: #655f70;
+  --hairline: #d6cbb6;
+  --ink-on-ink: #fffbf3;
+  --scrim: rgb(28 26 43 / 0.5);
+  --hatch-ink: rgb(28 26 43 / 0.55);
+
+  /* Festival types (marks only, never text) */
+  --type-carnaval: #d6189f;
+  --type-musica: #3a3fe0;
+  --type-tradicion_religiosa: #a97404;
+  --type-cosecha_temporada: #0b9c69;
+  --type-fiesta_nacional: #b80f2a;
+
+  /* Type */
+  --font-display: "Anybody Variable", "Anybody Fallback", "Anybody Fallback Roboto", "Arial Narrow", sans-serif-condensed, system-ui, sans-serif;
+  --font-text: "Atkinson Hyperlegible Next Variable", "Atkinson Fallback", "Atkinson Fallback Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display-stretch: 68%;
+  --display-weight: 820;
+
+  /* Fixed scale (rem = 16px): 13 · 14 · 16 · 19 · 24 · 32 · 44 · 56 */
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.875rem;
+  --fs-md: 1rem;
+  --fs-lg: 1.1875rem;
+  --fs-xl: 1.5rem;
+  --fs-2xl: 2rem;
+  --fs-3xl: 2.75rem;
+  --fs-4xl: 3.5rem;
+
+  /* Space (4px grid) */
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+
+  --gutter: 1rem;
+  --column: 47.5rem; /* 760px */
+  --tap: 2.75rem; /* 44px */
+  --header-h: 3.5rem;
+  --nav-h: 4rem;
+  /* Sticky bars around the content: a button row plus padding and rule (scroll-padding, 2.4.11). */
+  --actionbar-h: calc(var(--tap) + 2 * var(--sp-2) + var(--rule));
+  --summary-h: calc(var(--tap) + 2 * var(--sp-1) + 2 * var(--rule-thin));
+  --rule: 3px;
+  --rule-thin: 2px;
+  --radius-pill: 999px;
+  --radius-sheet: 1rem;
+  --focus: 3px solid var(--ink);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #171624;
+    --paper-raised: #211f30;
+    --paper-sunk: #100f1b;
+    --ink: #f3ebda;
+    --ink-2: #cbc3b3;
+    --ink-3: #a49d92;
+    --hairline: #3a3650;
+    --ink-on-ink: #171624;
+    --scrim: rgb(0 0 0 / 0.6);
+    --hatch-ink: rgb(243 235 218 / 0.6);
+
+    --type-carnaval: #e83fbe;
+    --type-musica: #7f6bff;
+    --type-tradicion_religiosa: #bf8418;
+    --type-cosecha_temporada: #17ae80;
+    --type-fiesta_nacional: #d42d47;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #171624;
+  --paper-raised: #211f30;
+  --paper-sunk: #100f1b;
+  --ink: #f3ebda;
+  --ink-2: #cbc3b3;
+  --ink-3: #a49d92;
+  --hairline: #3a3650;
+  --ink-on-ink: #171624;
+  --scrim: rgb(0 0 0 / 0.6);
+  --hatch-ink: rgb(243 235 218 / 0.6);
+
+  --type-carnaval: #e83fbe;
+  --type-musica: #7f6bff;
+  --type-tradicion_religiosa: #bf8418;
+  --type-cosecha_temporada: #17ae80;
+  --type-fiesta_nacional: #d42d47;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 1.5rem;
+  }
+}
+
+/*
+ * Metric-matched fallbacks so the swap to the web fonts barely moves text (CLS ≤ 0.1).
+ * size-adjust = web-font width ÷ fallback width for the same sample, measured in Chromium:
+ * Atkinson ÷ Arial/Helvetica 0.98, ÷ Roboto 1.096; Anybody (68%, 820) ÷ Arial Narrow Bold 0.962,
+ * ÷ Roboto Condensed Bold 0.879. Ascent/descent come from each web font's hhea metrics
+ * (Atkinson 984/316 per 1000, Anybody 1590/480 per 2000) divided by the same size-adjust.
+ */
+@font-face {
+  font-family: "Atkinson Fallback";
+  src: local("Arial"), local("ArialMT"), local("Helvetica Neue"), local("HelveticaNeue");
+  size-adjust: 98%;
+  ascent-override: 100.4%;
+  descent-override: 32.2%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Atkinson Fallback Roboto";
+  src: local("Roboto"), local("Roboto-Regular");
+  size-adjust: 109.6%;
+  ascent-override: 89.8%;
+  descent-override: 28.8%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Anybody Fallback";
+  src: local("Arial Narrow Bold"), local("ArialNarrow-Bold");
+  font-weight: 100 900;
+  size-adjust: 96.2%;
+  ascent-override: 82.6%;
+  descent-override: 24.9%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Anybody Fallback Roboto";
+  src: local("Roboto Condensed Bold"), local("RobotoCondensed-Bold");
+  font-weight: 100 900;
+  size-adjust: 87.9%;
+  ascent-override: 90.4%;
+  descent-override: 27.3%;
+  line-gap-override: 0%;
+}

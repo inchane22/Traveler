@@ -1,0 +1,26 @@
+{
+  "country": "CO",
+  "A": ["carnavaldebarranquilla.org", "gov.co", "colombia.travel", "unesco.org", "festivalvallenato.com", "carnavaldepasto.org"],
+  "B": [
+    "eltiempo.com",
+    "elespectador.com",
+    "semana.com",
+    "elheraldo.co",
+    "elpais.com.co",
+    "elcolombiano.com",
+    "eluniversal.com.co",
+    "lapatria.com",
+    "diariodelsur.com.co",
+    "vanguardia.com",
+    "radionacional.co",
+    "canaltrece.com.co",
+    "caracol.com.co",
+    "rcnradio.com",
+    "lafm.com.co",
+    "larepublica.co",
+    "forbes.co",
+    "valoraanalitik.com",
+    "telemedellin.tv"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

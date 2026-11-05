@@ -1,0 +1,162 @@
+{
+  "_note": "Synthetic recorded Messages API responses for offline tests. URLs, quotes and figures are illustrative test data, not verified facts; encrypted fields are placeholders.",
+  "research": [
+    {
+      "id": "msg_016883cab88b655039ce6dd919",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "server_tool_use",
+          "id": "srvtoolu_0110fbb02f22053b40c14f6274",
+          "name": "web_search",
+          "input": {
+            "query": "Feria de Cali 2026 programación oficial"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        },
+        {
+          "type": "web_search_tool_result",
+          "tool_use_id": "srvtoolu_0110fbb02f22053b40c14f6274",
+          "caller": {
+            "type": "direct"
+          },
+          "content": []
+        },
+        {
+          "type": "text",
+          "text": "No encontré fuentes del organizador ni del gobierno en los dominios permitidos. start: no encontrado. end: no encontrado.",
+          "citations": null
+        }
+      ],
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 900,
+        "cache_read_input_tokens": 0,
+        "inference_geo": null,
+        "input_tokens": 2900,
+        "output_tokens": 140,
+        "output_tokens_details": null,
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 1
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    {
+      "id": "msg_01056e4bb9b80010330be72bb9",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "server_tool_use",
+          "id": "srvtoolu_0164a89a71d86ccc22c69e2550",
+          "name": "web_search",
+          "input": {
+            "query": "Feria de Cali 2026 fechas 25 al 30 de diciembre"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        },
+        {
+          "type": "web_search_tool_result",
+          "tool_use_id": "srvtoolu_0164a89a71d86ccc22c69e2550",
+          "caller": {
+            "type": "direct"
+          },
+          "content": [
+            {
+              "type": "web_search_result",
+              "url": "https://www.elpais.com.co/cali/feria-de-cali-2026-programacion-oficial.html",
+              "title": "Feria de Cali 2026: programación | El País Cali",
+              "encrypted_content": "FAKE-ENCRYPTED-642b5f34a6fcdc771651b02cce2a27256a2b07f5",
+              "page_age": "October 18, 2026"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "start: 2026-12-25. ",
+          "citations": [
+            {
+              "type": "web_search_result_location",
+              "url": "https://www.elpais.com.co/cali/feria-de-cali-2026-programacion-oficial.html",
+              "title": "Feria de Cali 2026: programación | El País Cali",
+              "cited_text": "La edición 69 de la Feria de Cali irá del 25 al 30 de diciembre de 2026 y arranca con el Salsódromo por la autopista Suroriental.",
+              "encrypted_index": "FAKE-ENCRYPTED-13248912c888a9d6be9b3537c819bf10806813a3"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "end: 2026-12-30 según la prensa; otro sitio menciona el 31, sin cita.",
+          "citations": null
+        }
+      ],
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 900,
+        "inference_geo": null,
+        "input_tokens": 3300,
+        "output_tokens": 300,
+        "output_tokens_details": null,
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 1
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    }
+  ],
+  "extract": [
+    {
+      "id": "msg_011ce5af3a1b8bf525a79344d5",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"country\": \"CO\", \"slug\": \"feria-de-cali\", \"edition\": 2026, \"changes\": [{\"field\": \"start\", \"old\": \"2026-12-25\", \"new\": \"2026-12-25\", \"source_urls\": [\"https://www.elpais.com.co/cali/feria-de-cali-2026-programacion-oficial.html\"], \"quote\": \"irá del 25 al 30 de diciembre de 2026\", \"quote_language\": \"es\", \"confidence\": \"prensa\", \"note\": \"El País confirma el inicio el 25 de diciembre.\"}, {\"field\": \"end\", \"old\": \"2026-12-30\", \"new\": \"2026-12-31\", \"source_urls\": [\"https://www.cali-eventos.co/feria-2026\"], \"quote\": \"termina el 31 de diciembre\", \"quote_language\": \"es\", \"confidence\": \"prensa\", \"note\": \"Un sitio de eventos dice que termina el 31.\"}], \"not_found\": [\"score.convocatoria\"]}",
+          "citations": null
+        }
+      ],
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": null,
+        "input_tokens": 1800,
+        "output_tokens": 400,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    }
+  ]
+}

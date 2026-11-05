@@ -1,0 +1,74 @@
+# Weekly broken-link check (PRD R6: travel advisories; R13: data sources and archive copies).
+# Fails (the alert) only when a link answers 404 or 410. 401/403/418/429/5xx, network errors
+# and bot-challenge pages are listed as «sin verificar» and never fail the run.
+# Read-only: it opens no PR. The Monday refresh run makes its own check for the R13 downgrade.
+name: links
+
+on:
+  schedule:
+    - cron: "0 10 * * 0" # Sundays 10:00 UTC, the day before the weekly refresh
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: links
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10.33.3"
+
+jobs:
+  links:
+    name: links
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check every advisory and source link
+        id: check
+        run: |
+          day="$(date -u +%F)"
+          echo "day=${day}" >> "${GITHUB_OUTPUT}"
+          status=0
+          node scripts/check-links.ts "--today=${day}" || status=$?
+          if [ -f "proposals/links-${day}.md" ]; then
+            cat "proposals/links-${day}.md" >> "${GITHUB_STEP_SUMMARY}"
+          fi
+          if [ "${status}" -ne 0 ]; then
+            echo "::error::Broken links found (R6/R13): see the run summary and proposals/links-${day}.md."
+          fi
+          exit "${status}"
+
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: links-${{ github.run_id }}
+          path: proposals/
+          if-no-files-found: warn
+          retention-days: 90

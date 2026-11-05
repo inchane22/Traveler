@@ -1,0 +1,172 @@
+/* ---------- Type identity: the only place color appears ---------- */
+
+.type--carnaval {
+  --c: var(--type-carnaval);
+}
+.type--musica {
+  --c: var(--type-musica);
+}
+.type--tradicion_religiosa {
+  --c: var(--type-tradicion_religiosa);
+}
+.type--cosecha_temporada {
+  --c: var(--type-cosecha_temporada);
+}
+.type--fiesta_nacional {
+  --c: var(--type-fiesta_nacional);
+}
+
+.swatch {
+  display: inline-block;
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  flex: none;
+  background: var(--c, var(--ink));
+  border-radius: 2px;
+}
+
+.type-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* ---------- Status (square shapes) and confidence (round shapes) ---------- */
+
+.status,
+.conf {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.status-shape,
+.conf-shape {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  flex: none;
+  overflow: visible;
+}
+
+.shape-fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+.shape-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.shape-thin {
+  stroke-width: 1;
+}
+
+.shape-dashed {
+  stroke-dasharray: 2.6 1.9;
+}
+
+.shape-dashed-ring {
+  stroke-dasharray: 3.2 2.1;
+}
+
+.shape-dotted-ring {
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.01 2.6;
+}
+
+.conf--estimacion,
+.conf--patron {
+  color: var(--ink-2);
+}
+
+.marks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.9rem;
+}
+
+.marks--lg .status,
+.marks--lg .conf {
+  font-size: var(--fs-md);
+}
+
+.marks--lg .status-shape,
+.marks--lg .conf-shape {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.05rem 0.45rem;
+  border: 1.5px solid var(--ink-3);
+  border-radius: 4px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-2);
+  /* One line while it fits; a long tag («Ventana probable, sin fecha oficial») wraps inside its row
+     at 320 px instead of pushing the page sideways (font metrics differ by platform). */
+  max-inline-size: 100%;
+}
+
+.tag svg {
+  flex: none;
+  inline-size: 0.9rem;
+  block-size: 0.9rem;
+}
+
+.tag--possible {
+  border-style: dashed;
+  color: var(--ink);
+}
+
+/* ---------- Date encoding shared by bands, bars and the month grid ---------- */
+/* solid = confirmed · hatched = not confirmed · window = probable window only */
+
+.band {
+  display: block;
+  block-size: 0.375rem;
+  border-radius: 3px;
+  --c-mark: var(--c, var(--ink));
+}
+
+.band--solid {
+  background: var(--c-mark, var(--c, var(--ink)));
+}
+
+.band--hatched {
+  background-color: color-mix(in srgb, var(--c-mark, var(--c, var(--ink))) 14%, transparent);
+  background-image: repeating-linear-gradient(135deg, var(--c-mark, var(--c, var(--ink))) 0 2px, transparent 2px 5px);
+  box-shadow: inset 0 0 0 1.5px var(--c-mark, var(--c, var(--ink)));
+}
+
+.band--window {
+  background: transparent;
+  box-shadow: none;
+  outline: 1.5px dashed var(--c-mark, var(--c, var(--ink)));
+  outline-offset: -1.5px;
+}
+
+.band--cancelled {
+  background: transparent;
+  outline: 1.5px solid var(--ink-3);
+  outline-offset: -1.5px;
+  background-image: linear-gradient(var(--ink-3), var(--ink-3));
+  background-size: 100% 1.5px;
+  background-position: center;
+  background-repeat: no-repeat;
+}

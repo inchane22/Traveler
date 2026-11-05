@@ -1,0 +1,48 @@
+# RF-17, R1. The app links here with the fields prefilled:
+# issues/new?template=reportar-error.yml&fiesta=<slug>&campo=<field>&fuente=<url>
+# Field ids are a contract with the app: fiesta, campo, fuente, descripcion.
+name: Reportar un error en los datos
+description: Una fecha, cifra, ciudad o fuente está mal. (A date, figure, city or source is wrong.)
+title: "[Error de datos] "
+labels: ["error-de-datos"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Gracias por avisar. Respondemos en 48 horas como máximo y ningún cambio se publica sin una fuente que lo respalde.
+        _Thanks for the report. We reply within 48 hours, and no change is published without a source._
+
+  - type: input
+    id: fiesta
+    attributes:
+      label: Fiesta (festival)
+      description: Identificador de la ficha. Si vienes desde la app ya está lleno. (Festival slug, prefilled from the app.)
+      placeholder: carnaval-barranquilla
+    validations:
+      required: true
+
+  - type: input
+    id: campo
+    attributes:
+      label: Campo (field)
+      description: Qué dato está mal, por ejemplo la fecha de inicio, la ciudad o los asistentes. (Which value is wrong.)
+      placeholder: editions.2027.start
+    validations:
+      required: false
+
+  - type: input
+    id: fuente
+    attributes:
+      label: Fuente (source URL)
+      description: Enlace https que muestra el dato correcto; mejor si es del organizador o de un gobierno. Si vienes desde la app, trae la fuente que muestra la ficha. (An https link with the right value; official sources first.)
+      placeholder: https://
+    validations:
+      required: false
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Qué está mal y cuál es el dato correcto (description)
+      description: Si puedes, copia la frase de la fuente que lo dice. No incluyas datos personales. (Quote the source sentence if you can. No personal data.)
+    validations:
+      required: true

@@ -1,0 +1,8 @@
+{
+  "_note": "R5: words that present a religious or identity festival as a mere party. A hit in a name, street_tip or etiquette text sends it to a person (onboarding flags it in the PR; build-data warns). Matching ignores case and accents and needs whole words.",
+  "tradicion_religiosa": ["parranda", "rumba", "farra", "juerga", "borrachera", "fiestón", "party", "partying", "booze", "drunk", "balada", "baladão", "festa louca"],
+  "fiesta_nacional": ["parranda", "rumba", "farra", "borrachera", "party", "booze", "drunk"],
+  "cosecha_temporada": ["borrachera", "booze", "drunk"],
+  "carnaval": [],
+  "musica": []
+}

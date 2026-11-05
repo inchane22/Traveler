@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-10-26",
+  "countries": [
+    {
+      "code": "CO",
+      "status": "publicado",
+      "region": "sudamerica",
+      "timezone": "America/Bogota",
+      "festivals": 10,
+      "last_verified": "2026-10-26",
+      "share_a": 0.5
+    }
+  ],
+  "tier1": [
+    "CO/carnaval-barranquilla",
+    "CO/negros-y-blancos",
+    "CO/feria-de-las-flores"
+  ],
+  "slugs": {
+    "carnaval-barranquilla": "CO",
+    "negros-y-blancos": "CO",
+    "feria-de-cali": "CO",
+    "festival-vallenato": "CO",
+    "san-pacho": "CO",
+    "festival-tambores-palenque": "CO",
+    "carnaval-riosucio": "CO",
+    "independencia-cartagena": "CO",
+    "feria-de-las-flores": "CO",
+    "petronio-alvarez": "CO"
+  }
+}

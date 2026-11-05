@@ -1,0 +1,17 @@
+{
+  "country": "MX",
+  "A": ["gob.mx", "unesco.org"],
+  "B": [
+    "eluniversal.com.mx",
+    "excelsior.com.mx",
+    "milenio.com",
+    "jornada.com.mx",
+    "proceso.com.mx",
+    "publimetro.com.mx",
+    "razon.com.mx",
+    "cronica.com.mx",
+    "unotv.com",
+    "informador.mx"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

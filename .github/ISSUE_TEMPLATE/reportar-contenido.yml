@@ -1,0 +1,43 @@
+# RF-17, R5. The app links here with the festival prefilled:
+# issues/new?template=reportar-contenido.yml&fiesta=<slug>
+# Field ids are a contract with the app: fiesta, motivo, descripcion.
+name: Reportar contenido
+description: Un texto falta al respeto, estereotipa una tradición o invita a algo que no está abierto a visitantes. (Content or respect issue.)
+title: "[Contenido] "
+labels: ["contenido"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Muchas fiestas son religiosas o identitarias antes que turísticas. Si un texto no las trata con respeto, dinos cuál y lo corregimos en 48 horas como máximo.
+        _Many festivals are religious or identity celebrations first. Tell us which text is wrong and we fix it within 48 hours._
+
+  - type: input
+    id: fiesta
+    attributes:
+      label: Fiesta (festival)
+      description: Identificador de la ficha. Si vienes desde la app ya está lleno. (Festival slug, prefilled from the app.)
+      placeholder: fiesta-de-la-candelaria
+    validations:
+      required: true
+
+  - type: dropdown
+    id: motivo
+    attributes:
+      label: Motivo (reason)
+      options:
+        - Presenta una tradición religiosa o identitaria como simple parranda (sacred or identity tradition shown as just a party)
+        - Invita a fotos, lugares o momentos que no están abiertos a visitantes (encourages photos or moments closed to visitors)
+        - Lenguaje ofensivo o estereotipos (offensive language or stereotypes)
+        - Texto copiado de otra fuente (text copied from another source)
+        - Otro (other)
+    validations:
+      required: true
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Qué texto es y qué debería decir (description)
+      description: Copia el texto de la ficha y explica el problema. No incluyas datos personales. (Quote the text and explain. No personal data.)
+    validations:
+      required: true

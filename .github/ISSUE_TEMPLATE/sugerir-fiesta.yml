@@ -1,0 +1,48 @@
+# R11. Suggestions feed the monthly onboarding and the quarterly ranking review.
+# issues/new?template=sugerir-fiesta.yml&pais=<cc>
+# Field ids are a contract with the app: pais, nombre, ciudad, fuente.
+name: Sugerir una fiesta
+description: Propón una fiesta grande y callejera que falta en el calendario. (Suggest a missing festival.)
+title: "[Sugerencia] "
+labels: ["sugerencia"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Buscamos fiestas con mucha gente y mucha calle. Las mejores fuentes no son los medios: la lista de Patrimonio Inmaterial de la UNESCO, el calendario oficial de cultura o turismo del país o el sitio del organizador.
+        _We look for big street festivals. Best sources: UNESCO intangible heritage list, official culture or tourism calendars, or the organizer._
+
+  - type: input
+    id: pais
+    attributes:
+      label: País (country)
+      description: Nombre o código ISO de dos letras. (Name or two-letter ISO code.)
+      placeholder: PE
+    validations:
+      required: true
+
+  - type: input
+    id: nombre
+    attributes:
+      label: Nombre de la fiesta (festival name)
+      description: Como se llama en el país, en su idioma. (Local name, in the local language.)
+      placeholder: Fiesta de la Virgen de la Candelaria
+    validations:
+      required: true
+
+  - type: input
+    id: ciudad
+    attributes:
+      label: Ciudad o pueblo (city or town)
+      placeholder: Puno
+    validations:
+      required: true
+
+  - type: input
+    id: fuente
+    attributes:
+      label: Fuente (source URL)
+      description: Enlace https con la fecha o la asistencia; mejor una fuente oficial. (An https link with dates or attendance; official first.)
+      placeholder: https://
+    validations:
+      required: false

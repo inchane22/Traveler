@@ -1,0 +1,477 @@
+{
+  "country": "PE",
+  "status": "borrador",
+  "generated_at": "2026-10-26",
+  "timezone": "America/Lima",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "candelaria-puno",
+      "names": {
+        "local": "Festividad de la Virgen de la Candelaria",
+        "es": "Fiesta de la Virgen de la Candelaria",
+        "en": "Virgen de la Candelaria Festival",
+        "pt": "Festa da Virgem da Candelária"
+      },
+      "city": "Puno",
+      "subdivision": "PE-PUN",
+      "timezone": "America/Lima",
+      "coords": {
+        "lat": -15.84333,
+        "lon": -70.02361
+      },
+      "nearest_airport": "JUL",
+      "type": "tradicion_religiosa",
+      "rule": {
+        "type": "announced",
+        "window": {
+          "start": "01-10",
+          "end": "02-20"
+        }
+      },
+      "editions": {
+        "2026": {
+          "start": "2026-01-16",
+          "end": "2026-02-10",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            {
+              "id": "concurso-danzas-originarias",
+              "name": {
+                "es": "Concurso de Danzas Originarias",
+                "en": "Native Dance Contest",
+                "pt": "Concurso de Danças Originárias"
+              },
+              "date": "2026-01-31",
+              "end": "2026-02-01",
+              "confidence": "prensa"
+            },
+            {
+              "id": "dia-central",
+              "name": {
+                "es": "Día central y misa en la Plaza Mayor",
+                "en": "Main feast day and Mass in the Plaza Mayor",
+                "pt": "Dia central e missa na Plaza Mayor"
+              },
+              "date": "2026-02-02",
+              "confidence": "prensa"
+            },
+            {
+              "id": "concurso-trajes-de-luces",
+              "name": {
+                "es": "Concurso de Danzas en Traje de Luces",
+                "en": "Traje de Luces Dance Contest",
+                "pt": "Concurso de Danças em Traje de Luces"
+              },
+              "date": "2026-02-08",
+              "confidence": "prensa"
+            },
+            {
+              "id": "parada-y-veneracion",
+              "name": {
+                "es": "Parada y veneración en octava",
+                "en": "Octave parade and veneration",
+                "pt": "Desfile e veneração da oitava"
+              },
+              "date": "2026-02-09",
+              "end": "2026-02-10",
+              "confidence": "prensa"
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://andina.pe/agencia/noticia-puno-fiesta-desfiles-y-concursos-empieza-festividad-de-virgen-de-candelaria-1059144.aspx",
+              "publisher": "Agencia Andina",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "Este viernes 16 de enero comienza oficialmente la Festividad de la Virgen de la Candelaria 2026 en la ciudad de Puno"
+            },
+            {
+              "url": "https://andina.pe/agencia/noticia-puno-fiesta-desfiles-y-concursos-empieza-festividad-de-virgen-de-candelaria-1059144.aspx",
+              "publisher": "Agencia Andina",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "Los días 9 y 10 de febrero serán dedicados a la parada y veneración en octava de la Virgen de la Candelaria."
+            },
+            {
+              "url": "https://ich.unesco.org/en/RL/festivity-of-virgen-de-la-candelaria-of-puno-00956",
+              "publisher": "UNESCO",
+              "accessed": "2026-10-26",
+              "tier": "A",
+              "quote": "celebrated each February in the city of Puno"
+            },
+            {
+              "url": "https://andina.pe/agencia/noticia-puno-fiesta-desfiles-y-concursos-empieza-festividad-de-virgen-de-candelaria-1059144.aspx",
+              "publisher": "Agencia Andina",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "El sábado 31 de enero dará inicio al LIX Concurso de Danzas Originarias en honor a la Virgen de la Candelaria."
+            }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 1,
+          "note": {
+            "es": "La festividad abrió oficialmente el 16 de enero de 2026 y cerró con la octava del 9 y 10 de febrero; los concursos de danzas fueron del 31 de enero al 8 de febrero.",
+            "en": "The festivity officially opened on January 16, 2026 and closed with the octave on February 9 and 10; the dance contests ran from January 31 to February 8.",
+            "pt": "A festividade abriu oficialmente em 16 de janeiro de 2026 e terminou com a oitava de 9 e 10 de fevereiro; os concursos de dança foram de 31 de janeiro a 8 de fevereiro."
+          }
+        }
+      },
+      "score": {
+        "convocatoria": {
+          "measure": {
+            "attendance": 338000,
+            "qualifier": "more_than",
+            "unit": "attendees",
+            "year": 2026
+          },
+          "confidence": "prensa",
+          "source": "https://rpp.pe/peru/actualidad/la-festividad-de-la-virgen-de-la-candelaria-movio-mas-de-s-117-millones-y-atrajo-a-casi-93-000-turistas-en-2026-noticia-1676972",
+          "note": {
+            "es": "Estudio de Mincetur 2026: 140 mil espectadores y 198 mil danzantes y músicos; 92 960 de ellos eran turistas.",
+            "en": "Mincetur 2026 study: 140,000 spectators and 198,000 dancers and musicians; 92,960 were tourists.",
+            "pt": "Estudo do Mincetur 2026: 140 mil espectadores e 198 mil dançarinos e músicos; 92.960 eram turistas."
+          }
+        },
+        "calle": null,
+        "reconocimiento": {
+          "measure": "unesco",
+          "confidence": "oficial",
+          "source": "https://ich.unesco.org/en/RL/festivity-of-virgen-de-la-candelaria-of-puno-00956"
+        },
+        "conectividad": {
+          "measure": "ninguno",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Inca_Manco_C%C3%A1pac_International_Airport",
+          "note": {
+            "es": "Puno no tiene aeropuerto; el más cercano es JUL, en Juliaca, con vuelos solo a Lima.",
+            "en": "Puno has no airport; the nearest is JUL in Juliaca, with flights to Lima only.",
+            "pt": "Puno não tem aeroporto; o mais próximo é JUL, em Juliaca, com voos só para Lima."
+          }
+        },
+        "local": {
+          "measure": "intermedia",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Puno"
+        }
+      },
+      "street_tip": {
+        "es": "En los días de parada las comparsas bailan por el centro de Puno; busca sitio temprano y lleva abrigo, que a esta altura la noche es fría.",
+        "en": "On parade days the troupes dance through central Puno; claim a spot early and bring a warm layer, since nights are cold at this altitude.",
+        "pt": "Nos dias de desfile as comparsas dançam pelo centro de Puno; garanta um lugar cedo e leve agasalho, porque a noite é fria nessa altitude."
+      },
+      "etiquette": {
+        "es": "Es una fiesta de fe: no cruces entre los bloques de danzantes ni delante de la imagen de la Virgen, y pide permiso antes de fotografiar de cerca a devotos y músicos.",
+        "en": "This is a festival of faith: do not cut through the dance blocks or in front of the Virgin's image, and ask before taking close-up photos of devotees and musicians.",
+        "pt": "É uma festa de fé: não atravesse os blocos de dançarinos nem passe diante da imagem da Virgem, e peça licença antes de fotografar devotos e músicos de perto."
+      }
+    },
+    {
+      "slug": "inti-raymi",
+      "names": {
+        "local": "Inti Raymi",
+        "es": "Inti Raymi, Fiesta del Sol",
+        "en": "Inti Raymi, Festival of the Sun",
+        "pt": "Inti Raymi, Festa do Sol"
+      },
+      "city": "Cusco",
+      "subdivision": "PE-CUS",
+      "timezone": "America/Lima",
+      "coords": {
+        "lat": -13.5169,
+        "lon": -71.9786
+      },
+      "nearest_airport": "CUZ",
+      "type": "cosecha_temporada",
+      "rule": {
+        "type": "fixed",
+        "start": "06-24",
+        "end": "06-24"
+      },
+      "editions": {
+        "2026": {
+          "start": "2026-06-24",
+          "end": "2026-06-24",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            {
+              "url": "https://elperuano.pe/noticia/298765-inti-raymi-2026-miles-de-visitantes-llegaron-a-cusco-para-participar-en-la-gran-fiesta-del-sol",
+              "publisher": "Diario Oficial El Peruano",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "La ciudad del Cusco vivió este 24 de junio una nueva edición del Inti Raymi"
+            }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "calle": {
+          "measure": "mixta",
+          "confidence": "prensa",
+          "source": "https://larepublica.pe/turismo/2025/06/20/inti-raymi-2025-cronograma-costos-actividades-confirmadas-y-todo-lo-que-debes-saber-para-esta-importante-fecha-atmp-1616500",
+          "note": {
+            "es": "La Plaza Mayor es gratuita; Qorikancha y Saqsaywaman tienen entrada pagada (2025).",
+            "en": "The Plaza Mayor is free; Qorikancha and Saqsaywaman are ticketed (2025).",
+            "pt": "A Plaza Mayor é gratuita; Qorikancha e Saqsaywaman exigem ingresso pago (2025)."
+          }
+        },
+        "reconocimiento": {
+          "measure": "nacional",
+          "confidence": "prensa",
+          "source": "https://elperuano.pe/noticia/298765-inti-raymi-2026-miles-de-visitantes-llegaron-a-cusco-para-participar-en-la-gran-fiesta-del-sol",
+          "note": {
+            "es": "Patrimonio Cultural de la Nación desde 2001.",
+            "en": "National Cultural Heritage of Peru since 2001.",
+            "pt": "Patrimônio Cultural da Nação desde 2001."
+          }
+        },
+        "conectividad": {
+          "measure": "internacional",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Alejandro_Velasco_Astete_International_Airport"
+        },
+        "local": {
+          "measure": "intermedia",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Cusco"
+        }
+      },
+      "street_tip": {
+        "es": "La ceremonia de la Plaza Mayor es abierta y gratuita; llega con horas de anticipación porque se llena antes del inicio.",
+        "en": "The Plaza Mayor ceremony is open and free; arrive hours ahead because it fills up before it starts.",
+        "pt": "A cerimônia da Plaza Mayor é aberta e gratuita; chegue com horas de antecedência porque lota antes do início."
+      },
+      "etiquette": {
+        "es": "Es una ceremonia de identidad andina, no un espectáculo: guarda silencio en los rituales y no entres al espacio escénico para tomar fotos.",
+        "en": "It is an Andean identity ceremony, not a show: stay quiet during the rituals and do not step into the performance area for photos.",
+        "pt": "É uma cerimônia de identidade andina, não um espetáculo: faça silêncio nos rituais e não entre no espaço cênico para tirar fotos."
+      }
+    },
+    {
+      "slug": "carnaval-cajamarca",
+      "names": {
+        "local": "Carnaval de Cajamarca",
+        "es": "Carnaval de Cajamarca",
+        "en": "Cajamarca Carnival",
+        "pt": "Carnaval de Cajamarca"
+      },
+      "city": "Cajamarca",
+      "subdivision": "PE-CAJ",
+      "timezone": "America/Lima",
+      "coords": {
+        "lat": -7.1575,
+        "lon": -78.5175
+      },
+      "nearest_airport": "CJA",
+      "type": "carnaval",
+      "rule": {
+        "type": "easter_offset",
+        "calendar": "gregorian",
+        "start": -51,
+        "end": -46
+      },
+      "editions": {
+        "2025": {
+          "start": "2025-02-28",
+          "end": "2025-03-05",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            {
+              "url": "https://www.bloomberglinea.com/latinoamerica/peru/cuando-son-los-carnavales-de-peru-este-2025/",
+              "publisher": "Bloomberg Línea",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "comenzará el próximo 28 de febrero y se extenderá hasta el 5 de marzo próximo."
+            }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": {
+          "measure": {
+            "attendance": 116000,
+            "qualifier": "about",
+            "unit": "attendees",
+            "year": 2026
+          },
+          "confidence": "prensa",
+          "source": "https://andina.pe/agencia/noticia-mincetur-carnaval-cajamarca-2026-genero-s-75-millones-y-atrajo-a-80-mil-turistas-1065881.aspx",
+          "note": {
+            "es": "Estudio de Mincetur 2026: unos 116 mil asistentes entre residentes y turistas; 79 691 turistas.",
+            "en": "Mincetur 2026 study: about 116,000 attendees, residents and tourists; 79,691 tourists.",
+            "pt": "Estudo do Mincetur 2026: cerca de 116 mil participantes entre moradores e turistas; 79.691 turistas."
+          }
+        },
+        "calle": null,
+        "reconocimiento": null,
+        "conectividad": {
+          "measure": "nacional",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Mayor_General_FAP_Armando_Revoredo_Iglesias_Airport"
+        },
+        "local": {
+          "measure": "intermedia",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Cajamarca"
+        }
+      },
+      "street_tip": {
+        "es": "En carnaval se juega con agua en plena calle; guarda el celular en una bolsa impermeable y sal con ropa que se pueda mojar.",
+        "en": "Carnival means water fights right in the street; keep your phone in a waterproof pouch and wear clothes you can get soaked in.",
+        "pt": "No carnaval se brinca com água no meio da rua; guarde o celular numa bolsa impermeável e use roupa que possa molhar."
+      }
+    },
+    {
+      "slug": "senor-de-los-milagros",
+      "names": {
+        "local": "Procesión del Señor de los Milagros",
+        "es": "Procesión del Señor de los Milagros",
+        "en": "Lord of Miracles Procession",
+        "pt": "Procissão do Senhor dos Milagres"
+      },
+      "city": "Lima",
+      "subdivision": "PE-LMA",
+      "timezone": "America/Lima",
+      "coords": {
+        "lat": -12.06,
+        "lon": -77.0375
+      },
+      "nearest_airport": "LIM",
+      "type": "tradicion_religiosa",
+      "rule": {
+        "type": "announced",
+        "window": {
+          "start": "10-01",
+          "end": "11-01"
+        }
+      },
+      "editions": {
+        "2026": {
+          "start": "2026-10-03",
+          "end": "2026-11-01",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            {
+              "id": "primer-recorrido",
+              "name": {
+                "es": "Primer recorrido procesional",
+                "en": "First procession",
+                "pt": "Primeira procissão"
+              },
+              "date": "2026-10-03",
+              "confidence": "prensa"
+            },
+            {
+              "id": "segundo-recorrido",
+              "name": {
+                "es": "Segundo recorrido procesional",
+                "en": "Second procession",
+                "pt": "Segunda procissão"
+              },
+              "date": "2026-10-18",
+              "confidence": "prensa"
+            },
+            {
+              "id": "tercer-recorrido",
+              "name": {
+                "es": "Tercer recorrido procesional",
+                "en": "Third procession",
+                "pt": "Terceira procissão"
+              },
+              "date": "2026-10-19",
+              "confidence": "prensa"
+            },
+            {
+              "id": "cuarto-recorrido",
+              "name": {
+                "es": "Cuarto recorrido procesional",
+                "en": "Fourth procession",
+                "pt": "Quarta procissão"
+              },
+              "date": "2026-10-28",
+              "confidence": "prensa"
+            },
+            {
+              "id": "ultimo-recorrido",
+              "name": {
+                "es": "Último recorrido procesional",
+                "en": "Final procession",
+                "pt": "Última procissão"
+              },
+              "date": "2026-11-01",
+              "confidence": "prensa"
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://elperuano.pe/noticia/305807--senor-de-los-milagros-2026-conoce-las-fechas-y-rutas-de-sus-cinco-recorridos-procesionales",
+              "publisher": "Diario Oficial El Peruano",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "El quinto y último recorrido del año será el domingo 1 de noviembre."
+            },
+            {
+              "url": "https://elperuano.pe/noticia/305807--senor-de-los-milagros-2026-conoce-las-fechas-y-rutas-de-sus-cinco-recorridos-procesionales",
+              "publisher": "Diario Oficial El Peruano",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "La primera salida de las sagradas andas del Cristo de Pachacamilla está programada para este sábado 3 de octubre"
+            }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": {
+            "es": "Cinco recorridos en 2026, no un desfile continuo: cada salida tiene su propia ruta.",
+            "en": "Five separate processions in 2026, not one continuous parade: each has its own route.",
+            "pt": "Cinco procissões em 2026, não um desfile contínuo: cada saída tem seu próprio trajeto."
+          }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "calle": null,
+        "reconocimiento": {
+          "measure": "nacional",
+          "confidence": "oficial",
+          "source": "https://comunicaciones.congreso.gob.pe/?p=475488",
+          "note": {
+            "es": "Patrimonio Cultural de la Nación desde 2005; el Parlamento Andino lo declaró patrimonio regional en 2026.",
+            "en": "National Cultural Heritage since 2005; the Andean Parliament declared it regional heritage in 2026.",
+            "pt": "Patrimônio Cultural da Nação desde 2005; o Parlamento Andino o declarou patrimônio regional em 2026."
+          }
+        },
+        "conectividad": {
+          "measure": "internacional",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Jorge_Ch%C3%A1vez_International_Airport"
+        },
+        "local": {
+          "measure": "gran_ciudad",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Lima"
+        }
+      },
+      "street_tip": {
+        "es": "Cada recorrido dura muchas horas por el Centro de Lima; revisa la ruta del día y acompaña un tramo en lugar de esperar en un solo punto.",
+        "en": "Each procession lasts many hours through central Lima; check that day's route and walk a stretch with it instead of waiting in one spot.",
+        "pt": "Cada procissão dura muitas horas pelo Centro de Lima; confira o trajeto do dia e acompanhe um trecho em vez de esperar num só ponto."
+      },
+      "etiquette": {
+        "es": "Muchos fieles van de morado y caminan como penitencia: cede el paso a las cuadrillas que cargan el anda y no uses flash cerca de la imagen.",
+        "en": "Many devotees wear purple and walk as penance: make way for the teams carrying the float and avoid using flash near the image.",
+        "pt": "Muitos fiéis vestem roxo e caminham como penitência: dê passagem às equipes que carregam o andor e não use flash perto da imagem."
+      }
+    }
+  ]
+}

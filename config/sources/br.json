@@ -1,0 +1,19 @@
+{
+  "country": "BR",
+  "A": ["gov.br", "leg.br", "prefeitura.rio", "unesco.org"],
+  "B": [
+    "ebc.com.br",
+    "globo.com",
+    "folha.uol.com.br",
+    "estadao.com.br",
+    "poder360.com.br",
+    "cnnbrasil.com.br",
+    "metropoles.com",
+    "diariodorio.com",
+    "atarde.com.br",
+    "correio24horas.com.br",
+    "diariodepernambuco.com.br",
+    "oliberal.com"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

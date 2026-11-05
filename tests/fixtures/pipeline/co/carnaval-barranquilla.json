@@ -1,0 +1,130 @@
+{
+  "_note": "Synthetic recorded Messages API responses for offline tests. URLs, quotes and figures are illustrative test data, not verified facts; encrypted fields are placeholders.",
+  "research": [
+    {
+      "id": "msg_01b2369e3953c3f5418aec4258",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "server_tool_use",
+          "id": "srvtoolu_014c3284ff9efe6413634e0748",
+          "name": "web_search",
+          "input": {
+            "query": "Carnaval de Barranquilla 2027 fechas oficiales"
+          },
+          "caller": {
+            "type": "direct"
+          }
+        },
+        {
+          "type": "web_search_tool_result",
+          "tool_use_id": "srvtoolu_014c3284ff9efe6413634e0748",
+          "caller": {
+            "type": "direct"
+          },
+          "content": [
+            {
+              "type": "web_search_result",
+              "url": "https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/",
+              "title": "Carnaval de Barranquilla 2027",
+              "encrypted_content": "FAKE-ENCRYPTED-89b6e8816fc55a28fdc55c88793eb21219af3d9a",
+              "page_age": "October 25, 2026"
+            }
+          ]
+        }
+      ],
+      "stop_reason": "pause_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 900,
+        "cache_read_input_tokens": 0,
+        "inference_geo": null,
+        "input_tokens": 3000,
+        "output_tokens": 120,
+        "output_tokens_details": null,
+        "server_tool_use": {
+          "web_fetch_requests": 0,
+          "web_search_requests": 1
+        },
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    },
+    {
+      "id": "msg_01564cbf9df19e06097eeeb17b",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "text",
+          "text": "start: 2027-02-06; end: 2027-02-09; status: confirmada. ",
+          "citations": [
+            {
+              "type": "web_search_result_location",
+              "url": "https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/",
+              "title": "Carnaval de Barranquilla 2027",
+              "cited_text": "El Carnaval de Barranquilla 2027 será del sábado 6 al martes 9 de febrero de 2027.",
+              "encrypted_index": "FAKE-ENCRYPTED-dc6afd9145b0b77ada37cf2b129cedda09a41f7b"
+            }
+          ]
+        }
+      ],
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 900,
+        "inference_geo": null,
+        "input_tokens": 3600,
+        "output_tokens": 180,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    }
+  ],
+  "extract": [
+    {
+      "id": "msg_012242268c3249878c6c4c0b9c",
+      "type": "message",
+      "role": "assistant",
+      "model": "claude-sonnet-5-5",
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"country\": \"CO\", \"slug\": \"carnaval-barranquilla\", \"edition\": 2027, \"changes\": [{\"field\": \"start\", \"old\": \"2027-02-06\", \"new\": \"2027-02-06\", \"source_urls\": [\"https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/\"], \"quote\": \"del sábado 6 al martes 9 de febrero de 2027\", \"quote_language\": \"es\", \"confidence\": \"oficial\", \"note\": \"La web oficial confirma las fechas.\"}, {\"field\": \"end\", \"old\": \"2027-02-09\", \"new\": \"2027-02-09\", \"source_urls\": [\"https://carnavaldebarranquilla.org/carnaval-de-barranquilla-2027/\"], \"quote\": \"del sábado 6 al martes 9 de febrero de 2027\", \"quote_language\": \"es\", \"confidence\": \"oficial\", \"note\": \"La web oficial confirma las fechas.\"}], \"not_found\": []}",
+          "citations": null
+        }
+      ],
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "stop_details": null,
+      "container": null,
+      "diagnostics": null,
+      "usage": {
+        "cache_creation": null,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "inference_geo": null,
+        "input_tokens": 1800,
+        "output_tokens": 400,
+        "output_tokens_details": null,
+        "server_tool_use": null,
+        "service_tier": "standard",
+        "speed": "standard"
+      }
+    }
+  ]
+}

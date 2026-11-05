@@ -1,0 +1,160 @@
+# Quality gate for every PR and every push to main (PRD H0, R8, R12; RF-16).
+# Branch protection on main requires the single check named "ci" (the last job below),
+# so jobs can be added or renamed without touching the protection rule.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10.33.3"
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Committed data/index.json matches data/countries
+        run: |
+          node scripts/build-data.ts
+          if ! git diff --exit-code -- data/index.json; then
+            echo "::error file=data/index.json::data/index.json is stale. Run 'node scripts/build-data.ts' and commit the result."
+            exit 1
+          fi
+
+      - name: Unit and recorded-response tests with coverage
+        run: pnpm vitest run --coverage
+
+      - name: Build (data, calendars, Vite, secret scan of dist)
+        run: pnpm build
+
+      - name: Secret scan of tracked files and dist (R8)
+        run: node scripts/check-secrets.ts
+
+      - name: Trap proposal check (R12)
+        env:
+          TRAP_SECRET: ${{ secrets.TRAP_SECRET }}
+          TRAP_FINGERPRINTS: ${{ secrets.TRAP_FINGERPRINTS }}
+        run: |
+          # Secrets are absent on fork PRs and Dependabot PRs; nothing a fork sends can reach main
+          # without a maintainer PR, and deploy.yml repeats this check before publishing.
+          if [ -z "${TRAP_SECRET}" ]; then
+            echo "::notice::TRAP_SECRET is not available to this run (fork, Dependabot or not configured); trap check skipped."
+            exit 0
+          fi
+          node scripts/check-trap.ts
+
+      - name: Lighthouse CI (performance and accessibility budgets)
+        run: pnpm lhci
+
+      - name: Upload coverage and Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: verify-reports
+          path: |
+            coverage/
+            .lighthouseci/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  e2e:
+    name: e2e
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      # playwright.config.ts builds and serves the site itself (webServer), so this job
+      # does its own production build with the default base path.
+      - name: End-to-end and axe tests
+        run: pnpm e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  ci:
+    name: ci
+    if: always()
+    needs: [verify, e2e]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Every required job succeeded
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          for result in ${RESULTS}; do
+            if [ "${result}" != "success" ]; then
+              echo "::error::A required job ended with '${result}'."
+              exit 1
+            fi
+          done
+          echo "verify and e2e passed."

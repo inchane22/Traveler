@@ -1,0 +1,381 @@
+# Weekly AI verification (PRD «Actualización con IA», RF-15, R10, R12) and the R9 news sweep.
+# The AI proposes, a person approves: this job only opens a PR labelled needs-review.
+# It never merges and never deploys; deploy.yml runs from main after a human merge.
+name: refresh
+
+# One run per day at most, so two runs never share the refresh/<date> branch:
+# Monday the full verification, Tuesday and Friday the news sweep of festivals 45 days out or
+# less, the other days the sweep of festivals in their last week (R9). The run step maps each
+# cron string to its flags; keep both lists in sync.
+on:
+  schedule:
+    - cron: "0 11 * * 1" # Mondays 11:00 UTC: weekly verification
+    - cron: "0 11 * * 2,5" # Tuesdays and Fridays: --sweep=news (45 days)
+    - cron: "0 11 * * 0,3,4,6" # other days: --sweep=news --within=7 (last week)
+  workflow_dispatch:
+    inputs:
+      sweep:
+        description: "none = verificación semanal, news = barrido de noticias a 45 días, news-7 = última semana / run mode"
+        required: false
+        type: choice
+        options: ["none", "news", "news-7"]
+        default: "none"
+      only:
+        description: "Solo esta fiesta (slug), p. ej. carnaval-barranquilla / only this festival"
+        required: false
+        type: string
+        default: ""
+      country:
+        description: "Solo este país (ISO 3166-1 alfa-2), p. ej. CO / only this country"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# refresh and onboard share the budget in data/usage.json, so they never run at the same time.
+# A second run waits instead of cancelling the first one mid-spend.
+concurrency:
+  group: ai-pipeline
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10.33.3"
+
+jobs:
+  # R10: data/usage.json travels in the PR, so an unmerged PR (or a run without PR) would drop its
+  # spend. This job hands the last run's usage.json to refresh, which keeps the higher total per
+  # month. Reading another run's artifact needs actions: read, so it lives in its own job and the
+  # refresh job keeps its permissions. The Console workspace spend limit stays the hard cap.
+  usage:
+    name: usage fallback
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      actions: read
+    uses: ./.github/workflows/usage-fallback.yml
+
+  refresh:
+    name: refresh
+    needs: usage
+    # Proposals are always based on main; a dispatch from another branch is refused. Runs even
+    # when the usage job failed: the fallback is an extra safeguard, not a precondition.
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+    # SEC-12: ANTHROPIC_API_KEY and ARCHIVE_* live in this environment, limited to main (README).
+    environment: ai-pipeline
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      # No dependency cache in jobs that hold write tokens (cache poisoning).
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Pick the run mode
+        id: mode
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          SWEEP_INPUT: ${{ inputs.sweep }}
+        run: |
+          mode=weekly
+          case "${SCHEDULE}" in
+            "") ;;
+            "0 11 * * 1") mode=weekly ;;
+            "0 11 * * 2,5") mode=news ;;
+            "0 11 * * 0,3,4,6") mode=news-7 ;;
+            *) echo "::error::Unknown schedule '${SCHEDULE}': add it to this step."; exit 1 ;;
+          esac
+          case "${SWEEP_INPUT}" in
+            ""|none) ;;
+            news|news-7) mode="${SWEEP_INPUT}" ;;
+            *) echo "::error::'sweep' must be none, news or news-7."; exit 1 ;;
+          esac
+          echo "mode=${mode}" >> "${GITHUB_OUTPUT}"
+          echo "- Mode: ${mode}" >> "${GITHUB_STEP_SUMMARY}"
+
+      # R13 needs this week's link verdicts; links.yml raises the R6 alert, here a broken link only
+      # feeds the confidence downgrade. No secret reaches this step.
+      - name: Check links for R13 (weekly run only)
+        id: links
+        if: steps.mode.outputs.mode == 'weekly'
+        continue-on-error: true
+        run: |
+          day="$(date -u +%F)"
+          if ! node scripts/check-links.ts "--today=${day}"; then
+            echo "::warning::check-links reported broken links; see proposals/links-${day}.md in the artifact."
+          fi
+          if [ -f "proposals/links-${day}.json" ]; then
+            echo "path=${PWD}/proposals/links-${day}.json" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Prepare the usage fallback
+        id: fallback
+        env:
+          USAGE_JSON: ${{ needs.usage.outputs.json }}
+        run: |
+          path=""
+          if [ -n "${USAGE_JSON}" ]; then
+            path="${RUNNER_TEMP}/usage-fallback.json"
+            printf '%s\n' "${USAGE_JSON}" > "${path}"
+          fi
+          echo "path=${path}" >> "${GITHUB_OUTPUT}"
+
+      - name: Run weekly verification or news sweep
+        id: refresh
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL || 'claude-sonnet-5-5' }}
+          MONTHLY_BUDGET_USD: ${{ vars.MONTHLY_BUDGET_USD || '20' }}
+          MAX_FESTIVALS_PER_RUN: ${{ vars.MAX_FESTIVALS_PER_RUN || '40' }}
+          ARCHIVE_ACCESS_KEY: ${{ secrets.ARCHIVE_ACCESS_KEY }}
+          ARCHIVE_SECRET_KEY: ${{ secrets.ARCHIVE_SECRET_KEY }}
+          # R12: a trap is planted only when its fingerprint can be stored (the app step below).
+          TRAP_SECRET: ${{ vars.PR_APP_CLIENT_ID != '' && secrets.TRAP_SECRET || '' }}
+          ONLY_SLUG: ${{ inputs.only }}
+          ONLY_COUNTRY: ${{ inputs.country }}
+          MODE: ${{ steps.mode.outputs.mode }}
+          USAGE_FALLBACK_PATH: ${{ steps.fallback.outputs.path }}
+          LINKS_REPORT_PATH: ${{ steps.links.outputs.path }}
+        run: |
+          if [ -z "${ANTHROPIC_API_KEY}" ]; then
+            echo "::error::Repository secret ANTHROPIC_API_KEY is not set (README, first-time setup)."
+            exit 1
+          fi
+          # Dispatch inputs are untrusted text: validate before they reach the command line.
+          args=()
+          if [ -n "${ONLY_SLUG}" ]; then
+            if [[ ! "${ONLY_SLUG}" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]]; then
+              echo "::error::'only' must be a festival slug (a-z, 0-9 and hyphens)."
+              exit 1
+            fi
+            args+=("--only=${ONLY_SLUG}")
+          fi
+          if [ -n "${ONLY_COUNTRY}" ]; then
+            if [[ ! "${ONLY_COUNTRY}" =~ ^[A-Za-z]{2}$ ]]; then
+              echo "::error::'country' must be a two-letter ISO 3166-1 code."
+              exit 1
+            fi
+            args+=("--country=${ONLY_COUNTRY^^}")
+          fi
+          case "${MODE}" in
+            weekly) ;;
+            news) args+=("--sweep=news") ;;
+            news-7) args+=("--sweep=news" "--within=7") ;;
+            *) echo "::error::Unknown mode '${MODE}'."; exit 1 ;;
+          esac
+          pnpm refresh -- "${args[@]}"
+
+      # A GitHub App token makes ci.yml run on the bot PR by itself and stores the R12 fingerprint.
+      # Without the app the PR is opened with GITHUB_TOKEN, CI must be triggered by hand, and no
+      # trap is planted (README).
+      - name: Mint GitHub App token
+        id: app
+        if: vars.PR_APP_CLIENT_ID != ''
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.PR_APP_CLIENT_ID }}
+          private-key: ${{ secrets.PR_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-secrets: write
+
+      # R12 (PRD: the fingerprint is kept as a repository secret, the reviewer never sees it):
+      # append this month's fingerprint to TRAP_FINGERPRINTS, which ci.yml and deploy.yml check.
+      # Runs before the PR step and never with always(): if it cannot be stored, no PR opens.
+      - name: Store the trap fingerprint (R12)
+        if: steps.refresh.outputs.trap_fingerprint != ''
+        env:
+          FP: ${{ steps.refresh.outputs.trap_fingerprint }}
+          EXISTING: ${{ secrets.TRAP_FINGERPRINTS }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "::add-mask::${FP}"
+          if [[ ! "${FP}" =~ ^[0-9a-f]{64}$ ]]; then
+            echo "::error::refresh wrote a malformed trap fingerprint."
+            exit 1
+          fi
+          if [ -z "${GH_TOKEN}" ]; then
+            echo "::error::A trap was planted but there is no app token to store its fingerprint; refusing to open the PR."
+            exit 1
+          fi
+          next="${EXISTING:+${EXISTING},}${FP}"
+          printf '%s' "${next}" | gh secret set TRAP_FINGERPRINTS --repo "${REPO}"
+          echo "R12: fingerprint stored." >> "${GITHUB_STEP_SUMMARY}"
+
+      # R10: snapshot data/usage.json now, before the pull request step switches branches. The next
+      # run's usage job reads the "usage" artifact. The script writes the merged total before its
+      # first call, so a changed file is never below the previous artifact; an unchanged one is
+      # not uploaded and the previous artifact stays the latest.
+      - name: Snapshot usage for the next run
+        id: usage
+        if: always()
+        run: |
+          if [ -n "$(git status --porcelain -- data/usage.json)" ]; then
+            mkdir -p "${RUNNER_TEMP}/usage"
+            cp data/usage.json "${RUNNER_TEMP}/usage/usage.json"
+            echo "changed=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "changed=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+      # Schema validation of every country file, and the committed index that ci.yml checks
+      # for drift. A proposal that breaks the schema stops here, before any PR exists.
+      - name: Validate data and regenerate data/index.json
+        run: node scripts/build-data.ts
+
+      - name: Decide whether to open a pull request
+        id: pr
+        env:
+          CHANGES: ${{ steps.refresh.outputs.changes }}
+          BRANCH: ${{ steps.refresh.outputs.branch }}
+        run: |
+          changes="${CHANGES:-0}"
+          if [[ ! "${changes}" =~ ^[0-9]+$ ]]; then
+            echo "::error::refresh wrote a non-numeric 'changes' output: '${changes}'."
+            exit 1
+          fi
+          branch="${BRANCH:-refresh/$(date -u +%F)}"
+          if [[ ! "${branch}" =~ ^refresh/[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
+            echo "::error::Unexpected branch name '${branch}'."
+            exit 1
+          fi
+          day="${branch#refresh/}"
+
+          # A verification that only bumps last_verified is still a data change: without it
+          # the site shows the stale-data notice after 30 days (RF-13).
+          data_changed=false
+          if [ -n "$(git status --porcelain -- data/countries data/changelog.json data/index.json)" ]; then
+            data_changed=true
+          fi
+          open=false
+          if [ "${changes}" -gt 0 ] || [ "${data_changed}" = true ]; then
+            open=true
+          fi
+
+          # git add aborts the whole pathspec list if one entry matches nothing, so list only
+          # files that exist. usage.json rides along in the same PR (see README, «Presupuesto»).
+          paths=()
+          for p in data/countries/*.json data/changelog.json data/index.json data/usage.json; do
+            if [ -e "${p}" ]; then paths+=("${p}"); fi
+          done
+
+          # body-path replaces the PR template, so the reviewer checklist (R12, R3) is appended.
+          body="${RUNNER_TEMP}/pr-body.md"
+          proposal="proposals/${day}.md"
+          if [ ! -f "${proposal}" ]; then
+            proposal="$(find proposals -maxdepth 1 -type f -name '*.md' ! -name 'links-*' -printf '%T@ %p\n' 2>/dev/null | sort -nr | head -n 1 | cut -d' ' -f2- || true)"
+          fi
+          if [ -n "${proposal}" ] && [ -f "${proposal}" ]; then
+            cat "${proposal}" > "${body}"
+          else
+            echo "::warning::No proposals/*.md found; the PR body only carries the checklist."
+            printf '_refresh did not write proposals/%s.md._\n' "${day}" > "${body}"
+          fi
+          printf '\n\n---\n\n' >> "${body}"
+          cat .github/pull_request_template.md >> "${body}"
+
+          delimiter="paths_$(openssl rand -hex 8)"
+          {
+            echo "open=${open}"
+            echo "branch=${branch}"
+            echo "day=${day}"
+            echo "body=${body}"
+            echo "paths<<${delimiter}"
+            printf '%s\n' "${paths[@]}"
+            echo "${delimiter}"
+          } >> "${GITHUB_OUTPUT}"
+
+          {
+            echo "### refresh ${day}"
+            echo ""
+            echo "- Proposed changes: ${changes}"
+            echo "- Data files changed: ${data_changed}"
+            echo "- Pull request: ${open}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+          if [ "${open}" = false ]; then
+            echo "::notice::No data changes: no PR opened. usage.json from this run is kept only in the run artifact."
+          fi
+
+      - name: Open pull request (never auto-merged)
+        id: cpr
+        if: steps.pr.outputs.open == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ steps.app.outputs.token || github.token }}
+          base: main
+          branch: ${{ steps.pr.outputs.branch }}
+          add-paths: ${{ steps.pr.outputs.paths }}
+          commit-message: "chore(data): weekly verification ${{ steps.pr.outputs.day }}, proposals pending human review"
+          title: "chore(data): verificación semanal ${{ steps.pr.outputs.day }}"
+          body-path: ${{ steps.pr.outputs.body }}
+          labels: needs-review
+          sign-commits: true
+          delete-branch: false
+          draft: false
+
+      - name: Report pull request
+        if: steps.cpr.outputs.pull-request-url != ''
+        env:
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+          PR_OPERATION: ${{ steps.cpr.outputs.pull-request-operation }}
+        run: |
+          echo "- ${PR_OPERATION}: ${PR_URL}" >> "${GITHUB_STEP_SUMMARY}"
+
+      # BE-04: a festival that failed with an unexpected error (a bug, not an API error) is logged
+      # and skipped so the PR for the others still opens; this step then turns the run red. A run
+      # that verified nothing already exited 1 in the refresh step. The detail is in the artifact.
+      - name: Fail on unexpected festival errors
+        if: steps.refresh.outputs.unexpected != '' && steps.refresh.outputs.unexpected != '0'
+        env:
+          UNEXPECTED: ${{ steps.refresh.outputs.unexpected }}
+          VERIFIED: ${{ steps.refresh.outputs.verified }}
+        run: |
+          if [[ ! "${UNEXPECTED}" =~ ^[0-9]+$ ]]; then
+            echo "::error::refresh wrote a non-numeric 'unexpected' output."
+            exit 1
+          fi
+          echo "- Unexpected errors: ${UNEXPECTED} festival(s), ${VERIFIED:-0} verified" >> "${GITHUB_STEP_SUMMARY}"
+          echo "::error::${UNEXPECTED} festival(s) failed with an unexpected error; see proposals/ in the refresh artifact."
+          exit 1
+
+      - name: Upload proposals and usage
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: refresh-${{ github.run_id }}
+          path: |
+            proposals/
+            data/usage.json
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Upload usage for the next run (R10)
+        if: always() && steps.usage.outputs.changed == 'true'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: usage
+          path: ${{ runner.temp }}/usage/usage.json
+          if-no-files-found: error
+          retention-days: 90

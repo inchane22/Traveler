@@ -1,0 +1,467 @@
+{
+  "country": "BO",
+  "status": "borrador",
+  "generated_at": "2026-10-26",
+  "timezone": "America/La_Paz",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "carnaval-oruro",
+      "names": {
+        "local": "Carnaval de Oruro",
+        "es": "Carnaval de Oruro",
+        "en": "Carnival of Oruro",
+        "pt": "Carnaval de Oruro"
+      },
+      "city": "Oruro",
+      "subdivision": "BO-O",
+      "timezone": "America/La_Paz",
+      "coords": {
+        "lat": -17.967,
+        "lon": -67.117
+      },
+      "nearest_airport": "ORU",
+      "type": "carnaval",
+      "rule": {
+        "type": "easter_offset",
+        "calendar": "gregorian",
+        "start": -50,
+        "end": -49
+      },
+      "editions": {
+        "2026": {
+          "start": "2026-02-14",
+          "end": "2026-02-15",
+          "status": "tentativa",
+          "confidence": "estimacion",
+          "key_events": [
+            {
+              "id": "gran-peregrinacion",
+              "name": {
+                "es": "Gran Peregrinación al Socavón",
+                "en": "Grand Pilgrimage to the Socavón",
+                "pt": "Grande Peregrinação ao Socavón"
+              },
+              "date": "2026-02-14",
+              "confidence": "prensa"
+            },
+            {
+              "id": "entrada-al-corso",
+              "name": {
+                "es": "Entrada al Corso",
+                "en": "Corso parade",
+                "pt": "Entrada ao Corso"
+              },
+              "date": "2026-02-15",
+              "confidence": "estimacion"
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.lostiempos.com/actualidad/pais/20260214/oruro-vibra-folklore-musica-entrada-devocion-virgen-del-socavon",
+              "publisher": "Los Tiempos",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "Las principales calles de la ciudad de Oruro se colmaron este sábado de miles de visitantes provenientes de distintas regiones"
+            },
+            {
+              "url": "https://eju.tv/2026/02/conoce-la-ruta-de-la-entrada-folclorica-del-carnaval-de-oruro-2026/",
+              "publisher": "eju.tv",
+              "accessed": "2026-10-26",
+              "tier": "C",
+              "quote": "Entrada al Corso: domingo 15 de febrero"
+            },
+            {
+              "url": "https://eju.tv/2026/02/conoce-la-ruta-de-la-entrada-folclorica-del-carnaval-de-oruro-2026/",
+              "publisher": "eju.tv",
+              "accessed": "2026-10-26",
+              "tier": "C",
+              "quote": "Gran Peregrinación al Socavón: 14 de febrero"
+            }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": {
+            "es": "Fechas de las dos jornadas de entrada; los festejos de carnaval siguen el lunes y el martes.",
+            "en": "Dates of the two parade days; carnival celebrations continue on Monday and Tuesday.",
+            "pt": "Datas dos dois dias de desfile; as festas de carnaval continuam na segunda e na terça."
+          }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "calle": null,
+        "reconocimiento": {
+          "measure": "unesco",
+          "confidence": "oficial",
+          "source": "https://ich.unesco.org/en/RL/carnival-of-oruro-00003"
+        },
+        "conectividad": {
+          "measure": "nacional",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Juan_Mendoza_Airport",
+          "note": {
+            "es": "ORU solo tiene vuelos a Cochabamba; el internacional más cercano es El Alto (LPB).",
+            "en": "ORU only has flights to Cochabamba; the nearest international airport is El Alto (LPB).",
+            "pt": "ORU só tem voos para Cochabamba; o aeroporto internacional mais próximo é El Alto (LPB)."
+          }
+        },
+        "local": {
+          "measure": "intermedia",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Oruro"
+        }
+      },
+      "street_tip": {
+        "es": "La peregrinación del sábado arranca temprano y sigue hasta la noche; reserva alojamiento con meses de anticipación y lleva abrigo para la tarde.",
+        "en": "Saturday's pilgrimage starts early and runs into the night; book lodging months ahead and bring a warm layer for the afternoon.",
+        "pt": "A peregrinação de sábado começa cedo e vai até a noite; reserve hospedagem com meses de antecedência e leve agasalho para a tarde."
+      },
+      "etiquette": {
+        "es": "Para los danzantes es una promesa a la Virgen del Socavón: respeta la llegada al santuario y no cortes el paso de las comparsas para tomar fotos.",
+        "en": "For the dancers this is a vow to the Virgin of Socavón: respect their arrival at the sanctuary and do not block the troupes to take photos.",
+        "pt": "Para os dançarinos é uma promessa à Virgem do Socavón: respeite a chegada ao santuário e não bloqueie as comparsas para tirar fotos."
+      }
+    },
+    {
+      "slug": "gran-poder",
+      "names": {
+        "local": "Festividad del Señor Jesús del Gran Poder",
+        "es": "Fiesta del Gran Poder",
+        "en": "Gran Poder Festival",
+        "pt": "Festa do Gran Poder"
+      },
+      "city": "La Paz",
+      "subdivision": "BO-L",
+      "timezone": "America/La_Paz",
+      "coords": {
+        "lat": -16.49583,
+        "lon": -68.13333
+      },
+      "nearest_airport": "LPB",
+      "type": "tradicion_religiosa",
+      "rule": {
+        "type": "easter_offset",
+        "calendar": "gregorian",
+        "start": 55,
+        "end": 55
+      },
+      "editions": {
+        "2026": {
+          "start": "2026-08-01",
+          "end": "2026-08-01",
+          "status": "tentativa",
+          "confidence": "estimacion",
+          "key_events": [],
+          "sources": [
+            {
+              "url": "https://www.atlas-news.com/internacional/d037-bolivia-paz-celebracion-gran_4_02173571.html",
+              "publisher": "Atlas News (Reuters)",
+              "accessed": "2026-10-26",
+              "tier": "C",
+              "quote": "Tens of thousands of dancers filled the streets of La Paz on Saturday (August 1)"
+            },
+            {
+              "url": "https://eju.tv/?p=5046102",
+              "publisher": "eju.tv (ABI)",
+              "accessed": "2026-10-26",
+              "tier": "C",
+              "quote": "prevista para el 1 de agosto"
+            }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 1,
+          "note": {
+            "es": "En 2026 la entrada se postergó dos veces por conflictos sociales y bloqueos, y salió el 1 de agosto, lejos de la fecha habitual antes de la Trinidad. Solo hay fuentes de nivel C para esa fecha.",
+            "en": "In 2026 the entrada was postponed twice because of social unrest and road blockades, and took place on August 1, far from its usual date before Trinity. Only tier C sources give that date.",
+            "pt": "Em 2026 a entrada foi adiada duas vezes por conflitos sociais e bloqueios, e saiu em 1º de agosto, longe da data habitual antes da Trindade. Só há fontes de nível C para essa data."
+          }
+        }
+      },
+      "score": {
+        "convocatoria": {
+          "measure": {
+            "attendance": 141586,
+            "qualifier": "exact",
+            "unit": "attendees",
+            "year": 2025
+          },
+          "confidence": "estimacion",
+          "source": "https://eju.tv/?p=5046102",
+          "note": {
+            "es": "Encuesta de 2025 con el Viceministerio de Turismo y el INE, citada por un agregador; Los Tiempos reportó al menos 230 000 espectadores en 2024.",
+            "en": "2025 survey with the Vice Ministry of Tourism and INE, cited by an aggregator; Los Tiempos reported at least 230,000 spectators in 2024.",
+            "pt": "Pesquisa de 2025 com o Vice-Ministério de Turismo e o INE, citada por um agregador; o Los Tiempos relatou ao menos 230 mil espectadores em 2024."
+          }
+        },
+        "calle": null,
+        "reconocimiento": {
+          "measure": "unesco",
+          "confidence": "oficial",
+          "source": "https://ich.unesco.org/en/RL/the-festival-of-the-santisima-trinidad-del-senor-jesus-del-gran-poder-in-the-city-of-la-paz-01389"
+        },
+        "conectividad": {
+          "measure": "internacional",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/El_Alto_International_Airport",
+          "note": {
+            "es": "LPB está en El Alto, a unos 13 km del centro de La Paz.",
+            "en": "LPB is in El Alto, about 13 km from central La Paz.",
+            "pt": "LPB fica em El Alto, a cerca de 13 km do centro de La Paz."
+          }
+        },
+        "local": {
+          "measure": "gran_ciudad",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/La_Paz"
+        }
+      },
+      "street_tip": {
+        "es": "La entrada empieza en la mañana y termina de madrugada; elige un tramo de la ruta y quédate ahí, porque cruzarla es casi imposible.",
+        "en": "The parade starts in the morning and ends in the small hours; pick one stretch of the route and stay there, since crossing it is nearly impossible.",
+        "pt": "A entrada começa de manhã e termina de madrugada; escolha um trecho do percurso e fique ali, porque atravessá-lo é quase impossível."
+      },
+      "etiquette": {
+        "es": "Las fraternidades bailan por devoción al Señor del Gran Poder: no te metas a los bloques sin invitación y pide permiso antes de fotografiar de cerca.",
+        "en": "The fraternities dance out of devotion to the Lord of Gran Poder: do not join the blocks uninvited and ask before taking close-up photos.",
+        "pt": "As fraternidades dançam por devoção ao Senhor do Gran Poder: não entre nos blocos sem convite e peça licença antes de fotografar de perto."
+      }
+    },
+    {
+      "slug": "urkupina",
+      "names": {
+        "local": "Festividad de la Virgen de Urkupiña",
+        "es": "Fiesta de la Virgen de Urkupiña",
+        "en": "Virgin of Urkupiña Festival",
+        "pt": "Festa da Virgem de Urkupiña"
+      },
+      "city": "Quillacollo",
+      "subdivision": "BO-C",
+      "timezone": "America/La_Paz",
+      "coords": {
+        "lat": -17.4,
+        "lon": -66.283
+      },
+      "nearest_airport": "CBB",
+      "type": "tradicion_religiosa",
+      "rule": {
+        "type": "fixed",
+        "start": "08-14",
+        "end": "08-16"
+      },
+      "editions": {
+        "2026": {
+          "status": "tentativa",
+          "confidence": "prensa",
+          "key_events": [
+            {
+              "id": "entrada-folklorica",
+              "name": {
+                "es": "Gran Entrada Folklórica",
+                "en": "Grand Folk Parade",
+                "pt": "Grande Entrada Folclórica"
+              },
+              "date": "2026-08-14",
+              "confidence": "prensa"
+            },
+            {
+              "id": "misa-central",
+              "name": {
+                "es": "Misa central",
+                "en": "Main Mass",
+                "pt": "Missa central"
+              },
+              "date": "2026-08-15",
+              "confidence": "estimacion"
+            },
+            {
+              "id": "peregrinacion-calvario",
+              "name": {
+                "es": "Peregrinación al Calvario",
+                "en": "Pilgrimage to the Calvario hill",
+                "pt": "Peregrinação ao Calvário"
+              },
+              "date": "2026-08-16",
+              "confidence": "estimacion"
+            }
+          ],
+          "sources": [
+            {
+              "url": "https://www.lostiempos.com/actualidad/cochabamba/20260814/quillacollo-brilla-entrada-urkupina-2026",
+              "publisher": "Los Tiempos",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "reúne este 14 de agosto a peregrinos, músicos y danzarines"
+            },
+            {
+              "url": "https://eju.tv/?p=5041475",
+              "publisher": "eju.tv (Red Uno)",
+              "accessed": "2026-10-26",
+              "tier": "C",
+              "quote": "16 de agosto: Tradicional peregrinación al Calvario."
+            },
+            {
+              "url": "https://eju.tv/?p=5041475",
+              "publisher": "eju.tv (Red Uno)",
+              "accessed": "2026-10-26",
+              "tier": "C",
+              "quote": "15 de agosto: Misa y celebración central en honor a la Virgen de Urkupiña."
+            }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 1,
+          "note": {
+            "es": "Los Tiempos confirma la entrada del 14 de agosto; ninguna fuente A o B fecha el cierre, así que los días siguen el patrón (14 a 16 de agosto).",
+            "en": "Los Tiempos confirms the August 14 entrada; no A or B source dates the close, so the days follow the pattern (August 14 to 16).",
+            "pt": "Los Tiempos confirma a entrada de 14 de agosto; nenhuma fonte A ou B data o encerramento, então os dias seguem o padrão (14 a 16 de agosto)."
+          }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "calle": null,
+        "reconocimiento": {
+          "measure": "nacional",
+          "confidence": "estimacion",
+          "source": "https://bolivia.justia.com/nacionales/leyes/ley-2536-2003-2005/gdoc",
+          "note": {
+            "es": "Ley 2536 de 2003, leída en una copia de Justia y no en la Gaceta Oficial.",
+            "en": "Law 2536 of 2003, read from a Justia copy, not the Official Gazette.",
+            "pt": "Lei 2536 de 2003, lida numa cópia do Justia e não na Gazeta Oficial."
+          }
+        },
+        "conectividad": {
+          "measure": "ninguno",
+          "confidence": "estimacion",
+          "note": {
+            "es": "Quillacollo no tiene aeropuerto; CBB está en Cochabamba, a unos 13 km.",
+            "en": "Quillacollo has no airport; CBB is in Cochabamba, about 13 km away.",
+            "pt": "Quillacollo não tem aeroporto; CBB fica em Cochabamba, a cerca de 13 km."
+          }
+        },
+        "local": {
+          "measure": "intermedia",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Quillacollo"
+        }
+      },
+      "street_tip": {
+        "es": "El 16 de agosto se sube a pie al cerro del Calvario; lleva zapatos cómodos, agua y protector solar.",
+        "en": "On 16 August people walk up to the Calvario hill; bring comfortable shoes, water and sunscreen.",
+        "pt": "Em 16 de agosto se sobe a pé o morro do Calvário; leve sapatos confortáveis, água e protetor solar."
+      },
+      "etiquette": {
+        "es": "En el Calvario muchos devotos rezan y hacen ofrendas a la Virgen; observa con respeto y no interrumpas sus rituales para tomar fotos.",
+        "en": "On the Calvario many devotees pray and make offerings to the Virgin; watch respectfully and do not interrupt their rituals for photos.",
+        "pt": "No Calvário muitos devotos rezam e fazem oferendas à Virgem; observe com respeito e não interrompa seus rituais para tirar fotos."
+      }
+    },
+    {
+      "slug": "chutillos-potosi",
+      "names": {
+        "local": "Ch'utillos",
+        "es": "Ch'utillos, Fiesta de San Bartolomé",
+        "en": "Ch'utillos, Festival of San Bartolomé",
+        "pt": "Ch'utillos, Festa de São Bartolomeu"
+      },
+      "city": "Potosí",
+      "subdivision": "BO-P",
+      "timezone": "America/La_Paz",
+      "coords": {
+        "lat": -19.58917,
+        "lon": -65.75333
+      },
+      "nearest_airport": "POI",
+      "type": "tradicion_religiosa",
+      "rule": {
+        "type": "announced",
+        "window": {
+          "start": "08-24",
+          "end": "09-01"
+        }
+      },
+      "editions": {
+        "2026": {
+          "start": "2026-08-28",
+          "end": "2026-08-30",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            {
+              "url": "https://www.opinion.com.bo/articulo/cultura/ch-utillos-memoria-mullu-punqu-entronizacion-santo-que-hoy-hace-bailar-potos/20260825181851995247.html",
+              "publisher": "Opinión (ABI)",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "el viernes 28 de agosto con el inicio de las entradas folklóricas y autóctonas"
+            },
+            {
+              "url": "https://eju.tv/2026/08/la-gran-entrada-de-chutillos-toma-este-sabado-las-calles-de-potosi-se-preve-un-movimiento-de-mas-de-bs-50-millones/",
+              "publisher": "eju.tv",
+              "accessed": "2026-10-26",
+              "tier": "C",
+              "quote": "Más de 65.000 danzarines de 160 fraternidades ya rinden homenaje a San Bartolomé"
+            },
+            {
+              "url": "https://www.opinion.com.bo/articulo/cultura/ch-utillos-memoria-mullu-punqu-entronizacion-santo-que-hoy-hace-bailar-potos/20260825181851995247.html",
+              "publisher": "Opinión (ABI)",
+              "accessed": "2026-10-26",
+              "tier": "B",
+              "quote": "el domingo 30 se desarrollará el cierre de la festividad"
+            }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": {
+            "es": "Tres días de entradas tras el 24 de agosto, día de San Bartolomé; el fin de semana anterior ya desfilaron 115 fraternidades.",
+            "en": "Three days of parades after 24 August, Saint Bartholomew's day; 115 fraternities had already paraded the weekend before.",
+            "pt": "Três dias de entradas depois de 24 de agosto, dia de São Bartolomeu; 115 fraternidades já desfilaram no fim de semana anterior."
+          }
+        }
+      },
+      "score": {
+        "convocatoria": {
+          "measure": {
+            "attendance": 65000,
+            "qualifier": "more_than",
+            "unit": "attendees",
+            "year": 2026
+          },
+          "confidence": "estimacion",
+          "source": "https://eju.tv/2026/08/la-gran-entrada-de-chutillos-toma-este-sabado-las-calles-de-potosi-se-preve-un-movimiento-de-mas-de-bs-50-millones/",
+          "note": {
+            "es": "Solo cuenta danzantes; no hay cifra publicada de público.",
+            "en": "Counts dancers only; no audience figure has been published.",
+            "pt": "Conta só dançarinos; não há número publicado de público."
+          }
+        },
+        "calle": null,
+        "reconocimiento": {
+          "measure": "unesco",
+          "confidence": "oficial",
+          "source": "https://ich.unesco.org/en/RL/ch-utillos-the-festival-of-san-bartolome-and-san-ignacio-de-loyola-the-meeting-of-cultures-in-potosi-01958"
+        },
+        "conectividad": {
+          "measure": "nacional",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Captain_Nicolas_Rojas_Airport"
+        },
+        "local": {
+          "measure": "intermedia",
+          "confidence": "estimacion",
+          "source": "https://en.wikipedia.org/wiki/Potos%C3%AD"
+        }
+      },
+      "street_tip": {
+        "es": "Las entradas ocupan tres días seguidos; Potosí está a gran altura, así que camina despacio el primer día y abrígate al caer la tarde.",
+        "en": "The parades fill three days in a row; Potosí sits very high, so take it slow on day one and bundle up as the afternoon ends.",
+        "pt": "As entradas ocupam três dias seguidos; Potosí fica a grande altitude, então vá devagar no primeiro dia e agasalhe-se no fim da tarde."
+      },
+      "etiquette": {
+        "es": "Es una fiesta en honor a San Bartolomé con danzas de comunidades rurales; pide permiso antes de fotografiar a los danzantes autóctonos.",
+        "en": "It honors Saint Bartholomew with dances from rural communities; ask permission before photographing the indigenous dancers.",
+        "pt": "É uma festa em honra a São Bartolomeu com danças de comunidades rurais; peça licença antes de fotografar os dançarinos autóctones."
+      }
+    }
+  ]
+}
