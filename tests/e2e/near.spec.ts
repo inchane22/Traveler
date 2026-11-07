@@ -33,7 +33,8 @@ test.describe("RF-14 with permission", () => {
     await expect(page.getByRole("link", { name: "Ver fiestas cerca" })).toHaveAttribute("href", /orden=cerca/);
 
     await goInApp(page, "#/explorar?pais=co&orden=cerca");
-    await expect(page.getByRole("button", { name: /Cerca de mí/ })).toHaveAttribute("aria-pressed", "true");
+    // The sort control: inline on desktop, in the filter sheet on phones (the state is the same).
+    await expect(page.locator('[data-key="sort-near"]')).toHaveAttribute("aria-pressed", "true");
     const km = await distances(page);
     expect(km.length).toBeGreaterThan(3);
     expect(km).toEqual([...km].sort((a, b) => a - b));

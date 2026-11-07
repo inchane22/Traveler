@@ -290,6 +290,14 @@ En Inicio, la próxima fiesta y su cuenta regresiva quedan arriba sin scroll; en
 
 Meta: 90% de tareas completadas y facilidad media de 5,5 o más en la pregunta única de 1 a 7 después de cada tarea. Cada falla se corrige y se vuelve a probar.
 
+**Decisiones de UX posteriores (auditoría, nov 2026):**
+
+- **Filtros híbridos (RF-03):** en el teléfono, «Mis fechas de viaje», el conteo, «Filtros (n)» y «Limpiar filtros» quedan a la vista, y cada filtro activo es un chip que se quita con un toque; país, mes, tipo, Nivel 2 y orden se eligen en una hoja con conteos en vivo y se aplican con «Ver N fiestas», una sola entrada del historial. Desde 48rem los chips siguen en línea y se aplican al instante. Así la lista empieza sobre el pliegue a 390 px.
+- **Una marca de confianza en las listas (RF-07, RF-08):** filas y portada muestran «■ Confirmada, fuente oficial» en lugar de dos insignias; la ficha conserva ambas. Ninguna fecha pierde su etiqueta. Vocabulario llano: «Por confirmar», «Años anteriores», «Estimada», «medianas (Nivel 2)»; la leyenda «Cómo leer las marcas» está a un toque de las listas.
+- **Sin navegación inferior en la ficha («Pulgar primero»):** la ficha tiene «Volver» arriba a la izquierda y la barra «Guardar» / «Agregar al calendario» ocupa la zona del pulgar; las barras fijas suman 15 % o menos de la pantalla.
+- **Cuenta regresiva honesta:** una fecha no confirmada dice «en unos N días».
+- **Piloto a la vista:** mientras haya menos de 5 países publicados, la vista del mundo y la de región dicen cuáles están.
+
 ## Modelo de datos
 
 Cada país vive en su propio archivo `data/countries/<cc>.json`, y `data/index.json` lista los países publicados, su fecha de verificación y las fiestas de Nivel 1 que alimentan la vista global.

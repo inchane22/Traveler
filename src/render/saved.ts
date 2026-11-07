@@ -5,7 +5,6 @@ import { EMPTY_FILTERS } from "../router.ts";
 import { downloadFile, eventOf, icsFor } from "./calendar.ts";
 import {
   asyncView,
-  confidenceMark,
   countdownText,
   dateBand,
   emptyState,
@@ -14,7 +13,7 @@ import {
   occurrenceDates,
   placeLine,
   saveButton,
-  statusBadge,
+  trustMark,
   typeTag,
 } from "./components.ts";
 import type { Ctx } from "./context.ts";
@@ -100,8 +99,7 @@ export function renderSaved(ctx: Ctx): HTMLElement {
                   "p",
                   { class: "marks" },
                   typeTag(f.type, ctx.t),
-                  occ ? statusBadge(occ.status, ctx.t) : null,
-                  occ ? confidenceMark(occ.confidence, ctx.t) : null,
+                  occ ? trustMark(occ, ctx.t) : null,
                   h("span", { class: "tag num" }, countdownText(countdown(occ, ctx.today), ctx.t)),
                 ),
               ),

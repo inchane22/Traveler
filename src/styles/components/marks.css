@@ -108,13 +108,14 @@
   block-size: 1rem;
 }
 
+/* A fact, not a control: a flat tint with no outline, so it never reads as a button. */
 .tag {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.05rem 0.45rem;
-  border: 1.5px solid var(--ink-3);
+  padding: 0.1rem 0.5rem;
   border-radius: 4px;
+  background: var(--paper-sunk);
   font-size: var(--fs-sm);
   font-weight: 600;
   color: var(--ink-2);
@@ -130,8 +131,35 @@
 }
 
 .tag--possible {
-  border-style: dashed;
+  background: transparent;
+  outline: 1.5px dashed var(--ink-3);
+  outline-offset: -1.5px;
   color: var(--ink);
+}
+
+/* Lists: «■ Confirmada, fuente oficial», one mark instead of a status and a confidence badge.
+   Inline text, so a narrow row wraps it between words like a sentence. */
+.trust {
+  display: inline;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.trust .status-shape {
+  display: inline-block;
+  margin-inline-end: 0.35rem;
+  vertical-align: -0.1em;
+}
+
+.trust__status {
+  white-space: nowrap;
+}
+
+.trust__source {
+  font-weight: 500;
+  color: var(--ink-2);
 }
 
 /* ---------- Date encoding shared by bands, bars and the month grid ---------- */

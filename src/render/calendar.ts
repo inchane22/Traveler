@@ -52,6 +52,7 @@ export function openCalendarSheet(entry: FestivalEntry, ctx: Ctx): void {
       const unconfirmed = event.status !== "CONFIRMED";
       return [
         h("p", { class: "sheet__lede" }, h("strong", null, event.summary)),
+        h("h3", { class: "scope__group sheet__group" }, ctx.t("calendar.thisOne")),
         h(
           "ul",
           { class: "options options--cal" },
@@ -79,7 +80,7 @@ export function openCalendarSheet(entry: FestivalEntry, ctx: Ctx): void {
           h("li", null, externalLink(outlookCalendarUrl(event), h("span", { class: "option__label" }, ctx.t("calendar.outlook")), ctx.t, "option")),
         ),
         unconfirmed ? h("p", { class: "sheet__note" }, ctx.t("calendar.unconfirmedNote", { prefix: ctx.t(prefixKey(entry)) })) : null,
-        h("h3", { class: "scope__group" }, ctx.t("calendar.subscribeTitle", { country: countryName(entry.country, ctx.lang) })),
+        h("h3", { class: "scope__group sheet__group" }, ctx.t("calendar.subscribeTitle", { country: countryName(entry.country, ctx.lang) })),
         h("p", { class: "sheet__note" }, ctx.t("subscribe.body")),
         subscribeLinks(entry.country, ctx),
       ];

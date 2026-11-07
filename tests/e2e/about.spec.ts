@@ -32,3 +32,25 @@ for (const lang of ["es", "en", "pt"] as const) {
     await expect(page.locator(".log__what a").first()).toHaveAttribute("href", /^#\/fiesta\/[a-z0-9-]+$/);
   });
 }
+
+test("the latest 10 changes stay in view and older ones fold behind one disclosure", async ({ page }) => {
+  await open(page, "#/datos");
+  const total = await page.locator(".log__item").count();
+  expect(total).toBeGreaterThan(10);
+  await expect(page.getByTestId("log-latest").locator(".log__item")).toHaveCount(10);
+  const toggle = page.locator(".log-more__toggle");
+  await expect(toggle).toHaveText(`Ver ${Math.min(total, 50) - 10} cambios anteriores`);
+  await expect(page.locator(".log-more .log__item").first()).toBeHidden();
+  await toggle.click();
+  await expect(page.locator(".log-more .log__item").first()).toBeVisible();
+});
+
+test("«En esta página» jumps to a section and moves focus to its heading", async ({ page }) => {
+  await open(page, "#/datos");
+  const nav = page.getByRole("navigation", { name: "En esta página" });
+  await expect(nav.getByRole("button")).toHaveText(["Puntaje", "Marcas", "Frescura", "Cambios"]);
+  await nav.getByRole("button", { name: "Cambios" }).click();
+  await expect(page.getByRole("heading", { name: "Registro de cambios" })).toBeFocused();
+  await expect(page.getByRole("heading", { name: "Registro de cambios" })).toBeInViewport();
+  await expect(page).toHaveURL(/#\/datos$/);
+});

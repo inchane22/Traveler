@@ -47,6 +47,23 @@
   background: var(--paper-sunk);
 }
 
+/* Smaller type, same 44 px target. */
+.btn--small {
+  padding: 0.35rem 0.85rem;
+  font-size: var(--fs-sm);
+}
+
+/* «Cómo leer las marcas»: a quiet text button that opens the key in a sheet. */
+.marks-help {
+  margin-inline-start: -0.6rem;
+  padding-inline: 0.6rem;
+  color: var(--ink-2);
+  font-weight: 650;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.2em;
+}
+
 .btn:disabled {
   cursor: default;
   color: var(--ink-3);
@@ -93,7 +110,6 @@
 /* PRD «Pulgar primero»: 44 px tall targets for every primary link. Standalone links become a 44 px
    row; links inside a sentence grow their hit area with vertical padding, which leaves the line
    boxes (and so the text layout) where they were. */
-.event__date.link--source,
 .when__range.link--source,
 .source__link,
 .section__foot .link,
@@ -224,6 +240,7 @@
   font-size: var(--fs-sm);
   font-weight: 650;
   color: var(--ink-2);
+  white-space: nowrap;
 }
 
 .countdown__number {

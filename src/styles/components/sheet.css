@@ -57,6 +57,11 @@
   align-content: start;
 }
 
+/* A read-only sheet's body takes focus to scroll; its ring sits inside the panel. */
+.sheet__body:focus-visible {
+  outline-offset: -3px;
+}
+
 .sheet__lede {
   color: var(--ink);
 }
@@ -64,6 +69,28 @@
 .sheet__note {
   color: var(--ink-2);
   font-size: var(--fs-sm);
+}
+
+.sheet__group {
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+/* Pinned under the scrolling body: the filter sheet's reset and «Ver N fiestas». */
+.sheet__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--gutter);
+  border-block-start: var(--rule-thin) solid var(--ink);
+  background: var(--paper-raised);
+}
+
+.sheet__apply {
+  flex: 1;
+  max-inline-size: 20rem;
 }
 
 @media (min-width: 48rem) {

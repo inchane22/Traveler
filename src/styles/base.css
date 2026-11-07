@@ -12,8 +12,9 @@ html {
   scroll-padding-block: calc(var(--header-h) + var(--rule)) calc(var(--nav-h) + var(--rule) + env(safe-area-inset-bottom, 0px));
 }
 
+/* The ficha has no bottom nav: its action bar is the only bar at the bottom. */
 html:has(body[data-screen="festival"]) {
-  scroll-padding-block-end: calc(var(--nav-h) + var(--rule) + env(safe-area-inset-bottom, 0px) + var(--actionbar-h));
+  scroll-padding-block-end: calc(env(safe-area-inset-bottom, 0px) + var(--actionbar-h));
 }
 
 html:has(body[data-screen="explore"]) {
@@ -175,8 +176,14 @@ svg {
   flex: none;
 }
 
+/* Back leads the masthead; the ghost padding hangs into the gutter so its chevron lines up. */
 .masthead__back {
-  margin-inline-start: auto;
+  margin-inline-start: calc(-1 * var(--sp-3));
+  padding-inline: 0.6rem 0.75rem;
+}
+
+.masthead__inner--back {
+  gap: var(--sp-2);
 }
 
 .topnav {
@@ -227,6 +234,15 @@ svg {
   background: var(--paper);
   border-block-start: var(--rule) solid var(--ink);
   padding-block-end: env(safe-area-inset-bottom, 0px);
+}
+
+/* Detail screen: «Volver» in the masthead, Guardar and the calendar in the thumb zone. */
+body[data-screen="festival"] .bottomnav {
+  display: none;
+}
+
+body[data-screen="festival"] .footer {
+  padding-block-end: calc(env(safe-area-inset-bottom, 0px) + var(--sp-5));
 }
 
 .bottomnav ul {
@@ -329,12 +345,9 @@ svg {
     scroll-padding-block-end: var(--actionbar-h);
   }
 
-  .footer {
+  .footer,
+  body[data-screen="festival"] .footer {
     padding-block-end: var(--sp-6);
-  }
-
-  .masthead__back {
-    margin-inline-start: var(--sp-3);
   }
 }
 

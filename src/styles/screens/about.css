@@ -177,6 +177,67 @@
   gap: var(--sp-3);
 }
 
+/* Older changes fold behind one native disclosure. */
+.log-more {
+  margin-block-start: var(--sp-4);
+}
+
+.log-more__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-block-size: var(--tap);
+  padding: 0.5rem 1.1rem;
+  border: var(--rule-thin) solid var(--ink);
+  border-radius: var(--radius-pill);
+  font-weight: 750;
+  cursor: pointer;
+  list-style: none;
+}
+
+.log-more__toggle::-webkit-details-marker {
+  display: none;
+}
+
+.log-more__toggle::after {
+  content: "";
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  rotate: 45deg;
+  translate: 0 -0.15rem;
+}
+
+.log-more[open] .log-more__toggle {
+  margin-block-end: var(--sp-2);
+}
+
+.log-more[open] .log-more__toggle::after {
+  rotate: 225deg;
+  translate: 0 0.15rem;
+}
+
+.log-more__toggle:hover {
+  background: var(--paper-sunk);
+}
+
+/* «En esta página»: jump buttons; the heading they land on takes focus without a ring. */
+.jump__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-block: 0 var(--sp-2);
+}
+
+.jump__link {
+  padding-inline: 0.75rem;
+}
+
+.section-title[tabindex="-1"]:focus {
+  outline: none;
+}
+
 /* Partial coverage, shared by the Inicio freshness line and the data card. Comes after
    .freshness and .fresh__coverage so its color and weight win. */
 .freshness--partial,

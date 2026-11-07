@@ -4,10 +4,11 @@ import { h } from "../h.ts";
 import { countryName } from "../ics.ts";
 import type { ChangelogEntry, Festival } from "../schema.ts";
 import { CRITERIA } from "../score.ts";
-import { actionButton, asyncView, confidenceShape, emptyState, externalLink, festivalName, sectionHeading, statusShape, suggestAction } from "./components.ts";
+import { actionButton, asyncView, emptyState, externalLink, festivalName, sectionHeading, suggestAction } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { compactNumber, fullNumber, percent, relativeDays, shortDate } from "./format.ts";
 import { icon } from "./icons.ts";
+import { marksKey } from "./marks.ts";
 import { isStale, loadChangelog, loadCountry, loadIndex, PARTIAL_SHARE, resource, scoring, type PublicIndex } from "./model.ts";
 import { subscribeLinks } from "./subscribe.ts";
 
@@ -58,29 +59,7 @@ function scoringSection(ctx: Ctx): HTMLElement {
 }
 
 function legendSection(ctx: Ctx): HTMLElement {
-  return h(
-    "section",
-    { class: "section", "aria-labelledby": "marks-title" },
-    sectionHeading(ctx.t("about.marksTitle"), "marks-title"),
-    h(
-      "div",
-      { class: "keys" },
-      h(
-        "ul",
-        { class: "key-list", "aria-label": ctx.t("about.statusKey") },
-        (["confirmada", "tentativa", "por_anunciar", "aplazada", "cancelada"] as const).map((st) =>
-          h("li", null, h("span", { class: "status" }, statusShape(st), ctx.t(`status.${st}`)), h("span", { class: "key-list__desc" }, ctx.t(`about.status.${st}`))),
-        ),
-      ),
-      h(
-        "ul",
-        { class: "key-list", "aria-label": ctx.t("about.confidenceKey") },
-        (["oficial", "prensa", "patron", "estimacion"] as const).map((c) =>
-          h("li", null, h("span", { class: "conf" }, confidenceShape(c), ctx.t(`confidence.${c}`)), h("span", { class: "key-list__desc" }, ctx.t(`about.confidence.${c}`))),
-        ),
-      ),
-    ),
-  );
+  return h("section", { class: "section", "aria-labelledby": "marks-title" }, sectionHeading(ctx.t("about.marksTitle"), "marks-title"), marksKey(ctx));
 }
 
 function freshnessSection(index: PublicIndex, ctx: Ctx): HTMLElement {
@@ -167,35 +146,92 @@ function changeValue(v: unknown, field: string, ctx: Ctx): string {
   return JSON.stringify(v);
 }
 
+/** The latest changes stay in view; older ones fold behind one native disclosure. */
+const LOG_VISIBLE = 10;
+const LOG_MAX = 50;
+
+function logItem(e: ChangelogEntry, festivals: ReadonlyMap<string, Festival>, ctx: Ctx): HTMLElement {
+  const festival = festivals.get(e.slug);
+  return h(
+    "li",
+    { class: "log__item" },
+    h("p", { class: "log__date num" }, shortDate(e.date, ctx.lang)),
+    h(
+      "p",
+      { class: "log__what" },
+      h("a", { href: ctx.href({ name: "festival", slug: e.slug }), class: "link" }, festival ? festivalName(festival, ctx.lang) : e.slug),
+      " ",
+      h("span", { class: "log__field" }, fieldLabel(e.field, festival, ctx)),
+    ),
+    h("p", { class: "log__change num" }, ctx.t("about.change", { old: changeValue(e.old, e.field, ctx), new: changeValue(e.new, e.field, ctx) })),
+    h("p", { class: "log__sources" }, e.source_urls.slice(0, 3).map((url, i) => externalLink(url, ctx.t("about.sourceN", { n: i + 1 }), ctx.t, "link link--small"))),
+  );
+}
+
 function changelogSection(entries: readonly ChangelogEntry[], festivals: ReadonlyMap<string, Festival>, ctx: Ctx): HTMLElement {
-  const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 50);
+  const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date)).slice(0, LOG_MAX);
+  const latest = sorted.slice(0, LOG_VISIBLE);
+  const older = sorted.slice(LOG_VISIBLE);
   return h(
     "section",
     { class: "section", "aria-labelledby": "log-title" },
     sectionHeading(ctx.t("about.logTitle"), "log-title"),
     sorted.length
-      ? h(
-          "ol",
-          { class: "log" },
-          sorted.map((e) => {
-            const festival = festivals.get(e.slug);
-            return h(
-              "li",
-              { class: "log__item" },
-              h("p", { class: "log__date num" }, shortDate(e.date, ctx.lang)),
-              h(
-                "p",
-                { class: "log__what" },
-                h("a", { href: ctx.href({ name: "festival", slug: e.slug }), class: "link" }, festival ? festivalName(festival, ctx.lang) : e.slug),
-                " ",
-                h("span", { class: "log__field" }, fieldLabel(e.field, festival, ctx)),
-              ),
-              h("p", { class: "log__change num" }, ctx.t("about.change", { old: changeValue(e.old, e.field, ctx), new: changeValue(e.new, e.field, ctx) })),
-              h("p", { class: "log__sources" }, e.source_urls.slice(0, 3).map((url, i) => externalLink(url, ctx.t("about.sourceN", { n: i + 1 }), ctx.t, "link link--small"))),
-            );
-          }),
-        )
+      ? [
+          h("ol", { class: "log", "data-testid": "log-latest" }, latest.map((e) => logItem(e, festivals, ctx))),
+          older.length
+            ? h(
+                "details",
+                { class: "log-more" },
+                h("summary", { class: "log-more__toggle" }, ctx.t("about.logOlder", { count: older.length })),
+                h("ol", { class: "log" }, older.map((e) => logItem(e, festivals, ctx))),
+              )
+            : null,
+        ]
       : emptyState(ctx.t("about.logEmpty"), ctx.t("about.logEmptyBody"), [{ label: ctx.t("nav.explore"), href: ctx.href({ name: "explore", filters: { countries: [], months: [], types: [], tier2: false, sort: "date" } }) }]),
+  );
+}
+
+/**
+ * «En esta página»: buttons, not #anchors (the hash is the router's). Each scrolls to its section
+ * and moves focus to the heading, so keyboard and screen-reader users land there too.
+ */
+function jumpNav(ctx: Ctx): HTMLElement {
+  const targets: [string, string][] = [
+    ["how-title", ctx.t("about.jump.score")],
+    ["marks-title", ctx.t("about.jump.marks")],
+    ["fresh-title", ctx.t("about.jump.fresh")],
+    ["log-title", ctx.t("about.jump.log")],
+  ];
+  return h(
+    "nav",
+    { class: "jump", "aria-label": ctx.t("about.onThisPage") },
+    h(
+      "ul",
+      { class: "jump__list" },
+      targets.map(([id, label]) =>
+        h(
+          "li",
+          null,
+          h(
+            "button",
+            {
+              type: "button",
+              class: "pill jump__link",
+              "data-key": `jump-${id}`,
+              onclick: () => {
+                const heading = document.getElementById(id);
+                if (!heading) return;
+                heading.setAttribute("tabindex", "-1");
+                heading.scrollIntoView({ block: "start" });
+                heading.focus({ preventScroll: true });
+              },
+            },
+            label,
+          ),
+        ),
+      ),
+    ),
   );
 }
 
@@ -226,6 +262,7 @@ export function renderAbout(ctx: Ctx): HTMLElement {
     { class: "screen screen--about" },
     h("h1", { class: "screen-title display", tabindex: "-1" }, ctx.t("about.title")),
     h("p", { class: "screen-lede" }, ctx.t("about.lede")),
+    jumpNav(ctx),
     scoringSection(ctx),
     legendSection(ctx),
     asyncView(res, "list", ctx, ({ index, changelog, festivals }) => [freshnessSection(index, ctx), changelogSection(changelog, festivals, ctx), suggestSection(ctx)]),

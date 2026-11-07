@@ -3,7 +3,37 @@
 .home-title {
   display: grid;
   justify-items: start;
-  gap: 0.15rem;
+  gap: 0.4rem;
+}
+
+/* The focus ring stays clear of «Lo próximo en» above it. */
+.scope-btn:focus-visible {
+  outline-offset: 2px;
+}
+
+/* World and region views while the pilot fills up: which countries are in. */
+.pilot-note {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: flex-start;
+  margin-block: calc(-1 * var(--sp-1)) var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--ink-2);
+}
+
+.pilot-note .icon {
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  margin-block-start: 0.1rem;
+}
+
+.freshness__partial {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.legend__help {
+  margin-block: var(--sp-1) var(--sp-2);
 }
 
 .home-title__prefix {

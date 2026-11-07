@@ -8,6 +8,10 @@ export interface SheetOptions {
   title: string;
   closeLabel: string;
   body: (close: () => void) => Child;
+  /** Pinned below the scrolling body (the filter sheet's «Ver N fiestas»). */
+  footer?: Child;
+  /** Read-only content (no controls): the body takes focus so keyboards can scroll it. */
+  readOnly?: boolean;
   onClose?: () => void;
   initialFocus?: string;
 }
@@ -34,7 +38,8 @@ export function openSheet(opts: SheetOptions): HTMLDialogElement {
         h("h2", { class: "sheet__title display", id: titleId }, opts.title),
         h("button", { type: "button", class: "icon-btn sheet__close", "aria-label": opts.closeLabel, onclick: close }, icon("close")),
       ),
-      h("div", { class: "sheet__body" }, opts.body(close)),
+      h("div", { class: "sheet__body", tabindex: opts.readOnly ? "0" : null }, opts.body(close)),
+      opts.footer ?? null,
     ),
   );
   dialog.addEventListener("click", (event) => {

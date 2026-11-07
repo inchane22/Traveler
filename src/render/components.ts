@@ -77,6 +77,21 @@ export function confidenceMark(c: Confidence, t: Ctx["t"], withPrefix = false): 
   );
 }
 
+/**
+ * Lists carry one trust line instead of two marks: «■ Confirmada, fuente oficial». The status
+ * shape leads and the source stays in words, so every date still says where it comes from
+ * (RF-08); it wraps like a sentence on narrow rows. The ficha keeps both full marks.
+ */
+export function trustMark(occ: Occurrence, t: Ctx["t"]): HTMLElement {
+  return h(
+    "span",
+    { class: `trust status--${occ.status} conf--${occ.confidence}` },
+    statusShape(occ.status),
+    h("span", { class: "trust__status" }, t(`status.${occ.status}`)),
+    h("span", { class: "trust__source" }, t("trust.sep"), t(`trust.source.${occ.confidence}`)),
+  );
+}
+
 /** Solid = confirmed, hatched = not confirmed, outline = only a probable window (same code as the timeline). */
 export function bandMod(occ: Occurrence | null): "solid" | "hatched" | "window" {
   const kind = dateKind(occ);
@@ -103,6 +118,7 @@ export function countdownText(cd: Countdown, t: Ctx["t"]): string {
   switch (cd.kind) {
     case "days":
       if (cd.approx) return t(cd.days === 0 ? "countdown.windowOpen" : "countdown.approx", { count: cd.days });
+      if (cd.tentative) return t("countdown.approx", { count: cd.days });
       return cd.days === 1 ? t("countdown.tomorrow") : t("countdown.in", { count: cd.days });
     case "today":
       return t("countdown.today");
@@ -129,7 +145,7 @@ export function countdownBlock(occ: Occurrence | null, ctx: Ctx): HTMLElement {
       h(
         "span",
         { class: "countdown__visual", "aria-hidden": "true" },
-        h("span", { class: "countdown__label" }, ctx.t(cd.approx ? "countdown.approxLabel" : "countdown.startsIn")),
+        h("span", { class: "countdown__label" }, ctx.t(cd.approx ? "countdown.approxLabel" : cd.tentative ? "countdown.tentativeLabel" : "countdown.startsIn")),
         h("span", { class: "countdown__number num" }, String(cd.days)),
         h("span", { class: "countdown__unit" }, ctx.t("countdown.unit", { count: cd.days })),
       ),
