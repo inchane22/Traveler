@@ -4,7 +4,9 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
 import { describe, expect, test } from "vitest";
+import { sourcedFestivals } from "../../scripts/build-data.ts";
 import { noopArchiver } from "../../scripts/lib/archive.ts";
+import { loadDomainPolicy } from "../../scripts/lib/domains.ts";
 import { memoryUsageStore } from "../../scripts/lib/budget.ts";
 import { fixtureDirTransport, replayTransport, type CreateParams, type MessagesTransport } from "../../scripts/lib/client.ts";
 import { memoryLogger } from "../../scripts/lib/io.ts";
@@ -12,7 +14,7 @@ import { buildQueue } from "../../scripts/lib/queue.ts";
 import { missingDateFacts, runRefresh, searchedBlind, type RefreshDeps } from "../../scripts/lib/refresh-run.ts";
 import type { FestivalLog } from "../../scripts/lib/report.ts";
 import type { ReviewedChange } from "../../scripts/lib/validate.ts";
-import { cite, config, country, json, message, REFRESH_FIXTURES, refreshOptions, search, tempRepo, text, TODAY, usage } from "../fixtures/pipeline/helpers.ts";
+import { cite, config, country, json, message, REFRESH_FIXTURES, refreshOptions, REPO, search, tempRepo, text, TODAY, usage } from "../fixtures/pipeline/helpers.ts";
 
 const deps = (transport: MessagesTransport, over: Partial<RefreshDeps> = {}): RefreshDeps => ({ transport, archiver: noopArchiver, usage: memoryUsageStore(), log: memoryLogger(), ...over });
 const tool = (p: CreateParams) => (p.tools as Anthropic.WebSearchTool20260209[])[0]!;
@@ -65,8 +67,10 @@ describe("follow-up search for missing dates", () => {
     expect(userText(second!.params)).not.toContain("attendance");
     expect(userText(first!.params)).toContain("attendance");
 
-    // R2: Brazil reaches 3 dated, A- or B-sourced festivals and the PR says how to publish it.
-    expect(r.drafts).toEqual([{ country: "BR", before: 2, after: 3, needed: 3 }]);
+    // R2: Recife adds one dated, A-sourced festival to Brazil and the PR says how to publish it.
+    const before = sourcedFestivals(country("BR"), loadDomainPolicy(REPO, "BR"));
+    expect(before).toBeGreaterThanOrEqual(2);
+    expect(r.drafts).toEqual([{ country: "BR", before, after: before + 1, needed: 3 }]);
     const md = readFileSync(join(root, "proposals", `${TODAY}.md`), "utf8");
     expect(md).toContain("### Países en borrador (R2)");
     expect(md).toContain("**Listo para publicar:**");
