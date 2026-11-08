@@ -31,26 +31,51 @@ function currentLines(item: QueueItem, country: CountryFile): string {
   return lines.join("\n");
 }
 
-export function researchUserPrompt(item: QueueItem, country: CountryFile): string {
+/** Facts the follow-up search can be asked for: the ones that put an edition on the calendar. */
+export type FollowupFact = "start" | "end" | "status";
+
+const FACT_LINES: Record<FollowupFact, string> = {
+  start: "- start: first day of the festival",
+  end: "- end: last day of the festival",
+  status: "- status: confirmed by the organizer, still to be announced, postponed or cancelled",
+};
+
+/**
+ * The research turn. With `followup`, the second, wider search after a first pass that cited
+ * official pages but did not state these facts: it asks for them only.
+ */
+export function researchUserPrompt(item: QueueItem, country: CountryFile, followup?: readonly FollowupFact[]): string {
   const lang = langFor(country.country);
   const e = item.festival.editions[String(item.year)];
   const keyEvents = e?.key_events.length ? e.key_events.map((k) => k.name.es).join(", ") : "none stored, report the main ones";
   const news = needsNewsSweep(item.daysToStart)
     ? `- news from the last 30 days about this edition that use the words ${newsTerms(lang).map((t) => `«${t}»`).join(", ")}`
     : "";
+  const countryName = countryInfo(country.country)?.names.en ?? country.country;
+  const facts = followup?.length
+    ? followup.map((f) => FACT_LINES[f])
+    : [
+        FACT_LINES.start,
+        FACT_LINES.end,
+        FACT_LINES.status,
+        `- key events with their dates: ${keyEvents}`,
+        "- attendance of the last completed edition, with its year and who measured it",
+        "- UNESCO Intangible Cultural Heritage inscription or national heritage declaration",
+      ];
   // Stored names came from an onboarding draft: fenced like any web text (SEC-07).
   return loadPrompt("research-user.md", {
     name_local: fence(item.festival.names.local),
     name_es: fence(item.festival.names.es),
     name_en: fence(item.festival.names.en),
     city: fence(item.festival.city),
-    country_name: countryInfo(country.country)?.names.en ?? country.country,
+    country_name: countryName,
     country: country.country,
     year: String(item.year),
     lang,
     current: currentLines(item, country),
-    key_events: keyEvents,
+    facts: facts.join("\n"),
     news,
+    followup: followup?.length ? loadPrompt("research-followup.md", { country_name: countryName, year: String(item.year) }) : "",
   });
 }
 

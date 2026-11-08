@@ -1,8 +1,9 @@
 // Weekly verification (H4, RF-15) and news sweep (R9). Usage, from docs/architecture.md:
 //   pnpm refresh -- [--dry-run] [--only=<slug>] [--country=<cc>] [--today=YYYY-MM-DD] [--fixtures=<dir>]
 //                   [--sweep=news [--within=<days>]]
-// Env beyond the API ones: USAGE_FALLBACK_PATH (usage.json of the last run artifact, R10) and
-// LINKS_REPORT_PATH (proposals/links-<date>.json from check-links, R13).
+// Env beyond the API ones: USAGE_FALLBACK_PATH (usage.json of the last run artifact, R10),
+// LINKS_REPORT_PATH (proposals/links-<date>.json from check-links, R13) and MAX_FOLLOWUPS_PER_RUN
+// (wider follow-up searches for missing dates, weekly run only; 6 by default, 0 turns them off).
 // Locally the key comes from 1Password: op run --env-file=.env.op -- pnpm refresh -- --dry-run
 import { existsSync } from "node:fs";
 import { join, resolve } from "node:path";
@@ -45,6 +46,7 @@ export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root
       ...(args.country ? { country: args.country } : {}),
       maxFestivals: args.maxFestivals,
       perCountry: args.perCountry,
+      maxFollowups: args.maxFollowups,
       budgetUsd: args.budgetUsd,
       ...(args.trapSecret ? { trapSecret: args.trapSecret } : {}),
       ...(args.githubOutput ? { githubOutput: args.githubOutput } : {}),

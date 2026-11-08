@@ -122,7 +122,7 @@ export function collect(content: readonly Anthropic.ContentBlock[]): Pick<Resear
   return { text: texts.join("").trim(), citedClaims, citations, queries, searchErrors };
 }
 
-async function runPass(transport: MessagesTransport, gate: CallGate, req: ResearchRequest, pass: 1 | 2): Promise<ResearchResult> {
+export async function researchPass(transport: MessagesTransport, gate: CallGate, req: ResearchRequest, pass: 1 | 2): Promise<ResearchResult> {
   const ctx: CallContext = { key: req.key, kind: "research" };
   const params = buildResearchParams(req, pass);
   const content: Anthropic.ContentBlock[] = [];
@@ -160,10 +160,10 @@ async function runPass(transport: MessagesTransport, gate: CallGate, req: Resear
 
 /** Pass 1 restricted to official + tier-A domains; pass 2 only when pass 1 found no citation. */
 export async function research(transport: MessagesTransport, gate: CallGate, req: ResearchRequest): Promise<ResearchResult> {
-  if (!req.allowedDomains.length) return runPass(transport, gate, req, 2);
-  const first = await runPass(transport, gate, req, 1);
+  if (!req.allowedDomains.length) return researchPass(transport, gate, req, 2);
+  const first = await researchPass(transport, gate, req, 1);
   if (first.outcome !== "no_citations") return first;
-  const second = await runPass(transport, gate, req, 2);
+  const second = await researchPass(transport, gate, req, 2);
   // Keep what pass 1 tried, so the run log shows a failed restricted search too.
   return { ...second, queries: [...first.queries, ...second.queries], searchErrors: [...first.searchErrors, ...second.searchErrors] };
 }

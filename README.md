@@ -121,6 +121,7 @@ Todas las acciones de terceros están fijadas por SHA con la versión en un come
    gh variable set ANTHROPIC_MODEL --body claude-sonnet-5-5
    gh variable set MONTHLY_BUDGET_USD --body 20
    gh variable set MAX_FESTIVALS_PER_RUN --body 40
+   gh variable set MAX_FOLLOWUPS_PER_RUN --body 6    # búsquedas amplias por corrida para fechas que los sitios oficiales no dan
    gh variable set ONBOARD_QUEUE --body "PE,BR,BO,MX"   # el job mensual toma el primero sin archivo ni rama
    ```
 
@@ -198,8 +199,9 @@ Un error encontrado se corrige con un PR, activa el segundo revisor un mes y sum
 
 - Búsqueda web: US$10 por cada 1.000 búsquedas, más los tokens del contenido que traen, que se cobran como entrada. Una búsqueda con error no se cobra ([docs](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
 - Modelo por defecto `claude-sonnet-5-5`: US$2 por millón de tokens de entrada y US$10 por millón de salida [tabla de modelos de Anthropic al 2026-10-06; confírmalo en la [página de precios](https://platform.claude.com/docs/en/about-claude/pricing)].
-- Estimación: 40 fiestas, 5 búsquedas cada una y 4 corridas al mes son 800 búsquedas, unos US$8 más tokens. Cada onboarding suma de 10 a 20 búsquedas más tokens [estimación del PRD].
-- Barridos de noticias (R9): unas 26 corridas más al mes. La mayoría no encuentra fiestas en su ventana y no hace ninguna llamada; cada fiesta que entra cuesta lo mismo que en la verificación semanal (búsqueda más extracción). Cuentan contra `MONTHLY_BUDGET_USD` y la degradación del 80% también los limita [estimación propia, sin medir].
+- Medido el 2026-11-08 (BR, 5 fiestas, búsqueda directa): unos US$0,24 por fiesta y pasada, búsqueda más extracción; la mayor parte son los tokens de los resultados, no las búsquedas. Ensayo del mismo día, 6 fiestas de BR con seguimiento: `claude-sonnet-5-5` US$2,49 (unos US$0,21 por pasada), `claude-haiku-5-5` US$0,51 (unos US$0,05), pero Haiku sacó las fechas de Recife de un calendario de feriados de Río y la validación tuvo que marcarlas; por eso el modelo sigue siendo Sonnet. Cada onboarding suma de 10 a 20 búsquedas más tokens [estimación del PRD].
+- Con la regla anterior (todo lo que empezaba en menos de 180 días, cada semana) los 30 días desde el 2026-11-09 costaban unos US$49. La cadencia actual (ver PRD, «Qué fiestas se verifican») y el arreglo del barrido para fiestas aplazadas sin fecha la bajan a unos US$28 en un mes con 5 lunes [simulación sobre la cola, sin medir]; el resto lo corta la degradación del 80%. Las búsquedas de seguimiento suman como mucho `MAX_FOLLOWUPS_PER_RUN` fiestas por lunes y nunca desde el 80%.
+- Barridos de noticias (R9): cada fiesta que entra cuesta lo mismo que en la verificación semanal (búsqueda más extracción). Cuentan contra `MONTHLY_BUDGET_USD` y la degradación del 80% también los limita.
 - Corte: el script lleva la cuenta en `data/usage.json` contra `MONTHLY_BUDGET_USD` (20 por defecto). Avisa al 50% y al 80%; desde el 80% solo verifica fiestas de Nivel 1 a 60 días o menos; al 100% se detiene (R10). El límite del workspace en la Console es el tope duro.
 - La búsqueda va con `allowed_callers: ["direct"]`, sin filtrado dinámico: con filtrado dinámico la búsqueda corre dentro de code execution y la respuesta no trae citas `web_search_result_location`, así que toda propuesta caía como `no_citations` (corrida del 2026-11-08). La Message Batches API cobra la búsqueda al mismo precio.
 

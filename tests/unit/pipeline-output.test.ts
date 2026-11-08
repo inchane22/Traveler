@@ -80,8 +80,8 @@ describe("JSON files", () => {
 
 describe("prompts built from our own data", () => {
   const co = country("CO");
-  const queue = buildQueue([co], config, TODAY, { max: 40, perCountry: 10 });
-  const item = (slug: string) => queue.find((i) => i.slug === slug)!;
+  // --only queues a festival even when the cadence would not (confirmed and verified today).
+  const item = (slug: string) => buildQueue([co], config, TODAY, { max: 40, perCountry: 10, only: slug })[0]!;
 
   test("the research prompt carries names, stored values, the usual timing and, 45 days out, the news sweep (R9)", () => {
     const near = researchUserPrompt(item("independencia-cartagena"), co);

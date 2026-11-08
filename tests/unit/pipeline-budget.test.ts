@@ -109,7 +109,8 @@ describe("budget inside a refresh run (R10)", () => {
     const result = await runRefresh(refreshOptions(root), { transport, archiver: noopArchiver, usage, log: memoryLogger() });
     expect(transport.calls).toHaveLength(0);
     expect(result.exitCode).toBe(1);
-    expect(result.files).toEqual([]);
+    // Only the report, so the stop can be read from the run artifact; no data file is touched.
+    expect(result.files.map((f) => f.slice(root.length + 1)).sort()).toEqual(["proposals/2026-10-26.json", "proposals/2026-10-26.md"]);
     expect(result.report!.festivals[0]!.outcome).toBe("skipped_budget");
   });
 
