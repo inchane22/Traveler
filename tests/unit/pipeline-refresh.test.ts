@@ -1,4 +1,4 @@
-import { cpSync, existsSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
 import { describe, expect, test } from "vitest";
@@ -9,11 +9,11 @@ import { noopArchiver, type Archiver } from "../../scripts/lib/archive.ts";
 import { memoryUsageStore } from "../../scripts/lib/budget.ts";
 import { fixtureDirTransport, replayTransport, type MessagesTransport } from "../../scripts/lib/client.ts";
 import { memoryLogger } from "../../scripts/lib/io.ts";
-import { buildQueue, compareItems, reasonsFor } from "../../scripts/lib/queue.ts";
+import { buildQueue, compareItems, monthlySlot, reasonsFor } from "../../scripts/lib/queue.ts";
 import { runRefresh, type RefreshDeps } from "../../scripts/lib/refresh-run.ts";
 import { dataChangeCount, PR_MAX_CHANGES, selectForPr } from "../../scripts/lib/select.ts";
 import type { ReviewedChange } from "../../scripts/lib/validate.ts";
-import { config, countries, githubOutput, json, message, readJsonFile, REFRESH_FIXTURES, refreshOptions, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
+import { config, countries, country, githubOutput, json, message, readJsonFile, REFRESH_FIXTURES, refreshOptions, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
 import type { RefreshReport } from "../../scripts/lib/report.ts";
 
 const deps = (over: Partial<RefreshDeps> = {}): RefreshDeps => ({
@@ -27,10 +27,22 @@ const deps = (over: Partial<RefreshDeps> = {}): RefreshDeps => ({
 const find = (list: readonly ReviewedChange[], slug: string, field: string) => list.find((c) => c.slug === slug && c.field === field);
 const coFile = (root: string) => CountryFile.parse(readJsonFile(join(root, "data", "countries", "co.json")));
 const edition = (root: string, slug: string, year: string) => coFile(root).festivals.find((f) => f.slug === slug)!.editions[year];
-/** The recorded responses were captured against the PRD-era CO file, so the H4 scenarios replay against that frozen copy. */
+/**
+ * The recorded responses were captured against the PRD-era CO file, so the H4 scenarios replay
+ * against that frozen copy. Its confirmed editions were verified on TODAY, which the R10 cadence
+ * would skip; dated three weeks back they are stale and verified again, as the scenarios need.
+ */
 const prdRepo = (): string => {
   const root = tempRepo();
-  cpSync(join(REPO, "tests", "fixtures", "prd", "co.json"), join(root, "data", "countries", "co.json"));
+  const file = CountryFile.parse(readJsonFile(join(REPO, "tests", "fixtures", "prd", "co.json")));
+  const aged = {
+    ...file,
+    festivals: file.festivals.map((f) => ({
+      ...f,
+      editions: Object.fromEntries(Object.entries(f.editions).map(([y, e]) => [y, e.last_verified ? { ...e, last_verified: "2026-10-05" } : e])),
+    })),
+  };
+  writeFileSync(join(root, "data", "countries", "co.json"), `${JSON.stringify(aged, null, 2)}\n`);
   return root;
 };
 
@@ -109,13 +121,15 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
     expect(result.files.map((f) => f.slice(root.length + 1)).sort()).toEqual(["data/changelog.json", "data/countries/co.json", "proposals/2026-10-26.json", "proposals/2026-10-26.md"]);
   });
 
-  test("no changes: nothing is written and changes=0", async () => {
+  test("no changes: only the report is written (for the run artifact) and changes=0", async () => {
     const root = tempRepo();
     const out = join(root, "gh");
     writeFileSync(out, "");
+    const before = readFileSync(join(root, "data", "countries", "co.json"), "utf8");
     const result = await runRefresh(refreshOptions(root, { dryRun: false, only: "carnaval-riosucio", githubOutput: out }), deps());
-    expect(result.files).toEqual([]);
-    expect(existsSync(join(root, "proposals"))).toBe(false);
+    expect(result.files.map((f) => f.slice(root.length + 1)).sort()).toEqual(["proposals/2026-10-26.json", "proposals/2026-10-26.md"]);
+    expect(readJsonFile<RefreshReport>(join(root, "proposals", `${TODAY}.json`)).festivals[0]).toMatchObject({ slug: "carnaval-riosucio", outcome: "refusal" });
+    expect(readFileSync(join(root, "data", "countries", "co.json"), "utf8")).toBe(before);
     expect(githubOutput(out)).toMatchObject({ changes: "0", flagged: "0" });
   });
 
@@ -188,13 +202,40 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
 });
 
 describe("queue", () => {
-  test("180 days, not confirmed, or stale (30 days, 14 when under 120 days)", () => {
-    expect(reasonsFor(100, "confirmada", TODAY, TODAY)).toEqual(["soon"]);
-    expect(reasonsFor(200, "tentativa", TODAY, TODAY)).toEqual(["unconfirmed"]);
-    expect(reasonsFor(200, "confirmada", "2026-09-25", TODAY)).toEqual(["stale"]);
+  test("R10 cadence: unconfirmed weekly from 180 days and monthly before; confirmed when stale (30 days, 14 under 120)", () => {
+    expect(reasonsFor(100, "tentativa", TODAY, TODAY)).toEqual(["soon", "unconfirmed"]);
+    expect(reasonsFor(-20, "aplazada", null, TODAY)).toEqual(["soon", "unconfirmed"]);
+    // Far and unconfirmed: only in the first week of the month.
+    expect(reasonsFor(200, "tentativa", null, TODAY)).toEqual([]);
+    expect(reasonsFor(200, "tentativa", null, "2026-11-07")).toEqual(["unconfirmed"]);
+    expect(reasonsFor(Number.POSITIVE_INFINITY, "por_anunciar", null, "2026-11-02")).toEqual(["unconfirmed"]);
+    expect(reasonsFor(Number.POSITIVE_INFINITY, "por_anunciar", null, "2026-11-08")).toEqual([]);
+    expect(monthlySlot("2026-11-07")).toBe(true);
+    expect(monthlySlot("2026-11-08")).toBe(false);
+    // Confirmed: being soon is not enough; the news sweeps watch the last 45 days.
+    expect(reasonsFor(100, "confirmada", TODAY, TODAY)).toEqual([]);
+    expect(reasonsFor(100, "confirmada", "2026-10-12", TODAY)).toEqual([]);
+    expect(reasonsFor(100, "confirmada", "2026-10-11", TODAY)).toEqual(["stale"]);
     expect(reasonsFor(200, "confirmada", "2026-09-26", TODAY)).toEqual([]);
-    expect(reasonsFor(100, "confirmada", "2026-10-11", TODAY)).toEqual(["soon", "stale"]);
+    expect(reasonsFor(200, "confirmada", "2026-09-25", TODAY)).toEqual(["stale"]);
     expect(reasonsFor(200, "confirmada", null, TODAY)).toEqual(["stale"]);
+  });
+
+  test("a run for one country (manual dispatch) always gets the monthly checks", () => {
+    const br = country("BR");
+    const scheduled = buildQueue([br], config, "2026-11-09", { max: 40, perCountry: 10 }).map((i) => i.slug);
+    const manual = buildQueue([br], config, "2026-11-09", { max: 40, perCountry: 10, country: "BR" }).map((i) => i.slug);
+    expect(scheduled).not.toContain("cirio-de-nazare");
+    expect(manual).toContain("cirio-de-nazare");
+    expect(buildQueue([br], config, "2026-12-07", { max: 40, perCountry: 10 }).map((i) => i.slug)).toContain("cirio-de-nazare");
+  });
+
+  test("a postponed edition without new dates stays in the weekly run but out of the news sweeps", () => {
+    const co = country("CO");
+    const sweep = buildQueue([co], config, TODAY, { max: 40, perCountry: 10, sweepWithin: 45 }).map((i) => i.slug);
+    expect(sweep).not.toContain("petronio-alvarez");
+    expect(sweep).toContain("independencia-cartagena");
+    expect(buildQueue([co], config, TODAY, { max: 40, perCountry: 10 }).find((i) => i.slug === "petronio-alvarez")?.reasons).toEqual(["soon", "unconfirmed"]);
   });
 
   test("ordered by days to start then tier, capped overall and per country", () => {
@@ -251,7 +292,10 @@ describe("CLI (docs/architecture.md «Pipeline CLI»)", () => {
       maxFestivals: 12,
       perCountry: 10,
       trapSecret: "s",
+      maxFollowups: 6,
     });
+    expect(refreshArgs([], { MAX_FOLLOWUPS_PER_RUN: "0" }, now).maxFollowups).toBe(0);
+    expect(() => refreshArgs([], { MAX_FOLLOWUPS_PER_RUN: "-1" }, now)).toThrow(/0 or a positive integer/);
     expect(onboardArgs(["--country=pe", "--today=2026-11-01"], {}, now)).toMatchObject({ country: "PE", today: "2026-11-01", dryRun: false });
     for (const bad of [["--today=26/10/2026"], ["--only=Bad Slug"], ["--country=COL"], ["--x"], ["--only"]]) expect(() => refreshArgs(bad, {}, now)).toThrow(UsageError);
     expect(() => refreshArgs([], { MAX_FESTIVALS_PER_RUN: "0" }, now)).toThrow(/positive integer/);

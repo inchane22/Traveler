@@ -4,7 +4,7 @@ import { ISODate } from "../../src/schema.ts";
 import { DEFAULT_BUDGET_USD } from "./budget.ts";
 import { modelFromEnv } from "./client.ts";
 import { NEWS_SWEEP_DAYS } from "./lang.ts";
-import { DEFAULT_MAX, DEFAULT_PER_COUNTRY } from "./queue.ts";
+import { DEFAULT_MAX, DEFAULT_MAX_FOLLOWUPS, DEFAULT_PER_COUNTRY } from "./queue.ts";
 
 export interface CommonOptions {
   dryRun: boolean;
@@ -23,6 +23,8 @@ export interface RefreshArgs extends CommonOptions {
   trapSecret: string | undefined;
   /** R9 news sweep (`--sweep=news`): only festivals starting within this many days. */
   sweepWithin?: number;
+  /** Wider follow-up searches for missing dates (weekly run only); 0 turns them off. */
+  maxFollowups: number;
 }
 
 export interface OnboardArgs extends CommonOptions {
@@ -62,6 +64,13 @@ function positiveInt(raw: string | undefined, fallback: number, name: string): n
   return n;
 }
 
+function nonNegativeInt(raw: string | undefined, fallback: number, name: string): number {
+  if (raw === undefined || raw.trim() === "") return fallback;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 0) throw new UsageError(`${name} must be 0 or a positive integer, got ${raw}`);
+  return n;
+}
+
 function positiveNumber(raw: string | undefined, fallback: number, name: string): number {
   if (raw === undefined || raw.trim() === "") return fallback;
   const n = Number(raw);
@@ -97,6 +106,7 @@ export function refreshArgs(argv: readonly string[], env: NodeJS.ProcessEnv, now
     maxFestivals: positiveInt(env.MAX_FESTIVALS_PER_RUN, DEFAULT_MAX, "MAX_FESTIVALS_PER_RUN"),
     perCountry: DEFAULT_PER_COUNTRY,
     trapSecret: env.TRAP_SECRET?.trim() || undefined,
+    maxFollowups: nonNegativeInt(env.MAX_FOLLOWUPS_PER_RUN, DEFAULT_MAX_FOLLOWUPS, "MAX_FOLLOWUPS_PER_RUN"),
   };
 }
 
