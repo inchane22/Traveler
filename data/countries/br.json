@@ -1,7 +1,7 @@
 {
   "country": "BR",
   "status": "borrador",
-  "generated_at": "2026-10-26",
+  "generated_at": "2026-11-08",
   "timezone": "America/Sao_Paulo",
   "region": "sudamerica",
   "festivals": [
@@ -23,13 +23,14 @@
           "confidence": "prensa",
           "key_events": [
             { "id": "desfiles-serie-ouro", "name": { "es": "Desfiles de la Série Ouro en el Sambódromo", "en": "Série Ouro parades at the Sambadrome", "pt": "Desfiles da Série Ouro na Sapucaí" }, "date": "2027-02-05", "end": "2027-02-06", "confidence": "prensa" },
-            { "id": "desfiles-grupo-especial", "name": { "es": "Desfiles del Grupo Especial", "en": "Grupo Especial samba school parades", "pt": "Desfiles do Grupo Especial" }, "date": "2027-02-07", "end": "2027-02-09", "confidence": "prensa" }
+            { "id": "desfiles-grupo-especial", "name": { "es": "Desfiles del Grupo Especial", "en": "Grupo Especial samba school parades", "pt": "Desfiles do Grupo Especial" }, "date": "2027-02-07", "end": "2027-02-09", "confidence": "oficial" }
           ],
           "sources": [
             { "url": "https://www.poder360.com.br/poder-gente/carnaval-2027-veja-a-ordem-dos-desfiles-no-rio-de-janeiro/", "publisher": "Poder360 (con Agência Brasil)", "accessed": "2026-10-26", "tier": "B", "quote": "vai iniciar os desfiles na 3ª feira (9.fev.2027)" },
-            { "url": "https://diariodorio.com/serie-ouro-define-ordem-dos-desfiles-para-o-carnaval-2027-na-sapucai/", "publisher": "Diário do Rio", "accessed": "2026-10-26", "tier": "B", "quote": "Oito escolas se apresentam na sexta-feira, 5 de fevereiro." }
+            { "url": "https://diariodorio.com/serie-ouro-define-ordem-dos-desfiles-para-o-carnaval-2027-na-sapucai/", "publisher": "Diário do Rio", "accessed": "2026-10-26", "tier": "B", "quote": "Oito escolas se apresentam na sexta-feira, 5 de fevereiro." },
+            { "url": "https://www.marica.rj.gov.br/noticia/uniao-de-marica-reune-comunidade-no-primeiro-ensaio-de-rua-para-2027", "publisher": "marica.rj.gov.br", "accessed": "2026-11-08", "tier": "A", "quote": "A União de Maricá abrirá os desfiles de domingo do Grupo Especial, no dia 7 de fevereiro de 2027" }
           ],
-          "last_verified": "2026-10-26",
+          "last_verified": "2026-11-08",
           "sequence": 0,
           "note": { "es": "Orden de desfiles sorteado por Liesa en abril de 2026; la agenda de blocos aún no se publica.", "en": "Parade order drawn by Liesa in April 2026; the bloco schedule is not out yet.", "pt": "Ordem dos desfiles sorteada pela Liesa em abril de 2026; a agenda dos blocos ainda não saiu." }
         }
@@ -111,7 +112,7 @@
       "score": {
         "convocatoria": { "measure": { "attendance": 3700000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.diariodepernambuco.com.br/vida-urbana/2026/02/11707898-recife-apresenta-balanco-do-carnaval-2026-37-milhoes-de-folioes-nas-ruas-e-rs-28-bi-injetados-na-economia.html", "note": { "es": "Balance presentado por la Prefeitura do Recife.", "en": "Count presented by the Recife city government.", "pt": "Balanço apresentado pela Prefeitura do Recife." } },
         "calle": null,
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/frevo-performing-arts-of-the-carnival-of-recife-00603", "note": { "es": "Frevo, inscrito en 2012.", "en": "Frevo, inscribed in 2012.", "pt": "Frevo, inscrito em 2012." } },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://www.gov.br/turismo/pt-br/assuntos/noticias/hoje-e-dia-do-frevoc-patrimonio-cultural-imaterial-da-humanidade", "quote": "Em 2012, o frevo foi reconhecido pela Unesco como patrimônio cultural da humanidade." },
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Recife/Guararapes%E2%80%93Gilberto_Freyre_International_Airport" },
         "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Recife" }
       },
