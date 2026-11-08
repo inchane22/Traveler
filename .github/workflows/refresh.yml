@@ -148,6 +148,7 @@ jobs:
           ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL || 'claude-sonnet-5-5' }}
           MONTHLY_BUDGET_USD: ${{ vars.MONTHLY_BUDGET_USD || '20' }}
           MAX_FESTIVALS_PER_RUN: ${{ vars.MAX_FESTIVALS_PER_RUN || '40' }}
+          MAX_FOLLOWUPS_PER_RUN: ${{ vars.MAX_FOLLOWUPS_PER_RUN || '6' }}
           ARCHIVE_ACCESS_KEY: ${{ secrets.ARCHIVE_ACCESS_KEY }}
           ARCHIVE_SECRET_KEY: ${{ secrets.ARCHIVE_SECRET_KEY }}
           # R12: a trap is planted only when its fingerprint can be stored (the app step below).

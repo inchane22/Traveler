@@ -30,6 +30,25 @@ export interface FestivalLog {
   citations?: number;
   search_errors?: string[];
   detail?: string;
+  /** Second, wider search for the facts the first pass cited pages for but did not state. */
+  followup?: FollowupLog;
+}
+
+export interface FollowupLog {
+  fields: string[];
+  outcome: FestivalOutcome;
+  citations?: number;
+  /** Fields the follow-up proposed a value for that passed validation or went to review. */
+  answered?: string[];
+  detail?: string;
+}
+
+/** R2: a draft country is published by hand once 3 festivals have a dated, A- or B-sourced edition. */
+export interface DraftProgress {
+  country: string;
+  before: number;
+  after: number;
+  needed: number;
 }
 
 export interface RefreshReport {
@@ -50,6 +69,8 @@ export interface RefreshReport {
   sweep_within?: number;
   /** R13: editions whose sources are all gone, one confidence level down (from LINKS_REPORT_PATH). */
   link_downgrades?: LinkDowngrade[];
+  /** R2: draft countries this run researched, with their sourced festivals before and after it. */
+  drafts?: DraftProgress[];
 }
 
 const FIELD_LABEL: Record<string, string> = { start: "inicio", end: "fin", status: "estado", confidence: "confianza" };
@@ -99,6 +120,20 @@ function checklist(changes: readonly ReviewedChange[]): string {
   return `### Fechas de Nivel 1: pega lo que viste en la fuente\n\nNo apruebes sin abrir cada fuente. Una fecha que no encuentres tal cual se rechaza.\n\n${lines.join("\n")}`;
 }
 
+function draftLine(d: DraftProgress): string {
+  const file = `data/countries/${d.country.toLowerCase()}.json`;
+  const count = `${d.after} de ${d.needed} fiestas con fecha y fuente A o B${d.after === d.before ? "" : ` (antes ${d.before})`}`;
+  if (d.after < d.needed) return `- ${d.country}: ${count}; sigue en borrador.`;
+  return `- ${d.country}: ${count}. **Listo para publicar:** si apruebas sus fechas, cambia \`"status": "borrador"\` por \`"publicado"\` en \`${file}\` dentro de este PR, corre \`node scripts/build-data.ts\` y versiona \`data/index.json\`.`;
+}
+
+function followupText(f: FollowupLog): string {
+  const fields = f.fields.map(fieldLabel).join(", ");
+  const found = f.answered?.length ? `, propuso ${f.answered.map(fieldLabel).join(", ")}` : "";
+  const cites = f.citations !== undefined ? `, ${f.citations} citas` : "";
+  return `búsqueda amplia para ${fields}: ${f.outcome}${cites}${found}${f.detail ? ` (${mdText(f.detail, 120)})` : ""}`;
+}
+
 export function renderRefreshMarkdown(r: RefreshReport): string {
   const parts: string[] = [];
   parts.push(r.sweep_within !== undefined ? `## Barrido de noticias ${r.date} (fiestas a ${r.sweep_within} días o menos)` : `## Verificación semanal ${r.date}`);
@@ -117,6 +152,7 @@ export function renderRefreshMarkdown(r: RefreshReport): string {
       lines.join("\n"),
     );
   }
+  if (r.drafts?.length) parts.push("### Países en borrador (R2)", r.drafts.map(draftLine).join("\n"));
   if (r.applied.length) {
     parts.push(`### Cambios (${r.applied.length})`, mdTable(HEADER, r.applied.map(row)));
     const list = checklist(r.applied);
@@ -138,7 +174,7 @@ export function renderRefreshMarkdown(r: RefreshReport): string {
     const lines = r.deferred.map((c) => `- ${c.country} · ${mdText(c.name, 60)} · ${mdText(fieldLabel(c.field))} → ${mdText(c.new)}`);
     parts.push(details(`Fuera de este PR por el tope de 15 cambios (${r.deferred.length})`, lines.join("\n")));
   }
-  const log = r.festivals.map((f) => `- ${f.country}/${f.slug} ${f.year}: ${f.outcome}${f.detail ? ` (${mdText(f.detail, 160)})` : ""}`);
+  const log = r.festivals.map((f) => `- ${f.country}/${f.slug} ${f.year}: ${f.outcome}${f.detail ? ` (${mdText(f.detail, 160)})` : ""}${f.followup ? ` · ${followupText(f.followup)}` : ""}`);
   const spend = `Gasto del mes ${r.budget.month}: US$${r.budget.usd.toFixed(2)} de US$${r.budget.budget_usd.toFixed(2)} (${r.budget.searches} búsquedas, nivel ${r.budget.level}).`;
   parts.push(details("Registro de la corrida", `${spend}\n\n${log.join("\n")}`));
   return `${parts.join("\n\n")}\n`;

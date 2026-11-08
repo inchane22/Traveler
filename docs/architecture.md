@@ -144,13 +144,29 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
 - Unexpected per-festival errors (a bug, not an API error; BE-04): the festival is logged as
   `error` and the run goes on; under Actions each one is a `::error::` annotation. Exit 1 when no
   festival was verified at all; otherwise refresh exits 0 so the PR opens, and refresh.yml fails
-  the job afterwards when `unexpected` > 0. Proposals are written whenever there was one.
+  the job afterwards when `unexpected` > 0. Proposals are written on every run, changes or not
+  (`proposals/` is the run artifact, never committed), so an empty run can be diagnosed.
+- Blind search check: a weekly run where two or more festivals were researched and every one
+  ended `no_citations` exits 1 with a `::error::` annotation; the search setup is broken, not the
+  festivals. News sweeps are never judged this way.
+- Follow-up search (R7, R2): after a pass-1 answer (official + A domains only) that cites pages but
+  leaves `start` or `end` of an unconfirmed edition under 120 days out unanswered
+  (`missingDateFacts`; further out the dates are rarely published yet), a pass-2
+  search (block list only) asks for the missing facts only (`research-followup.md`). Its proposals
+  are validated against its own citations and only the missing fields are kept; a failure keeps
+  pass 1. Weekly run only, at most `MAX_FOLLOWUPS_PER_RUN` per run in queue order, and none once
+  the month is at 80%. Report: `followup` in each festival log.
+- R2 progress: `drafts` in the report lists each «borrador» country the run researched with its
+  sourced festivals before and after the selected changes; at 3 the Markdown says how to publish.
+- Queue cadence (R10): unconfirmed editions weekly under 180 days and in the first week of the
+  month otherwise; confirmed ones only when stale (30 days, 14 under 120). `--country` always
+  gets the monthly ones. A postponed edition without new dates is out of the news sweeps.
 - RF-18 in apply: an edition stored for the first time starts at `sequence` 1 when its dates or
   status differ from the rule-based event calendars already had (`firstEditionSequence`), and every
   change of dates or status still bumps it.
 
 Env: `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`), `MAX_FESTIVALS_PER_RUN`
-(40), `MONTHLY_BUDGET_USD` (20), `ARCHIVE_ACCESS_KEY` / `ARCHIVE_SECRET_KEY` (optional, R13),
+(40), `MAX_FOLLOWUPS_PER_RUN` (6, refresh only; 0 turns follow-ups off), `MONTHLY_BUDGET_USD` (20), `ARCHIVE_ACCESS_KEY` / `ARCHIVE_SECRET_KEY` (optional, R13),
 `TRAP_SECRET` (R12), `USAGE_FALLBACK_PATH` (optional, refresh and onboard: a `usage.json` from the
 last run artifact; per month the higher total wins, and online runs write the merged history to
 `data/usage.json` before the first call), `LINKS_REPORT_PATH` (optional, refresh: R13 above). Outputs: `proposals/<date>.json`, `proposals/<date>.md` (PR body), and with

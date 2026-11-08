@@ -2,21 +2,21 @@
 // Without --dry-run it also applies accepted changes; it never merges anything.
 import { join } from "node:path";
 import { ctxFor } from "../../src/festivals.ts";
-import { ChangelogEntry, CountryFile, Proposal } from "../../src/schema.ts";
+import { ChangelogEntry, CountryFile, MIN_SOURCED_FESTIVALS, Proposal } from "../../src/schema.ts";
 import type { ScoringConfig } from "../../src/score.ts";
-import { loadCountries } from "../build-data.ts";
+import { loadCountries, sourcedFestivals } from "../build-data.ts";
 import { applyChanges, changelogEntries, trialApply } from "./apply.ts";
 import { archiveAll, type Archiver } from "./archive.ts";
 import { allowedAtLevel, BudgetExceededError, createBudgetGuard, type BudgetGuard, type UsageStore } from "./budget.ts";
 import { classifyApiError, type MessagesTransport } from "./client.ts";
 import { firstPassDomains, loadDomainPolicy, type DomainPolicy } from "./domains.ts";
 import { extract } from "./extract.ts";
-import { extractionContext, researchUserPrompt } from "./festival-context.ts";
+import { extractionContext, researchUserPrompt, type FollowupFact } from "./festival-context.ts";
 import { appendGithubOutput, loadPrompt, readJson, readJsonOr, writeJson, writeText, type Logger } from "./io.ts";
 import { applyLostSources, type LinkDowngrade, type LinkVerdict } from "./links.ts";
-import { buildQueue, type QueueItem } from "./queue.ts";
-import { buildRefreshReport, renderRefreshMarkdown, type FestivalLog, type RefreshReport } from "./report.ts";
-import { research } from "./research.ts";
+import { buildQueue, NEAR_DAYS, type QueueItem } from "./queue.ts";
+import { buildRefreshReport, renderRefreshMarkdown, type DraftProgress, type FestivalLog, type FestivalOutcome, type FollowupLog, type RefreshReport } from "./report.ts";
+import { research, researchPass, type ResearchRequest, type ResearchResult } from "./research.ts";
 import { dataChangeCount, selectForPr, type Selection } from "./select.ts";
 import { fingerprint, makeTrap } from "./trap.ts";
 import { reviewProposal, type ReviewedChange } from "./validate.ts";
@@ -37,6 +37,8 @@ export interface RefreshOptions {
   sweepWithin?: number;
   /** R13: verdicts from a fresh check-links report; without it no source downgrade is made. */
   links?: ReadonlyMap<string, LinkVerdict>;
+  /** Wider follow-up searches this run may spend (weekly run only); absent or 0 turns them off. */
+  maxFollowups?: number;
 }
 
 export interface RefreshDeps {
@@ -54,11 +56,62 @@ export interface RefreshResult {
 }
 
 export const MAX_USES = 5;
+const FOLLOWUP_FACTS: readonly FollowupFact[] = ["start", "end", "status"];
 
 interface FestivalRun {
   log: FestivalLog;
   changes: ReviewedChange[];
   notFound: string[];
+}
+
+interface FollowupBudget {
+  /** Spends one follow-up; false when none is left or the month is at 80% (R10). */
+  take(): boolean;
+}
+
+/**
+ * Date facts an edition without confirmed dates still lacks after the first pass. That pass stops
+ * at official sites, which often cite the festival without stating the next edition's dates.
+ */
+export function missingDateFacts(item: QueueItem, changes: readonly ReviewedChange[]): FollowupFact[] {
+  const e = item.festival.editions[String(item.year)];
+  if (e?.start && e.end && e.status === "confirmada") return [];
+  const answered = new Set(changes.filter((c) => c.verdict !== "rejected").map((c) => c.field));
+  if (answered.has("start") && answered.has("end")) return [];
+  return FOLLOWUP_FACTS.filter((f) => !answered.has(f));
+}
+
+type Reviewed = { ok: true; changes: ReviewedChange[]; notFound: string[] } | { ok: false; outcome: FestivalOutcome; detail: string; warning: string; notFound: string[] };
+
+async function extractAndReview(item: QueueItem, country: CountryFile, policy: DomainPolicy, citations: ResearchResult["citations"], opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard): Promise<Reviewed> {
+  const key = `${item.country}/${item.slug}`;
+  const extracted = await extract(deps.transport, guard, {
+    key,
+    model: opts.model,
+    system: loadPrompt("extract-system.md"),
+    context: extractionContext(item),
+    citations,
+    schema: Proposal,
+  });
+  if (!extracted.ok) {
+    const outcome = extracted.reason === "refusal" ? "refusal" : "invalid_proposal";
+    return { ok: false, outcome, detail: extracted.detail, warning: `extraction dropped after ${extracted.attempts} attempt(s): ${extracted.reason} ${extracted.detail}`, notFound: [] };
+  }
+  const review = reviewProposal(extracted.value, {
+    country: item.country,
+    festival: item.festival,
+    tier: item.tier,
+    year: item.year,
+    daysToStart: Number.isFinite(item.daysToStart) ? item.daysToStart : 9999,
+    citations,
+    policy,
+    ruleCtx: ctxFor(country),
+  });
+  if (review.errors.length) {
+    const detail = review.errors.join("; ");
+    return { ok: false, outcome: "invalid_proposal", detail, warning: `proposal rejected: ${detail}`, notFound: review.notFound };
+  }
+  return { ok: true, changes: review.changes, notFound: review.notFound };
 }
 
 function baseLog(item: QueueItem): FestivalLog {
@@ -73,53 +126,78 @@ function baseLog(item: QueueItem): FestivalLog {
   };
 }
 
-async function verifyFestival(item: QueueItem, country: CountryFile, policy: DomainPolicy, opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard): Promise<FestivalRun> {
+async function verifyFestival(item: QueueItem, country: CountryFile, policy: DomainPolicy, opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard, followups: FollowupBudget): Promise<FestivalRun> {
   const log = baseLog(item);
   const key = `${item.country}/${item.slug}`;
-  const result = await research(deps.transport, guard, {
+  const request = (followup?: readonly FollowupFact[]): ResearchRequest => ({
     key,
     model: opts.model,
     system: loadPrompt("research-system.md"),
-    user: researchUserPrompt(item, country),
+    user: researchUserPrompt(item, country, followup),
     country: item.country,
     timezone: item.festival.timezone,
     maxUses: MAX_USES,
     allowedDomains: firstPassDomains(policy),
     blockedDomains: policy.blocked,
   });
+  const result = await research(deps.transport, guard, request());
   const searched = { ...log, pass: result.pass, citations: result.citations.length, ...(result.searchErrors.length ? { search_errors: result.searchErrors } : {}) };
   if (result.outcome !== "ok") {
     const detail = result.outcome === "refusal" ? `refusal${result.refusalCategory ? `: ${result.refusalCategory}` : ""}` : String(result.stopReason);
     deps.log.info(`${key}: research ${result.outcome} (${detail})`);
     return { log: { ...searched, outcome: result.outcome, detail }, changes: [], notFound: [] };
   }
-  const extracted = await extract(deps.transport, guard, {
-    key,
-    model: opts.model,
-    system: loadPrompt("extract-system.md"),
-    context: extractionContext(item),
-    citations: result.citations,
-    schema: Proposal,
-  });
-  if (!extracted.ok) {
-    deps.log.warn(`${key}: extraction dropped after ${extracted.attempts} attempt(s): ${extracted.reason} ${extracted.detail}`);
-    return { log: { ...searched, outcome: extracted.reason === "refusal" ? "refusal" : "invalid_proposal", detail: extracted.detail }, changes: [], notFound: [] };
+  const first = await extractAndReview(item, country, policy, result.citations, opts, deps, guard);
+  if (!first.ok) {
+    deps.log.warn(`${key}: ${first.warning}`);
+    return { log: { ...searched, outcome: first.outcome, detail: first.detail }, changes: [], notFound: first.notFound };
   }
-  const review = reviewProposal(extracted.value, {
-    country: item.country,
-    festival: item.festival,
-    tier: item.tier,
-    year: item.year,
-    daysToStart: Number.isFinite(item.daysToStart) ? item.daysToStart : 9999,
-    citations: result.citations,
-    policy,
-    ruleCtx: ctxFor(country),
-  });
-  if (review.errors.length) {
-    deps.log.warn(`${key}: proposal rejected: ${review.errors.join("; ")}`);
-    return { log: { ...searched, outcome: "invalid_proposal", detail: review.errors.join("; ") }, changes: [], notFound: review.notFound };
+  const run: FestivalRun = { log: { ...searched, outcome: "ok" }, changes: first.changes, notFound: first.notFound };
+  // Only after a first pass restricted to official sites (an open pass already searched widely), and
+  // only under 120 days out: further away nobody has published the dates yet (2026-11-08 run).
+  const missing = result.pass === 1 && item.daysToStart < NEAR_DAYS ? missingDateFacts(item, first.changes) : [];
+  if (!missing.length || !followups.take()) return run;
+  return followUp(item, country, policy, request(missing), missing, run, opts, deps, guard);
+}
+
+/**
+ * Second, open search (block list only) for the date facts the first pass did not state. Its
+ * proposals go through the same validation against its own citations; only the missing facts are
+ * kept, so the first pass always wins. A failure here keeps the first pass's results.
+ */
+async function followUp(item: QueueItem, country: CountryFile, policy: DomainPolicy, req: ResearchRequest, missing: readonly FollowupFact[], run: FestivalRun, opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard): Promise<FestivalRun> {
+  const fields = [...missing];
+  const withLog = (followup: FollowupLog): FestivalRun => ({ ...run, log: { ...run.log, followup } });
+  try {
+    const wide = await researchPass(deps.transport, guard, req, 2);
+    if (wide.outcome !== "ok") {
+      deps.log.info(`${req.key}: follow-up search ${wide.outcome} for ${fields.join(", ")}`);
+      return withLog({ fields, outcome: wide.outcome, citations: wide.citations.length });
+    }
+    const second = await extractAndReview(item, country, policy, wide.citations, opts, deps, guard);
+    if (!second.ok) {
+      deps.log.warn(`${req.key}: follow-up ${second.warning}`);
+      return withLog({ fields, outcome: second.outcome, citations: wide.citations.length, detail: second.detail });
+    }
+    const wanted = new Set<string>(missing);
+    const extra = second.changes.filter((c) => wanted.has(c.field));
+    const answered = [...new Set(extra.filter((c) => c.verdict !== "rejected").map((c) => c.field))];
+    return {
+      log: { ...run.log, followup: { fields, outcome: "ok", citations: wide.citations.length, answered } },
+      changes: [...run.changes, ...extra],
+      notFound: run.notFound.filter((f) => !answered.includes(f)),
+    };
+  } catch (error) {
+    if (error instanceof BudgetExceededError) {
+      deps.log.warn(`${req.key}: follow-up skipped: ${error.message}`);
+      return withLog({ fields, outcome: "skipped_budget", detail: "R10: budget reached" });
+    }
+    const failure = classifyOrUnexpected(error);
+    // Rejected credentials and bugs surface like any other festival failure (BE-04).
+    if (failure.kind === "fatal" || failure.kind === "unexpected") throw error;
+    deps.log.warn(`${req.key}: follow-up ${failure.kind}: ${failure.message}`);
+    return withLog({ fields, outcome: failure.kind === "fixture" ? "no_fixture" : "api_error", detail: failure.message });
   }
-  return { log: { ...searched, outcome: "ok" }, changes: review.changes, notFound: review.notFound };
 }
 
 function readChangelog(path: string): ChangelogEntry[] {
@@ -156,6 +234,16 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   const notFound: RefreshReport["not_found"] = [];
   let stopped: string | null = null;
   let fatal = false;
+  // News sweeps look for cancellations only; dates are the weekly run's job.
+  let followupsLeft = sweep === undefined ? (opts.maxFollowups ?? 0) : 0;
+  const followups: FollowupBudget = {
+    take() {
+      const level = guard.level();
+      if (followupsLeft <= 0 || (level !== "ok" && level !== "warn50")) return false;
+      followupsLeft -= 1;
+      return true;
+    },
+  };
   for (const item of queue) {
     if (stopped) {
       logs.push(baseLog(item));
@@ -174,7 +262,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
     }
     const country = countries.find((c) => c.country === item.country)!;
     try {
-      const run = await verifyFestival(item, country, policies.get(item.country)!, opts, deps, guard);
+      const run = await verifyFestival(item, country, policies.get(item.country)!, opts, deps, guard, followups);
       logs.push(run.log);
       changes.push(...run.changes);
       if (run.notFound.length) notFound.push({ country: item.country, slug: item.slug, fields: run.notFound });
@@ -213,6 +301,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   if (opts.trapSecret && guard.firstRunOfMonth && !trap) deps.log.info("R12: no trap this run (needs $GITHUB_OUTPUT, a real change and a dated upcoming edition)");
 
   const selection = demoteUnappliable(selectForPr(changes, trap), countries, opts.today, deps.log, policies);
+  const drafts = draftProgress(countries, policies, queue, [...selection.applied, ...selection.confirmations], opts.today);
   const usage = guard.current();
   const report = buildRefreshReport(
     {
@@ -225,6 +314,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
       not_found: notFound,
       ...(sweep !== undefined ? { sweep_within: sweep } : {}),
       ...(r13.downgrades.length ? { link_downgrades: r13.downgrades } : {}),
+      ...(drafts.length ? { drafts } : {}),
     },
     selection,
   );
@@ -232,13 +322,21 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   // opens; refresh.yml fails the job afterwards), but a run that verified nothing goes red.
   const unexpected = logs.filter((l) => l.outcome === "error").length;
   const verified = logs.filter((l) => VERIFIED.has(l.outcome)).length;
-  const exitCode = stopped || fatal || (unexpected > 0 && verified === 0) ? 1 : 0;
+  const blind = searchedBlind(logs, sweep);
+  if (blind) {
+    const line = `refresh ${opts.today}: all ${verified} festivals came back without a single citation; check the search setup (tool version, allowed_callers, domain lists) before the festivals`;
+    if (opts.githubOutput) deps.log.info(`::error::${annotationText(line)}`);
+    else deps.log.error(line);
+  }
+  const exitCode = stopped || fatal || blind || (unexpected > 0 && verified === 0) ? 1 : 0;
   const count = dataChangeCount(selection) + r13.downgrades.length;
   const output = { changes: stopped ? 0 : count, branch: `refresh/${opts.today}`, flagged: selection.flagged.length, unexpected, verified };
   if (count === 0 && selection.flagged.length === 0 && unexpected === 0) {
-    deps.log.info(`refresh ${opts.today}: no changes (${selection.rejected.length} rejected); nothing written`);
+    // The report still goes to proposals/ (the run artifact), so an empty run can be diagnosed.
+    deps.log.info(`refresh ${opts.today}: no changes (${selection.rejected.length} rejected); report only`);
+    const files = writeProposals(opts.root, `${opts.today}`, report);
     appendGithubOutput(opts.githubOutput, output);
-    return { exitCode, report, files: [], calls: guard.calls };
+    return { exitCode, report, files, calls: guard.calls };
   }
 
   const files = writeProposals(opts.root, `${opts.today}`, report);
@@ -252,6 +350,34 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
 
 /** Outcomes where the model answered: the pipeline worked for that festival, whatever it found. */
 const VERIFIED: ReadonlySet<FestivalLog["outcome"]> = new Set(["ok", "no_citations", "refusal", "truncated", "invalid_proposal"]);
+
+/**
+ * A weekly run where every researched festival (two or more) got no citation at all: the search
+ * setup is broken, as on 2026-11-08 when dynamic filtering dropped every citation and the run still
+ * went green. A sweep can legitimately find nothing, so it is never judged this way.
+ */
+export function searchedBlind(logs: readonly FestivalLog[], sweep: number | undefined): boolean {
+  const researched = logs.filter((l) => VERIFIED.has(l.outcome));
+  return sweep === undefined && researched.length >= 2 && researched.every((l) => l.outcome === "no_citations");
+}
+
+/** R2 progress of the draft countries this run researched, with the selected changes applied. */
+export function draftProgress(countries: readonly CountryFile[], policies: ReadonlyMap<string, DomainPolicy>, queue: readonly QueueItem[], accepted: readonly ReviewedChange[], today: string): DraftProgress[] {
+  const researched = new Set(queue.map((i) => i.country));
+  return countries
+    .filter((c) => c.status === "borrador" && researched.has(c.country))
+    .map((c) => {
+      const policy = policies.get(c.country)!;
+      const before = sourcedFestivals(c, policy);
+      let after = before;
+      try {
+        after = sourcedFestivals(applyChanges(c, accepted, today), policy);
+      } catch {
+        // demoteUnappliable already left out changes that break the file; nothing more to count.
+      }
+      return { country: c.country, before, after, needed: MIN_SOURCED_FESTIVALS };
+    });
+}
 
 /** One-line workflow-command data: `%`, CR and LF escaped as Actions expects. */
 function annotationText(text: string): string {
