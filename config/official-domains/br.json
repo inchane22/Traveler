@@ -1,4 +1,21 @@
 {
   "country": "BR",
-  "domains": ["gov.br", "leg.br", "prefeitura.rio", "unesco.org"]
+  "domains": [
+    "gov.br",
+    "leg.br",
+    "prefeitura.rio",
+    "unesco.org",
+    "riotur.rio",
+    "carnaval.rio",
+    "reveillon.rio",
+    "liesa.org.br",
+    "salvadordabahia.com",
+    "arquidiocesesalvador.org.br",
+    "galodamadrugada.com.br",
+    "ciriodenazare.com.br",
+    "boicaprichoso.com",
+    "garantido.com.br",
+    "portalbelohorizonte.com.br",
+    "spturis.com"
+  ]
 }
