@@ -52,6 +52,7 @@ describe("research call (web search)", () => {
       name: "web_search",
       max_uses: 5,
       user_location: { type: "approximate", country: "CO", timezone: "America/Bogota" },
+      allowed_callers: ["direct"],
       allowed_domains: ["carnavaldebarranquilla.org", "gov.co"],
     });
     expect(params.system).toEqual([{ type: "text", text: "system prompt", cache_control: { type: "ephemeral" } }]);
@@ -72,7 +73,7 @@ describe("research call (web search)", () => {
     const transport = replayTransport({ k: { research: [cited(PRESS, "x".repeat(20))], extract: [] } });
     const r = await research(transport, openGate, req({ key: "k", allowedDomains: [], blockedDomains: [], timezone: null }));
     expect(r.pass).toBe(2);
-    expect(tools(transport.calls[0]!.params)[0]).toEqual({ type: "web_search_20260209", name: "web_search", max_uses: 5, user_location: { type: "approximate", country: "CO" } });
+    expect(tools(transport.calls[0]!.params)[0]).toEqual({ type: "web_search_20260209", name: "web_search", max_uses: 5, user_location: { type: "approximate", country: "CO" }, allowed_callers: ["direct"] });
   });
 
   test("pause_turn resumes with the paused assistant turn and no extra user text", async () => {

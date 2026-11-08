@@ -201,7 +201,7 @@ Un error encontrado se corrige con un PR, activa el segundo revisor un mes y sum
 - Estimación: 40 fiestas, 5 búsquedas cada una y 4 corridas al mes son 800 búsquedas, unos US$8 más tokens. Cada onboarding suma de 10 a 20 búsquedas más tokens [estimación del PRD].
 - Barridos de noticias (R9): unas 26 corridas más al mes. La mayoría no encuentra fiestas en su ventana y no hace ninguna llamada; cada fiesta que entra cuesta lo mismo que en la verificación semanal (búsqueda más extracción). Cuentan contra `MONTHLY_BUDGET_USD` y la degradación del 80% también los limita [estimación propia, sin medir].
 - Corte: el script lleva la cuenta en `data/usage.json` contra `MONTHLY_BUDGET_USD` (20 por defecto). Avisa al 50% y al 80%; desde el 80% solo verifica fiestas de Nivel 1 a 60 días o menos; al 100% se detiene (R10). El límite del workspace en la Console es el tope duro.
-- Para gastar menos: las versiones de búsqueda con filtrado dinámico (`web_search_20260209` o posterior) dejan fuera del contexto lo irrelevante, y la Message Batches API cobra la búsqueda al mismo precio.
+- La búsqueda va con `allowed_callers: ["direct"]`, sin filtrado dinámico: con filtrado dinámico la búsqueda corre dentro de code execution y la respuesta no trae citas `web_search_result_location`, así que toda propuesta caía como `no_citations` (corrida del 2026-11-08). La Message Batches API cobra la búsqueda al mismo precio.
 
 ## Sin confirmar
 
