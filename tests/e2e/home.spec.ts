@@ -36,7 +36,8 @@ test.describe("Inicio", () => {
 
   test("while the pilot fills up, the world and region views say which countries are in", async ({ page }) => {
     await open(page, "#/");
-    await expect(page.getByTestId("pilot-note")).toContainText("Por ahora publicamos Colombia");
+    // Lists every published country, so it grows with each approved onboarding.
+    await expect(page.getByTestId("pilot-note")).toContainText(/Por ahora publicamos .*Colombia/);
     await open(page, "#/region/sudamerica");
     await expect(page.getByTestId("pilot-note")).toBeVisible();
     await open(page, "#/pais/co");
