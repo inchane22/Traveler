@@ -94,7 +94,7 @@ describe("onboarding PE with recorded responses (H5 acceptance)", () => {
     await runOnboard(opts(freshRoot(), { dryRun: true }), deps({ transport }));
     const [researchCall, extractCall] = transport.calls;
     expect(researchCall!.ctx).toEqual({ key: "onboard/PE", kind: "research" });
-    expect(researchCall!.params.tools![0]).toEqual({ type: "web_search_20260209", name: "web_search", max_uses: 15, user_location: { type: "approximate", country: "PE", timezone: "America/Lima" } });
+    expect(researchCall!.params.tools![0]).toEqual({ type: "web_search_20260209", name: "web_search", max_uses: 15, user_location: { type: "approximate", country: "PE", timezone: "America/Lima" }, allowed_callers: ["direct"] });
     expect(extractCall!.params.output_config?.format?.type).toBe("json_schema");
     // Once config/sources/pe.json exists, its block list goes to the tool.
     const configured = tempRepo({ countries: ["co"] });

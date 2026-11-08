@@ -72,7 +72,10 @@ export function usageOf(message: Message): CallUsage {
 
 function webSearchTool(req: ResearchRequest, pass: 1 | 2): Anthropic.WebSearchTool20260209 {
   const location: Anthropic.UserLocation = { type: "approximate", country: req.country, ...(req.timezone ? { timezone: req.timezone } : {}) };
-  const base: Anthropic.WebSearchTool20260209 = { type: "web_search_20260209", name: "web_search", max_uses: req.maxUses, user_location: location };
+  // Dynamic filtering (the 20260209 default) runs searches inside code execution: the answer is
+  // built from code output and carries no web_search_result_location citations, so every
+  // proposal would be dropped as no_citations. Direct calls keep the citations R7 checks.
+  const base: Anthropic.WebSearchTool20260209 = { type: "web_search_20260209", name: "web_search", max_uses: req.maxUses, user_location: location, allowed_callers: ["direct"] };
   // allowed_domains and blocked_domains are mutually exclusive on the tool.
   if (pass === 1) return { ...base, allowed_domains: [...req.allowedDomains] };
   return req.blockedDomains.length ? { ...base, blocked_domains: [...req.blockedDomains] } : base;
