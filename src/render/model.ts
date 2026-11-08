@@ -16,6 +16,8 @@ export const BASE = import.meta.env.BASE_URL;
 export const STALE_DAYS = 30;
 /** Below this share of dates backed by an A source, a country shows «cobertura parcial» (PRD R2). */
 export const PARTIAL_SHARE = 0.6;
+/** The pilot launches with 5 countries; until then the world view says which ones are in. */
+export const PILOT_TARGET = 5;
 
 export class DataError extends Error {
   readonly kind: "offline" | "missing" | "invalid";
@@ -175,7 +177,8 @@ export function isUnconfirmed(occ: Occurrence | null): boolean {
 }
 
 export type Countdown =
-  | { kind: "days"; days: number; approx: boolean }
+  /** approx: only a probable window; tentative: dated, but not confirmed (or a moon estimate). */
+  | { kind: "days"; days: number; approx: boolean; tentative: boolean }
   | { kind: "today" }
   | { kind: "ongoing"; daysLeft: number }
   | { kind: "ended" }
@@ -190,10 +193,12 @@ export function countdown(occ: Occurrence | null, today: ISO): Countdown {
   const end = occ.end ?? occ.window?.end;
   if (!start || !end) return { kind: "unknown" };
   const approx = !occ.start;
+  // An exact day count would overstate a date nobody has confirmed: it reads «en unos N días».
+  const tentative = !approx && isUnconfirmed(occ);
   if (end < today) return { kind: "ended" };
-  if (start > today) return { kind: "days", days: diffDays(today, start), approx };
+  if (start > today) return { kind: "days", days: diffDays(today, start), approx, tentative };
   if (start === today && !approx) return { kind: "today" };
-  if (approx) return { kind: "days", days: 0, approx };
+  if (approx) return { kind: "days", days: 0, approx, tentative: false };
   return { kind: "ongoing", daysLeft: diffDays(today, end) };
 }
 

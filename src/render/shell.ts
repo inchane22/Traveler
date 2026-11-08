@@ -67,13 +67,14 @@ function navList(ctx: Ctx, targets: NavTargets, place: "top" | "bottom"): HTMLEl
 }
 
 export function renderMasthead(el: Element, ctx: Ctx, targets: NavTargets, onBack: (() => void) | null): void {
+  // Back comes first, where thumbs and habit look for it; DOM order is the visual and tab order.
   const inner = h(
     "div",
-    { class: "masthead__inner" },
-    h("a", { href: ctx.href({ name: "home", query: { tier2: false } }), class: "wordmark", "data-key": "wordmark" }, brandMark(), h("span", null, ctx.t("app.name"))),
+    { class: `masthead__inner${onBack ? " masthead__inner--back" : ""}` },
     onBack
       ? h("button", { type: "button", class: "btn btn--ghost masthead__back", "data-key": "back", onclick: onBack }, icon("back"), ctx.t("nav.back"))
       : null,
+    h("a", { href: ctx.href({ name: "home", query: { tier2: false } }), class: "wordmark", "data-key": "wordmark" }, brandMark(), h("span", null, ctx.t("app.name"))),
     h("nav", { class: "topnav", "aria-label": ctx.t("nav.label") }, navList(ctx, targets, "top")),
   );
   el.replaceChildren(inner);

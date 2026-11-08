@@ -6,7 +6,6 @@ import { countryName } from "../ics.ts";
 import type { HomeQuery, Route } from "../router.ts";
 import {
   asyncView,
-  confidenceMark,
   countdownBlock,
   countdownText,
   emptyState,
@@ -18,14 +17,15 @@ import {
   posterBand,
   sectionHeading,
   staleNotice,
-  statusBadge,
   suggestAction,
+  trustMark,
   typeTag,
 } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { percent, relativeDays } from "./format.ts";
 import { icon } from "./icons.ts";
-import { countdown, countryInfo, loadScope, PARTIAL_SHARE, resource, timelineHits, type IndexCountry, type ScopeData } from "./model.ts";
+import { marksButton } from "./marks.ts";
+import { countdown, countryInfo, loadScope, PARTIAL_SHARE, PILOT_TARGET, resource, timelineHits, type IndexCountry, type PublicIndex, type ScopeData } from "./model.ts";
 import { openScopeSheet } from "./scope.ts";
 import { subscribeBlock } from "./subscribe.ts";
 import { legend, timeline } from "./timeline.ts";
@@ -64,7 +64,7 @@ function hero(entry: FestivalEntry, ctx: Ctx): HTMLElement {
         "div",
         { class: "poster__when" },
         h("p", { class: "poster__dates num" }, occurrenceDates(occ, ctx.lang, ctx.t)),
-        occ ? h("p", { class: "marks" }, statusBadge(occ.status, ctx.t), confidenceMark(occ.confidence, ctx.t)) : null,
+        occ ? h("p", { class: "marks" }, trustMark(occ, ctx.t)) : null,
         moonNote(occ, ctx.t),
       ),
       countdownBlock(occ, ctx),
@@ -88,29 +88,39 @@ function nextRow(entry: FestivalEntry, ctx: Ctx): HTMLElement {
         h("a", { href: ctx.href({ name: "festival", slug: f.slug }), class: "stretched", "data-key": `next-${f.slug}` }, festivalName(f, ctx.lang)),
       ),
       h("p", { class: "next-row__meta" }, h("span", { class: "num next-row__dates" }, occurrenceDates(occ, ctx.lang, ctx.t)), h("span", { class: "next-row__place" }, placeLine(entry, ctx.lang))),
-      h("p", { class: "marks" }, typeTag(f.type, ctx.t), occ ? statusBadge(occ.status, ctx.t) : null, occ ? confidenceMark(occ.confidence, ctx.t) : null),
+      h("p", { class: "marks" }, typeTag(f.type, ctx.t), occ ? trustMark(occ, ctx.t) : null),
     ),
     h("p", { class: "next-row__count num" }, countdownText(countdown(occ, ctx.today), ctx.t)),
   );
 }
 
-function freshness(countries: readonly IndexCountry[], scope: Scope, ctx: Ctx): HTMLElement | null {
-  if (scope.kind !== "country") return null;
-  const info = countries.find((c) => c.code === scope.code);
-  if (!info?.last_verified) return null;
+/** One trust line: when the country was verified and, under 60 % A sources, that coverage is partial (RF-13, R2). */
+function freshness(info: IndexCountry | undefined, ctx: Ctx): HTMLElement | null {
+  if (!info) return null;
+  const partial = typeof info.share_a === "number" && info.share_a < PARTIAL_SHARE;
+  if (!info.last_verified && !partial) return null;
   return h(
     "p",
-    { class: "freshness" },
-    icon("check"),
-    ctx.t("fresh.verified", { when: relativeDays(info.last_verified, ctx.today, ctx.lang) }),
-    " ",
-    h("a", { href: ctx.href({ name: "about" }), class: "link" }, ctx.t("fresh.how")),
+    { class: `freshness${partial ? " freshness--partial" : ""}` },
+    icon(partial ? "alert" : "check"),
+    h(
+      "span",
+      null,
+      info.last_verified ? ctx.t("fresh.verified", { when: relativeDays(info.last_verified, ctx.today, ctx.lang) }) : null,
+      info.last_verified && partial ? " " : null,
+      partial ? h("strong", { class: "freshness__partial" }, ctx.t("fresh.partial", { share: percent(info.share_a, ctx.lang) })) : null,
+      " ",
+      h("a", { href: ctx.href({ name: "about" }), class: "link" }, ctx.t("fresh.how")),
+    ),
   );
 }
 
-function coverageNote(info: IndexCountry | undefined, ctx: Ctx): HTMLElement | null {
-  if (!info || typeof info.share_a !== "number" || info.share_a >= PARTIAL_SHARE) return null;
-  return h("p", { class: "freshness freshness--partial" }, icon("alert"), ctx.t("fresh.partial", { share: percent(info.share_a, ctx.lang) }));
+/** While the pilot is still filling up, the world and region views say which countries are in. */
+function pilotNote(index: PublicIndex, scope: Scope, ctx: Ctx): HTMLElement | null {
+  if (scope.kind === "country" || !index.countries.length || index.countries.length >= PILOT_TARGET) return null;
+  const names = index.countries.map((c) => countryName(c.code, ctx.lang)).sort((a, b) => a.localeCompare(b, ctx.lang));
+  const countries = new Intl.ListFormat(ctx.lang, { type: "conjunction" }).format(names);
+  return h("p", { class: "pilot-note", "data-testid": "pilot-note" }, icon("globe"), h("span", null, ctx.t("home.pilot", { countries })));
 }
 
 function tier2Switch(scope: Scope, query: HomeQuery, ctx: Ctx): HTMLElement {
@@ -154,6 +164,7 @@ function content(scope: Scope, query: HomeQuery, data: ScopeData, ctx: Ctx): HTM
   const out: (HTMLElement | null)[] = [
     staleNotice(info, ctx),
     draft,
+    pilotNote(data.index, scope, ctx),
     first
       ? hero(first, ctx)
       : emptyState(ctx.t("home.emptyTitle"), ctx.t("home.emptyBody"), [
@@ -162,14 +173,13 @@ function content(scope: Scope, query: HomeQuery, data: ScopeData, ctx: Ctx): HTM
           suggestAction(ctx, scope.kind === "country" ? scope.code : undefined),
         ]),
     rest.length ? h("ol", { class: "next-list", "aria-label": ctx.t("home.alsoSoon") }, rest.map((e) => nextRow(e, ctx))) : null,
-    freshness(data.index.countries, scope, ctx),
-    coverageNote(info, ctx),
+    freshness(info, ctx),
     h(
       "section",
       { class: "section", "aria-labelledby": "tl-title" },
       h("div", { class: "section__head" }, sectionHeading(ctx.t("timeline.title"), "tl-title"), tier2Switch(scope, query, ctx)),
       hits.length
-        ? [legend(types, ctx), timeline(hits, ctx)]
+        ? [legend(types, ctx), h("p", { class: "legend__help" }, marksButton(ctx, "home-marks")), timeline(hits, ctx)]
         : emptyState(ctx.t("timeline.empty"), null, [{ label: ctx.t("nav.explore"), href: ctx.href({ name: "explore", filters: { countries: [], months: [], types: [], tier2: true, sort: "date" } }) }]),
     ),
     scope.kind === "country" ? subscribeBlock(scope.code, ctx) : null,

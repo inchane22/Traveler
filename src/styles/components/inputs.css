@@ -87,14 +87,74 @@
   box-shadow: 0 0 0 2px var(--paper);
 }
 
+/* Would give nothing: muted and inert. A solid hairline, never dashed (dashed means «not confirmed»). */
 .chip--zero {
   color: var(--ink-3);
-  border-color: var(--ink-3);
-  border-style: dashed;
+  border-color: var(--hairline);
+  background: transparent;
+  cursor: default;
+}
+
+.chip--zero:hover {
+  background: transparent;
+}
+
+.chip--zero:active {
+  transform: none;
 }
 
 .chip--zero .chip__count {
+  background: transparent;
   color: var(--ink-3);
+}
+
+/* Uncounted pill buttons: date shortcuts, active filters, jump links. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: none;
+  min-block-size: var(--tap);
+  padding: 0.35rem 0.95rem;
+  border: var(--rule-thin) solid var(--ink);
+  border-radius: var(--radius-pill);
+  background: var(--paper-raised);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 120ms var(--ease), transform 90ms var(--ease);
+}
+
+.pill:hover {
+  background: var(--paper-sunk);
+}
+
+.pill:active {
+  transform: scale(0.97);
+}
+
+.pill[aria-pressed="true"],
+.pill--remove {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.pill--remove {
+  padding-inline: 0.95rem 0.7rem;
+}
+
+.pill--remove:hover {
+  background: var(--ink-2);
+}
+
+.pill--remove .icon {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.pill--remove .swatch {
+  box-shadow: 0 0 0 2px var(--paper);
 }
 
 .switch {

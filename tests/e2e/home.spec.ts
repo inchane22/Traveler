@@ -20,8 +20,39 @@ test.describe("Inicio", () => {
     await open(page, "#/pais/co");
     const hero = page.getByTestId("next-festival");
     await expect(hero).toContainText("10–16 nov 2026");
-    await expect(hero).toContainText("Tentativa");
-    await expect(hero).toContainText("Patrón");
+    // One trust line: status shape and words, then where the date comes from (RF-07, RF-08).
+    await expect(hero.locator(".trust")).toHaveText("Por confirmar, según años anteriores");
+    await expect(hero.locator(".trust .status-shape")).toHaveCount(1);
+  });
+
+  test("an unconfirmed date counts down «en unos N días», never an exact promise", async ({ page }) => {
+    await open(page, "#/pais/co");
+    const hero = page.getByTestId("next-festival").locator("[data-countdown]");
+    await expect(hero).toContainText("Empieza en unos");
+    await expect(hero.locator(".sr-only")).toHaveText("En unos 15 días");
+    // A confirmed festival keeps the exact count.
+    await expect(page.locator(".next-row").filter({ hasText: "Feria de Cali" }).locator(".next-row__count")).toHaveText(/^En \d+ días$/);
+  });
+
+  test("while the pilot fills up, the world and region views say which countries are in", async ({ page }) => {
+    await open(page, "#/");
+    await expect(page.getByTestId("pilot-note")).toContainText("Por ahora publicamos Colombia");
+    await open(page, "#/region/sudamerica");
+    await expect(page.getByTestId("pilot-note")).toBeVisible();
+    await open(page, "#/pais/co");
+    await expect(page.getByTestId("pilot-note")).toHaveCount(0);
+    await page.getByRole("button", { name: /\(cambiar\)/ }).click();
+    await expect(page.getByRole("dialog").getByTestId("scope-more")).toContainText("Más países en camino");
+  });
+
+  test("«Cómo leer las marcas» opens the key in a sheet from the timeline", async ({ page }) => {
+    await open(page, "#/pais/co");
+    await page.getByRole("button", { name: "Cómo leer las marcas" }).click();
+    const sheet = page.getByRole("dialog", { name: "Cómo leer las marcas" });
+    await expect(sheet.getByRole("list", { name: "Estados de una fecha" }).getByRole("listitem")).toHaveCount(5);
+    await expect(sheet.getByRole("list", { name: "De dónde sale cada dato" })).toContainText("Años anteriores");
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("button", { name: "Cómo leer las marcas" })).toBeFocused();
   });
 
   test("RF-05: the 12-month timeline is an ordered list of links with dates and status in their names", async ({ page }) => {
@@ -29,17 +60,17 @@ test.describe("Inicio", () => {
     const rows = page.locator(".tl-rows > li");
     expect(await rows.count()).toBeGreaterThanOrEqual(5);
     const first = rows.first().getByRole("link");
-    await expect(first).toHaveAccessibleName(/Cartagena.*Fiesta nacional.*10–16 nov 2026.*Tentativa/);
+    await expect(first).toHaveAccessibleName(/Cartagena.*Fiesta nacional.*10–16 nov 2026.*Por confirmar/);
     await expect(page.locator(".tl-axis")).toHaveAttribute("aria-hidden", "true");
   });
 
   test("RF-05: the Nivel 2 switch lives in the URL", async ({ page }) => {
     await open(page, "#/pais/co");
-    const sw = page.getByRole("switch", { name: "Incluir Nivel 2" });
+    const sw = page.getByRole("switch", { name: "Incluir medianas (Nivel 2)" });
     await expect(sw).toHaveAttribute("aria-checked", "false");
     await sw.click();
     await expect(page).toHaveURL(/#\/pais\/co\?nivel=2$/);
-    await expect(page.getByRole("switch", { name: "Incluir Nivel 2" })).toHaveAttribute("aria-checked", "true");
+    await expect(page.getByRole("switch", { name: "Incluir medianas (Nivel 2)" })).toHaveAttribute("aria-checked", "true");
   });
 
   // ux-F10: «Lo no confirmado lleva trama diagonal», on the hero's big band too (Cartagena is tentative).
@@ -78,12 +109,16 @@ test.describe("Inicio", () => {
     await settled(page);
     await expect(page.locator(".freshness--partial")).toContainText("Cobertura parcial");
     await expect(page.locator(".freshness--partial")).toContainText("50");
+    // One trust line, not two: verified, partial coverage and the way to how we verify.
+    await expect(page.locator(".freshness")).toHaveCount(1);
+    await expect(page.locator(".freshness")).toContainText("Verificado hoy");
+    await expect(page.locator(".freshness").getByRole("link", { name: "Cómo verificamos" })).toBeVisible();
   });
 
   test("offers webcal, Google and Outlook subscriptions for the country", async ({ page }) => {
     await open(page, "#/pais/co");
     const block = page.locator(".subscribe");
-    await expect(block.getByRole("link", { name: "Suscribirse en Apple Calendar u Outlook" })).toHaveAttribute("href", /^webcal:\/\/.+\/calendars\/co\.ics$/);
+    await expect(block.getByRole("link", { name: "Suscribirse en Apple Calendar u Outlook (app)" })).toHaveAttribute("href", /^webcal:\/\/.+\/calendars\/co\.ics$/);
     await expect(block.getByRole("link", { name: /^Suscribirse en Google Calendar/ })).toHaveAttribute("href", /^https:\/\/calendar\.google\.com\/calendar\/r\?cid=webcal/);
     await expect(block.getByRole("link", { name: /^Suscribirse en Outlook\.com/ })).toHaveAttribute("href", /^https:\/\/outlook\.live\.com\/calendar\/0\/addfromweb\?url=/);
   });

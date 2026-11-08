@@ -31,6 +31,31 @@ export function nav(page: Page): Locator {
   return page.locator(".bottomnav:visible, .topnav:visible").first();
 }
 
+/**
+ * Explorar's country, month, type, Nivel 2 and sort chips: a sheet on phones (drafted, applied with
+ * «Ver N fiestas»), inline on desktop (applied at once). Opens the sheet when the panel is hidden.
+ */
+export async function openFilters(page: Page): Promise<void> {
+  const button = page.locator('[data-key="filters-open"]');
+  if (await button.isVisible()) {
+    await button.click();
+    await expect(page.getByRole("dialog", { name: "Filtros" })).toBeVisible();
+  }
+}
+
+/** The visible set of filter chips: the open sheet on phones, the inline panel on desktop. */
+export function filterChips(page: Page): Locator {
+  return page.locator("dialog[open] .filter-sheet, .filters__panel").filter({ visible: true }).first();
+}
+
+/** Applies the sheet's draft on phones; on desktop the chips already applied. */
+export async function applyFilters(page: Page): Promise<void> {
+  const apply = page.getByTestId("filters-apply");
+  if (await apply.isVisible()) await apply.click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await settled(page);
+}
+
 /** Unfolds RFC 5545 continuation lines so assertions can match whole properties. */
 export function unfold(ics: string): string {
   return ics.replace(/\r?\n[ \t]/g, "");

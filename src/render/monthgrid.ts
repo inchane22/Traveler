@@ -46,10 +46,27 @@ function monthTable(first: ISO, mark: GridMark, events: ReadonlySet<ISO>, weekSt
   );
 }
 
+/** What the grid's marks mean, only the ones it shows (hidden from assistive technology with the grid). */
+function gridLegend(mark: GridMark, hasEvents: boolean, hasToday: boolean, ctx: Ctx): HTMLElement {
+  return h(
+    "ul",
+    { class: "mg-legend" },
+    h("li", { class: "mg-legend__item" }, h("span", { class: `mg-legend__sample mg-legend__sample--${mark.mod}` }), ctx.t(`timeline.pattern.${mark.mod}`)),
+    hasEvents ? h("li", { class: "mg-legend__item" }, h("span", { class: "mg-legend__sample mg-legend__sample--event" }), ctx.t("monthgrid.event")) : null,
+    hasToday ? h("li", { class: "mg-legend__item" }, h("span", { class: "mg-legend__sample mg-legend__sample--today" }), ctx.t("timeline.today")) : null,
+  );
+}
+
 export function monthGrid(mark: GridMark, eventDates: readonly ISO[], ctx: Ctx): HTMLElement {
   const weekStart = ctx.weekStart;
   const months: ISO[] = [];
   for (let m = `${mark.start.slice(0, 7)}-01`; m <= mark.end && months.length < MAX_MONTHS; m = addMonths(m, 1)) months.push(m);
-  const events = new Set(eventDates.filter((d) => months.some((m) => d.startsWith(m.slice(0, 7)))));
-  return h("div", { class: "month-grid", "aria-hidden": "true" }, months.map((m) => monthTable(m, mark, events, weekStart, ctx)));
+  const inShown = (d: ISO): boolean => months.some((m) => d.startsWith(m.slice(0, 7)));
+  const events = new Set(eventDates.filter(inShown));
+  return h(
+    "div",
+    { class: "month-grid", "aria-hidden": "true" },
+    months.map((m) => monthTable(m, mark, events, weekStart, ctx)),
+    gridLegend(mark, events.size > 0, inShown(ctx.today), ctx),
+  );
 }

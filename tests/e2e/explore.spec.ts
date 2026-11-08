@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
-import { open, settled } from "./helpers.ts";
+import { applyFilters, filterChips, open, openFilters, settled } from "./helpers.ts";
 
 const ROOT = join(import.meta.dirname, "../..");
 
@@ -13,16 +13,31 @@ const count = (page: import("@playwright/test").Page) => page.getByTestId("resul
 test.describe("Explorar", () => {
   test("RF-03: every chip shows its count", async ({ page }) => {
     await open(page, "#/explorar?pais=co");
-    const chips = page.locator(".chip");
-    expect(await chips.count()).toBeGreaterThan(15);
-    for (const chip of await chips.all()) await expect(chip.locator(".chip__count")).toHaveText(/\d+/);
     // The pressed country chip counts exactly the festivals listed for it (no literal: the data moves).
     const listed = await page.getByTestId("results").locator("[data-slug]").count();
     expect(listed).toBeGreaterThan(0);
     await expect(count(page)).toHaveText(`${listed} fiestas`);
-    const colombia = page.getByRole("button", { name: `Colombia (${listed} fiestas)` });
+    await openFilters(page);
+    const chips = filterChips(page).locator(".chip");
+    expect(await chips.count()).toBeGreaterThan(15);
+    for (const chip of await chips.all()) await expect(chip.locator(".chip__count")).toHaveText(/\d+/);
+    const colombia = filterChips(page).getByRole("button", { name: `Colombia (${listed} fiestas)` });
     await expect(colombia).toHaveAttribute("aria-pressed", "true");
     await expect(colombia.locator(".chip__count")).toHaveText(String(listed));
+  });
+
+  test("a chip that would give nothing is inert, never dashed, and says its 0", async ({ page }) => {
+    await open(page, "#/explorar?pais=co");
+    await openFilters(page);
+    const zero = filterChips(page).locator(".chip--zero").first();
+    await expect(zero).toHaveAttribute("aria-disabled", "true");
+    await expect(zero).toHaveAccessibleName(/\(0 fiestas\)$/);
+    expect(await zero.evaluate((el) => getComputedStyle(el).borderStyle)).toBe("solid");
+    const url = page.url();
+    // Playwright treats aria-disabled as disabled, so force the tap a person could still make.
+    await zero.click({ force: true });
+    await expect(zero).toHaveAttribute("aria-pressed", "false");
+    expect(page.url()).toBe(url);
   });
 
   test("RF-03: filters live in the URL and Back restores them", async ({ page }) => {
@@ -30,20 +45,24 @@ test.describe("Explorar", () => {
     await expect(count(page)).toHaveText(/\d+ fiestas/);
     const all = await count(page).textContent();
 
-    await page.getByRole("button", { name: /^Carnaval \(\d+ fiestas?\)$/ }).click();
+    await openFilters(page);
+    await filterChips(page).getByRole("button", { name: /^Carnaval \(\d+ fiestas?\)$/ }).click();
+    await applyFilters(page);
     await expect(page).toHaveURL(/#\/explorar\?pais=co&tipo=carnaval$/);
-    await expect(page.getByRole("button", { name: /^Carnaval/ })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('[data-key="tipo-carnaval"]')).toHaveAttribute("aria-pressed", "true");
     await expect(count(page)).not.toHaveText(all ?? "");
     const carnavalCount = await count(page).textContent();
 
-    await page.getByRole("button", { name: /^febrero de 2027/ }).click();
+    await openFilters(page);
+    await filterChips(page).getByRole("button", { name: /^febrero de 2027/ }).click();
+    await applyFilters(page);
     await expect(page).toHaveURL(/mes=2027-02/);
     await expect(page.getByTestId("results")).toContainText("Carnaval de Barranquilla");
 
     await page.goBack();
     await expect(page).toHaveURL(/#\/explorar\?pais=co&tipo=carnaval$/);
     await settled(page);
-    await expect(page.getByRole("button", { name: /^febrero de 2027/ })).toHaveAttribute("aria-pressed", "false");
+    await expect(page.locator('[data-key="mes-2027-02"]')).toHaveAttribute("aria-pressed", "false");
     await expect(count(page)).toHaveText(carnavalCount ?? "");
 
     await page.goBack();
@@ -64,11 +83,82 @@ test.describe("Explorar", () => {
   test("RF-03: the Nivel 2 switch shows its count and widens the list", async ({ page }) => {
     await open(page, "#/explorar");
     const before = Number((await count(page).textContent())?.match(/\d+/)?.[0]);
-    const sw = page.getByRole("switch", { name: /Incluir Nivel 2/ });
+    await openFilters(page);
+    const sw = filterChips(page).getByRole("switch", { name: /Incluir medianas \(Nivel 2\)/ });
     await expect(sw.locator(".chip__count")).toHaveText(/\d+/);
     await sw.click();
+    await applyFilters(page);
     await expect(page).toHaveURL(/nivel=2/);
     await expect.poll(async () => Number((await count(page).textContent())?.match(/\d+/)?.[0])).toBeGreaterThan(before);
+  });
+
+  // Hybrid filters (phones): the sheet drafts with live counts and applies as one history entry.
+  test("phones: the filter sheet drafts, counts live and applies as one Back step", async ({ page }, info) => {
+    test.skip(info.project.name !== "mobile", "the sheet is the phone layout");
+    await open(page, "#/explorar?pais=co");
+    const url = page.url();
+    const length = await page.evaluate(() => history.length);
+    await openFilters(page);
+    const sheet = page.getByRole("dialog", { name: "Filtros" });
+    await sheet.getByRole("button", { name: /^Carnaval \(/ }).click();
+    await sheet.getByRole("button", { name: /^febrero de 2027/ }).click();
+    expect(page.url(), "a draft does not navigate").toBe(url);
+    await expect(sheet.getByTestId("filters-apply")).toHaveText("Ver 1 fiesta");
+    // The live recount redraws the chips; focus stays on the one just tapped.
+    await expect(sheet.locator('[data-key="sh-mes-2027-02"]')).toBeFocused();
+    await applyFilters(page);
+    await expect(page).toHaveURL(/#\/explorar\?pais=co&mes=2027-02&tipo=carnaval$/);
+    expect(await page.evaluate(() => history.length)).toBe(length + 1);
+    await expect(page.locator('[data-key="filters-open"]')).toBeFocused();
+    await expect(page.locator('[data-key="filters-open"]')).toHaveAccessibleName(/Filtros \(3 activos\)/);
+    await page.goBack();
+    await expect(page).toHaveURL(/#\/explorar\?pais=co$/);
+  });
+
+  test("phones: closing the filter sheet discards the draft", async ({ page }, info) => {
+    test.skip(info.project.name !== "mobile", "the sheet is the phone layout");
+    await open(page, "#/explorar?pais=co");
+    const url = page.url();
+    await openFilters(page);
+    await page.getByRole("dialog").getByRole("button", { name: /^Carnaval \(/ }).click();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    expect(page.url()).toBe(url);
+    await expect(page.locator('[data-key="filters-open"]')).toBeFocused();
+  });
+
+  test("phones: the list starts above the fold and active filters are removable in one tap", async ({ page }, info) => {
+    test.skip(info.project.name !== "mobile", "the sheet is the phone layout");
+    await open(page, "#/explorar?pais=co&tipo=carnaval&nivel=2");
+    await expect(page.getByTestId("results").locator("[data-slug]").first()).toBeInViewport();
+    const active = page.getByRole("group", { name: "Filtros activos" });
+    const names = await active.getByRole("button").evaluateAll((els) => els.map((el) => el.textContent?.trim()));
+    expect(names).toEqual(["Quitar filtro: Colombia", "Quitar filtro: Carnaval", "Quitar filtro: Medianas (Nivel 2)"]);
+    await active.getByRole("button", { name: "Quitar filtro: Carnaval" }).click();
+    await expect(page).toHaveURL(/#\/explorar\?pais=co&nivel=2$/);
+    await expect(page.getByRole("button", { name: "Quitar filtro: Medianas (Nivel 2)" })).toBeFocused();
+  });
+
+  test("date shortcuts fill «Mis fechas de viaje» from today, and a second tap clears them", async ({ page }) => {
+    await open(page, "#/explorar?pais=co");
+    const next30 = page.getByRole("button", { name: "Próximos 30 días" });
+    await next30.click();
+    await expect(page).toHaveURL(/desde=2026-10-26&hasta=2026-11-24/);
+    await expect(page.getByLabel("Desde")).toHaveValue("2026-10-26");
+    await expect(page.getByRole("button", { name: "Próximos 30 días" })).toHaveAttribute("aria-pressed", "true");
+    await page.getByRole("button", { name: "Próximos 30 días" }).click();
+    await expect(page).toHaveURL(/#\/explorar\?pais=co$/);
+    await page.getByRole("button", { name: "Este mes" }).click();
+    await expect(page).toHaveURL(/desde=2026-10-26&hasta=2026-10-31/);
+  });
+
+  test("the world view offers each country's own list in one tap", async ({ page }) => {
+    await open(page, "#/explorar");
+    const way = page.locator(".explore-hint").getByRole("button", { name: /^Ver las \d+ de Colombia$/ });
+    const n = Number((await way.textContent())?.match(/\d+/)?.[0]);
+    await way.click();
+    await expect(page).toHaveURL(/#\/explorar\?pais=co$/);
+    await expect(count(page)).toHaveText(`${n} fiestas`);
   });
 
   test("RF-04: 2027-02-01 to 2027-02-10 in Colombia returns Barranquilla (deep link)", async ({ page }) => {

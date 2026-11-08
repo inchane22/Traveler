@@ -2,7 +2,7 @@
 // in light and dark, with zero violations; plus 44 × 44 px targets and keyboard basics.
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
-import { A11Y_TAGS, open } from "./helpers.ts";
+import { A11Y_TAGS, open, openFilters } from "./helpers.ts";
 
 test.use({ serviceWorkers: "block" });
 
@@ -67,6 +67,25 @@ for (const scheme of ["light", "dark"] as const) {
       await expectNoViolations(page);
     });
 
+    test("hoja de filtros", async ({ page }) => {
+      await open(page, "#/explorar?pais=co&tipo=carnaval");
+      await openFilters(page);
+      await expectNoViolations(page);
+    });
+
+    test("hoja de marcas", async ({ page }) => {
+      await open(page, "#/pais/co");
+      await page.getByRole("button", { name: "Cómo leer las marcas" }).click();
+      await expect(page.getByRole("dialog")).toBeVisible();
+      await expectNoViolations(page);
+    });
+
+    test("Sobre los datos con el registro completo", async ({ page }) => {
+      await open(page, "#/datos");
+      await page.locator(".log-more__toggle").click();
+      await expectNoViolations(page);
+    });
+
     test("in English", async ({ page }) => {
       await page.addInitScript(() => {
         try {
@@ -85,11 +104,11 @@ for (const scheme of ["light", "dark"] as const) {
 test.describe("targets and keyboard", () => {
   // PRD «Pulgar primero»: controls and primary links (date and source links included, ux-F09).
   test("controls and primary links are at least 44 × 44 px", async ({ page }) => {
-    const links = [".when__range.link--source", ".event__date.link--source", ".source__link", ".link--small", ".section__foot a", ".footer a", ".freshness a", ".log__what a", ".log__sources a", ".fresh__name a"];
-    for (const hash of ["#/pais/co", "#/explorar?pais=co", "#/fiesta/carnaval-barranquilla", "#/fiesta/independencia-cartagena", "#/ajustes", "#/datos"]) {
+    const links = [".when__range.link--source", ".event__source", ".source__link", ".link--small", ".section__foot a", ".footer a", ".freshness a", ".log__what a", ".log__sources a", ".fresh__name a"];
+    for (const hash of ["#/pais/co", "#/explorar?pais=co", "#/explorar?pais=co&tipo=carnaval&nivel=2", "#/fiesta/carnaval-barranquilla", "#/fiesta/independencia-cartagena", "#/ajustes", "#/datos"]) {
       await open(page, hash);
       const small = await page.evaluate((extra) =>
-        [...document.querySelectorAll<HTMLElement>([".btn, .chip, .navlink, .save, .icon-btn, .option, .switch, .segmented__opt, .scope-btn, .radio, .wordmark", ...extra].join(", "))]
+        [...document.querySelectorAll<HTMLElement>([".btn, .chip, .pill, .navlink, .save, .icon-btn, .option, .switch, .segmented__opt, .scope-btn, .radio, .wordmark, .log-more__toggle", ...extra].join(", "))]
           .filter((el) => el.offsetParent !== null)
           .map((el) => ({ el: el.className, text: el.textContent?.trim().slice(0, 30), w: el.getBoundingClientRect().width, h: el.getBoundingClientRect().height }))
           .filter((r) => r.w < 43.5 || r.h < 43.5),

@@ -39,12 +39,77 @@
   color: var(--ink-2);
 }
 
+.trip__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-3);
+}
+
+/* Phones: country, month, type, Nivel 2 and sort live in the filter sheet; from 48rem, inline. */
+.filters__panel {
+  display: none;
+}
+
 .filters__line {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-2) var(--sp-4);
+}
+
+.filters-btn {
+  min-block-size: var(--tap);
+  padding-inline: 0.8rem 0.6rem;
+  font-size: var(--fs-sm);
+}
+
+.filters-btn .icon {
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+}
+
+.filters-btn--on {
+  border-width: var(--rule);
+}
+
+.active-filters__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-block-start: var(--sp-3);
+}
+
+@media (min-width: 48rem) {
+  .filters__panel {
+    display: grid;
+    gap: var(--sp-3);
+  }
+
+  .filters-btn,
+  .active-filters {
+    display: none;
+  }
+}
+
+/* Filter sheet: chips wrap instead of scrolling sideways, label above its row. */
+.filter-sheet,
+.filter-sheet__groups {
+  display: grid;
+  gap: var(--sp-4);
+}
+
+.filter-sheet .chip-group {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-2);
+}
+
+.filter-sheet .chip-row {
+  flex-wrap: wrap;
+  overflow: visible;
+  margin-inline-end: 0;
+  padding-inline: 2px;
 }
 
 .summary {
@@ -64,10 +129,45 @@
 .summary__count {
   font-weight: 800;
   font-size: var(--fs-lg);
+  white-space: nowrap;
+}
+
+.summary__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-inline-size: 0;
 }
 
 .summary__clear {
   margin-inline-end: calc(-1 * var(--sp-3));
+}
+
+.summary__clear {
+  white-space: nowrap;
+}
+
+/* Phones: «Limpiar filtros» drops its icon to share the bar with «Filtros»; at 320 px it shrinks
+   to the icon alone. The accessible name keeps the words either way. */
+@media (max-width: 26rem) {
+  .summary__clear {
+    padding-inline: 0.6rem;
+  }
+
+  .summary__clear .icon {
+    display: none;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  .summary__clear {
+    font-size: 0;
+    gap: 0;
+  }
+
+  .summary__clear .icon {
+    display: block;
+  }
 }
 
 .results {
@@ -176,4 +276,20 @@
   inline-size: 1.125rem;
   block-size: 1.125rem;
   margin-block-start: 0.1rem;
+}
+
+.explore-hint__body {
+  display: grid;
+  gap: var(--sp-2);
+  min-inline-size: 0;
+}
+
+.explore-hint__ways {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.explore-help {
+  margin-block-start: var(--sp-4);
 }

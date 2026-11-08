@@ -27,13 +27,16 @@ test.describe("Ficha", () => {
     await expect(dateLink).toHaveAttribute("target", "_blank");
     await expect(dateLink).toHaveAttribute("rel", "noopener noreferrer");
     await expect(dateLink).toHaveAccessibleName(/6–9 feb 2027.*fuente: Carnaval de Barranquilla/i);
-    // A key-event date opens its source; a day no source gives (ux-F05) says why instead.
+    // A key-event day opens its source in one tap through its confidence label («● Oficial ↗»);
+    // a day no source gives (ux-F05) says why instead. The day itself is plain text.
     for (const ev of await page.locator(".event").all()) {
-      const date = ev.locator(".event__date");
-      if ((await date.getAttribute("href")) === null) await expect(ev.locator(".event__rule")).not.toBeEmpty();
-      else await expect(date).toHaveAttribute("href", /^https:\/\//);
+      const link = ev.locator("a.event__source");
+      if ((await link.count()) === 0) await expect(ev.locator(".event__rule")).not.toBeEmpty();
+      else await expect(link).toHaveAttribute("href", /^https:\/\//);
     }
-    await expect(page.locator("a.event__date")).toHaveCount(6);
+    await expect(page.locator("a.event__source")).toHaveCount(6);
+    await expect(page.locator("a.event__date")).toHaveCount(0);
+    await expect(page.locator("a.event__source").first()).toHaveAccessibleName(/^Oficial ?, fuente: Carnaval de Barranquilla.+\(se abre en otra pestaña\)$/);
   });
 
   test("RF-06: sources list the publisher and the verification date", async ({ page }) => {
@@ -57,8 +60,8 @@ test.describe("Ficha", () => {
     test(`RF-07/08: a date from the rule is tentative, by pattern, and says where it comes from (${slug})`, async ({ page }) => {
       await open(page, `#/fiesta/${slug}`);
       const when = page.locator(".when");
-      await expect(when.locator(".status")).toHaveText("Tentativa");
-      await expect(when.locator(".conf")).toHaveText("Fuente: Patrón");
+      await expect(when.locator(".status")).toHaveText("Por confirmar");
+      await expect(when.locator(".conf")).toHaveText("Fuente: Años anteriores");
       await expect(when.locator(".when__rule")).toContainText("regla");
       await expect(when.locator(".when__band")).toHaveClass(/band--hatched/);
       await expect(when.locator(".when__range")).not.toHaveAttribute("href", /.*/);
@@ -92,6 +95,21 @@ test.describe("Ficha", () => {
     await page.mouse.wheel(0, 1200);
     await expect(page.getByRole("button", { name: "Agregar al calendario" })).toBeInViewport({ ratio: 1 });
     await expect(page.getByRole("button", { name: "Guardar", exact: true })).toBeInViewport({ ratio: 1 });
+  });
+
+  // The ficha has «Volver»: on phones its action bar takes the bottom nav's place in the thumb zone.
+  test("phones: the ficha drops the bottom nav, Volver leads the masthead, the bars take ≤ 15 % of the screen", async ({ page }, info) => {
+    test.skip(info.project.name !== "mobile", "the bottom nav is the phone layout");
+    await open(page, "#/fiesta/carnaval-barranquilla");
+    await expect(page.locator(".bottomnav")).toBeHidden();
+    const bar = await page.locator(".actionbar").boundingBox();
+    expect(Math.round((bar?.y ?? 0) + (bar?.height ?? 0))).toBe(844);
+    const share = await page.evaluate(() => (document.querySelector(".masthead")!.getBoundingClientRect().height + document.querySelector(".actionbar")!.getBoundingClientRect().height) / innerHeight);
+    expect(share).toBeLessThanOrEqual(0.15);
+    const order = await page.locator(".masthead__inner > *").evaluateAll((els) => els.map((el) => (el.getAttribute("class") ?? "").split(" ").find((c) => c === "masthead__back" || c === "wordmark" || c === "topnav")));
+    expect(order.slice(0, 2)).toEqual(["masthead__back", "wordmark"]);
+    await open(page, "#/pais/co");
+    await expect(page.locator(".bottomnav")).toBeVisible();
   });
 
   test("the travel advisory of the origin country links from the ficha", async ({ page }) => {
@@ -151,27 +169,39 @@ test.describe("Ficha", () => {
   test("RF-08: a key-event date links only to a source that backs it", async ({ page }) => {
     await open(page, "#/fiesta/carnaval-barranquilla");
     const martes = page.locator(".event").filter({ hasText: "Martes de Carnaval" });
-    await expect(martes.locator(".conf")).toHaveText("Patrón");
+    await expect(martes.locator(".conf")).toHaveText("Años anteriores");
     await expect(martes.locator("a")).toHaveCount(0);
-    await expect(page.locator(".event").filter({ hasText: "Batalla de Flores" }).locator("a.event__date")).toHaveAttribute("href", /^https:\/\//);
+    await expect(page.locator(".event").filter({ hasText: "Batalla de Flores" }).locator("a.event__source")).toHaveAttribute("href", /^https:\/\//);
 
     // Feria de las Flores 2026: only the Silleteros date is quoted (El Espectador); the official
     // page gives the feria's range, not the parades, so the other press dates stay plain text.
     await open(page, "#/fiesta/feria-de-las-flores", "2026-07-01");
-    await expect(page.locator(".event").filter({ hasText: "Desfile de Silleteros" }).locator("a.event__date")).toHaveAttribute("href", /elespectador\.com/);
+    await expect(page.locator(".event").filter({ hasText: "Desfile de Silleteros" }).locator("a.event__source")).toHaveAttribute("href", /elespectador\.com/);
     for (const name of ["Desfile de Chivas y Flores", "Avenida Primavera", "Desfile de Autos Clásicos y Antiguos"]) {
       await expect(page.locator(".event").filter({ hasText: name }).locator("a"), name).toHaveCount(0);
     }
   });
 
-  // ux-F10: «Lo no confirmado lleva trama diagonal», on the big band too.
-  test("the ficha header band is hatched when the date is not confirmed", async ({ page }) => {
+  // ux-F10: «Lo no confirmado lleva trama diagonal», on the big band too. One band per ficha: the
+  // dates card's top edge, like the Inicio poster.
+  test("the ficha's one band tops the dates card and is hatched when the date is not confirmed", async ({ page }) => {
     await open(page, "#/fiesta/independencia-cartagena");
-    const band = page.locator(".fhead .poster__band");
+    await expect(page.locator(".band, .poster__band").filter({ visible: true })).toHaveCount(1);
+    const band = page.locator(".when > .when__band");
     await expect(band).toHaveClass(/band--hatched/);
     expect(await band.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain("repeating-linear-gradient");
     await open(page, "#/fiesta/carnaval-barranquilla");
-    await expect(page.locator(".fhead .poster__band")).toHaveClass(/band--solid/);
+    await expect(page.locator(".when > .when__band")).toHaveClass(/band--solid/);
+    await expect(page.locator(".fhead .poster__band")).toHaveCount(0);
+  });
+
+  test("the month grid explains its marks", async ({ page }) => {
+    await open(page, "#/fiesta/carnaval-barranquilla");
+    const legend = page.locator(".mg-legend");
+    await expect(legend).toContainText("Confirmada");
+    await expect(legend).toContainText("Momento clave");
+    await open(page, "#/fiesta/independencia-cartagena");
+    await expect(page.locator(".mg-legend")).toContainText("Por confirmar");
   });
 
   test("an unknown festival shows a not-found state with actions", async ({ page }) => {
@@ -243,7 +273,7 @@ test.describe("RF-12: deep links open each screen directly", () => {
 
   test("filters from a shared link are applied", async ({ page }) => {
     await open(page, "#/explorar?pais=co&tipo=carnaval");
-    await expect(page.getByRole("button", { name: /^Carnaval/ })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator('[data-key="tipo-carnaval"]')).toHaveAttribute("aria-pressed", "true");
   });
 });
 

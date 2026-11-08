@@ -10,6 +10,7 @@ import type { CriterionKey } from "../score.ts";
 import { openCalendarSheet } from "./calendar.ts";
 import {
   asyncView,
+  bandMod,
   confidenceMark,
   countdownBlock,
   emptyState,
@@ -19,7 +20,6 @@ import {
   moonNote,
   notice,
   occurrenceDates,
-  posterBand,
   saveButton,
   sectionHeading,
   staleNotice,
@@ -147,15 +147,30 @@ function scoreSection(entry: FestivalEntry, ctx: Ctx): HTMLElement {
   );
 }
 
-/** The date of a key event and, when no source backs that day, where it comes from instead. */
-function eventDate(ev: KeyEvent, occ: Occurrence | null, ctx: Ctx): { date: HTMLElement; why: HTMLElement | null } {
-  if (!ev.date) return { date: h("span", { class: "event__date" }, ctx.t("status.por_anunciar")), why: null };
+/**
+ * A key event's day as plain text, then where it comes from. A sourced day's confidence label is
+ * the link to that source («● Oficial ↗», one tap); a day no source gives says why instead.
+ */
+function eventWhen(ev: KeyEvent, occ: Occurrence | null, ctx: Ctx): Child[] {
+  if (!ev.date) return [h("span", { class: "event__date" }, ctx.t("status.por_anunciar")), confidenceMark(ev.confidence, ctx.t)];
   const label = ev.end && ev.end !== ev.date ? range(ev.date, ev.end, ctx.lang) : longDate(ev.date, ctx.lang);
+  const date = h("span", { class: "event__date num" }, label);
   const source = eventSource(ev, occ);
-  if (source) return { date: sourcedDate(label, source, ctx, "event__date"), why: null };
+  if (source) {
+    return [
+      date,
+      h(
+        "a",
+        { href: source.url, external: true, class: "event__source link--source" },
+        confidenceMark(ev.confidence, ctx.t),
+        h("span", { class: "sr-only" }, `, ${ctx.t("festival.sourceOf", { publisher: source.publisher })} ${ctx.t("link.newTab")}`),
+        icon("external"),
+      ),
+    ];
+  }
   // No source backs this day: say where it comes from instead of borrowing the edition's publisher.
   const why = ev.rule ? ctx.t("festival.fromRule", { rule: ruleText(ev.rule, ctx.lang, ctx, Number(ev.date.slice(0, 4))) }) : ctx.t("festival.eventUnsourced");
-  return { date: sourcedDate(label, undefined, ctx, "event__date"), why: h("span", { class: "event__rule" }, why) };
+  return [date, confidenceMark(ev.confidence, ctx.t), h("span", { class: "event__rule" }, why)];
 }
 
 function keyEvents(occ: Occurrence | null, ctx: Ctx): HTMLElement | null {
@@ -169,15 +184,7 @@ function keyEvents(occ: Occurrence | null, ctx: Ctx): HTMLElement | null {
     h(
       "ol",
       { class: "events" },
-      sorted.map((ev) => {
-        const { date, why } = eventDate(ev, occ, ctx);
-        return h(
-          "li",
-          { class: "event" },
-          h("span", { class: "event__name" }, text(ev.name, ctx.lang) ?? ev.id),
-          h("span", { class: "event__when" }, date, confidenceMark(ev.confidence, ctx.t), why),
-        );
-      }),
+      sorted.map((ev) => h("li", { class: "event" }, h("span", { class: "event__name" }, text(ev.name, ctx.lang) ?? ev.id), h("span", { class: "event__when" }, eventWhen(ev, occ, ctx)))),
     ),
   );
 }
@@ -294,8 +301,10 @@ function whenBlock(entry: FestivalEntry, ctx: Ctx): HTMLElement {
   return h(
     "section",
     { class: `when type--${entry.festival.type}${occ?.status === "cancelada" ? " is-cancelled" : ""}`, "aria-labelledby": "when-title" },
+    // One band per ficha, on the dates card's top edge like the Inicio poster: same date code.
+    h("span", { class: `band band--${bandMod(occ)} when__band`, "aria-hidden": "true" }),
     h("h2", { class: "sr-only", id: "when-title" }, ctx.t("festival.when")),
-    h("div", { class: "when__dates" }, h("span", { class: `band band--${mark?.mod ?? "window"} when__band`, "aria-hidden": "true" }), sourcedDate(dates, source, ctx, "when__range")),
+    h("div", { class: "when__dates" }, sourcedDate(dates, source, ctx, "when__range")),
     longRange ? h("p", { class: "when__long" }, longRange) : null,
     occ ? h("p", { class: "marks marks--lg" }, statusBadge(occ.status, ctx.t), confidenceMark(occ.confidence, ctx.t, true)) : null,
     moonNote(occ, ctx.t),
@@ -345,7 +354,6 @@ function content(data: FestivalData, ctx: Ctx): Child {
     h(
       "header",
       { class: `fhead type--${f.type}` },
-      posterBand(entry.occurrence),
       h("p", { class: "fhead__type" }, typeTag(f.type, ctx.t), h("span", { class: "tag" }, ctx.t(`tier.${String(entry.score.tier)}`))),
       h("h1", { class: `screen-title fhead__name display${entry.occurrence?.status === "cancelada" ? " is-struck" : ""}`, tabindex: "-1" }, name),
       original ? h("p", { class: "fhead__original" }, ctx.t("festival.original"), " ", h("span", { class: "fhead__original-name" }, original)) : null,
