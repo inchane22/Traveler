@@ -121,6 +121,11 @@ describe("follow-up search for missing dates", () => {
     const sweep = noDates();
     await runRefresh(refreshOptions(tempRepo({ countries: ["br"] }), { country: "BR", only: "carnaval-recife", today: "2027-01-10", sweepWithin: 45, maxFollowups: 3 }), deps(sweep));
     expect(researchCalls(sweep)).toHaveLength(1);
+
+    // 120 days or more out (Recife on 2026-10-01 is 128): nobody has published the dates yet.
+    const far = noDates();
+    await runRefresh(refreshOptions(tempRepo({ countries: ["br"] }), { country: "BR", only: "carnaval-recife", today: "2026-10-01", maxFollowups: 3 }), deps(far));
+    expect(researchCalls(far)).toHaveLength(1);
   });
 
   test("at most maxFollowups per run, in queue order; a failed follow-up keeps the first pass", async () => {

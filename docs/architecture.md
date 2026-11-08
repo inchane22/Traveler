@@ -150,7 +150,8 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   ended `no_citations` exits 1 with a `::error::` annotation; the search setup is broken, not the
   festivals. News sweeps are never judged this way.
 - Follow-up search (R7, R2): after a pass-1 answer (official + A domains only) that cites pages but
-  leaves `start` or `end` of an unconfirmed edition unanswered (`missingDateFacts`), a pass-2
+  leaves `start` or `end` of an unconfirmed edition under 120 days out unanswered
+  (`missingDateFacts`; further out the dates are rarely published yet), a pass-2
   search (block list only) asks for the missing facts only (`research-followup.md`). Its proposals
   are validated against its own citations and only the missing fields are kept; a failure keeps
   pass 1. Weekly run only, at most `MAX_FOLLOWUPS_PER_RUN` per run in queue order, and none once

@@ -14,7 +14,7 @@ import { extract } from "./extract.ts";
 import { extractionContext, researchUserPrompt, type FollowupFact } from "./festival-context.ts";
 import { appendGithubOutput, loadPrompt, readJson, readJsonOr, writeJson, writeText, type Logger } from "./io.ts";
 import { applyLostSources, type LinkDowngrade, type LinkVerdict } from "./links.ts";
-import { buildQueue, type QueueItem } from "./queue.ts";
+import { buildQueue, NEAR_DAYS, type QueueItem } from "./queue.ts";
 import { buildRefreshReport, renderRefreshMarkdown, type DraftProgress, type FestivalLog, type FestivalOutcome, type FollowupLog, type RefreshReport } from "./report.ts";
 import { research, researchPass, type ResearchRequest, type ResearchResult } from "./research.ts";
 import { dataChangeCount, selectForPr, type Selection } from "./select.ts";
@@ -153,8 +153,9 @@ async function verifyFestival(item: QueueItem, country: CountryFile, policy: Dom
     return { log: { ...searched, outcome: first.outcome, detail: first.detail }, changes: [], notFound: first.notFound };
   }
   const run: FestivalRun = { log: { ...searched, outcome: "ok" }, changes: first.changes, notFound: first.notFound };
-  // Only after a first pass restricted to official sites: an open pass already searched widely.
-  const missing = result.pass === 1 ? missingDateFacts(item, first.changes) : [];
+  // Only after a first pass restricted to official sites (an open pass already searched widely), and
+  // only under 120 days out: further away nobody has published the dates yet (2026-11-08 run).
+  const missing = result.pass === 1 && item.daysToStart < NEAR_DAYS ? missingDateFacts(item, first.changes) : [];
   if (!missing.length || !followups.take()) return run;
   return followUp(item, country, policy, request(missing), missing, run, opts, deps, guard);
 }
