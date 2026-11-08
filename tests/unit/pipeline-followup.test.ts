@@ -1,6 +1,6 @@
 // Follow-up search (R2, R7): when the first pass, restricted to official sites, cites pages but does
 // not state an edition's dates, a second open search asks for those dates only.
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import Anthropic from "@anthropic-ai/sdk";
 import { describe, expect, test } from "vitest";
@@ -49,6 +49,9 @@ describe("follow-up search for missing dates", () => {
       },
     });
     const root = tempRepo({ countries: ["br"] });
+    // The R2 section is about drafts: keep BR one here whatever its status in data/.
+    const brPath = join(root, "data", "countries", "br.json");
+    writeFileSync(brPath, `${JSON.stringify({ ...JSON.parse(readFileSync(brPath, "utf8")), status: "borrador" }, null, 2)}\n`);
     const result = await runRefresh(refreshOptions(root, { country: "BR", only: "carnaval-recife", maxFollowups: 2 }), deps(transport));
     const r = result.report!;
 
