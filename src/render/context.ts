@@ -1,16 +1,10 @@
 // What every screen receives from the app shell.
 import type { ISO } from "../dates.ts";
+import type { GeoState } from "../geo.ts";
 import type { Translate } from "../i18n.ts";
 import type { Route } from "../router.ts";
 import type { Lang } from "../schema.ts";
 import type { Store } from "../store.ts";
-
-export interface Coords {
-  lat: number;
-  lon: number;
-}
-
-export type GeoState = { status: "off" } | { status: "asking" } | { status: "on"; coords: Coords } | { status: "denied" } | { status: "unavailable" };
 
 export interface Ctx {
   t: Translate;
@@ -27,6 +21,7 @@ export interface Ctx {
   navigate(route: Route, opts?: { replace?: boolean }): void;
   /** Re-renders the current screen keeping focus and scroll. */
   refresh(): void;
+  /** «Cerca de mí» state (src/geo.ts); request and forget are no-ops when they do not apply. */
   geo(): GeoState;
   requestGeo(): void;
   forgetGeo(): void;

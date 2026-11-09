@@ -68,4 +68,19 @@ test.describe("RF-14 without permission", () => {
     await expect(page.locator(".setting__state")).toHaveCount(0);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Ajustes");
   });
+
+  // src/geo.ts: Explorar reads the same state as Ajustes, so a refusal explains itself there too.
+  test("in Explorar a refusal explains itself, keeps focus, and date order is the first way out", async ({ page, context }) => {
+    await context.clearPermissions();
+    await open(page, "#/explorar?pais=co&orden=cerca");
+    await page.locator(".empty").getByRole("button", { name: "Usar mi ubicación" }).click();
+    await expect(page.getByText("No diste permiso para usar tu ubicación")).toBeVisible();
+    await expect(page.locator('[data-key="geo-enable"]')).toBeFocused();
+    const byDate = page.locator(".empty__actions .btn").first();
+    await expect(byDate).toHaveText("Ordenar por fecha");
+    await byDate.click();
+    await settled(page);
+    await expect(page).toHaveURL(/#\/explorar\?pais=co$/);
+    await expect(page.getByTestId("results").locator(".month").first()).toBeVisible();
+  });
 });

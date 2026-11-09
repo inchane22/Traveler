@@ -329,34 +329,3 @@ export function coveredOrigins(): string[] {
 export function advisoryFor(origin: string | null, destination: string): Advisory | null {
   return pickAdvisory(advisoryTable, origin, destination);
 }
-
-// ---------- Resources: settled values are read synchronously, so a re-render never flashes a skeleton ----------
-
-export interface Resource<T> {
-  promise: Promise<T>;
-  value?: T;
-  error?: unknown;
-}
-
-const resources = new Map<string, Resource<unknown>>();
-
-export function resource<T>(key: string, factory: () => Promise<T>): Resource<T> {
-  const existing = resources.get(key) as Resource<T> | undefined;
-  if (existing && existing.error === undefined) return existing;
-  const created: Resource<T> = { promise: factory() };
-  created.promise.then(
-    (value) => {
-      created.value = value;
-    },
-    (error: unknown) => {
-      created.error = error;
-    },
-  );
-  resources.set(key, created as Resource<unknown>);
-  return created;
-}
-
-/** Forget failed loads so «Reintentar» fetches again. */
-export function clearFailed(): void {
-  for (const [key, r] of resources) if (r.error !== undefined) resources.delete(key);
-}

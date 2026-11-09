@@ -29,7 +29,8 @@ import {
 import type { Ctx } from "./context.ts";
 import { compactNumber, dayMonth, fullNumber, longDate, range, relativeDays, shortDate } from "./format.ts";
 import { icon } from "./icons.ts";
-import { advisoryFor, countryInfo, dateKind, dateSource, eventSource, isUnconfirmed, loadFestival, primarySource, resource, type FestivalData } from "./model.ts";
+import { resource } from "../resource.ts";
+import { advisoryFor, countryInfo, dateKind, dateSource, eventSource, isUnconfirmed, loadFestival, primarySource, type FestivalData } from "./model.ts";
 import { monthGrid } from "./monthgrid.ts";
 
 const DEFAULT_REPO = "inchane22/traveler";

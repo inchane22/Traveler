@@ -8,7 +8,8 @@ import type { Confidence, Festival, FestivalType, Lang, Status } from "../schema
 import type { Ctx } from "./context.ts";
 import { range, relativeDays, shortDate } from "./format.ts";
 import { icon, type IconName } from "./icons.ts";
-import { clearFailed, countdown, DataError, dateKind, isStale, isUnconfirmed, type Countdown, type IndexCountry, type Resource } from "./model.ts";
+import type { Resource } from "../resource.ts";
+import { countdown, DataError, dateKind, isStale, isUnconfirmed, type Countdown, type IndexCountry } from "./model.ts";
 
 export function festivalName(f: Festival, lang: Lang): string {
   return f.names[lang];
@@ -194,13 +195,51 @@ export interface EmptyAction {
   primary?: boolean;
   /** External https link: opens in a new tab and says so with this screen-reader text. */
   newTab?: string;
+  /** Leading icon (buttons and in-app links). */
+  icon?: IconName;
+  /** Work in progress: a tap does nothing, but the button stays focusable so focus never drops. */
+  busy?: boolean;
+  /** Stable data-key, so focus stays on this action when the list around it changes. */
+  key?: string;
 }
 
-export function actionButton(a: EmptyAction, key?: string): HTMLElement {
+export function actionButton(a: EmptyAction, key = a.key): HTMLElement {
   const cls = `btn ${a.primary ? "btn--primary" : "btn--secondary"}`;
+  const lead = a.icon ? icon(a.icon) : null;
   if (a.href && a.newTab) return h("a", { class: `${cls} link--external`, href: a.href, external: true, "data-key": key ?? null }, a.label, h("span", { class: "sr-only" }, ` ${a.newTab}`), icon("external"));
-  if (a.href) return h("a", { class: cls, href: a.href, "data-key": key ?? null }, a.label);
-  return h("button", { type: "button", class: cls, onclick: () => a.onClick?.(), "data-key": key ?? null }, a.label);
+  if (a.href) return h("a", { class: cls, href: a.href, "data-key": key ?? null }, lead, a.label);
+  return h(
+    "button",
+    {
+      type: "button",
+      class: cls,
+      "aria-disabled": a.busy ? "true" : null,
+      "aria-busy": a.busy ? "true" : null,
+      onclick: () => {
+        if (!a.busy) a.onClick?.();
+      },
+      "data-key": key ?? null,
+    },
+    lead,
+    a.label,
+  );
+}
+
+/**
+ * «Usar mi ubicación» in every state that is not «on» (src/geo.ts). While the device asks it
+ * reads «Pidiendo permiso…» and stays focusable; a second tap is a no-op in the state machine too.
+ */
+export function locationAction(ctx: Ctx, primary = true): EmptyAction {
+  const asking = ctx.geo().status === "asking";
+  return { label: asking ? ctx.t("near.asking") : ctx.t("near.enable"), icon: "pin", primary, busy: asking, key: "geo-enable", onClick: () => ctx.requestGeo() };
+}
+
+/** Why the location is off when the device said no; Ajustes and Explorar say the same thing. */
+export function locationProblem(ctx: Ctx): HTMLElement | null {
+  const { status } = ctx.geo();
+  if (status === "denied") return notice("info", "alert", h("p", null, ctx.t("near.denied")));
+  if (status === "unavailable") return notice("info", "alert", h("p", null, ctx.t("near.unavailable")));
+  return null;
 }
 
 /** Every empty state says what happened and offers at least one way forward. */
@@ -210,7 +249,7 @@ export function emptyState(title: string, body: string | null, actions: EmptyAct
     { class: "empty" },
     h("p", { class: "empty__title display" }, title),
     body ? h("p", { class: "empty__body" }, body) : null,
-    actions.length ? h("div", { class: "empty__actions" }, actions.map((a, i) => actionButton(a, `empty-${i}`))) : null,
+    actions.length ? h("div", { class: "empty__actions" }, actions.map((a, i) => actionButton(a, a.key ?? `empty-${i}`))) : null,
   );
 }
 
@@ -261,17 +300,11 @@ export function staleNotice(info: IndexCountry | undefined, ctx: Ctx): HTMLEleme
   );
 }
 
+/** «Reintentar» re-renders: a failed resource loads again on its next read (src/resource.ts). */
 export function errorState(error: unknown, ctx: Ctx): HTMLElement {
   const offline = error instanceof DataError ? error.kind === "offline" : true;
   return emptyState(ctx.t(offline ? "error.offlineTitle" : "error.dataTitle"), ctx.t(offline ? "error.offlineBody" : "error.dataBody"), [
-    {
-      label: ctx.t("error.retry"),
-      primary: true,
-      onClick: () => {
-        clearFailed();
-        ctx.refresh();
-      },
-    },
+    { label: ctx.t("error.retry"), primary: true, onClick: () => ctx.refresh() },
   ]);
 }
 
@@ -281,13 +314,16 @@ export function errorState(error: unknown, ctx: Ctx): HTMLElement {
  */
 export function asyncView<T>(res: Resource<T>, kind: "home" | "list" | "detail", ctx: Ctx, ready: (value: T) => Child): HTMLElement {
   const root = h("div", { class: "view" });
-  if (res.value !== undefined) {
-    root.append(h("div", { class: "view__content" }, ready(res.value)));
-    return root;
-  }
-  if (res.error !== undefined) {
-    root.append(errorState(res.error, ctx));
-    return root;
+  const { state } = res;
+  switch (state.status) {
+    case "ready":
+      root.append(h("div", { class: "view__content" }, ready(state.value)));
+      return root;
+    case "failed":
+      root.append(errorState(state.error, ctx));
+      return root;
+    case "loading":
+      break;
   }
   root.setAttribute("aria-busy", "true");
   root.append(skeleton(kind));

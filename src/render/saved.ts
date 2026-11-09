@@ -18,7 +18,8 @@ import {
 } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { icon } from "./icons.ts";
-import { countdown, loadSaved, resource } from "./model.ts";
+import { resource } from "../resource.ts";
+import { countdown, loadSaved } from "./model.ts";
 import { dayNumber, monthShort } from "./format.ts";
 import { effectiveStart } from "../dates.ts";
 

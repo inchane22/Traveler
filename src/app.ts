@@ -1,12 +1,13 @@
 // App shell: wires the pure modules (router, store, i18n) to the DOM, renders the current screen
 // into <main>, and keeps focus and scroll where the user expects them across re-renders.
 import { todayIn, type ISO } from "./dates.ts";
+import { nextGeo, type GeoEvent, type GeoState } from "./geo.ts";
 import { createI18n, detectLang, type I18n, type Messages } from "./i18n.ts";
 import { EMPTY_FILTERS, parseHash, serializeRoute, todayOverride, type Route } from "./router.ts";
 import type { Lang } from "./schema.ts";
 import { createStore, type Store } from "./store.ts";
 import { renderAbout } from "./render/about.ts";
-import type { Coords, Ctx, GeoState } from "./render/context.ts";
+import type { Ctx } from "./render/context.ts";
 import { renderExplore } from "./render/explore.ts";
 import { DEFAULT_REPO, renderFestival } from "./render/festival.ts";
 import { localeWeekStart } from "./render/format.ts";
@@ -111,6 +112,14 @@ export function boot(): void {
 
   let route: Route = parseHash(location.hash);
   let geo: GeoState = { status: "off" };
+  /** Every location change goes through nextGeo; false when the event changed nothing. */
+  const geoEvent = (event: GeoEvent): boolean => {
+    const next = nextGeo(geo, event);
+    if (next === geo) return false;
+    geo = next;
+    render(false);
+    return true;
+  };
   // Explorar opens where the user left it; on first use, on the country Inicio is showing.
   let lastExplore: string | null = null;
   const exploreTarget = (): string => {
@@ -196,31 +205,19 @@ export function boot(): void {
     refresh: () => render(false),
     geo: () => geo,
     requestGeo: () => {
-      if (!("geolocation" in navigator)) {
-        geo = { status: "unavailable" };
-        render(false);
-        return;
-      }
-      geo = { status: "asking" };
-      render(false);
+      if (!geoEvent({ type: "request", supported: "geolocation" in navigator }) || geo.status !== "asking") return;
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          const coords: Coords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
-          geo = { status: "on", coords };
-          announce(i18n.t("near.on"));
-          render(false);
+          if (geoEvent({ type: "located", coords: { lat: pos.coords.latitude, lon: pos.coords.longitude } })) announce(i18n.t("near.on"));
         },
         (err) => {
-          geo = { status: err.code === err.PERMISSION_DENIED ? "denied" : "unavailable" };
-          render(false);
+          geoEvent({ type: "failed", reason: err.code === err.PERMISSION_DENIED ? "denied" : "unavailable" });
         },
         { enableHighAccuracy: false, maximumAge: 600_000, timeout: 15_000 },
       );
     },
     forgetGeo: () => {
-      geo = { status: "off" };
-      announce(i18n.t("near.forgotten"));
-      render(false);
+      if (geoEvent({ type: "forget" })) announce(i18n.t("near.forgotten"));
     },
     title: (text) => {
       document.title = i18n.t("app.docTitle", { page: text });

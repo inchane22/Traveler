@@ -217,6 +217,7 @@
   "near.unavailable": "Este dispositivo não conseguiu informar sua localização. Todo o resto funciona igual.",
   "near.needTitle": "Para ordenar por distância precisamos da sua localização",
   "near.needBody": "Ela é usada só neste dispositivo e não é enviada a lugar nenhum.",
+  "near.byDate": "Ordenar por data",
 
   "festival.when": "Datas",
   "festival.original": "Nome original:",

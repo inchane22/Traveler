@@ -14,6 +14,8 @@ import {
   dateBand,
   emptyState,
   festivalName,
+  locationAction,
+  locationProblem,
   occurrenceDates,
   placeLine,
   saveButton,
@@ -25,7 +27,8 @@ import {
 } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { dayNumber, monthLabel, monthShort } from "./format.ts";
-import { entriesFor, filtersFrom, haversineKm, loadCountry, loadIndex, resource, rollingMonths, type PublicIndex } from "./model.ts";
+import { resource } from "../resource.ts";
+import { entriesFor, filtersFrom, haversineKm, loadCountry, loadIndex, rollingMonths, type PublicIndex } from "./model.ts";
 import { icon } from "./icons.ts";
 import { marksButton } from "./marks.ts";
 import { openSheet } from "./sheet.ts";
@@ -157,7 +160,7 @@ function filterGroups(f: ExploreState, data: ExploreData, ctx: Ctx, opts: GroupO
             "aria-pressed": String(near),
             "data-key": key("sort-near"),
             onclick: () => {
-              if (opts.askGeo && ctx.geo().status !== "on") ctx.requestGeo();
+              if (opts.askGeo) ctx.requestGeo();
               change({ ...f, sort: "near" });
             },
           },
@@ -222,7 +225,7 @@ function openFilterSheet(initial: ExploreState, data: ExploreData, ctx: Ctx, go:
             dialog?.close();
             // Focus goes back to «Filtros» first, so the re-render keeps it there.
             opener.focus();
-            if (next.sort === "near" && ctx.geo().status !== "on") ctx.requestGeo();
+            if (next.sort === "near") ctx.requestGeo();
             go(next);
           },
         },
@@ -324,10 +327,16 @@ function grouped(hits: readonly FilterHit[], ctx: Ctx): HTMLElement[] {
   });
 }
 
-function nearList(hits: readonly FilterHit[], ctx: Ctx): HTMLElement {
+/**
+ * Distance order needs the location (src/geo.ts). Until it is on, every state says where it
+ * stands, as in Ajustes, and date order is one tap away; after a refusal it is the first way out.
+ */
+function nearList(hits: readonly FilterHit[], f: ExploreState, ctx: Ctx, go: (next: ExploreState) => void): Child {
   const geo = ctx.geo();
   if (geo.status !== "on") {
-    return emptyState(ctx.t("near.needTitle"), ctx.t("near.needBody"), [{ label: ctx.t("near.enable"), primary: true, onClick: () => ctx.requestGeo() }]);
+    const refused = geo.status === "denied" || geo.status === "unavailable";
+    const byDate: EmptyAction = { label: ctx.t("near.byDate"), primary: refused, key: "near-by-date", onClick: () => go({ ...f, sort: "date" }) };
+    return [locationProblem(ctx), emptyState(ctx.t("near.needTitle"), ctx.t("near.needBody"), refused ? [byDate, locationAction(ctx, false)] : [locationAction(ctx), byDate])];
   }
   const withDist = hits
     .map((hit) => ({ hit, km: haversineKm(geo.coords, hit.entry.festival.coords) }))
@@ -505,7 +514,7 @@ function content(f: ExploreState, data: ExploreData, ctx: Ctx): Child {
 
   const results = hits.length
     ? near
-      ? nearList(hits, ctx)
+      ? nearList(hits, f, ctx, go)
       : grouped(hits, ctx)
     : emptyState(ctx.t("explore.emptyTitle"), ctx.t("explore.emptyBody"), emptyActions(f, data, ctx, go));
 
