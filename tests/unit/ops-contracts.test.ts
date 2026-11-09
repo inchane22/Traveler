@@ -1,5 +1,5 @@
-// Ops wiring that no other test exercises: the R12 fingerprint reaches the secret CI reads
-// (code-F1, SEC-02), deploy waits for CI (prd-F17), package scripts point at real files
+// Ops wiring that no other test exercises: the pipeline commits only validated data and treats
+// issue text as data (SEC-02), deploy waits for CI (prd-F17), package scripts point at real files
 // (code-F8, code-F9), the unit suite runs west of UTC (prd-F19) and the built CSP (prd-F13).
 import { describe, expect, test } from "vitest";
 import { existsSync, readFileSync } from "node:fs";
@@ -8,54 +8,78 @@ import { formatDayMonth, todayIn } from "../../src/dates.ts";
 import { CSP } from "../../vite.config.ts";
 
 const read = (p: string): string => readFileSync(p, "utf8");
+const stepOf = (wf: string, name: string): string => {
+  const at = wf.indexOf(`- name: ${name}`);
+  expect(at, name).toBeGreaterThan(0);
+  const next = wf.indexOf("\n      - name:", at + 1);
+  return wf.slice(at, next === -1 ? undefined : next);
+};
 
-describe("R12: the trap fingerprint is stored where ci.yml and deploy.yml read it", () => {
-  const refresh = read(".github/workflows/refresh.yml");
-  test("refresh-run writes trap_fingerprint, and refresh.yml consumes it before the PR opens", () => {
-    expect(read("scripts/lib/refresh-run.ts")).toContain("trap_fingerprint");
-    expect(refresh).toMatch(/id: refresh\b/);
-    expect(refresh).toContain("steps.refresh.outputs.trap_fingerprint");
-    expect(refresh).toContain("gh secret set TRAP_FINGERPRINTS");
-    expect(refresh).toContain("permission-secrets: write");
-    const store = refresh.indexOf("name: Store the trap fingerprint");
-    const pr = refresh.indexOf("peter-evans/create-pull-request");
-    expect(store).toBeGreaterThan(0);
-    expect(store).toBeLessThan(pr);
-    // Fail closed: neither the store step nor the PR step runs with always(), so a failed store
-    // means no PR; and no app means no trap.
-    const step = (at: number) => refresh.slice(at, refresh.indexOf("\n      - name:", at + 1));
-    expect(step(store)).not.toContain("always()");
-    expect(step(refresh.lastIndexOf("- name: Open pull request", pr))).not.toContain("always()");
-    expect(refresh).toContain("TRAP_SECRET: ${{ vars.PR_APP_CLIENT_ID != '' && secrets.TRAP_SECRET || '' }}");
+describe("pipeline.yml: auto-approved data reaches main only through the checks", () => {
+  const wf = read(".github/workflows/pipeline.yml");
+
+  test("one workflow replaces refresh, onboard and the usage hand-off; runs one at a time", () => {
+    for (const gone of ["refresh.yml", "onboard.yml", "usage-fallback.yml"]) expect(existsSync(`.github/workflows/${gone}`)).toBe(false);
+    expect(wf).toMatch(/group: ai-pipeline\s*\n\s*cancel-in-progress: false/);
+    expect(wf).toContain('cron: "0 11 * * *"');
+    expect(wf).toMatch(/issues:\s*\n\s*types: \[opened, reopened, labeled\]/);
   });
 
-  test("unexpected per-festival errors turn the run red only after the PR for the rest has opened (BE-04)", () => {
-    expect(read("scripts/lib/refresh-run.ts")).toMatch(/unexpected, verified/);
-    const gate = refresh.indexOf("- name: Fail on unexpected festival errors");
-    expect(gate).toBeGreaterThan(refresh.indexOf("- name: Report pull request"));
-    const step = refresh.slice(gate, refresh.indexOf("\n      - name:", gate + 1));
-    expect(step).toContain("steps.refresh.outputs.unexpected");
-    expect(step).toContain("exit 1");
-    expect(step).not.toContain("always()");
+  test("only the owner's «build-country» issues spend; anyone else's gets a reply without the API key", () => {
+    expect(wf).toContain("github.event.issue.author_association == 'OWNER'");
+    expect(wf).toContain("github.event.sender.login == github.repository_owner");
+    expect(wf).toContain("contains(github.event.issue.labels.*.name, 'build-country')");
+    const ack = wf.slice(wf.indexOf("  acknowledge:"), wf.indexOf("  pipeline:"));
+    expect(ack).not.toContain("ANTHROPIC_API_KEY");
+    expect(ack).not.toContain("environment:");
   });
 
-  test("ci.yml and deploy.yml check against the same secret", () => {
-    for (const wf of [".github/workflows/ci.yml", ".github/workflows/deploy.yml"]) {
-      expect(read(wf)).toContain("TRAP_FINGERPRINTS: ${{ secrets.TRAP_FINGERPRINTS }}");
-      expect(read(wf)).toContain("node scripts/check-trap.ts");
-    }
+  test("issue text reaches the script through env vars only, never inside a run script", () => {
+    const run = stepOf(wf, "Run the pipeline");
+    expect(run).toContain("ISSUE_BODY: ${{ github.event_name == 'issues' && github.event.issue.body || '' }}");
+    for (const script of wf.split("run: |").slice(1)) expect(script.split("\n      - name:")[0]).not.toMatch(/\$\{\{\s*github\.event\.issue\.(body|title)/);
+  });
+
+  test("build-data validates before the commit; the commit goes to main; CI is started after the push", () => {
+    const validate = wf.indexOf("- name: Validate data and regenerate data/index.json");
+    const commit = wf.indexOf("- name: Commit to main");
+    const ci = wf.indexOf("- name: Start CI on main");
+    expect(validate).toBeGreaterThan(wf.indexOf("- name: Run the pipeline"));
+    expect(commit).toBeGreaterThan(validate);
+    expect(ci).toBeGreaterThan(commit);
+    expect(stepOf(wf, "Validate data and regenerate data/index.json")).not.toContain("continue-on-error");
+    expect(stepOf(wf, "Commit to main")).toContain("HEAD:main");
+    expect(stepOf(wf, "Start CI on main (deploy follows a green run)")).toContain("gh workflow run ci.yml");
+    expect(wf).toContain("actions: write");
+  });
+
+  test("a failed pipeline step still commits what was applied, then turns the run red (BE-04)", () => {
+    expect(stepOf(wf, "Run the pipeline")).toContain("continue-on-error: true");
+    const fail = stepOf(wf, "Fail when the pipeline did");
+    expect(wf.indexOf("- name: Fail when the pipeline did")).toBeGreaterThan(wf.indexOf("- name: Commit to main"));
+    expect(fail).toContain("steps.run.outcome == 'failure'");
+    expect(fail).toContain("exit 1");
+    expect(read("scripts/lib/pipeline-run.ts")).toMatch(/summary\.unexpected > 0 \? 1 : 0/);
+  });
+
+  test("no workflow or script still refers to the monthly reviewer trap", () => {
+    for (const f of [".github/workflows/ci.yml", ".github/workflows/deploy.yml", ".github/workflows/pipeline.yml", "package.json"]) expect(read(f)).not.toMatch(/check-trap|TRAP_FINGERPRINTS/);
+    expect(existsSync("scripts/check-trap.ts")).toBe(false);
   });
 });
 
 describe("deploy waits for a green ci run on main (prd-F17)", () => {
   const deploy = read(".github/workflows/deploy.yml");
-  test("triggered by ci's workflow_run, not by a raw push, and builds the verified commit", () => {
+  test("triggered by ci's workflow_run (a push or the pipeline's dispatch), not by a raw push, and builds the verified commit", () => {
     expect(deploy).toMatch(/workflow_run:\s*\n\s*workflows: \[ci\]/);
     expect(deploy).not.toMatch(/^\s*push:/m);
     expect(deploy).toContain("github.event.workflow_run.conclusion == 'success'");
-    expect(deploy).toContain("github.event.workflow_run.event == 'push'");
+    expect(deploy).toContain("(github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch')");
+    expect(deploy).toContain("github.event.workflow_run.head_branch == 'main'");
     expect(deploy).toContain("ref: ${{ github.event.workflow_run.head_sha || github.sha }}");
-    expect(read(".github/workflows/ci.yml")).toMatch(/push:\s*\n\s*branches: \[main\]/);
+    const ci = read(".github/workflows/ci.yml");
+    expect(ci).toMatch(/push:\s*\n\s*branches: \[main\]/);
+    expect(ci).toMatch(/^\s*workflow_dispatch:/m);
   });
 });
 

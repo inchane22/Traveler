@@ -1,5 +1,6 @@
 // Country onboarding (H5, R2, R11): one research call, one extraction to OnboardingDraft, then code
-// maps it onto the schema, scores it and writes a «borrador» country file plus the PR body.
+// maps it onto the schema, scores it and writes a «borrador» country file plus a run summary. The
+// pipeline (pipeline-run.ts) dates it further and publishes it once it passes the R2 gate.
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { addMonths } from "../../src/dates.ts";
@@ -104,10 +105,9 @@ export function renderOnboardMarkdown(r: OnboardReport): string {
   ]);
   const parts = [
     `## Onboarding ${r.country} (${r.date})`,
-    `Borrador generado por la IA y validado en código. El país no se publica hasta que una persona apruebe este PR y tenga al menos ${MIN_SOURCED_FESTIVALS} fiestas con fecha y fuente. Lo que no tiene cita validada queda «por medir» o «por anunciar». Modelo: \`${mdText(r.model, 40)}\`${r.dry_run ? " · ensayo (--dry-run)" : ""}.`,
+    `Borrador generado por la IA y validado en código. El país se publica solo cuando tiene al menos ${MIN_SOURCED_FESTIVALS} fiestas con fecha y fuente A o B. Lo que no tiene cita validada queda «por medir» o «por anunciar». Modelo: \`${mdText(r.model, 40)}\`${r.dry_run ? " · ensayo (--dry-run)" : ""}.`,
     r.flags.messages.length ? r.flags.messages.map((m) => `> **${mdText(m, 200)}**`).join("\n>\n") : "Sin alertas de cobertura.",
     mdTable(["Fiesta", "Ciudad", "Puntaje", "Nivel", "Verificado", "Por medir", "Fuentes"], rows),
-    "- [ ] Revisé cada fuente y que las ciudades pertenecen al país.\n- [ ] Escribí `config/official-domains/" + r.country.toLowerCase() + ".json` y `config/sources/" + r.country.toLowerCase() + ".json` antes de publicar.",
   ];
   if (r.dropped.length) parts.push(details(`Descartadas (${r.dropped.length})`, r.dropped.map((d) => `- ${mdText(d, 200)}`).join("\n")));
   if (r.not_found.length) parts.push(details("No encontrado", r.not_found.map((d) => `- ${mdText(d, 120)}`).join("\n")));
@@ -126,7 +126,7 @@ export async function runOnboard(opts: OnboardOptions, deps: OnboardDeps): Promi
   if (!opts.dryRun && existsSync(dataPath)) return fail(`onboard ${cc}: ${dataPath} already exists; refresh verifies it, onboarding never overwrites a country`);
   const config = readJson(join(opts.root, "config", "scoring.json")) as ScoringConfig;
   const policy = withGovernmentFallback(loadDomainPolicy(opts.root, cc));
-  const guard = createBudgetGuard({ month: opts.today.slice(0, 7), budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log, weekly: false });
+  const guard = createBudgetGuard({ month: opts.today.slice(0, 7), today: opts.today, budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log, job: "onboard" });
   const key = `onboard/${cc}`;
 
   let draft: OnboardingDraft;
@@ -194,7 +194,7 @@ export async function runOnboard(opts: OnboardOptions, deps: OnboardDeps): Promi
   };
   for (const m of flags.messages) deps.log.warn(m);
   if (!parsed.data.festivals.length) {
-    appendGithubOutput(opts.githubOutput, { changes: 0, branch: `onboard/${cc.toLowerCase()}` });
+    appendGithubOutput(opts.githubOutput, { changes: 0 });
     return fail(`onboard ${cc}: no festival survived validation`);
   }
 
@@ -209,7 +209,7 @@ export async function runOnboard(opts: OnboardOptions, deps: OnboardDeps): Promi
     writeJson(dataPath, CountryFile.parse(withArchives(parsed.data, archived)));
     files.push(dataPath);
   }
-  appendGithubOutput(opts.githubOutput, { changes: parsed.data.festivals.length, branch: `onboard/${cc.toLowerCase()}` });
+  appendGithubOutput(opts.githubOutput, { changes: parsed.data.festivals.length });
   deps.log.info(`onboard ${cc}: ${parsed.data.festivals.length} festival(s) in draft, ${dropped.length} dropped`);
   return { exitCode: 0, files, draft: parsed.data, report };
 }

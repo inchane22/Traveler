@@ -59,7 +59,7 @@ describe("onboarding PE with recorded responses (H5 acceptance)", () => {
     expect(report.dropped).toEqual(["fiesta-sin-codigo: subdivision PUNO is not an ISO 3166-2 code of PE"]);
     expect(report.flags.messages.join()).toMatch(/R2: solo 2 fiesta/);
     expect(report.festivals.find((f) => f.slug === "carnaval-cajamarca")!.verified).toEqual([]);
-    expect(githubOutput(out)).toEqual({ changes: "4", branch: "onboard/pe" });
+    expect(githubOutput(out)).toEqual({ changes: "4" });
     const md = readFileSync(join(root, "proposals", `onboard-pe-${TODAY}.md`), "utf8");
     expect(md).toContain("«por medir»");
     expect(md).toContain("Descartadas (1)");
@@ -130,7 +130,7 @@ describe("onboarding PE with recorded responses (H5 acceptance)", () => {
     const log = memoryLogger();
     expect(await onboardMain(["--country=pe", "--dry-run", `--today=${TODAY}`, `--fixtures=${FIXTURES}`], {}, root, log)).toBe(0);
     expect(existsSync(join(root, "proposals", `onboard-pe-${TODAY}.json`))).toBe(true);
-    expect(readFileSync(join(root, "data", "usage.json"), "utf8")).toBe("[]\n");
+    expect(existsSync(join(root, "data", "state", "ledger.jsonl"))).toBe(false);
     expect(await onboardMain([], {}, root, memoryLogger())).toBe(2);
   });
 });

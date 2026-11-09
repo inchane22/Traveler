@@ -8,7 +8,7 @@ import { appendGithubOutput, formatJson, listProposals, loadPrompt, memoryLogger
 import { details, mdLink, mdTable, mdText } from "../../scripts/lib/markdown.ts";
 import { buildQueue } from "../../scripts/lib/queue.ts";
 import { buildRefreshReport, fieldLabel, renderRefreshMarkdown, tier1DateCount } from "../../scripts/lib/report.ts";
-import { selectForPr } from "../../scripts/lib/select.ts";
+import { selectForApply } from "../../scripts/lib/select.ts";
 import type { ReviewedChange } from "../../scripts/lib/validate.ts";
 import { config, country, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
 
@@ -117,18 +117,14 @@ describe("PR body", () => {
     expect(details("s", "b")).toContain("<summary>s</summary>");
   });
 
-  test("tier-1 dates are bold with a checklist; stops, deferrals and flags are spelled out", () => {
-    const selection = selectForPr(
-      [
-        rc(),
-        rc({ field: "status", new: "confirmada", risk: 90 }),
-        rc({ slug: "feria-de-cali", name: "Feria de Cali", tier: "provisional", field: "end", verdict: "flagged", flags: ["revisar: x"], risk: 70 }),
-        rc({ slug: "feria-de-cali", name: "Feria de Cali", tier: "provisional", verdict: "rejected", reasons: ["sin fuente"], sources: [], quote_url: null }),
-        rc({ field: "end", kind: "confirmation", new: "2027-01-07" }),
-      ],
-      null,
-      2,
-    );
+  test("tier-1 dates are bold; stops, holds and rejections are spelled out", () => {
+    const selection = selectForApply([
+      rc(),
+      rc({ field: "status", new: "confirmada", risk: 90 }),
+      rc({ slug: "feria-de-cali", name: "Feria de Cali", tier: "provisional", field: "end", verdict: "flagged", flags: ["revisar: x"], risk: 70 }),
+      rc({ slug: "feria-de-cali", name: "Feria de Cali", tier: "provisional", verdict: "rejected", reasons: ["sin fuente"], sources: [], quote_url: null }),
+      rc({ field: "end", kind: "confirmation", new: "2027-01-07" }),
+    ]);
     const report = buildRefreshReport(
       { date: TODAY, model: "m", dry_run: false, stopped: "R10: monthly budget reached", budget: { month: "2026-10", usd: 1.234, budget_usd: 20, level: "ok", searches: 3 }, festivals: [{ country: "CO", slug: "x", year: 2027, tier: "1", days_to_start: 1, reasons: ["soon"], outcome: "api_error", detail: "boom" }], not_found: [] },
       selection,
@@ -136,8 +132,9 @@ describe("PR body", () => {
     const md = renderRefreshMarkdown(report);
     expect(md).toContain("> **La corrida se detuvo:** R10: monthly budget reached");
     expect(md).toContain("| **Nivel 1** | CO | **Carnaval de Negros y Blancos** | **inicio** |");
-    expect(md).toContain("- [ ] CO · Carnaval de Negros y Blancos · inicio 2027-01-02");
-    expect(md).toContain("Fuera de este PR por el tope de 15 cambios (1)");
+    expect(md).toContain("### Cambios aplicados (2)");
+    expect(md).toContain("### Retenidos, no aplicados (1)");
+    expect(md).not.toContain("- [ ]");
     expect(md).toContain("Rechazados por la validación (1)");
     expect(md).toContain("### Confirmaciones (1)");
     expect(md).toContain("US$1.23 de US$20.00 (3 búsquedas");
@@ -145,7 +142,7 @@ describe("PR body", () => {
     expect(tier1DateCount(report.applied)).toBe(1);
     // SEC-04: a web quote or note cannot become a clickable link or smuggle an entity.
     const phishing = "Compra entradas en https://evil.example/login o WWW.evil.example &#64;user del 2 de enero de 2027";
-    const poisoned = renderRefreshMarkdown(buildRefreshReport(report, selectForPr([rc({ quote: phishing, note: `ver www.evil.example y http://x.example` })], null)));
+    const poisoned = renderRefreshMarkdown(buildRefreshReport(report, selectForApply([rc({ quote: phishing, note: `ver www.evil.example y http://x.example` })])));
     const prose = poisoned.replace(/\]\(https:\/\/[^)\s]+\)/g, "](link)");
     expect(prose).toContain("evil.example");
     expect(prose).not.toMatch(/https?:\/\//i);
@@ -253,6 +250,6 @@ describe("applying changes", () => {
   test("changelog entries only for value changes", () => {
     const entries = changelogEntries([rc(), rc({ kind: "confirmation" }), rc({ verdict: "flagged" })], TODAY);
     expect(entries).toEqual([{ date: TODAY, country: "CO", slug: "negros-y-blancos", field: "start", old: null, new: "2027-01-02", source_urls: [SRC.url] }]);
-    expect(existsSync(join(REPO, "data", "usage.json"))).toBe(true);
+    expect(existsSync(join(REPO, "data", "state", "ledger.jsonl"))).toBe(true);
   });
 });

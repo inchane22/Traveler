@@ -6,7 +6,7 @@ import { dataProblems } from "../../scripts/build-data.ts";
 import { applyChanges, trialApply } from "../../scripts/lib/apply.ts";
 import { memoryLogger } from "../../scripts/lib/io.ts";
 import { demoteUnappliable } from "../../scripts/lib/refresh-run.ts";
-import { selectForPr } from "../../scripts/lib/select.ts";
+import { selectForApply } from "../../scripts/lib/select.ts";
 import { checkConfirmedStatus, reviewChange, type ReviewContext } from "../../scripts/lib/validate.ts";
 import { ctxFor } from "../../src/festivals.ts";
 import type { CountryFile, Festival } from "../../src/schema.ts";
@@ -46,7 +46,7 @@ describe("status «confirmada» needs dates and a source on the resulting editio
     const { ok, failed } = trialApply([country], [status, other], TODAY, policies);
     expect(ok).toEqual([other]);
     expect(failed.map((f) => f.change)).toEqual([status]);
-    const selection = demoteUnappliable(selectForPr([status, other], null), [country], TODAY, memoryLogger(), policies);
+    const selection = demoteUnappliable(selectForApply([status, other]), [country], TODAY, memoryLogger(), policies);
     expect(selection.applied).toEqual([other]);
     expect(selection.flagged).toHaveLength(1);
     expect(selection.flagged[0]!.flags.join()).toMatch(/no se puede aplicar/);
@@ -84,7 +84,7 @@ describe("score confirmations never rewrite the stored figure (SEC-01)", () => {
 
 /** What the weekly run would write for these changes: demoted first, then applied. */
 function weeklyApply(country: CountryFile, changes: ReturnType<typeof accepted>[]) {
-  const selection = demoteUnappliable(selectForPr(changes, null), [country], TODAY, memoryLogger(), policies);
+  const selection = demoteUnappliable(selectForApply(changes), [country], TODAY, memoryLogger(), policies);
   return { selection, next: applyChanges(country, [...selection.applied, ...selection.confirmations], TODAY) };
 }
 

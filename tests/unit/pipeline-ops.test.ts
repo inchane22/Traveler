@@ -1,5 +1,5 @@
 // Ops contract gaps: entry-point detection, RF-18 first-edition SEQUENCE, per-call RuleContext,
-// the R9 news sweep and the usage fallback (R10) for runs whose PR is not merged yet.
+// the R9 news sweep and the spend ledger (R10) the CLIs read before the first call.
 import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -12,18 +12,22 @@ import { main as refreshMain } from "../../scripts/refresh.ts";
 import { applyChanges, firstEditionSequence } from "../../scripts/lib/apply.ts";
 import { refreshArgs, UsageError } from "../../scripts/lib/args.ts";
 import { noopArchiver } from "../../scripts/lib/archive.ts";
-import { createBudgetGuard, emptyMonth, fileUsageStore, memoryUsageStore, mergeUsage, readUsageFallback, withUsageFallback, type UsageMonth } from "../../scripts/lib/budget.ts";
+import { memoryUsageStore } from "../../scripts/lib/budget.ts";
 import { fixtureDirTransport } from "../../scripts/lib/client.ts";
-import { memoryLogger, readJson, writeJson } from "../../scripts/lib/io.ts";
+import { memoryLogger } from "../../scripts/lib/io.ts";
 import { isMainModule } from "../../scripts/lib/is-main.ts";
 import { buildQueue } from "../../scripts/lib/queue.ts";
 import { runRefresh } from "../../scripts/lib/refresh-run.ts";
 import { buildRefreshReport, renderRefreshMarkdown } from "../../scripts/lib/report.ts";
-import { config, githubOutput, readJsonFile, REFRESH_FIXTURES, refreshOptions, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
+import { config, REFRESH_FIXTURES, refreshOptions, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
 import { accepted, edition, fest, nation, source } from "../fixtures/pipeline/synthetic.ts";
 
-const io = { read: readJson, write: writeJson, exists: existsSync };
-const month = (m: string, usd: number, over: Partial<UsageMonth> = {}): UsageMonth => ({ ...emptyMonth(m), usd, ...over });
+/** One carry-over line worth `usd` in the temp repo's ledger. */
+function ledgerWith(root: string, usd: number, day = TODAY): void {
+  mkdirSync(join(root, "data", "state"), { recursive: true });
+  const line = { day, job: "verify", key: `carryover/${day.slice(0, 7)}`, call: "carryover", model: "m", searches: 0, input_tokens: 0, output_tokens: 0, usd };
+  writeFileSync(join(root, "data", "state", "ledger.jsonl"), `${JSON.stringify(line)}\n`);
+}
 
 describe("isMainModule (scripts under paths with spaces)", () => {
   test("matches the percent-encoded module URL; the old string comparison did not", () => {
@@ -144,108 +148,55 @@ describe("R9 news sweep (--sweep=news)", () => {
     expect(queue().map((i) => i.slug)).toContain("in-sixty");
   });
 
-  test("a sweep run over CO verifies only what starts within the window and never carries the trap", async () => {
+  test("a sweep run over CO verifies only what starts within the window and records its calls as sweeps", async () => {
     const root = tempRepo({ countries: ["co"] });
-    const out = join(root, "gh");
-    writeFileSync(out, "");
-    const deps = () => ({ transport: fixtureDirTransport(REFRESH_FIXTURES), archiver: noopArchiver, usage: memoryUsageStore(), log: memoryLogger() });
-    const run = await runRefresh(refreshOptions(root, { sweepWithin: 45, trapSecret: "test-secret", githubOutput: out }), deps());
+    const usage = memoryUsageStore();
+    const deps = () => ({ transport: fixtureDirTransport(REFRESH_FIXTURES), archiver: noopArchiver, usage, log: memoryLogger() });
+    const run = await runRefresh(refreshOptions(root, { sweepWithin: 45 }), deps());
     const r = run.report!;
     expect(r.sweep_within).toBe(45);
     // Structural only: which CO festivals fall in the window depends on data other changes edit.
     expect(r.festivals.length).toBeGreaterThan(0);
     expect(r.festivals.every((f) => f.reasons.join() === "news" && f.days_to_start !== null && f.days_to_start <= 45)).toBe(true);
-    expect(githubOutput(out).trap_fingerprint).toBeUndefined();
+    expect(usage.entries.every((e) => e.job === "sweep" && e.day === TODAY)).toBe(true);
     const lastWeek = await runRefresh(refreshOptions(root, { sweepWithin: 7 }), deps());
     expect(lastWeek.report!.festivals.every((f) => f.days_to_start !== null && f.days_to_start <= 7)).toBe(true);
   });
 
   test("the sweep report says so in its heading", () => {
     const base = { date: TODAY, model: "m", dry_run: true, stopped: null, budget: { month: "2026-10", usd: 0, budget_usd: 20, level: "ok" as const, searches: 0 }, festivals: [], not_found: [] };
-    const empty = { applied: [], confirmations: [], flagged: [], rejected: [], deferred: [] };
+    const empty = { applied: [], confirmations: [], flagged: [], rejected: [] };
     expect(renderRefreshMarkdown(buildRefreshReport({ ...base, sweep_within: 45 }, empty))).toContain("## Barrido de noticias 2026-10-26 (fiestas a 45 días o menos)");
-    expect(renderRefreshMarkdown(buildRefreshReport(base, empty))).toContain("## Verificación semanal 2026-10-26");
-  });
-
-  test("sweeps and onboarding spend from the budget without using up the month's weekly run (R12)", () => {
-    const store = memoryUsageStore();
-    const call = { searches: 1, input_tokens: 10, output_tokens: 10, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 };
-    const ctx = { key: "AA/x", kind: "research" as const };
-    const sweep = createBudgetGuard({ month: "2026-11", budgetUsd: 20, model: "m", store, log: memoryLogger(), weekly: false });
-    expect(sweep.firstRunOfMonth).toBe(false);
-    sweep.afterCall(ctx, call);
-    expect(store.saved.at(-1)![0]).toMatchObject({ month: "2026-11", weekly_runs: 0 });
-    const weekly = createBudgetGuard({ month: "2026-11", budgetUsd: 20, model: "m", store, log: memoryLogger() });
-    expect(weekly.firstRunOfMonth).toBe(true);
-    weekly.afterCall(ctx, call);
-    expect(store.saved.at(-1)![0]).toMatchObject({ weekly_runs: 1, searches: 2 });
-    expect(createBudgetGuard({ month: "2026-11", budgetUsd: 20, model: "m", store, log: memoryLogger() }).firstRunOfMonth).toBe(false);
+    expect(renderRefreshMarkdown(buildRefreshReport(base, empty))).toContain("## Verificación 2026-10-26");
   });
 });
 
-describe("R10 usage fallback (USAGE_FALLBACK_PATH)", () => {
-  test("per month the higher running total wins", () => {
-    const main = [month("2026-09", 5), month("2026-10", 3)];
-    const artifact = [month("2026-10", 7, { searches: 4 }), month("2026-11", 1)];
-    expect(mergeUsage(main, artifact)).toEqual([month("2026-09", 5), month("2026-10", 7, { searches: 4 }), month("2026-11", 1)]);
-    expect(mergeUsage([month("2026-10", 9)], [month("2026-10", 2)])).toEqual([month("2026-10", 9)]);
-  });
-
-  test("unset, missing or broken fallback files are ignored with a log line", () => {
-    const root = tempRepo({ countries: [] });
-    const log = memoryLogger();
-    expect(readUsageFallback(undefined, io, log)).toEqual([]);
-    expect(readUsageFallback(join(root, "nope.json"), io, log)).toEqual([]);
-    writeFileSync(join(root, "bad.json"), "{not json");
-    expect(readUsageFallback(join(root, "bad.json"), io, log)).toEqual([]);
-    writeFileSync(join(root, "wrong.json"), JSON.stringify([{ month: "2026-10" }]));
-    expect(readUsageFallback(join(root, "wrong.json"), io, log)).toEqual([]);
-    writeFileSync(join(root, "ok.json"), JSON.stringify([month("2026-10", 4)]));
-    expect(readUsageFallback(join(root, "ok.json"), io, log)).toEqual([month("2026-10", 4)]);
-    expect(log.lines.filter((l) => l.startsWith("warning: R10")).length).toBe(2);
-  });
-
-  test("online, the merged total is written to data/usage.json at once, so the uploaded artifact never goes back", () => {
-    const root = tempRepo({ countries: [] });
-    const path = join(root, "data", "usage.json");
-    writeJson(path, [month("2026-10", 3)]);
-    const store = withUsageFallback(fileUsageStore(path, io), [month("2026-10", 8)], { persist: true, log: memoryLogger() });
-    expect(readJsonFile(path)).toEqual([month("2026-10", 8)]);
-    expect(store.load()).toEqual([month("2026-10", 8)]);
-    writeJson(path, [month("2026-10", 12)]);
-    withUsageFallback(fileUsageStore(path, io), [month("2026-10", 8)], { persist: true, log: memoryLogger() });
-    expect(readJsonFile(path)).toEqual([month("2026-10", 12)]);
-  });
-
-  test("pnpm refresh reads the fallback: 97% of the budget in the last artifact degrades the run (R10)", async () => {
+describe("R10: the CLIs read the ledger before the first call", () => {
+  test("97% of the budget on record degrades the run to tier-1 festivals within 60 days", async () => {
     const root = tempRepo({ countries: ["co"] });
-    const fallback = join(root, "usage-prev.json");
-    writeFileSync(fallback, JSON.stringify([month("2026-10", 19.5)]));
+    ledgerWith(root, 19.5);
     const log = memoryLogger();
-    const code = await refreshMain(["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], { USAGE_FALLBACK_PATH: fallback }, root, log);
+    const code = await refreshMain(["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], {}, root, log);
     expect(code).toBe(0);
     expect(log.lines).toContain("warning: R10: 98% of MONTHLY_BUDGET_USD used (US$19.50 of US$20)");
     expect(log.lines.some((l) => l.includes("only tier-1 festivals starting within 60 days"))).toBe(true);
-    // Offline runs still never write data/usage.json.
-    expect(readFileSync(join(root, "data", "usage.json"), "utf8")).toBe("[]\n");
+    // Offline runs never append to the ledger.
+    expect(readFileSync(join(root, "data", "state", "ledger.jsonl"), "utf8").trim().split("\n")).toHaveLength(1);
   });
 
-  test("a fallback below data/usage.json loses to it", async () => {
+  test("last month's spend does not count against this month", async () => {
     const root = tempRepo({ countries: ["co"] });
-    writeFileSync(join(root, "data", "usage.json"), JSON.stringify([month("2026-10", 19.5)]));
-    writeFileSync(join(root, "usage-prev.json"), JSON.stringify([month("2026-10", 1)]));
+    ledgerWith(root, 19.5, "2026-09-30");
     const log = memoryLogger();
-    await refreshMain(["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], { USAGE_FALLBACK_PATH: join(root, "usage-prev.json") }, root, log);
-    expect(log.lines).toContain("warning: R10: 98% of MONTHLY_BUDGET_USD used (US$19.50 of US$20)");
+    await refreshMain(["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], {}, root, log);
+    expect(log.lines.some((l) => l.includes("R10:"))).toBe(false);
   });
 
-  test("a fallback over the cap stops the run before any call", async () => {
+  test("a ledger over the cap stops the run before any call", async () => {
     const root = tempRepo({ countries: ["co"] });
-    const dir = join(root, "prev");
-    mkdirSync(dir);
-    writeFileSync(join(dir, "usage.json"), JSON.stringify([month("2026-10", 25)]));
+    ledgerWith(root, 25);
     const log = memoryLogger();
-    const code = await refreshMain(["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], { USAGE_FALLBACK_PATH: join(dir, "usage.json") }, root, log);
+    const code = await refreshMain(["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], {}, root, log);
     expect(code).toBe(1);
     expect(log.lines.join("\n")).toMatch(/monthly budget reached/);
   });

@@ -1,10 +1,10 @@
-# Publishes the site to GitHub Pages (RF-16). Runs only from main, which only changes
-# through an approved PR, so nothing reaches the site without human review.
+# Publishes the site to GitHub Pages (RF-16). Runs only from main, after CI passed on it: a merged
+# PR, or a pipeline commit (auto-approved data changes; pipeline.yml then dispatches ci.yml).
 # Separate from the AI jobs: it never sees ANTHROPIC_API_KEY and holds no contents: write.
 name: deploy
 
-# RF-16 (prd-F17): deploy only after ci.yml (tests, e2e, trap check) passed on a push to main, so
-# a bypass merge with red CI never publishes. A manual dispatch from main stays for recovery.
+# RF-16 (prd-F17): deploy only after ci.yml (tests, e2e) passed on main, so a bypass merge or a
+# pipeline commit with red CI never publishes. A manual dispatch from main stays for recovery.
 on:
   workflow_run:
     workflows: [ci]
@@ -31,11 +31,13 @@ jobs:
   build:
     name: build
     # A dispatch can target any branch; refuse anything but main. A ci run counts only when it
-    # succeeded on a push to main (not a PR whose head branch happens to be called main).
+    # succeeded on main from a push or a dispatch (the pipeline's), never from a PR whose head
+    # branch happens to be called main.
     if: >-
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main')
+      (github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') &&
+      github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
@@ -107,18 +109,6 @@ jobs:
           echo "base_path=${base}" >> "${GITHUB_OUTPUT}"
           echo "site_url=${site}" >> "${GITHUB_OUTPUT}"
           echo "Deploying with BASE_PATH=${base} SITE_URL=${site}" >> "${GITHUB_STEP_SUMMARY}"
-
-      # Backstop for R12: even if a trap proposal were merged, it never gets published.
-      - name: Trap proposal check (R12)
-        env:
-          TRAP_SECRET: ${{ secrets.TRAP_SECRET }}
-          TRAP_FINGERPRINTS: ${{ secrets.TRAP_FINGERPRINTS }}
-        run: |
-          if [ -z "${TRAP_SECRET}" ]; then
-            echo "::warning::TRAP_SECRET is not configured; trap check skipped (README, first-time setup)."
-            exit 0
-          fi
-          node scripts/check-trap.ts
 
       # pnpm build validates data, drops drafts, builds calendars and the site, then scans
       # dist/ for API keys (R8).

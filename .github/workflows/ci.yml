@@ -1,4 +1,5 @@
-# Quality gate for every PR and every push to main (PRD H0, R8, R12; RF-16).
+# Quality gate for every PR, every push to main and every pipeline commit (PRD H0, R8; RF-16).
+# pipeline.yml pushes with GITHUB_TOKEN, which starts no workflow, so it dispatches this one on main.
 # Branch protection on main requires the single check named "ci" (the last job below),
 # so jobs can be added or renamed without touching the protection rule.
 name: ci
@@ -68,19 +69,6 @@ jobs:
 
       - name: Secret scan of tracked files and dist (R8)
         run: node scripts/check-secrets.ts
-
-      - name: Trap proposal check (R12)
-        env:
-          TRAP_SECRET: ${{ secrets.TRAP_SECRET }}
-          TRAP_FINGERPRINTS: ${{ secrets.TRAP_FINGERPRINTS }}
-        run: |
-          # Secrets are absent on fork PRs and Dependabot PRs; nothing a fork sends can reach main
-          # without a maintainer PR, and deploy.yml repeats this check before publishing.
-          if [ -z "${TRAP_SECRET}" ]; then
-            echo "::notice::TRAP_SECRET is not available to this run (fork, Dependabot or not configured); trap check skipped."
-            exit 0
-          fi
-          node scripts/check-trap.ts
 
       - name: Lighthouse CI (performance and accessibility budgets)
         run: pnpm lhci

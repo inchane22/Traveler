@@ -9,7 +9,7 @@ import { CRITERIA, scoreFestival, type ScoringConfig } from "../src/score.ts";
 import { quoteStatesDate } from "./lib/date-parser.ts";
 import { hasConfig, isOfficial, loadDomainPolicy, tierOf, type DomainPolicy } from "./lib/domains.ts";
 import { isMainModule } from "./lib/is-main.ts";
-import { langFor } from "./lib/lang.ts";
+import { localLangFor } from "./lib/lang.ts";
 import { loadSensitiveTerms, sensitiveHits } from "./lib/sensitive.ts";
 
 export interface IndexCountry {
@@ -47,7 +47,7 @@ export function loadCountries(dir: string): Country[] {
  * without a policy, that declares A) carries a quote stating the stored start or end day.
  */
 export function isABacked(edition: Edition, country: string, policy?: DomainPolicy): boolean {
-  const lang = langFor(country);
+  const lang = localLangFor(country);
   return edition.sources.some((s) => {
     const tier = policy ? tierOf(s.url, policy) : s.tier;
     if (tier !== "A" || !s.quote) return false;

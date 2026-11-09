@@ -1,14 +1,13 @@
-// Monthly country onboarding (H5). Usage, from docs/architecture.md:
+// Country onboarding by hand (H5); pipeline.ts runs it when a country is requested. Usage:
 //   pnpm onboard -- --country=<cc> [--dry-run] [--today=YYYY-MM-DD] [--fixtures=<dir>]
-// Writes data/countries/<cc>.json as «borrador» (never over an existing file) and the PR body in
+// Writes data/countries/<cc>.json as «borrador» (never over an existing file) and a summary in
 // proposals/onboard-<cc>-<date>.md; with --dry-run only the proposals files.
-import { existsSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { resolve } from "node:path";
 import { onboardArgs, UsageError } from "./lib/args.ts";
-import { fileUsageStore, memoryUsageStore, readUsageFallback, UsageFile, withUsageFallback } from "./lib/budget.ts";
+import { usageStoreFor } from "./lib/budget-store.ts";
 import { archiverFor } from "./lib/archive.ts";
 import { anthropicTransport, fixtureDirTransport } from "./lib/client.ts";
-import { readJson, readJsonOr, stdLogger, writeJson, type Logger } from "./lib/io.ts";
+import { stdLogger, type Logger } from "./lib/io.ts";
 import { runOnboard } from "./lib/onboard-run.ts";
 import { isMainModule } from "./lib/is-main.ts";
 
@@ -24,13 +23,7 @@ export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root
     throw error;
   }
   const offline = args.fixtures !== null;
-  const usagePath = join(root, "data", "usage.json");
-  const base = offline
-    ? memoryUsageStore(UsageFile.parse(readJsonOr(usagePath, [])))
-    : fileUsageStore(usagePath, { read: readJson, write: writeJson, exists: existsSync });
-  // Same budget as refresh: the last run artifact's usage.json counts too (USAGE_FALLBACK_PATH).
-  const fallback = readUsageFallback(env.USAGE_FALLBACK_PATH, { read: readJson, exists: existsSync }, log);
-  const usage = withUsageFallback(base, fallback, { persist: !offline, log });
+  const usage = usageStoreFor(root, offline);
   const result = await runOnboard(
     {
       root,

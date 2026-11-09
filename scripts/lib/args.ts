@@ -5,6 +5,7 @@ import { DEFAULT_BUDGET_USD } from "./budget.ts";
 import { modelFromEnv } from "./client.ts";
 import { NEWS_SWEEP_DAYS } from "./lang.ts";
 import { DEFAULT_MAX, DEFAULT_MAX_FOLLOWUPS, DEFAULT_PER_COUNTRY } from "./queue.ts";
+import { countryFromIssue } from "./requests.ts";
 
 export interface CommonOptions {
   dryRun: boolean;
@@ -20,7 +21,6 @@ export interface RefreshArgs extends CommonOptions {
   country?: string;
   maxFestivals: number;
   perCountry: number;
-  trapSecret: string | undefined;
   /** R9 news sweep (`--sweep=news`): only festivals starting within this many days. */
   sweepWithin?: number;
   /** Wider follow-up searches for missing dates (weekly run only); 0 turns them off. */
@@ -31,6 +31,15 @@ export interface OnboardArgs extends CommonOptions {
   country: string;
 }
 
+export interface PipelineArgs extends CommonOptions {
+  /** `--plan`: print today's plan and write the summary, without any API call. */
+  planOnly: boolean;
+  request?: { country: string; issue?: number };
+  maxFestivals: number;
+  maxFollowups: number;
+  siteUrl?: string;
+}
+
 export class UsageError extends Error {
   constructor(message: string) {
     super(message);
@@ -38,7 +47,7 @@ export class UsageError extends Error {
   }
 }
 
-const KNOWN = new Set(["dry-run", "only", "country", "today", "fixtures", "proposals", "verbose", "sweep", "within"]);
+const KNOWN = new Set(["dry-run", "only", "country", "today", "fixtures", "proposals", "verbose", "sweep", "within", "plan", "request", "issue"]);
 
 export function parseFlags(argv: readonly string[]): Map<string, string | true> {
   const flags = new Map<string, string | true>();
@@ -105,7 +114,6 @@ export function refreshArgs(argv: readonly string[], env: NodeJS.ProcessEnv, now
     ...(sweepWithin !== undefined ? { sweepWithin } : {}),
     maxFestivals: positiveInt(env.MAX_FESTIVALS_PER_RUN, DEFAULT_MAX, "MAX_FESTIVALS_PER_RUN"),
     perCountry: DEFAULT_PER_COUNTRY,
-    trapSecret: env.TRAP_SECRET?.trim() || undefined,
     maxFollowups: nonNegativeInt(env.MAX_FOLLOWUPS_PER_RUN, DEFAULT_MAX_FOLLOWUPS, "MAX_FOLLOWUPS_PER_RUN"),
   };
 }
@@ -129,4 +137,30 @@ export function onboardArgs(argv: readonly string[], env: NodeJS.ProcessEnv, now
   const country = str(flags, "country")?.toUpperCase();
   if (!country || !/^[A-Z]{2}$/.test(country)) throw new UsageError("--country=<cc> is required (ISO 3166-1 alpha-2)");
   return { ...common(flags, env, now), country };
+}
+
+/**
+ * `pnpm pipeline -- [--plan] [--request=<cc> [--issue=<n>]] [--today=…] [--fixtures=<dir>]`. From
+ * an issue event the workflow passes ISSUE_NUMBER, ISSUE_TITLE and ISSUE_BODY as env vars (never
+ * on the command line), and the country is read from them here. `--request` wins when both are set.
+ */
+export function pipelineArgs(argv: readonly string[], env: NodeJS.ProcessEnv, now = new Date()): PipelineArgs {
+  const flags = parseFlags(argv);
+  const base = common(flags, env, now);
+  const issueRaw = str(flags, "issue") ?? env.ISSUE_NUMBER?.trim();
+  const issue = issueRaw ? positiveInt(issueRaw, 0, "--issue") : undefined;
+  const fromFlag = str(flags, "request")?.toUpperCase();
+  const fromIssue = env.ISSUE_TITLE !== undefined || env.ISSUE_BODY !== undefined ? countryFromIssue(env.ISSUE_TITLE ?? "", env.ISSUE_BODY ?? "") : null;
+  // An issue that names no country is still a request: intake refuses it and says why on the issue.
+  const country = fromFlag ?? fromIssue ?? (issue !== undefined ? "??" : undefined);
+  if (fromFlag && !/^[A-Z]{2}$/.test(fromFlag)) throw new UsageError(`--request must be an ISO 3166-1 alpha-2 code, got ${fromFlag}`);
+  const site = env.SITE_URL?.trim();
+  return {
+    ...base,
+    planOnly: flags.get("plan") === true || base.dryRun,
+    ...(country ? { request: { country, ...(issue !== undefined ? { issue } : {}) } } : {}),
+    maxFestivals: positiveInt(env.MAX_FESTIVALS_PER_RUN, DEFAULT_MAX, "MAX_FESTIVALS_PER_RUN"),
+    maxFollowups: nonNegativeInt(env.MAX_FOLLOWUPS_PER_RUN, DEFAULT_MAX_FOLLOWUPS, "MAX_FOLLOWUPS_PER_RUN"),
+    ...(site && /^https:\/\//.test(site) ? { siteUrl: site } : {}),
+  };
 }

@@ -1,5 +1,5 @@
-// Weekly verification run (H4, RF-15): queue → research → extraction → validation → PR files.
-// Without --dry-run it also applies accepted changes; it never merges anything.
+// Verification run (H4, RF-15): queue → research → extraction → validation → auto-approval.
+// Without --dry-run it applies every accepted change; risky or flagged ones are held (select.ts).
 import { join } from "node:path";
 import { ctxFor } from "../../src/festivals.ts";
 import { ChangelogEntry, CountryFile, MIN_SOURCED_FESTIVALS, Proposal } from "../../src/schema.ts";
@@ -8,6 +8,7 @@ import { STATUS_TRAITS } from "../../src/status.ts";
 import { loadCountries, sourcedFestivals } from "../build-data.ts";
 import { applyChanges, changelogEntries, trialApply } from "./apply.ts";
 import { archiveAll, type Archiver } from "./archive.ts";
+import { holdRisky } from "./autoapprove.ts";
 import { allowedAtLevel, BudgetExceededError, createBudgetGuard, type BudgetGuard, type UsageStore } from "./budget.ts";
 import { classifyApiError, type MessagesTransport } from "./client.ts";
 import { firstPassDomains, loadDomainPolicy, type DomainPolicy } from "./domains.ts";
@@ -17,9 +18,8 @@ import { appendGithubOutput, loadPrompt, readJson, readJsonOr, writeJson, writeT
 import { applyLostSources, type LinkDowngrade, type LinkVerdict } from "./links.ts";
 import { buildQueue, NEAR_DAYS, type QueueItem } from "./queue.ts";
 import { buildRefreshReport, renderRefreshMarkdown, type DraftProgress, type FestivalLog, type FestivalOutcome, type FollowupLog, type RefreshReport } from "./report.ts";
-import { research, researchPass, type ResearchRequest, type ResearchResult } from "./research.ts";
-import { dataChangeCount, selectForPr, type Selection } from "./select.ts";
-import { fingerprint, makeTrap } from "./trap.ts";
+import { research, researchPass, type CallGate, type ResearchRequest, type ResearchResult } from "./research.ts";
+import { dataChangeCount, selectForApply, type Selection } from "./select.ts";
 import { reviewProposal, type ReviewedChange } from "./validate.ts";
 
 export interface RefreshOptions {
@@ -32,10 +32,15 @@ export interface RefreshOptions {
   maxFestivals: number;
   perCountry: number;
   budgetUsd: number;
-  trapSecret?: string;
   githubOutput?: string;
-  /** R9 news sweep: only festivals starting within this many days; never carries the R12 trap. */
+  /** R9 news sweep: only festivals starting within this many days. */
   sweepWithin?: number;
+  /** Festivals planned elsewhere (plan.ts); replaces the queue this run would build itself. */
+  queue?: readonly QueueItem[];
+  /** `build` while a new country is being dated before it goes live; `verify` otherwise. */
+  job?: "verify" | "build";
+  /** File name under proposals/ (without extension); the date by default. */
+  reportName?: string;
   /** R13: verdicts from a fresh check-links report; without it no source downgrade is made. */
   links?: ReadonlyMap<string, LinkVerdict>;
   /** Wider follow-up searches this run may spend (weekly run only); absent or 0 turns them off. */
@@ -85,9 +90,9 @@ export function missingDateFacts(item: QueueItem, changes: readonly ReviewedChan
 
 type Reviewed = { ok: true; changes: ReviewedChange[]; notFound: string[] } | { ok: false; outcome: FestivalOutcome; detail: string; warning: string; notFound: string[] };
 
-async function extractAndReview(item: QueueItem, country: CountryFile, policy: DomainPolicy, citations: ResearchResult["citations"], opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard): Promise<Reviewed> {
+async function extractAndReview(item: QueueItem, country: CountryFile, policy: DomainPolicy, citations: ResearchResult["citations"], opts: RefreshOptions, deps: RefreshDeps, gate: CallGate): Promise<Reviewed> {
   const key = `${item.country}/${item.slug}`;
-  const extracted = await extract(deps.transport, guard, {
+  const extracted = await extract(deps.transport, gate, {
     key,
     model: opts.model,
     system: loadPrompt("extract-system.md"),
@@ -159,7 +164,7 @@ async function verifyFestival(item: QueueItem, country: CountryFile, policy: Dom
   // only under 120 days out: further away nobody has published the dates yet (2026-11-08 run).
   const missing = result.pass === 1 && item.daysToStart < NEAR_DAYS ? missingDateFacts(item, first.changes) : [];
   if (!missing.length || !followups.take()) return run;
-  return followUp(item, country, policy, request(missing), missing, run, opts, deps, guard);
+  return followUp(item, country, policy, request(missing), missing, run, opts, deps, guard.as(opts.job === "build" ? "build" : "followup"));
 }
 
 /**
@@ -168,16 +173,16 @@ async function verifyFestival(item: QueueItem, country: CountryFile, policy: Dom
  * kept, so the first pass always wins. An API failure or the budget here keeps the first pass's
  * results; rejected credentials and bugs fail the festival like a first-pass error (BE-04).
  */
-async function followUp(item: QueueItem, country: CountryFile, policy: DomainPolicy, req: ResearchRequest, missing: readonly FollowupFact[], run: FestivalRun, opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard): Promise<FestivalRun> {
+async function followUp(item: QueueItem, country: CountryFile, policy: DomainPolicy, req: ResearchRequest, missing: readonly FollowupFact[], run: FestivalRun, opts: RefreshOptions, deps: RefreshDeps, gate: CallGate): Promise<FestivalRun> {
   const fields = [...missing];
   const withLog = (followup: FollowupLog): FestivalRun => ({ ...run, log: { ...run.log, followup } });
   try {
-    const wide = await researchPass(deps.transport, guard, req, 2);
+    const wide = await researchPass(deps.transport, gate, req, 2);
     if (wide.outcome !== "ok") {
       deps.log.info(`${req.key}: follow-up search ${wide.outcome} for ${fields.join(", ")}`);
       return withLog({ fields, outcome: wide.outcome, citations: wide.citations.length });
     }
-    const second = await extractAndReview(item, country, policy, wide.citations, opts, deps, guard);
+    const second = await extractAndReview(item, country, policy, wide.citations, opts, deps, gate);
     if (!second.ok) {
       deps.log.warn(`${req.key}: follow-up ${second.warning}`);
       return withLog({ fields, outcome: second.outcome, citations: wide.citations.length, detail: second.detail });
@@ -214,6 +219,12 @@ function lostSources(countries: readonly CountryFile[], links: ReadonlyMap<strin
   return { countries: results.map((r) => r.country), downgrades: results.flatMap((r) => r.downgrades), entries: results.flatMap((r) => r.entries) };
 }
 
+/** A planned item carries the festival as it was when planned; verify the one on disk now. */
+function refreshed(item: QueueItem, countries: readonly CountryFile[]): QueueItem {
+  const festival = countries.find((c) => c.country === item.country)?.festivals.find((f) => f.slug === item.slug);
+  return festival ? { ...item, festival } : item;
+}
+
 export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promise<RefreshResult> {
   const config = readJson(join(opts.root, "config", "scoring.json")) as ScoringConfig;
   const stored = loadCountries(join(opts.root, "data", "countries"));
@@ -225,9 +236,12 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   const countries = r13.countries;
   for (const d of r13.downgrades) deps.log.warn(`R13: ${d.country}/${d.slug} ${d.year}: every source is gone (404/410, no archive copy); confidence ${d.old} -> ${d.new}`);
   const sweep = opts.sweepWithin;
-  const queue = buildQueue(countries, config, opts.today, { max: opts.maxFestivals, perCountry: opts.perCountry, only: opts.only, country: opts.country, ...(sweep !== undefined ? { sweepWithin: sweep } : {}) });
+  const queue = opts.queue
+    ? opts.queue.map((q) => refreshed(q, countries))
+    : buildQueue(countries, config, opts.today, { max: opts.maxFestivals, perCountry: opts.perCountry, only: opts.only, country: opts.country, ...(sweep !== undefined ? { sweepWithin: sweep } : {}) });
   const month = opts.today.slice(0, 7);
-  const guard = createBudgetGuard({ month, budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log, weekly: sweep === undefined });
+  const job = sweep !== undefined ? "sweep" : (opts.job ?? "verify");
+  const guard = createBudgetGuard({ month, today: opts.today, budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log, job });
   const policies = new Map(countries.map((c) => [c.country, loadDomainPolicy(opts.root, c.country)]));
   const mode = sweep !== undefined ? ` (news sweep, ${sweep} days)` : "";
   deps.log.info(`refresh ${opts.today}: ${queue.length} festival(s) queued${mode}${opts.dryRun ? " (dry run)" : ""}`);
@@ -295,15 +309,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
     }
   }
 
-  // R12 trap: first run of the month, only when it can blend in with real changes and its
-  // fingerprint has somewhere to go ($GITHUB_OUTPUT). Never written to the repo.
-  const realChanges = changes.filter((c) => c.verdict === "accepted" && c.kind === "change").length;
-  const trap = opts.trapSecret && sweep === undefined && guard.firstRunOfMonth && opts.githubOutput && !stopped && realChanges > 0
-    ? makeTrap({ secret: opts.trapSecret, month, today: opts.today, countries, config, policies })
-    : null;
-  if (opts.trapSecret && guard.firstRunOfMonth && !trap) deps.log.info("R12: no trap this run (needs $GITHUB_OUTPUT, a real change and a dated upcoming edition)");
-
-  const selection = demoteUnappliable(selectForPr(changes, trap), countries, opts.today, deps.log, policies);
+  const selection = demoteUnappliable(selectForApply(holdRisky(changes, countries)), countries, opts.today, deps.log, policies);
   const drafts = draftProgress(countries, policies, queue, [...selection.applied, ...selection.confirmations], opts.today);
   const usage = guard.current();
   const report = buildRefreshReport(
@@ -321,8 +327,8 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
     },
     selection,
   );
-  // BE-04: unexpected errors alone do not fail a run that verified other festivals (their PR still
-  // opens; refresh.yml fails the job afterwards), but a run that verified nothing goes red.
+  // BE-04: unexpected errors alone do not fail a run that verified other festivals (their changes
+  // are still written; pipeline.yml fails the job afterwards), but a run that verified nothing goes red.
   const unexpected = logs.filter((l) => l.outcome === "error").length;
   const verified = logs.filter((l) => VERIFIED[l.outcome]).length;
   const blind = searchedBlind(logs, sweep);
@@ -333,21 +339,22 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   }
   const exitCode = stopped || fatal || blind || (unexpected > 0 && verified === 0) ? 1 : 0;
   const count = dataChangeCount(selection) + r13.downgrades.length;
-  const output = { changes: stopped ? 0 : count, branch: `refresh/${opts.today}`, flagged: selection.flagged.length, unexpected, verified };
+  const output = { changes: stopped ? 0 : count, flagged: selection.flagged.length, unexpected, verified };
+  const name = opts.reportName ?? opts.today;
   if (count === 0 && selection.flagged.length === 0 && unexpected === 0) {
     // The report still goes to proposals/ (the run artifact), so an empty run can be diagnosed.
     deps.log.info(`refresh ${opts.today}: no changes (${selection.rejected.length} rejected); report only`);
-    const files = writeProposals(opts.root, `${opts.today}`, report);
+    const files = writeProposals(opts.root, name, report);
     appendGithubOutput(opts.githubOutput, output);
     return { exitCode, report, files, calls: guard.calls };
   }
 
-  const files = writeProposals(opts.root, `${opts.today}`, report);
+  const files = writeProposals(opts.root, name, report);
   if (!opts.dryRun && !stopped) {
     files.push(...(await applyRun(opts, deps, stored, countries, [...selection.applied, ...selection.confirmations], r13.entries)));
   }
-  appendGithubOutput(opts.githubOutput, { ...output, ...(trap ? { trap_fingerprint: fingerprint(opts.trapSecret!, trap) } : {}) });
-  deps.log.info(`refresh ${opts.today}: ${selection.applied.length} change(s), ${selection.confirmations.length} confirmation(s), ${selection.flagged.length} to review, ${selection.rejected.length} rejected, ${r13.downgrades.length} R13 downgrade(s)`);
+  appendGithubOutput(opts.githubOutput, output);
+  deps.log.info(`refresh ${opts.today}: ${selection.applied.length} change(s), ${selection.confirmations.length} confirmation(s), ${selection.flagged.length} held, ${selection.rejected.length} rejected, ${r13.downgrades.length} R13 downgrade(s)`);
   return { exitCode, report, files, calls: guard.calls };
 }
 
@@ -412,14 +419,14 @@ function classifyOrUnexpected(error: unknown): ReturnType<typeof classifyApiErro
 
 /**
  * Changes that would make a country file invalid, or that build-data would then reject (BE-01),
- * move to «para revisar» with the message, before the report and the files are written, so the
- * run still opens its PR (code-F2).
+ * are held with the message, before the report and the files are written, so the rest of the run
+ * is still applied (code-F2).
  */
 export function demoteUnappliable(selection: Selection, countries: readonly CountryFile[], today: string, log: Logger, policies?: ReadonlyMap<string, DomainPolicy>): Selection {
   const { failed } = trialApply(countries, [...selection.applied, ...selection.confirmations], today, policies);
   if (!failed.length) return selection;
   const bad = new Set(failed.map((f) => f.change));
-  for (const f of failed) log.warn(`${f.change.country}/${f.change.slug} ${f.change.field}: not applied, sent to review: ${f.error}`);
+  for (const f of failed) log.warn(`${f.change.country}/${f.change.slug} ${f.change.field}: not applied, held: ${f.error}`);
   const flaggedNow = failed.map(({ change, error }) => ({ ...change, verdict: "flagged" as const, flags: [...change.flags, `revisar: no se puede aplicar (${error})`] }));
   return {
     ...selection,

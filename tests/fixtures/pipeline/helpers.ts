@@ -56,7 +56,6 @@ export function tempRepo(opts: { countries?: readonly string[] } = {}): string {
     cpSync(join(REPO, "data", "countries", `${cc}.json`), join(root, "data", "countries", `${cc}.json`));
   }
   cpSync(join(REPO, "data", "changelog.json"), join(root, "data", "changelog.json"));
-  writeFileSync(join(root, "data", "usage.json"), "[]\n");
   return root;
 }
 

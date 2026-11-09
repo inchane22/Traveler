@@ -3,12 +3,12 @@
 // every date, figure and declaration needs a validated citation or becomes «por medir» / «por anunciar».
 import { z } from "zod";
 import { addDays, resolveRule, type ISO } from "../../src/dates.ts";
-import { Confidence, FestivalType, Identity, Rule, Status, type Edition, type Festival, type Lang, type ScoreInputs } from "../../src/schema.ts";
-import { quoteStatesDate } from "./date-parser.ts";
+import { Confidence, FestivalType, Identity, Rule, Status, type Edition, type Festival, type ScoreInputs } from "../../src/schema.ts";
+import { hasDateReader, quoteStatesDate } from "./date-parser.ts";
 import type { DomainPolicy } from "./domains.ts";
 import { checkSources, citedTextsFor, quoteIsVerbatim, quoteNumbers, type CitedSource } from "./evidence.ts";
 import { hasInjection } from "./injection.ts";
-import { isSupportedLang, primaryLang } from "./lang.ts";
+import { primaryLang } from "./lang.ts";
 import type { Citation } from "./research.ts";
 
 const Evidence = z.object({ source_url: z.string(), quote: z.string(), quote_language: z.string() }).strict();
@@ -129,9 +129,10 @@ export function probableWindow(rule: Rule | null, year: number): { start: string
   return MD.test(md(start)) && MD.test(md(end)) ? { start: md(start), end: md(end) } : { start: "01-01", end: "12-31" };
 }
 
-function langOf(tag: string): Lang | null {
+/** The quote's language when its dates can be read (any language CLDR knows, plus CJK). */
+function langOf(tag: string): string | null {
   const p = primaryLang(tag);
-  return isSupportedLang(p) ? (p as Lang) : null;
+  return hasDateReader(p) ? p : null;
 }
 
 /** A rule is verified when its quote is cited verbatim and, for fixed dates, states the start day. */

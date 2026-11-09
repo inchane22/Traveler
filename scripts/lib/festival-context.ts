@@ -5,7 +5,7 @@ import { ctxFor } from "../../src/festivals.ts";
 import type { CountryFile } from "../../src/schema.ts";
 import { fence } from "./extract.ts";
 import { loadPrompt } from "./io.ts";
-import { countryInfo, langFor, needsNewsSweep, newsTerms } from "./lang.ts";
+import { countryInfo, localLangFor, needsNewsSweep, newsTerms } from "./lang.ts";
 import type { QueueItem } from "./queue.ts";
 import { currentValue } from "./validate.ts";
 
@@ -45,7 +45,7 @@ const FACT_LINES: Record<FollowupFact, string> = {
  * official pages but did not state these facts: it asks for them only.
  */
 export function researchUserPrompt(item: QueueItem, country: CountryFile, followup?: readonly FollowupFact[]): string {
-  const lang = langFor(country.country);
+  const lang = localLangFor(country.country);
   const e = item.festival.editions[String(item.year)];
   const keyEvents = e?.key_events.length ? e.key_events.map((k) => k.name.es).join(", ") : "none stored, report the main ones";
   const news = needsNewsSweep(item.daysToStart)
