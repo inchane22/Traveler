@@ -1,4 +1,4 @@
 [
-  { "country": "BO", "requested_at": "2026-10-26", "status": "queued", "attempts": 0 },
-  { "country": "MX", "requested_at": "2026-10-26", "status": "queued", "attempts": 0 }
+  { "country": "BO", "requested_at": "2026-10-26", "status": "retry", "attempts": 1, "last_attempt": "2026-11-09", "retry_after": "2026-12-09", "note": "2 of 3 festivals with a date on an A or B source" },
+  { "country": "MX", "requested_at": "2026-10-26", "status": "retry", "attempts": 1, "last_attempt": "2026-11-09", "retry_after": "2026-12-09", "note": "0 of 3 festivals with a date on an A or B source" }
 ]

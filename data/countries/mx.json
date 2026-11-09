@@ -1,7 +1,7 @@
 {
   "country": "MX",
   "status": "borrador",
-  "generated_at": "2026-10-26",
+  "generated_at": "2026-11-09",
   "timezone": "America/Mexico_City",
   "region": "norteamerica",
   "festivals": [
@@ -37,7 +37,7 @@
       "score": {
         "convocatoria": { "measure": { "attendance": 1450000, "qualifier": "more_than", "unit": "attendees", "year": 2025 }, "confidence": "prensa", "source": "https://www.excelsior.com.mx/comunidad/gran-desfile-dia-de-muertos-reune-14-millones-asistentes/1749196", "note": { "es": "Solo el Gran Desfile.", "en": "Grand Parade only.", "pt": "Só o Grande Desfile." } },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.publimetro.com.mx/noticias/2026/10/21/dia-de-muertos-2026-en-cdmx-fechas-horarios-del-desfile-catrina-gigante-y-actividades-gratis/", "note": { "es": "Desfiles y ofrendas en espacio público, sin boleto.", "en": "Parades and offerings in public space, no ticket.", "pt": "Desfiles e oferendas em espaço público, sem ingresso." } },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/indigenous-festivity-dedicated-to-the-dead-00054", "note": { "es": "Fiestas indígenas dedicadas a los muertos (2008); la inscripción es nacional, no de la capital.", "en": "Indigenous festivity dedicated to the dead (2008); the inscription is national, not specific to the capital.", "pt": "Festas indígenas dedicadas aos mortos (2008); a inscrição é nacional, não da capital." } },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/indigenous-festivity-dedicated-to-the-dead-00054", "quote": "Inscribed in 2008 (3.COM) on the Representative List of the Intangible Cultural Heritage of Humanity", "note": { "es": "Fiestas indígenas dedicadas a los muertos (2008); la inscripción es nacional, no de la capital.", "en": "Indigenous festivity dedicated to the dead (2008); the inscription is national, not specific to the capital.", "pt": "Festas indígenas dedicadas aos mortos (2008); a inscrição é nacional, não da capital." } },
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mexico_City_International_Airport" },
         "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mexico_City" }
       },
@@ -79,7 +79,7 @@
       "score": {
         "convocatoria": { "measure": { "attendance": 1000000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.publimetro.com.mx/jalisco/2026/10/12/la-fe-pudo-mas-y-un-millon-acompano-a-la-virgen-de-zapopan-pese-a-alerta-por-simon/", "note": { "es": "Estimación de la Arquidiócesis de Guadalajara; hubo alerta de lluvia por el huracán Simon.", "en": "Estimate by the Archdiocese of Guadalajara; there was a rain alert from Hurricane Simon.", "pt": "Estimativa da Arquidiocese de Guadalajara; houve alerta de chuva pelo furacão Simon." } },
         "calle": null,
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/la-romeria-the-pilgrimage-ritual-cycle-of-la-llevada-the-carrying-of-the-virgin-of-zapopan-01400", "note": { "es": "Inscrita en 2018.", "en": "Inscribed in 2018.", "pt": "Inscrita em 2018." } },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://www.zapopan.gob.mx/la-romeria-de-la-virgen-de-zapopan-es-declarada-patrimonio-de-la-humanidad/", "quote": "La Romería de la Virgen de Zapopan es declarada Patrimonio de la Humanidad" },
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Guadalajara_International_Airport", "note": { "es": "Aeropuerto de la zona metropolitana, en Tlajomulco.", "en": "Metro-area airport, in Tlajomulco.", "pt": "Aeroporto da região metropolitana, em Tlajomulco." } },
         "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Zapopan" }
       },
@@ -96,11 +96,25 @@
       "nearest_airport": "TGZ",
       "type": "tradicion_religiosa",
       "rule": { "type": "fixed", "start": "01-04", "end": "01-23" },
-      "editions": {},
+      "editions": {
+        "2027": {
+          "start": "2027-01-04",
+          "end": "2027-01-23",
+          "status": "tentativa",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://visitmexico.com/en/actividad/131/fiesta-grande-de-chiapa-de-corzo", "publisher": "visitmexico.com", "accessed": "2026-11-09", "tier": "C", "quote": "**Date(s)**: 2027-01-04 - 2027-01-23" },
+            { "url": "https://losmundosdemexico.com/parachicos-fiesta-grande-chiapa-de-corzo/", "publisher": "losmundosdemexico.com", "accessed": "2026-11-09", "tier": "C", "quote": "Para 2027 no se localizó un anuncio oficial al cierre de esta revisión, el 22 de octubre de 2026." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 1
+        }
+      },
       "score": {
         "convocatoria": null,
         "calle": null,
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/parachicos-in-the-traditional-january-feast-of-chiapa-de-corzo-00399", "note": { "es": "Parachicos, inscritos en 2010.", "en": "Parachicos, inscribed in 2010.", "pt": "Parachicos, inscritos em 2010." } },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/es/RL/los-parachicos-en-la-fiesta-tradicional-de-enero-de-chiapa-de-corzo-00399", "quote": "Inscrito en 2010 (5.COM) en la Lista Representativa del Patrimonio Cultural Inmaterial de la Humanidad." },
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/%C3%81ngel_Albino_Corzo_International_Airport", "note": { "es": "TGZ está en el municipio; su única ruta internacional (Houston) se reanuda el 28 de octubre de 2026.", "en": "TGZ is in the municipality; its only international route (Houston) resumes on October 28, 2026.", "pt": "TGZ fica no município; sua única rota internacional (Houston) volta em 28 de outubro de 2026." } },
         "local": { "measure": "pueblo", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Chiapa_de_Corzo,_Chiapas" }
       },

@@ -808,5 +808,32 @@
     "old": null,
     "new": "CLO está entre Palmira y Cali.",
     "source_urls": ["https://es.wikipedia.org/wiki/Anexo:Aeropuertos_de_Colombia"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "MX",
+    "slug": "fiesta-grande-chiapa-de-corzo",
+    "field": "end",
+    "old": null,
+    "new": "2027-01-23",
+    "source_urls": ["https://visitmexico.com/en/actividad/131/fiesta-grande-de-chiapa-de-corzo"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "MX",
+    "slug": "fiesta-grande-chiapa-de-corzo",
+    "field": "start",
+    "old": null,
+    "new": "2027-01-04",
+    "source_urls": ["https://visitmexico.com/en/actividad/131/fiesta-grande-de-chiapa-de-corzo"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "MX",
+    "slug": "fiesta-grande-chiapa-de-corzo",
+    "field": "status",
+    "old": null,
+    "new": "tentativa",
+    "source_urls": ["https://losmundosdemexico.com/parachicos-fiesta-grande-chiapa-de-corzo/"]
   }
 ]

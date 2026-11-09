@@ -70,11 +70,13 @@
   "requests": [
     {
       "code": "BO",
-      "status": "queued"
+      "status": "retry",
+      "retry_after": "2026-12-09"
     },
     {
       "code": "MX",
-      "status": "queued"
+      "status": "retry",
+      "retry_after": "2026-12-09"
     }
   ]
 }

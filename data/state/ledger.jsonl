@@ -1,1 +1,13 @@
 {"day":"2026-11-08","job":"verify","key":"carryover/2026-11","call":"carryover","model":"claude-sonnet-5-5","searches":75,"input_tokens":1223096,"output_tokens":34901,"usd":2.213998}
+{"day":"2026-11-09","job":"build","key":"MX/fiesta-grande-chiapa-de-corzo","call":"research","model":"claude-sonnet-5-5","searches":5,"input_tokens":88400,"output_tokens":1196,"usd":0.198208}
+{"day":"2026-11-09","job":"build","key":"MX/fiesta-grande-chiapa-de-corzo","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":2701,"output_tokens":714,"usd":0.013351}
+{"day":"2026-11-09","job":"build","key":"MX/fiesta-grande-chiapa-de-corzo","call":"research","model":"claude-sonnet-5-5","searches":4,"input_tokens":83147,"output_tokens":1708,"usd":0.182937}
+{"day":"2026-11-09","job":"build","key":"MX/fiesta-grande-chiapa-de-corzo","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":2703,"output_tokens":1412,"usd":0.016614}
+{"day":"2026-11-09","job":"build","key":"MX/pasion-iztapalapa","call":"research","model":"claude-sonnet-5-5","searches":5,"input_tokens":96631,"output_tokens":1524,"usd":0.207719}
+{"day":"2026-11-09","job":"build","key":"MX/pasion-iztapalapa","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":3314,"output_tokens":379,"usd":0.007506}
+{"day":"2026-11-09","job":"build","key":"MX/guelaguetza","call":"research","model":"claude-sonnet-5-5","searches":5,"input_tokens":88016,"output_tokens":1543,"usd":0.183679}
+{"day":"2026-11-09","job":"build","key":"MX/guelaguetza","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":2386,"output_tokens":221,"usd":0.00407}
+{"day":"2026-11-09","job":"build","key":"MX/romeria-zapopan","call":"research","model":"claude-sonnet-5-5","searches":4,"input_tokens":88969,"output_tokens":1206,"usd":0.172896}
+{"day":"2026-11-09","job":"build","key":"MX/romeria-zapopan","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":3513,"output_tokens":933,"usd":0.013444}
+{"day":"2026-11-09","job":"build","key":"MX/dia-de-muertos-cdmx","call":"research","model":"claude-sonnet-5-5","searches":5,"input_tokens":109181,"output_tokens":1731,"usd":0.232037}
+{"day":"2026-11-09","job":"build","key":"MX/dia-de-muertos-cdmx","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":2366,"output_tokens":816,"usd":0.00998}
