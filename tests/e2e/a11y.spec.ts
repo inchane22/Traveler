@@ -9,6 +9,8 @@ test.use({ serviceWorkers: "block" });
 const SCREENS: [string, string][] = [
   ["Inicio (país)", "#/pais/co"],
   ["Inicio (mundo)", "#/"],
+  ["País sin datos (construir)", "#/pais/jp"],
+  ["País en construcción", "#/pais/bo"],
   ["Explorar", "#/explorar?pais=co"],
   // Travel dates that catch both dated rows and window-only rows (.tag--possible).
   ["Explorar con fechas", "#/explorar?pais=co&nivel=2&desde=2027-07-28&hasta=2027-08-10"],

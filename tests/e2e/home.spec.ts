@@ -34,16 +34,16 @@ test.describe("Inicio", () => {
     await expect(page.locator(".next-row").filter({ hasText: "Feria de Cali" }).locator(".next-row__count")).toHaveText(/^En \d+ días$/);
   });
 
-  test("while the pilot fills up, the world and region views say which countries are in", async ({ page }) => {
+  test("the world and region views say which countries are live and that any other can be built", async ({ page }) => {
     await open(page, "#/");
-    // Lists every published country, so it grows with each approved onboarding.
-    await expect(page.getByTestId("pilot-note")).toContainText(/Por ahora publicamos .*Colombia/);
+    // Lists every published country, so it grows with each country the pipeline builds.
+    await expect(page.getByTestId("pilot-note")).toContainText(/Ya publicados: Brasil, Colombia y Perú\. Cualquier otro país se puede construir/);
     await open(page, "#/region/sudamerica");
     await expect(page.getByTestId("pilot-note")).toBeVisible();
     await open(page, "#/pais/co");
     await expect(page.getByTestId("pilot-note")).toHaveCount(0);
     await page.getByRole("button", { name: /\(cambiar\)/ }).click();
-    await expect(page.getByRole("dialog").getByTestId("scope-more")).toContainText("Más países en camino");
+    await expect(page.getByRole("dialog").getByTestId("scope-more")).toContainText("Cualquier otro país se puede construir");
   });
 
   test("«Cómo leer las marcas» opens the key in a sheet from the timeline", async ({ page }) => {

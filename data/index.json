@@ -66,5 +66,15 @@
     "inti-raymi": "PE",
     "carnaval-cajamarca": "PE",
     "senor-de-los-milagros": "PE"
-  }
+  },
+  "requests": [
+    {
+      "code": "BO",
+      "status": "queued"
+    },
+    {
+      "code": "MX",
+      "status": "queued"
+    }
+  ]
 }

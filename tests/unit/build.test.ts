@@ -1,6 +1,7 @@
 import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
 import { findLeaks, scan, ScanError, trackedFiles } from "../../scripts/check-secrets.ts";
+import { readRequests } from "../../scripts/lib/requests.ts";
 import { buildIndex, loadCountries } from "../../scripts/build-data.ts";
 import { loadDomainPolicy } from "../../scripts/lib/domains.ts";
 import type { ScoringConfig } from "../../src/score.ts";
@@ -60,8 +61,15 @@ describe("build-data", () => {
 
   test("the committed data/index.json is up to date", () => {
     const committed = JSON.parse(readFileSync("data/index.json", "utf8"));
-    // The same policies build-data's main uses, so a source without a declared tier cannot diverge.
+    // The same policies and requests build-data's main uses, so a source without a declared tier cannot diverge.
     const policies = new Map(countries.map((c) => [c.country, loadDomainPolicy(".", c.country)]));
-    expect(committed).toEqual(buildIndex(countries, config, false, policies));
+    expect(committed).toEqual(buildIndex(countries, config, false, policies, readRequests(".")));
+  });
+
+  test("requested countries that are not live yet are listed, so their page says where the build is", () => {
+    const req = (country: string, status: "queued" | "retry" | "live" | "gave_up", retry_after?: string) => ({ country, status, requested_at: "2026-11-01", attempts: 0, ...(retry_after ? { retry_after } : {}) });
+    const index = buildIndex(countries, config, false, undefined, [req("JP", "queued"), req("FR", "retry", "2026-12-01"), req("CO", "live"), req("IT", "gave_up"), req("BR", "queued")]);
+    // BR is served already (a stale request never hides a live country); CO is live.
+    expect(index.requests).toEqual([{ code: "FR", status: "retry", retry_after: "2026-12-01" }, { code: "IT", status: "gave_up" }, { code: "JP", status: "queued" }]);
   });
 });

@@ -10,6 +10,7 @@ import { quoteStatesDate } from "./lib/date-parser.ts";
 import { hasConfig, isOfficial, loadDomainPolicy, tierOf, type DomainPolicy } from "./lib/domains.ts";
 import { isMainModule } from "./lib/is-main.ts";
 import { localLangFor } from "./lib/lang.ts";
+import { readRequests, type CountryRequest } from "./lib/requests.ts";
 import { loadSensitiveTerms, sensitiveHits } from "./lib/sensitive.ts";
 
 export interface IndexCountry {
@@ -23,11 +24,29 @@ export interface IndexCountry {
   share_a: number;
 }
 
+/** A country someone asked for that is not live yet (data/state/requests.json). */
+export interface IndexRequest {
+  code: string;
+  status: "queued" | "retry" | "gave_up";
+  /** Next try, for «retry». */
+  retry_after?: string;
+}
+
 export interface PublicIndex {
   generated_at: string;
   countries: IndexCountry[];
   tier1: string[];
   slugs: Record<string, string>;
+  /** Requested countries that are not live yet, so their page can say where the build is. */
+  requests: IndexRequest[];
+}
+
+/** Requests the site shows: not live and not already among the countries it serves. */
+export function indexRequests(requests: readonly CountryRequest[], shown: ReadonlySet<string>): IndexRequest[] {
+  return requests
+    .filter((r): r is CountryRequest & { status: IndexRequest["status"] } => r.status !== "live" && !shown.has(r.country))
+    .map((r) => ({ code: r.country, status: r.status, ...(r.status === "retry" && r.retry_after ? { retry_after: r.retry_after } : {}) }))
+    .sort((a, b) => a.code.localeCompare(b.code));
 }
 
 export function loadCountries(dir: string): Country[] {
@@ -111,7 +130,7 @@ export function dataProblems(countries: readonly Country[], policies: ReadonlyMa
   return problems;
 }
 
-export function buildIndex(countries: readonly Country[], config: ScoringConfig, includeDrafts: boolean, policies?: ReadonlyMap<string, DomainPolicy>): PublicIndex {
+export function buildIndex(countries: readonly Country[], config: ScoringConfig, includeDrafts: boolean, policies?: ReadonlyMap<string, DomainPolicy>, requests: readonly CountryRequest[] = []): PublicIndex {
   const shown = countries.filter((c) => c.status === "publicado" || includeDrafts);
   const slugs: Record<string, string> = {};
   for (const c of shown) {
@@ -141,6 +160,7 @@ export function buildIndex(countries: readonly Country[], config: ScoringConfig,
       .filter((c) => c.status === "publicado")
       .flatMap((c) => c.festivals.filter((f) => scoreFestival(f.score, config).tier === 1).map((f) => `${c.country}/${f.slug}`)),
     slugs,
+    requests: indexRequests(requests, new Set(shown.map((c) => c.country))),
   };
 }
 
@@ -162,11 +182,12 @@ if (isMain) {
     console.warn(`build-data: R5 review ${hit.slug} ${hit.field}: «${hit.term}»`);
   }
 
-  writeFileSync("data/index.json", `${JSON.stringify(buildIndex(countries, config, false, policies), null, 2)}\n`);
+  const requests = readRequests(".");
+  writeFileSync("data/index.json", `${JSON.stringify(buildIndex(countries, config, false, policies, requests), null, 2)}\n`);
 
   rmSync("public/data", { recursive: true, force: true });
   mkdirSync("public/data/countries", { recursive: true });
-  writeFileSync("public/data/index.json", JSON.stringify(buildIndex(countries, config, includeDrafts, policies)));
+  writeFileSync("public/data/index.json", JSON.stringify(buildIndex(countries, config, includeDrafts, policies, requests)));
   for (const c of countries) {
     if (c.status === "publicado" || includeDrafts) {
       writeFileSync(`public/data/countries/${c.country.toLowerCase()}.json`, JSON.stringify(c));
