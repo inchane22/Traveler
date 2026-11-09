@@ -64,12 +64,13 @@ jobs:
   pipeline:
     name: pipeline
     # Schedule and dispatch always run (dispatch only from main). An issue runs only when the owner
-    # opened it with the label, or the owner added the label to someone else's issue.
+    # opened it (with the label, or the form's «Build:» title in case the label does not exist yet),
+    # or the owner added the label to someone else's issue.
     if: >-
       github.ref == 'refs/heads/main' && (
         github.event_name != 'issues' ||
         (github.event.issue.state == 'open' && (
-          (github.event.action != 'labeled' && github.event.issue.author_association == 'OWNER' && contains(github.event.issue.labels.*.name, 'build-country')) ||
+          (github.event.action != 'labeled' && github.event.issue.author_association == 'OWNER' && (contains(github.event.issue.labels.*.name, 'build-country') || startsWith(github.event.issue.title, 'Build:'))) ||
           (github.event.action == 'labeled' && github.event.label.name == 'build-country' && github.event.sender.login == github.repository_owner)
         ))
       )

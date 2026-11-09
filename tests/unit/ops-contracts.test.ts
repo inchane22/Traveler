@@ -29,6 +29,8 @@ describe("pipeline.yml: auto-approved data reaches main only through the checks"
     expect(wf).toContain("github.event.issue.author_association == 'OWNER'");
     expect(wf).toContain("github.event.sender.login == github.repository_owner");
     expect(wf).toContain("contains(github.event.issue.labels.*.name, 'build-country')");
+    // GitHub drops a form's label that does not exist yet: the owner's «Build:» title still counts.
+    expect(wf).toContain("startsWith(github.event.issue.title, 'Build:')");
     const ack = wf.slice(wf.indexOf("  acknowledge:"), wf.indexOf("  pipeline:"));
     expect(ack).not.toContain("ANTHROPIC_API_KEY");
     expect(ack).not.toContain("environment:");
