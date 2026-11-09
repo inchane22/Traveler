@@ -8,9 +8,9 @@ Construir un sitio estático que muestre, para los próximos 12 meses y en cualq
 
 **Decisiones clave:**
 
-- **El país es un dato, no una versión:** un solo esquema global con código de país ISO 3166, zona horaria IANA y nombres en varios idiomas. Se lanza con un piloto (Colombia ya verificada y 4 países más) y cada país nuevo entra por un onboarding asistido por IA y aprobado por una persona.
+- **El país es un dato, no una versión:** un solo esquema global con código de país ISO 3166, zona horaria IANA y nombres en varios idiomas. Se lanzó con un piloto (Colombia ya verificada y 4 países más); desde el 2026-11-09 cualquier país se construye a pedido, al elegirlo en el sitio, y se publica cuando pasa los controles en código.
 - **Ranking dentro de cada país:** la vista global muestra solo el Nivel 1; al elegir un país siempre aparecen sus 5 fiestas con mejor puntaje, para que los países pequeños no desaparezcan detrás de Río u Oktoberfest.
-- **La IA propone y una persona aprueba:** un workflow de GitHub Actions consulta la API, valida en código y abre un pull request. La API key vive solo en los secretos del repositorio.
+- **La IA propone y los controles en código aprueban (2026-11-09; antes, una persona aprobaba cada PR):** un workflow diario de GitHub Actions consulta la API, valida en código, aplica lo que pasa los controles y lo sube a `main`; lo dudoso queda retenido. Cada corrida es un commit que se revierte con `git revert`. La API key vive solo en los secretos del repositorio.
 - **La UX se mide con tareas:** el lanzamiento exige que 5 usuarios completen 5 tareas clave con 90% de éxito, Core Web Vitals en verde y WCAG 2.2 AA.
 
 **Qué entrega Claude Code en el MVP:**
@@ -18,8 +18,10 @@ Construir un sitio estático que muestre, para los próximos 12 meses y en cualq
 - Sitio mobile-first en español, inglés y portugués: inicio «Lo próximo», explorador con filtros por país, mes, tipo y fechas de viaje, ficha por fiesta y lista de guardadas.
 - `data/countries/<cc>.json`, un archivo por país, con fiestas, puntaje y regla de fecha.
 - Motor de fechas con pruebas: fijas, atadas a Pascua gregoriana u ortodoxa, n-ésimo día de la semana, relativas a otra fiesta, bienales y tablas de calendarios lunares.
-- Script `refresh` semanal y job mensual de onboarding de países, ambos entregados como PR.
+- Pipeline diario (`pnpm pipeline`, `pipeline.yml`) que construye países a pedido y mantiene frescos los publicados dentro del presupuesto mensual.
 - Calendario: descarga .ics y suscripción por país que se actualiza sola.
+
+**Decisión del 2026-11-09 (construir el mundo a pedido):** el sitio ya no se limita a un piloto. Cualquier país de la lista se puede pedir desde su página («Construir <país>», que abre un issue con el formulario `build-country`); solo los issues del dueño del repo gastan. El pipeline redacta la política de fuentes del país, hace el onboarding, completa fechas y lo publica en cuanto tiene 3 fiestas con fecha y fuente A o B. Los cambios que pasan los controles se aplican sin revisión humana; los que mueven una fecha confirmada o suspenden una fiesta sin dos sitios independientes, y las corridas que cambian más de la mitad de las fechas de un país, quedan retenidos en `data/state/holds.json` y en un issue «Needs a look». La frecuencia de verificación depende de lo cerca que está cada fiesta y del presupuesto: 30% del mes para países nuevos, el resto repartido en los días que quedan. Detalle en «Actualización con IA» y en `docs/architecture.md`.
 
 **Cómo usar este PRD:** exportarlo como Markdown, guardarlo como `PRD.md` en la raíz del repo y pedirle a Claude Code que ejecute los hitos de «Plan de entrega» en orden, cerrando cada uno con sus pruebas en verde.
 
@@ -57,7 +59,7 @@ El MVP cubre cualquier país a nivel de datos y lanza con 5 países piloto; los 
 | Guardadas en el dispositivo y búsqueda por nombre o ciudad | Cuentas de usuario y sincronización entre dispositivos |
 | Interfaz en español, inglés y portugués | Otros idiomas (se agregan con archivos de traducción) |
 | Descarga .ics y suscripción a un calendario por país | Notificaciones por correo, push o WhatsApp |
-| Job semanal de verificación y job mensual de onboarding de países, vía PR | Botón «actualizar ahora» desde la web (v2, requiere backend) |
+| Pipeline diario: países a pedido y verificación según cercanía y presupuesto, con commit directo a `main` | Botón «actualizar ahora» desde la web (v2, requiere backend) |
 
 ## Criterios de priorización
 
@@ -173,32 +175,32 @@ Diecinueve requisitos, cada uno con una prueba que Claude Code debe dejar pasand
 | RF-12 | Enlaces directos | `#/pais/<cc>` y `#/fiesta/<slug>` abren esa vista al cargar |
 | RF-13 | Aviso de datos viejos | Si los datos de un país tienen más de 30 días, aviso con la fecha |
 | RF-14 | «Cerca de mí», opcional | Solo con permiso explícito; la ubicación no sale del dispositivo; sin permiso la app funciona igual |
-| RF-15 | Verificación semanal y onboarding mensual con IA | Ambos abren un PR con cambios citados; ver «Actualización con IA» |
-| RF-16 | Nada llega al sitio sin aprobación humana | El deploy solo corre desde `main`; `main` exige PR aprobado |
+| RF-15 | Verificación y construcción de países con IA | El pipeline diario aplica los cambios citados que pasan los controles y retiene el resto; ver «Actualización con IA» |
+| RF-16 | Nada llega al sitio sin pasar los controles y CI | El deploy solo corre desde `main` y después de un CI en verde; cada cambio de datos llega por un commit del pipeline (validado por `build-data`) o por un PR |
 | RF-17 | «Reportar un error» y «Reportar contenido» en cada ficha | Abren un formulario de issue de GitHub con la fiesta, el campo y la fuente ya llenos; se atienden en 48 h (R1, R5) |
 | RF-18 | El .ics refleja el estado de la fiesta | STATUS en TENTATIVE, CONFIRMED o CANCELLED según el estado; cada cambio sube SEQUENCE; probado con una cancelación simulada (R9) |
 | RF-19 | Fechas que dependen de la luna marcadas como estimadas | Muestran «estimada, puede variar un día» hasta que haya anuncio oficial (R4) |
 
 ## Actualización con IA
 
-La IA propone y una persona aprueba: cada semana un workflow de GitHub Actions consulta la API de Claude con búsqueda web, valida la respuesta en código y abre un pull request con cada cambio y su fuente.
+La IA propone y los controles en código aprueban (desde el 2026-11-09): cada día un workflow de GitHub Actions decide qué toca verificar según la cercanía de cada fiesta y el presupuesto, consulta la API de Claude con búsqueda web, valida la respuesta en código, aplica los cambios que pasan y los sube a `main` en un solo commit con cada cambio y su fuente.
 
 &#91;embedded content: flujo semanal de actualización, 6 pasos y 2 decisiones\]
 
-Si la validación falla o la persona rechaza el PR, el sitio sigue mostrando los datos aprobados anteriores.
+Si la validación falla o un cambio queda retenido, el sitio sigue mostrando el dato anterior.
 
-**Disparadores:** verificación semanal los lunes a las 11:00 UTC y onboarding de países el día 1 de cada mes; ambos con ejecución manual (`workflow_dispatch`) y las opciones `--only=<slug>` o `--country=<cc>`.
+**Disparadores:** una corrida diaria a las 11:00 UTC; un issue `build-country` del dueño del repo (lo construye en el acto si el presupuesto alcanza); y la ejecución manual (`workflow_dispatch`) con un país opcional o solo el plan.
 
-**Qué fiestas se verifican:** una edición sin confirmar entra a la cola cada semana cuando empieza en menos de 180 días, y solo en la primera semana del mes cuando falta más; una confirmada entra cuando su `last_verified` tiene más de 30 días (14 cuando faltan menos de 120), porque los barridos de noticias (R9) ya vigilan sus últimos 45 días. Una cancelada sigue la misma regla que una confirmada y sale de los barridos: ya no le quedan fechas por buscar ni nada que cancelar (2026-11-08). Una corrida manual con `--country` incluye siempre las del mes. La cola se ordena por días hasta el inicio y luego por nivel, con tope `MAX_FESTIVALS_PER_RUN` (por defecto 40) y máximo 10 por país, para que ninguno se lleve todo el presupuesto. Esta cadencia (2026-11-08) reemplaza la verificación semanal de todo lo que empezaba en menos de 180 días: con la búsqueda directa cada fiesta cuesta unos US$0,25 por pasada y esa regla gastaba unos US$49 al mes contra un tope de US$20.
+**Qué fiestas se verifican (desde el 2026-11-09):** el planificador (`scripts/lib/plan.ts`) mira cuándo se revisó cada fiesta por última vez según el registro de gasto, así una revisión que no encontró nada tampoco se repite al día siguiente. Una edición sin confirmar se revisa cada 7 días en sus últimos 45, cada 14 hasta los 120, cada 30 hasta los 180 y cada 60 después; una confirmada o cancelada cada 30 días a menos de 120 y cada 90 después; el Nivel 2 y menores, la mitad de seguido fuera de los 45 días. Los barridos de noticias van cada 7 días en los últimos 45 y a diario (cada dos días para Nivel 2) en la última semana. Si el costo del mes a esa cadencia no cabe en la parte de mantenimiento, todo lo que está a más de 45 días se espacia hasta 4 veces. Cada día se gasta como mucho lo que queda de esa parte dividido por los días que faltan, de mayor a menor prioridad; lo que no entra sigue pendiente al día siguiente. Regla anterior, para la historia: una edición sin confirmar entra a la cola cada semana cuando empieza en menos de 180 días, y solo en la primera semana del mes cuando falta más; una confirmada entra cuando su `last_verified` tiene más de 30 días (14 cuando faltan menos de 120), porque los barridos de noticias (R9) ya vigilan sus últimos 45 días. Una cancelada sigue la misma regla que una confirmada y sale de los barridos: ya no le quedan fechas por buscar ni nada que cancelar (2026-11-08). Una corrida manual con `--country` incluye siempre las del mes. La cola se ordena por días hasta el inicio y luego por nivel, con tope `MAX_FESTIVALS_PER_RUN` (por defecto 40) y máximo 10 por país, para que ninguno se lleve todo el presupuesto. Esta cadencia (2026-11-08) reemplaza la verificación semanal de todo lo que empezaba en menos de 180 días: con la búsqueda directa cada fiesta cuesta unos US$0,25 por pasada y esa regla gastaba unos US$49 al mes contra un tope de US$20.
 
 **Dos llamadas por fiesta:**
 
 1. **Investigación.** Messages API con el modelo de `ANTHROPIC_MODEL` (por defecto `claude-sonnet-5-5`) y la herramienta `web_search_20250305` con `max_uses: 5` y `user_location` con el `country` y la `timezone` de la fiesta. El prompt busca en el idioma local y en inglés, prioriza organizadores, gobiernos y prensa del país, y obliga a responder «no encontrado» en vez de deducir. Si llega `stop_reason: "pause_turn"`, se reenvía el mensaje tal cual para continuar. La primera pasada se limita a fuentes A (R7); si cita páginas pero no da el inicio o el fin de una edición sin confirmar que empieza en menos de 120 días, una búsqueda de seguimiento abierta (solo con la lista de bloqueo) pide solo esos datos, con prensa nacional o regional y dos medios para las fechas. Sus propuestas pasan la misma validación contra sus propias citas y nunca reemplazan lo que dio la primera pasada. Solo en la corrida semanal, con tope `MAX_FOLLOWUPS_PER_RUN` (por defecto 6) y nunca desde el 80% del presupuesto.
 2. **Extracción.** Segunda llamada sin herramientas, con salidas estructuradas (`output_config.format`, `type: "json_schema"`), que convierte el texto y las citas de la llamada 1 en un objeto `Proposal`. Separarlas mantiene las citas de la búsqueda y un JSON garantizado por esquema.
 
-**Onboarding de un país:** una llamada de investigación pide las 10 fiestas con más convocatoria del país, con asistencia, declaratorias, regla de fecha y fuentes. El script calcula el puntaje, crea `data/countries/<cc>.json` en estado «borrador» y abre un PR. El país aparece en el sitio solo cuando ese PR se aprueba y tiene al menos 3 fiestas con fecha y fuente.
+**Construir un país (onboarding):** si el país no tiene `config/sources/<cc>.json`, una llamada sin búsqueda redacta su política de fuentes (dominios oficiales, prensa nacional y bloqueados; el código siempre suma los dominios de gobierno y la UNESCO, y sin respuesta usa solo esos). Luego una llamada de investigación pide las 10 fiestas con más convocatoria del país, con asistencia, declaratorias, regla de fecha y fuentes; el script calcula el puntaje y crea `data/countries/<cc>.json` en estado «borrador». Después verifica hasta 5 fiestas sin fecha con fuente, de la más cercana a la más lejana, y el país se publica solo cuando tiene al menos 3 fiestas con fecha y fuente A o B. Si no llega, lo reintenta a los 30 días, hasta 3 veces.
 
-**Validación en código antes del PR (zod):**
+**Validación en código antes de aplicar (zod):**
 
 - El JSON cumple el esquema; si falla, un reintento y luego se descarta con registro.
 - Cada campo cambiado trae al menos una URL https que aparece en las citas `web_search_result_location` de la llamada 1.
@@ -209,9 +211,9 @@ Si la validación falla o la persona rechaza el PR, el sitio sigue mostrando los
 
 **Controles del registro de riesgos que amplían esta validación:** cita literal exacta y segunda fuente para fechas de Nivel 1 (R1), parser de fechas por idioma (R3), primera búsqueda restringida a fuentes A y detector de instrucciones (R7), barrido de noticias (R9), degradación por presupuesto (R10) y copia archivada de cada fuente (R13). Donde este apartado y el registro difieran, manda el registro.
 
-**El PR:** rama `refresh/AAAA-MM-DD` u `onboard/<cc>`, cambios en `data/countries/<cc>.json` y `data/changelog.json`, etiqueta `needs-review` y una tabla en la descripción con país, fiesta, campo, antes, después, fuente y confianza. Sin cambios no se abre PR. Nunca hay merge automático.
+**El commit (desde el 2026-11-09):** un commit por corrida directo a `main`, después de que `build-data` valida todos los archivos, con `data/countries/`, `data/changelog.json`, `data/index.json`, `data/state/` y la configuración de fuentes de los países nuevos. El mensaje lista cada cambio con su fuente y el gasto del mes; `git revert` lo deshace. Sin cambios no hay commit. Lo retenido no se aplica: queda en `data/state/holds.json` y en el issue «Needs a look», y se aplica solo cuando una verificación posterior trae la segunda fuente.
 
-**Costo y límites:** la búsqueda web cuesta US$10 por cada 1.000 búsquedas más los tokens. Con 40 fiestas, 5 búsquedas y 4 corridas al mes son 800 búsquedas, unos US$8 en búsquedas más tokens; cada onboarding de país suma entre 10 y 20 búsquedas \[estimación\]. El script corta al llegar a `MONTHLY_BUDGET_USD`, que lleva la cuenta en `data/usage.json`. Para corridas grandes conviene evaluar la Message Batches API, que admite la búsqueda web al mismo precio por búsqueda. La búsqueda web debe estar habilitada para la organización en la Claude Console.
+**Costo y límites:** la búsqueda web cuesta US$10 por cada 1.000 búsquedas más los tokens. Con 40 fiestas, 5 búsquedas y 4 corridas al mes son 800 búsquedas, unos US$8 en búsquedas más tokens; cada onboarding de país suma entre 10 y 20 búsquedas \[estimación\]. El script corta al llegar a `MONTHLY_BUDGET_USD`, que lleva la cuenta en `data/state/ledger.jsonl` (una línea por llamada, con su tarea). Para corridas grandes conviene evaluar la Message Batches API, que admite la búsqueda web al mismo precio por búsqueda. La búsqueda web debe estar habilitada para la organización en la Claude Console.
 
 ## Seguridad de la API key y del pipeline
 
@@ -296,7 +298,7 @@ Meta: 90% de tareas completadas y facilidad media de 5,5 o más en la pregunta �
 - **Una marca de confianza en las listas (RF-07, RF-08):** filas y portada muestran «■ Confirmada, fuente oficial» en lugar de dos insignias; la ficha conserva ambas. Ninguna fecha pierde su etiqueta. Vocabulario llano: «Por confirmar», «Años anteriores», «Estimada», «medianas (Nivel 2)»; la leyenda «Cómo leer las marcas» está a un toque de las listas.
 - **Sin navegación inferior en la ficha («Pulgar primero»):** la ficha tiene «Volver» arriba a la izquierda y la barra «Guardar» / «Agregar al calendario» ocupa la zona del pulgar; las barras fijas suman 15 % o menos de la pantalla.
 - **Cuenta regresiva honesta:** una fecha no confirmada dice «en unos N días».
-- **Piloto a la vista:** mientras haya menos de 5 países publicados, la vista del mundo y la de región dicen cuáles están.
+- **Países a la vista:** la vista del mundo y la de región, en Inicio y en Explorar, dicen qué países están publicados (por nombre hasta 8, luego cuántos) y que cualquier otro se puede construir. Un país sin datos ofrece «Construir <país>»; uno pedido dice en qué va su construcción.
 
 ## Modelo de datos
 
@@ -443,7 +445,7 @@ Ocho hitos en orden; Claude Code no empieza uno hasta que el anterior tiene sus 
 4. **H3 Guardadas, calendario e idiomas.** RF-09 a RF-11 y RF-14, con suscripción webcal por país. Hecho cuando el .ics se importa en Google Calendar, Apple Calendar y Outlook, y el idioma cambia sin recargar.
 5. **H4 Verificación local.** `npm run refresh -- --dry-run` escribe `proposals/AAAA-MM-DD.json` y un resumen Markdown. Hecho cuando un test con respuestas grabadas acepta un cambio con fuente, rechaza uno sin fuente y marca uno fuera de ventana.
 6. **H5 Onboarding de países.** `npm run onboard -- --country=PE --dry-run` crea un borrador con puntajes. Hecho cuando, con respuestas grabadas, el borrador marca todo lo no verificado como «por medir».
-7. **H6 Workflows y piloto.** `refresh.yml`, `onboard.yml` y `deploy.yml`. Hecho cuando una corrida real abre un PR legible, su merge despliega, y Perú, Brasil, Bolivia y México quedan publicados con al menos 3 fiestas con fuente cada uno.
+7. **H6 Workflows y piloto.** `pipeline.yml` (antes `refresh.yml` y `onboard.yml`) y `deploy.yml`. Hecho cuando una corrida real sube un commit legible que despliega tras CI, y cada país pedido se publica con al menos 3 fiestas con fuente (Brasil, Colombia y Perú ya lo están; Bolivia y México en cola).
 8. **H7 Usabilidad y endurecimiento.** Prueba con 5 usuarios y sus correcciones; tope de presupuesto, CSP y rotación de la key documentada. Hecho con 90% de tareas completadas, facilidad media de 5,5 o más y una simulación del tope que detiene el job.
 
 **Controles de riesgo por hito:** cada control del registro se construye en el hito indicado en su fila (H0: R8; H1: R4; H3: R5, R6; H4: R1, R3, R7, R13; H5: R2, R11; H6: R9, R10, R12; H7: conjunto de prueba de R1). Un hito no se cierra si la prueba de alguno de sus controles falla.
@@ -458,15 +460,15 @@ El producto funciona si las fechas prioritarias son exactas y frescas en cada pa
 | --- | --- | --- |
 | Exactitud de fechas de Nivel 1 | 100% | Auditoría después de cada edición contra la fuente oficial |
 | Frescura | Toda fiesta de Nivel 1 a menos de 120 días verificada en los últimos 14 días | Campo `last_verified` |
-| Cobertura | 5 países piloto con al menos 3 fiestas verificadas cada uno; luego 2 países nuevos por mes | `data/index.json` |
-| Cambios sin fuente publicados | 0 | Validador y revisión de PRs |
-| Propuestas aceptadas sin editar | 80% o más | Etiquetas en los PRs cerrados |
-| Costo mensual de la API | Por debajo de `MONTHLY_BUDGET_USD`, sugerido US$20 | `data/usage.json` |
+| Cobertura | Cada país pedido, publicado con al menos 3 fiestas verificadas; de 3 a 5 países nuevos por mes con US$20 | `data/index.json` y `data/state/requests.json` |
+| Cambios sin fuente publicados | 0 | Validador y auditoría mensual de 10 cambios |
+| Cambios retenidos sin resolver más de 30 días | 10 o menos | `data/state/holds.json` |
+| Costo mensual de la API | Por debajo de `MONTHLY_BUDGET_USD`, sugerido US$20 | `data/state/ledger.jsonl` |
 | Éxito en tareas | 90% en la prueba con 5 usuarios | Prueba de usabilidad |
 | Facilidad percibida | 5,5 o más de 7 | Pregunta única después de cada tarea |
 | Core Web Vitals en móvil | LCP de 2,5 s o menos, INP de 200 ms o menos, CLS de 0,1 o menos, a percentil 75 | Lighthouse CI en el build y la librería web-vitals en producción |
 | Accesibilidad | Cero fallas de WCAG 2.2 AA | axe en CI |
-| Indicadores de riesgo | Ninguno en alerta más de 14 días seguidos; propuestas trampa rechazadas al 100% | Revisión mensual del registro de riesgos |
+| Indicadores de riesgo | Ninguno en alerta más de 14 días seguidos | Revisión mensual del registro de riesgos |
 
 ## Riesgos y mitigaciones
 
@@ -482,17 +484,17 @@ Con controles verificables, los 13 riesgos terminan en zona baja: los 3 que empi
 
 &#91;embedded content: registro de riesgos de este PRD, 13 riesgos puntuados el 26 oct 2026\]
 
-R1 y R12 se quedan en 6 porque dependen de la revisión humana; la propuesta trampa mensual es lo que mantiene honesto ese número.
+R1 se queda en 6 por los controles en código y la auditoría mensual. R12 se retiró el 2026-11-09 junto con la revisión humana que medía: sin revisor no hay sello que vigilar, y su lugar lo toman las retenciones de `scripts/lib/autoapprove.ts`.
 
 **Registro de riesgos (ordenado por puntaje inherente):**
 
 | Riesgo | Inherente | Prevenir | Detectar | Corregir | Indicador y umbral | Residual e hito |
 | --- | --- | --- | --- | --- | --- | --- |
 | **R1** La IA confunde ediciones o ciudades, o inventa una fecha (LLM09) | 4 × 5 = 20 | Cita literal obligatoria que debe aparecer tal cual en las citas de la búsqueda; dos fuentes independientes para fechas de Nivel 1 que no vengan del organizador; una fecha fuera de la ventana de la regla se bloquea; ciudad validada contra GeoNames | Conjunto de prueba de 50 fiestas con fecha conocida que corre en cada cambio de prompt o de modelo y exige 98% de aciertos; el PR resalta las fechas de Nivel 1 | «Reportar un error» en cada ficha; revert del PR; los calendarios suscritos reciben la corrección | Propuestas de fecha rechazadas en revisión: alerta sobre 10% al mes | 2 × 3 = 6; H4 y H7 |
-| **R12** Revisión humana de sello, que aprueba sin mirar (nuevo) | 4 × 4 = 16 | PRs de 15 cambios como máximo, ordenados por riesgo; por cada fecha de Nivel 1 el revisor pega el fragmento que vio en la fuente | Una propuesta trampa al mes con un error sembrado, que el revisor debe rechazar; CI la bloquea aunque se apruebe, así nunca llega al sitio; auditoría mensual de 10 cambios aprobados al azar | Si se aprueba una trampa o la auditoría halla un error, segundo revisor obligatorio durante un mes | Trampas rechazadas: meta 100% | 2 × 3 = 6; H6 |
+| **R12** (retirado el 2026-11-09: ya no hay revisión humana de cada cambio; ver «Decisión del 2026-11-09») Revisión humana de sello, que aprueba sin mirar | 4 × 4 = 16 | PRs de 15 cambios como máximo, ordenados por riesgo; por cada fecha de Nivel 1 el revisor pega el fragmento que vio en la fuente | Una propuesta trampa al mes con un error sembrado, que el revisor debe rechazar; CI la bloquea aunque se apruebe, así nunca llega al sitio; auditoría mensual de 10 cambios aprobados al azar | Si se aprueba una trampa o la auditoría halla un error, segundo revisor obligatorio durante un mes | Trampas rechazadas: meta 100% | 2 × 3 = 6; H6 |
 | **R4** Calendarios lunares mal calculados | 3 × 5 = 15 | Solo tablas de fuente oficial, como la conversión gregoriano-lunar del Observatorio de Hong Kong (1901 a 2100, también en CSV); nunca cálculo astronómico propio | Cruce con la lista oficial de feriados del país cuando la fiesta es feriado; alerta si falta la fila de los próximos 12 meses | Fechas que dependen del avistamiento de la luna, o de una luna nueva cerca de medianoche, se muestran como «estimada, puede variar un día» hasta el anuncio oficial | Fiestas lunares sin fila para los próximos 12 meses: alerta con 1 o más | 1 × 3 = 3; H1 |
 | **R2** Calidad de fuentes muy desigual entre países | 4 × 3 = 12 | Jerarquía en `config/sources/<cc>.json`: A organizador o gobierno, B prensa nacional reconocida, C resto; Nivel 1 exige una A o dos B; dominios bloqueados (reventa, granjas de SEO) | Tablero de cobertura con el porcentaje de fechas con fuente A por país | Un país sin 3 fiestas con fuente A o B queda en borrador; bajo 60% de fuentes A, aviso «cobertura parcial» | Fechas con fuente A por país: alerta bajo 60% | 2 × 2 = 4; H5 |
-| **R3** Fuentes en idiomas que el revisor no lee | 3 × 4 = 12 | El PR muestra cita original, traducción, idioma y la fecha ya normalizada; un parser de fechas por idioma compara la cita con lo que extrajo la IA | Si parser e IA no coinciden, el cambio se marca «revisar idioma» | Sin revisor que lea el idioma, el cambio no se publica | Cambios marcados «revisar idioma»: alerta sobre 20% | 2 × 2 = 4; H4 |
+| **R3** Fuentes en idiomas que el revisor no lee | 3 × 4 = 12 | El PR muestra cita original, traducción, idioma y la fecha ya normalizada; un parser de fechas por idioma compara la cita con lo que extrajo la IA | Si parser e IA no coinciden, el cambio se marca «revisar idioma» | Desde el 2026-11-09 el parser lee cualquier idioma con meses en CLDR, además de fechas 年月日 y años budistas; un cambio que no coincide queda retenido | Cambios marcados «revisar idioma»: alerta sobre 20% | 2 × 2 = 4; H4 |
 | **R6** La seguridad del viajero cambia según país y nacionalidad | 3 × 4 = 12 | Ajustes pide el país de origen y la ficha enlaza su advertencia oficial, como travel.state.gov, gov.uk/foreign-travel-advice, travel.gc.ca o smartraveller.gov.au; si ese país no publica una, se enlaza su cancillería | Chequeo semanal de enlaces rotos | Aviso con fecha en la ficha cuando la fuente elegida cambie de nivel, si lo publica en formato legible por máquina; nunca se ocultan fiestas | Enlaces de advertencia rotos: alerta con 1 o más | 2 × 2 = 4; H3 |
 | **R7** Una página web intenta dar instrucciones a la IA (LLM01, LLM05, LLM06) | 4 × 3 = 12 | La IA no tiene herramientas con efectos: solo búsqueda web, sin acceso al repo ni a secretos; primera búsqueda con `allowed_domains` limitado a fuentes A y abierta solo si no hay resultado o, con tope por corrida, si no dio las fechas de una edición sin confirmar; la extracción solo ve las citas; salida por esquema | Detector de frases de instrucción en las citas («ignora», «ignore previous», «system prompt»); rechazo de campos no pedidos | Revisión humana y revert | Cambios marcados por el detector: alerta con 1 o más | 2 × 2 = 4; H4 |
 | **R9** Un hecho extraordinario suspende una fiesta, como el sismo que suspendió el Petronio en ago 2026 | 3 × 4 = 12 | No se puede prevenir | Barrido de noticias dos veces por semana para fiestas a 45 días o menos y diario en su última semana, con «cancelado», «aplazado» o «suspendido» en el idioma local | Estado «aplazada» o «cancelada» con fuente; el .ics publica `STATUS:CANCELLED` y sube `SEQUENCE`; aviso en la ficha | Horas entre el anuncio oficial y el cambio publicado: meta 72 o menos | 2 × 3 = 6; H6 |
@@ -505,7 +507,6 @@ R1 y R12 se quedan en 6 porque dependen de la revisión humana; la propuesta tra
 **Reglas del registro:**
 
 - Cada control se construye en el hito de su fila y su prueba entra a CI; un hito no se cierra si alguna falla.
-- La propuesta trampa se reconoce por una huella guardada como secreto del repositorio; el revisor no la ve.
 - Archivar con la API autenticada del Internet Archive requiere claves de archive.org guardadas como secreto, y la API limita las capturas diarias por URL.
 - Cada aplicación de calendario actualiza las suscripciones con su propia frecuencia, así que una cancelación puede tardar en verse allí; la ficha siempre muestra el dato vigente.
 

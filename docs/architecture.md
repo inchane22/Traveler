@@ -17,7 +17,7 @@ shapes; this file fixes the interfaces between modules that are built in paralle
 | `src/i18n.ts`, `locales/*.json` | ui | `t(key, params)`; every visible string lives in `locales/`. |
 | `src/render/**`, `src/app.ts`, `src/router.ts`, `src/store.ts`, `src/search.ts`, `src/styles/**`, `index.html`, `public/sw.js` | ui | vanilla TS, DOM built with `h()` (textContent only). |
 | `scripts/build-data.ts` | core | validates `data/countries/*.json`, writes `data/index.json` and `public/data/**`. |
-| `scripts/refresh.ts`, `scripts/onboard.ts`, `scripts/check-links.ts`, `scripts/lib/**` | pipeline | Claude API behind a client interface; tests replay recorded responses. Link checks go through a fetch interface with a fake in tests. Entry points use `isMainModule(import.meta.url)` from `scripts/lib/is-main.ts` (paths with spaces and symlinks). |
+| `scripts/pipeline.ts`, `scripts/refresh.ts`, `scripts/onboard.ts`, `scripts/check-links.ts`, `scripts/lib/**` | pipeline | Claude API behind a client interface; tests replay recorded responses. Link checks go through a fetch interface with a fake in tests. Entry points use `isMainModule(import.meta.url)` from `scripts/lib/is-main.ts` (paths with spaces and symlinks). |
 | `.github/**`, `README.md` | ops | workflows pinned by SHA; README holds the key rotation runbook. |
 
 Core modules (`schema`, `dates`, `score`, `festivals`, `ics`) never touch the DOM or `fs`, so both the
@@ -26,7 +26,9 @@ app and Node scripts import them. Relative imports keep the `.ts` extension (Nod
 ## Public data served to the browser (written by build-data)
 
 - `public/data/index.json`: `PublicIndex` from `scripts/build-data.ts`:
-  `{ generated_at, countries: [{code, status, region, timezone, festivals, last_verified, share_a}], tier1: ["CO/slug"], slugs: {slug: "CO"} }`.
+  `{ generated_at, countries: [{code, status, region, timezone, festivals, last_verified, share_a}], tier1: ["CO/slug"], slugs: {slug: "CO"}, requests: [{code, status: "queued"|"retry"|"gave_up", retry_after?}] }`.
+  `requests` lists the countries someone asked for that are not served yet (data/state/requests.json),
+  so a country page can say where its build stands; an older index without it reads as `[]`.
 - `public/data/countries/<cc>.json`: the validated `CountryFile`, lowercase file name. The client
   computes scores with `config/scoring.json` (bundled via Vite JSON import).
 - `public/data/changelog.json`: array of `ChangelogEntry`.
@@ -79,8 +81,10 @@ function or table with a unit test: change behaviour there, not with a new statu
 | Screen load | `loading` → `ready` (kept per key) or `failed` → next read loads again | `resource(key, factory)` (src/resource.ts) | `asyncView` (components.ts); «Reintentar» is a re-render |
 | Refresh outcome per festival | `FestivalOutcome` (report.ts) | refresh-run.ts | `VERIFIED` record: every outcome says whether the model answered (verified count, blind check, exit code) |
 | Budget level (R10) | `ok`, `warn50`, `degraded80`, `stopped` | derived from the month's spend on every read (`levelOf`), never stored | `allowedAtLevel`, the follow-up budget |
+| Country request | (none) → `queued` → `live`; `queued` → `retry` (30 days) → `gave_up` (3rd short build); `retry`/`gave_up` → `queued` on a new request | `nextRequest(req, cc, event, rules)` (scripts/lib/requests.ts); an error mid-build is not an attempt | `requestsDue` (the planner), `indexRequests` (the site) |
 | Link verdict (R13) | `ok`, `broken`, `unknown` | `checkLink` (links.ts); a downgrade happens once, keyed by its changelog entry | `applyLostSources` |
-| Country | `borrador` → `publicado` | by hand, guarded by build-data (`MIN_SOURCED_FESTIVALS` dated A/B festivals) | drafts are built only with `INCLUDE_DRAFTS=1` |
+| Country | `borrador` → `publicado` | by the pipeline only, when `readiness` (scripts/lib/publish.ts) passes: build-data's own checks for a «publicado» country, `MIN_SOURCED_FESTIVALS` dated A/B festivals included | drafts are built only with `INCLUDE_DRAFTS=1` |
+| Change approval | validate.ts verdict → `holdRisky` (autoapprove.ts) → applied / held / rejected | accepted changes apply; flagged, a moved confirmed date or a cancellation without two independent sites, and a run moving over half a country's dates are held | `data/state/holds.json` (`mergeHolds`), the «Needs a look» issue |
 
 Implicit on purpose (small, local, covered by e2e): app.ts navigation bookkeeping (`navKind` one-shot
 push/replace flag, `inAppDepth` in `history.state`, `pendingFocus`/`pendingScroll` applied by
@@ -91,10 +95,6 @@ a write, then memory only).
 
 Known gaps, found 2026-11-08 and left for their own change:
 
-- R12 trap slot: `firstRunOfMonth` is spent by the month's first weekly-mode run that makes an API
-  call, also when it plants no trap (no real change) or is a manual `--only`/`--country` dispatch, so
-  that month gets no trap. Fix: record «trap planted» per month in `data/usage.json` (the
-  `USAGE_FALLBACK_PATH` merge must keep it) and plant while none is.
 - `aplazada` with stored dates: nothing says whether they are the old or the new ones, and apply
   cannot clear dates, so a postponement the pipeline records never becomes a pending postponement
   (`isPendingPostponement` needs no start).
@@ -152,21 +152,48 @@ Locale keys the calendar code reads (ui adds them to every `locales/*.json`):
 ## Pipeline CLI (used by the workflows)
 
 ```
+pnpm pipeline -- [--plan] [--request=<cc> [--issue=<n>]] [--today=YYYY-MM-DD] [--fixtures=<dir>]
 pnpm refresh -- [--dry-run] [--only=<slug>] [--country=<cc>] [--today=YYYY-MM-DD] [--fixtures=<dir>]
                 [--sweep=news [--within=<days>]]
 pnpm onboard -- --country=<cc> [--dry-run] [--today=YYYY-MM-DD] [--fixtures=<dir>]
-node scripts/check-trap.ts        # fails if a trap proposal (R12) is present; needs TRAP_SECRET and TRAP_FINGERPRINTS
-                                  # (refresh.yml appends each month's fingerprint to that secret with the app token)
 node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 only on 404/410
 ```
+
+- `pipeline` (pipeline.yml runs it daily and on «build-country» issues): intake of the request
+  (`--request`, or ISSUE_NUMBER / ISSUE_TITLE / ISSUE_BODY from an issue event, parsed by
+  `countryFromIssue`; refused unless it is one of the site's 238 codes) → drafts that pass R2 go
+  live (`publishReady`) → `makePlan` → news sweeps → builds → verification → holds → state files.
+  `--plan` (or `--dry-run`) makes no API call and writes only the summary. Outputs in `proposals/`:
+  `pipeline-<date>.json|md` (plan and summary), `commit-message.txt`, `holds.md` (body of the
+  «Needs a look» issue), `issue-updates.json` (`[{issue, comment, close}]` for the workflow), plus
+  each batch's report (`sweep-<date>`, `verify-<date>`, `build-<cc>-<date>`). `$GITHUB_OUTPUT`:
+  `changes`, `held`, `unexpected`, `builds`, `stopped`. Exit 1 when a batch failed (budget stop,
+  bad credentials, blind search) or a festival hit an unexpected error; pipeline.yml commits first.
+- A build (`buildCountry`): no `config/sources/<cc>.json` → one call without web search drafts it
+  (`draftSourcePolicy`: official, press, blocked; code keeps bare hostnames, always adds
+  `defaultGovernmentDomains` and UNESCO, never lists social networks or resellers as press, and a
+  failed call writes the government-only fallback). No country file → `runOnboard`. Then up to
+  `build_topups` festivals without a sourced date, nearest first (`topUpQueue`), are verified with
+  job `build`; `readiness` decides `publicado`. Short of R2 → the request retries in `retry_days`.
+- Planner (`makePlan`, pure): pools from `config/pipeline.json` (`new_country_share` for builds,
+  the rest for upkeep spread over the days left; in the last `release_build_pool_days` both share
+  what is left, upkeep first). Cadence: `verifyInterval(daysToStart, settled, tier, stretch)` and
+  `sweepInterval`; the last check per festival comes from the ledger (`lastDays`), so a check that
+  found nothing is not repeated. Bands in priority order: `sweep-7`, `verify-45`, `sweep-45`,
+  builds, `verify-120`, `verify-180`, `verify-far`; what does not fit today's share is deferred
+  (still due tomorrow). `projection` gives the full-cadence cost per country and the stretch (1 to
+  `MAX_STRETCH` = 4) applied beyond 45 days so upkeep fits. Job costs: the ledger's average once
+  three jobs of a kind exist, else `default_job_usd`.
+- Ledger (`data/state/ledger.jsonl`, `scripts/lib/ledger.ts`): one strict JSON line per call that
+  returned: `{day, job, key, call, model, searches, input_tokens, output_tokens, usd}`; jobs
+  `onboard`, `policy`, `build` (new-country pool) and `verify`, `followup`, `sweep` (upkeep).
+  `call: "carryover"` brings in a total from before the ledger. Fixture runs keep it in memory.
 
 - `--sweep=news` (R9): only festivals whose next edition starts within `--within` days (1 to 45,
   default 45), ongoing ones included, queue reason `news`. The research prompt asks for news with
   «cancelado», «aplazado», «suspendido» in the local language plus the English and Portuguese
-  terms. A sweep never carries the R12 trap and does not count as the month's weekly run
-  (`weekly_runs` in `data/usage.json`). Report: `sweep_within` in the JSON, «Barrido de noticias»
-  heading in the Markdown. Workflow cadence: Monday weekly, Tuesday and Friday 45 days, other days
-  7 days.
+  terms (for other languages, `LOCAL_NEWS_TERMS` plus English). Report: `sweep_within` in the JSON,
+  «Barrido de noticias» heading in the Markdown. Cadence: the planner's `sweepInterval`.
 - `check-links`: HEAD then GET for every whole https string in `config/advisories.json` and every
   source, archive, score source and rule table URL in `data/countries/*.json`. 2xx/3xx ok, 404/410
   broken; 401/403/418/429/5xx, network errors and bot-challenge pages are `unknown`. Every hop
@@ -182,14 +209,14 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   Report: `link_downgrades`.
 - Trial apply (code-F2, BE-01): before the report is written, the accepted changes are applied in
   memory; one that breaks the schema, or adds a problem build-data's `dataProblems` would report,
-  moves to «para revisar» with the message, so the run still opens its PR. Confidence caps in
+  is held with the message, so the rest of the run is still applied. Confidence caps in
   validation look at the source apply will store (the one holding the quote, else the first
   cited): `oficial` needs it official, and a score `prensa` on a tier-C page becomes `estimacion`.
   A score confirmation from a weaker source than the stored one changes nothing.
 - Unexpected per-festival errors (a bug, not an API error; BE-04): the festival is logged as
   `error` and the run goes on; under Actions each one is a `::error::` annotation. Exit 1 when no
-  festival was verified at all; otherwise refresh exits 0 so the PR opens, and refresh.yml fails
-  the job afterwards when `unexpected` > 0. Proposals are written on every run, changes or not
+  festival was verified at all; otherwise refresh exits 0 so its changes are written, and the
+  pipeline exits 1 afterwards when `unexpected` > 0 (pipeline.yml commits first, then goes red). Proposals are written on every run, changes or not
   (`proposals/` is the run artifact, never committed), so an empty run can be diagnosed.
 - Blind search check: a weekly run where two or more festivals were researched and every one
   ended `no_citations` exits 1 with a `::error::` annotation; the search setup is broken, not the
@@ -199,14 +226,18 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   (`missingDateFacts`; further out the dates are rarely published yet), a pass-2
   search (block list only) asks for the missing facts only (`research-followup.md`). Its proposals
   are validated against its own citations and only the missing fields are kept; a failure keeps
-  pass 1. Weekly run only, at most `MAX_FOLLOWUPS_PER_RUN` per run in queue order, and none once
-  the month is at 80%. Report: `followup` in each festival log.
+  pass 1. Verification runs only (never sweeps), at most `MAX_FOLLOWUPS_PER_RUN` per run in queue
+  order, and none once the month is at 80%; recorded as job `followup` (`build` inside a build).
+  Report: `followup` in each festival log.
 - R2 progress: `drafts` in the report lists each «borrador» country the run researched with its
-  sourced festivals before and after the selected changes; at 3 the Markdown says how to publish.
-- Queue cadence (R10): unsettled editions weekly under 180 days and in the first week of the
-  month otherwise; settled ones (confirmed or cancelled, `STATUS_TRAITS[status].settled`) only when
-  stale (30 days, 14 under 120), and they never get a follow-up search. `--country` always gets the
-  monthly ones. A postponed edition without new dates and a cancelled one are out of the news sweeps.
+  sourced festivals before and after the selected changes; at 3 it goes live at the end of the run.
+- `pnpm refresh` on its own (manual runs) still builds its queue with `buildQueue` (queue.ts:
+  unsettled weekly under 180 days, monthly otherwise; settled only when stale). The pipeline
+  passes its planned queue instead (`RefreshOptions.queue`), with `job` and `reportName`.
+  A postponed edition without new dates and a cancelled one are out of the news sweeps.
+- Auto-approval (`selectForApply` + `holdRisky`): every accepted change and confirmation is
+  applied, riskiest first, with no cap; flagged ones are held. A confirmation of a field the same
+  run changes is dropped so apply cannot undo the change.
 - Status moves (`statusMoveCheck` in validate.ts): confirmada → tentativa/por_anunciar is rejected
   unless the quote says the dates are unconfirmed; a move to cancelada/aplazada is flagged unless the
   quote says so; leaving cancelada is always flagged (an old page reads like a reinstatement).
@@ -215,10 +246,24 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   change of dates or status still bumps it.
 
 Env: `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`), `MAX_FESTIVALS_PER_RUN`
-(40), `MAX_FOLLOWUPS_PER_RUN` (6, refresh only; 0 turns follow-ups off), `MONTHLY_BUDGET_USD` (20), `ARCHIVE_ACCESS_KEY` / `ARCHIVE_SECRET_KEY` (optional, R13),
-`TRAP_SECRET` (R12), `USAGE_FALLBACK_PATH` (optional, refresh and onboard: a `usage.json` from the
-last run artifact; per month the higher total wins, and online runs write the merged history to
-`data/usage.json` before the first call), `LINKS_REPORT_PATH` (optional, refresh: R13 above). Outputs: `proposals/<date>.json`, `proposals/<date>.md` (PR body), and with
-`$GITHUB_OUTPUT` set: `changes=<n>` and `branch=refresh/<date>` (or `onboard/<cc>`); refresh also
-writes `flagged=<n>`, `unexpected=<n>` (festivals that failed with an unexpected error) and
-`verified=<n>` (festivals where the model answered).
+(40), `MAX_FOLLOWUPS_PER_RUN` (6; 0 turns follow-ups off), `MONTHLY_BUDGET_USD` (20), `ARCHIVE_ACCESS_KEY` / `ARCHIVE_SECRET_KEY` (optional, R13),
+`LINKS_REPORT_PATH` (optional: R13 above), `SITE_URL` (pipeline: the link in a «now live» issue
+comment), `ISSUE_NUMBER` / `ISSUE_TITLE` / `ISSUE_BODY` (pipeline, from an issue event). Every
+real call appends to `data/state/ledger.jsonl`, dry runs included. Outputs: `proposals/<name>.json`,
+`proposals/<name>.md`, and with `$GITHUB_OUTPUT` set: refresh `changes`, `flagged`, `unexpected`
+(festivals that failed with an unexpected error) and `verified` (festivals where the model
+answered); onboard `changes`.
+
+## Country facts and languages (any country)
+
+- `countryInfo(cc)` (scripts/lib/lang.ts): the hand-checked table wins; otherwise CLDR's likely
+  language and zone for `und-<cc>` plus `config/regions.json`, with `CAPITAL_ZONES` for countries
+  CLDR lists several zones for. All 238 codes of `ISO_COUNTRIES` (src/search.ts) have facts.
+  `lang` (prompts, es/en/pt) falls back to English; `local` is the sources' language.
+- Dates (`quoteStatesDate`, date-parser.ts): es/pt/en keep their hand vocabularies (and read only
+  their own months); any other language reads CLDR month names (standalone and in-date forms, long
+  and short) plus English, native digits, 年月日 / 월일 dates (before folding: NFD splits Hangul) and
+  Thai Buddhist-era years. `hasDateReader(lang)` is false only when the platform does not know it;
+  then validate.ts flags the change («sin lector de fechas») and it is held.
+- `registrableDomain` also treats generic second-level labels under any two-letter ccTLD
+  (`co.jp`, `or.kr`, `gov.za`…) as suffixes, so two outlets of a new country stay independent.
