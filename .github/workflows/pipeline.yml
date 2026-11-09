@@ -155,9 +155,10 @@ jobs:
           fi
 
       # Schema, R2 and domain checks over every country file, and the index CI compares. A file
-      # the pipeline broke stops here: nothing is committed.
+      # the pipeline broke stops here: its data is not committed (the spend still is, below).
       - name: Validate data and regenerate data/index.json
         id: validate
+        continue-on-error: true
         run: node scripts/build-data.ts
 
       - name: Commit to main
@@ -165,8 +166,20 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
+          VALID: ${{ steps.validate.outcome }}
         run: |
           paths=(data/countries data/changelog.json data/index.json data/state config/sources config/official-domains)
+          message=proposals/commit-message.txt
+          if [ "${VALID}" != "success" ]; then
+            # R10: data that fails build-data is dropped, but the money it cost stays on record,
+            # or the next run would plan against a month that looks cheaper than it was.
+            git checkout -- data/countries data/changelog.json data/index.json config 2>/dev/null || true
+            git clean -fdq -- data/countries config
+            git checkout -- data/state/requests.json data/state/holds.json 2>/dev/null || true
+            paths=(data/state/ledger.jsonl)
+            printf 'chore(data): pipeline %s · spend only (data failed build-data)\n\nThe data of this run was discarded; see the pipeline artifact.\n' "$(date -u +%F)" > "${RUNNER_TEMP}/spend-only.txt"
+            message="${RUNNER_TEMP}/spend-only.txt"
+          fi
           if [ -z "$(git status --porcelain -- "${paths[@]}")" ]; then
             echo "pushed=false" >> "${GITHUB_OUTPUT}"
             echo "::notice::No data changes this run."
@@ -175,14 +188,14 @@ jobs:
           git config user.name "traveler-pipeline[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- "${paths[@]}"
-          if [ -f proposals/commit-message.txt ]; then
-            git commit --quiet -F proposals/commit-message.txt
+          if [ -f "${message}" ]; then
+            git commit --quiet -F "${message}"
           else
             git commit --quiet -m "chore(data): pipeline $(date -u +%F)"
           fi
           remote="https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
           # Someone may have pushed while the run was researching: rebase once and retry.
-          for attempt in 1 2 3; do
+          for _ in 1 2 3; do
             if git push --quiet "${remote}" HEAD:main; then
               echo "pushed=true" >> "${GITHUB_OUTPUT}"
               git log -1 --format='- Committed %h: %s' >> "${GITHUB_STEP_SUMMARY}"
@@ -194,14 +207,15 @@ jobs:
           exit 1
 
       - name: Start CI on main (deploy follows a green run)
-        if: steps.commit.outputs.pushed == 'true'
+        if: steps.commit.outputs.pushed == 'true' && steps.validate.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
         run: gh workflow run ci.yml --repo "${REPO}" --ref main
 
+      # Only when the data went in: a «now live» reply about data build-data rejected would be false.
       - name: Answer request issues
-        if: always() && steps.run.outcome != 'skipped'
+        if: always() && steps.run.outcome != 'skipped' && steps.validate.outcome == 'success' && steps.commit.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
@@ -252,7 +266,11 @@ jobs:
       # BE-04: what was applied is committed first; then the run goes red if the pipeline failed
       # (budget stop, bad credentials, blind search) or a festival hit an unexpected error.
       - name: Fail when the pipeline did
-        if: steps.run.outcome == 'failure'
+        if: steps.run.outcome == 'failure' || steps.validate.outcome == 'failure'
+        env:
+          RUN: ${{ steps.run.outcome }}
+          VALID: ${{ steps.validate.outcome }}
         run: |
-          echo "::error::The pipeline step failed; see its log and the pipeline artifact."
+          if [ "${VALID}" = "failure" ]; then echo "::error::build-data rejected the data; only the spend was committed. See the pipeline artifact."; fi
+          if [ "${RUN}" = "failure" ]; then echo "::error::The pipeline step failed; see its log and the pipeline artifact."; fi
           exit 1

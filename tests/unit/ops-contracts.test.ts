@@ -47,10 +47,19 @@ describe("pipeline.yml: auto-approved data reaches main only through the checks"
     expect(validate).toBeGreaterThan(wf.indexOf("- name: Run the pipeline"));
     expect(commit).toBeGreaterThan(validate);
     expect(ci).toBeGreaterThan(commit);
-    expect(stepOf(wf, "Validate data and regenerate data/index.json")).not.toContain("continue-on-error");
     expect(stepOf(wf, "Commit to main")).toContain("HEAD:main");
     expect(stepOf(wf, "Start CI on main (deploy follows a green run)")).toContain("gh workflow run ci.yml");
     expect(wf).toContain("actions: write");
+  });
+
+  test("data build-data rejects is dropped, but its spend is still committed (R10), and nothing is deployed or announced", () => {
+    const commit = stepOf(wf, "Commit to main");
+    expect(commit).toContain("VALID: ${{ steps.validate.outcome }}");
+    expect(commit).toContain("paths=(data/state/ledger.jsonl)");
+    expect(commit).toContain("git checkout -- data/countries data/changelog.json data/index.json config");
+    expect(stepOf(wf, "Start CI on main (deploy follows a green run)")).toContain("steps.validate.outcome == 'success'");
+    expect(wf).toMatch(/- name: Answer request issues\n\s*if: .*steps\.validate\.outcome == 'success'/);
+    expect(stepOf(wf, "Fail when the pipeline did")).toContain("steps.validate.outcome == 'failure'");
   });
 
   test("a failed pipeline step still commits what was applied, then turns the run red (BE-04)", () => {
