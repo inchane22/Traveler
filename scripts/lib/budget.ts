@@ -1,9 +1,12 @@
 // Monthly spend control (R10, LLM10). Every call is checked before it is sent and recorded after,
-// so a run that crosses the cap stops before the next call, not at the end of a festival.
-import { z } from "zod";
+// so a run that crosses the cap stops before the next call, not at the end of a festival. Each
+// recorded call is one line of the ledger (ledger.ts), tagged with the job it was for.
 import type { CallContext } from "./client.ts";
 import type { Logger } from "./io.ts";
+import { appendLedger, emptyMonth, monthsOf, readLedger, type Job, type LedgerEntry, type UsageMonth } from "./ledger.ts";
 import type { CallGate, CallUsage } from "./research.ts";
+
+export { emptyMonth, type UsageMonth };
 
 /** USD per million tokens. Web search is billed per search on top (US$10 per 1,000). */
 export const PRICES: Readonly<Record<string, { input: number; output: number }>> = {
@@ -18,24 +21,6 @@ export const CACHE_WRITE = 1.25;
 export const CACHE_READ = 0.1;
 export const DEFAULT_BUDGET_USD = 20;
 
-export const UsageMonth = z
-  .object({
-    month: z.string().regex(/^\d{4}-\d{2}$/),
-    searches: z.number().int().min(0),
-    /** All input tokens, cached ones included. */
-    input_tokens: z.number().int().min(0),
-    output_tokens: z.number().int().min(0),
-    usd: z.number().min(0),
-    /**
-     * Weekly verifications that spent this month; news sweeps and onboarding leave it alone, so
-     * the R12 trap still goes in the first weekly PR. A record without it counts as one done.
-     */
-    weekly_runs: z.number().int().min(0).optional(),
-  })
-  .strict();
-export const UsageFile = z.array(UsageMonth);
-export type UsageMonth = z.infer<typeof UsageMonth>;
-
 export function priceFor(model: string): { input: number; output: number } {
   const price = PRICES[model];
   // Unknown models are priced at the most expensive known rate rather than as free.
@@ -48,10 +33,6 @@ export function costOf(usage: CallUsage, model: string): number {
   return usage.searches * SEARCH_USD + (input * p.input + usage.output_tokens * p.output) / 1_000_000;
 }
 
-export function emptyMonth(month: string): UsageMonth {
-  return { month, searches: 0, input_tokens: 0, output_tokens: 0, usd: 0 };
-}
-
 export function addUsage(m: UsageMonth, usage: CallUsage, model: string): UsageMonth {
   return {
     month: m.month,
@@ -59,7 +40,21 @@ export function addUsage(m: UsageMonth, usage: CallUsage, model: string): UsageM
     input_tokens: m.input_tokens + usage.input_tokens + usage.cache_creation_input_tokens + usage.cache_read_input_tokens,
     output_tokens: m.output_tokens + usage.output_tokens,
     usd: Math.round((m.usd + costOf(usage, model)) * 1_000_000) / 1_000_000,
-    ...(m.weekly_runs !== undefined ? { weekly_runs: m.weekly_runs } : {}),
+  };
+}
+
+/** One ledger line for a call that returned. */
+export function entryFor(day: string, job: Job, ctx: CallContext, usage: CallUsage, model: string): LedgerEntry {
+  return {
+    day,
+    job,
+    key: ctx.key,
+    call: ctx.kind,
+    model,
+    searches: usage.searches,
+    input_tokens: usage.input_tokens + usage.cache_creation_input_tokens + usage.cache_read_input_tokens,
+    output_tokens: usage.output_tokens,
+    usd: Math.round(costOf(usage, model) * 1_000_000) / 1_000_000,
   };
 }
 
@@ -80,15 +75,17 @@ export class BudgetExceededError extends Error {
 }
 
 export interface UsageStore {
+  /** Spend on record per month. */
   load(): UsageMonth[];
-  save(months: UsageMonth[]): void;
+  /** One call that returned; persisted at once, so a crash never loses spend. */
+  record(entry: LedgerEntry): void;
 }
 
 export interface BudgetGuard extends CallGate {
   level(): BudgetLevel;
   current(): UsageMonth;
-  /** True for the first weekly run of the month (sweeps and onboarding never are): drives the R12 trap. */
-  firstRunOfMonth: boolean;
+  /** The same guard, recording its calls as `job` (a follow-up search inside a verification run). */
+  as(job: Job): CallGate;
   calls: number;
 }
 
@@ -98,17 +95,17 @@ export interface BudgetOptions {
   model: string;
   store: UsageStore;
   log: Logger;
-  /** False for news sweeps and onboarding: they spend from the budget but are not the weekly run. Default true. */
-  weekly?: boolean;
+  /** Day written on each ledger line; the first of the month when absent. */
+  today?: string;
+  /** What the calls are for, unless a caller asks for another job with `as`. Default `verify`. */
+  job?: Job;
 }
 
-/** Loads the month, warns once at 50% and 80%, throws before a call at 100%, persists after each call. */
+/** Loads the month, warns once at 50% and 80%, throws before a call at 100%, records each call. */
 export function createBudgetGuard(opts: BudgetOptions): BudgetGuard {
-  let months = UsageFile.parse(opts.store.load());
-  const existing = months.find((m) => m.month === opts.month);
+  const existing = opts.store.load().find((m) => m.month === opts.month);
   let current = existing ?? emptyMonth(opts.month);
-  const weekly = opts.weekly ?? true;
-  const weeklyBefore = existing ? (existing.weekly_runs ?? 1) : 0;
+  const day = opts.today ?? `${opts.month}-01`;
   const warned = new Set<BudgetLevel>();
   const warn = (): void => {
     const level = levelOf(current.usd, opts.budgetUsd);
@@ -123,21 +120,22 @@ export function createBudgetGuard(opts: BudgetOptions): BudgetGuard {
     }
   };
   warn();
+  const beforeCall = (_ctx: CallContext): void => {
+    if (levelOf(current.usd, opts.budgetUsd) === "stopped") throw new BudgetExceededError(current.usd, opts.budgetUsd, opts.month);
+  };
+  const afterCall = (job: Job) => (ctx: CallContext, usage: CallUsage): void => {
+    guard.calls += 1;
+    current = addUsage(current, usage, opts.model);
+    opts.store.record(entryFor(day, job, ctx, usage, opts.model));
+    warn();
+  };
   const guard: BudgetGuard = {
-    firstRunOfMonth: weekly && weeklyBefore === 0,
     calls: 0,
     level: () => levelOf(current.usd, opts.budgetUsd),
     current: () => current,
-    beforeCall(_ctx: CallContext) {
-      if (levelOf(current.usd, opts.budgetUsd) === "stopped") throw new BudgetExceededError(current.usd, opts.budgetUsd, opts.month);
-    },
-    afterCall(_ctx: CallContext, usage: CallUsage) {
-      guard.calls += 1;
-      current = { ...addUsage(current, usage, opts.model), weekly_runs: weeklyBefore + (weekly ? 1 : 0) };
-      months = [...months.filter((m) => m.month !== opts.month), current].sort((a, b) => a.month.localeCompare(b.month));
-      opts.store.save(months);
-      warn();
-    },
+    beforeCall,
+    afterCall: afterCall(opts.job ?? "verify"),
+    as: (job) => ({ beforeCall, afterCall: afterCall(job) }),
   };
   return guard;
 }
@@ -149,81 +147,37 @@ export function allowedAtLevel(level: BudgetLevel, tier: unknown, daysToStart: n
   return true;
 }
 
-export function memoryUsageStore(initial: UsageMonth[] = []): UsageStore & { saved: UsageMonth[][] } {
-  let data = initial;
+/**
+ * In memory: recorded runs (fixtures) cost nothing real, and tests read what would be written.
+ * `saved` holds the month totals after each call, `entries` the ledger lines.
+ */
+export function memoryUsageStore(initial: readonly UsageMonth[] = []): UsageStore & { saved: UsageMonth[][]; entries: LedgerEntry[] } {
+  const entries: LedgerEntry[] = [];
   const saved: UsageMonth[][] = [];
+  const months = (): UsageMonth[] => {
+    const added = new Map(monthsOf(entries).map((m) => [m.month, m]));
+    const merged = initial.map((m) => {
+      const a = added.get(m.month);
+      added.delete(m.month);
+      return a ? { month: m.month, searches: m.searches + a.searches, input_tokens: m.input_tokens + a.input_tokens, output_tokens: m.output_tokens + a.output_tokens, usd: Math.round((m.usd + a.usd) * 1_000_000) / 1_000_000 } : m;
+    });
+    return [...merged, ...added.values()].sort((a, b) => a.month.localeCompare(b.month));
+  };
   return {
     saved,
-    load: () => data,
-    save: (months) => {
-      data = months;
-      saved.push(months);
+    entries,
+    load: months,
+    record(entry) {
+      entries.push(entry);
+      saved.push(months());
     },
   };
 }
 
-/**
- * Usage persistence across unmerged PRs: per month, the record with the higher spend wins. Both
- * sides are running totals of the same month (the artifact of the last run started from main's
- * file plus every fallback before it), so the max never undercounts what was really spent.
- */
-export function mergeUsage(primary: readonly UsageMonth[], fallback: readonly UsageMonth[]): UsageMonth[] {
-  const byMonth = new Map(primary.map((m) => [m.month, m]));
-  for (const m of fallback) {
-    const mine = byMonth.get(m.month);
-    if (!mine || m.usd > mine.usd) byMonth.set(m.month, m);
-  }
-  return [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month));
-}
-
-/**
- * The usage.json of the latest run artifact, from USAGE_FALLBACK_PATH. Unset or missing means no
- * fallback; an unreadable file is logged and ignored (the Console spend limit stays the hard cap).
- */
-export function readUsageFallback(path: string | undefined, io: { read: (p: string) => unknown; exists: (p: string) => boolean }, log: Logger): UsageMonth[] {
-  const file = path?.trim();
-  if (!file) return [];
-  if (!io.exists(file)) {
-    log.info(`R10: no usage fallback at ${file}; using data/usage.json only`);
-    return [];
-  }
-  let raw: unknown;
-  try {
-    raw = io.read(file);
-  } catch (error) {
-    log.warn(`R10: usage fallback ${file} is not valid JSON (${error instanceof Error ? error.message : String(error)}); ignored`);
-    return [];
-  }
-  const parsed = UsageFile.safeParse(raw);
-  if (!parsed.success) {
-    log.warn(`R10: usage fallback ${file} does not match the usage schema; ignored`);
-    return [];
-  }
-  return parsed.data;
-}
-
-/**
- * A store that reads the max of `base` and `fallback`. With `persist`, the merged history is
- * written to `base` right away, so the file this run uploads never goes below the fallback.
- */
-export function withUsageFallback(base: UsageStore, fallback: readonly UsageMonth[], opts: { persist: boolean; log: Logger }): UsageStore {
-  if (!fallback.length) return base;
-  const loaded = UsageFile.parse(base.load());
-  const merged = mergeUsage(loaded, fallback);
-  if (JSON.stringify(merged) !== JSON.stringify(loaded)) {
-    opts.log.info("R10: usage fallback is ahead of data/usage.json (an unmerged PR or a run without PR); using the higher total");
-    if (opts.persist) base.save(merged);
-  }
+/** data/state/ledger.jsonl: a missing file is an empty history; every call appends one line. */
+export function ledgerUsageStore(path: string): UsageStore {
   return {
-    load: () => mergeUsage(UsageFile.parse(base.load()), fallback),
-    save: (months) => base.save(months),
-  };
-}
-
-/** data/usage.json on disk; a missing file is an empty history. */
-export function fileUsageStore(path: string, io: { read: (p: string) => unknown; write: (p: string, v: unknown) => void; exists: (p: string) => boolean }): UsageStore {
-  return {
-    load: () => (io.exists(path) ? UsageFile.parse(io.read(path)) : []),
-    save: (months) => io.write(path, months),
+    load: () => monthsOf(readLedger(path)),
+    record: (entry) => appendLedger(path, [entry]),
   };
 }

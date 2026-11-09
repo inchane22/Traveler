@@ -1,7 +1,7 @@
 // Shared pieces: type tags, status and confidence marks (shape + text, never color alone),
 // date bands, countdowns, save toggles, notices and empty states.
 import type { Occurrence } from "../dates.ts";
-import { isPendingPostponement, type FestivalEntry } from "../festivals.ts";
+import { isPendingPostponement, type FestivalEntry, type Scope } from "../festivals.ts";
 import { h, s, type Child } from "../h.ts";
 import { countryName } from "../ics.ts";
 import type { Confidence, Festival, FestivalType, Lang, Status } from "../schema.ts";
@@ -10,7 +10,7 @@ import { range, relativeDays, shortDate } from "./format.ts";
 import { icon, type IconName } from "./icons.ts";
 import type { Resource } from "../resource.ts";
 import { STATUS_TRAITS } from "../status.ts";
-import { countdown, DataError, dateKind, isStale, isUnconfirmed, type Countdown, type IndexCountry } from "./model.ts";
+import { countdown, DataError, dateKind, isStale, isUnconfirmed, LIVE_NAMES_MAX, type Countdown, type IndexCountry, type PublicIndex } from "./model.ts";
 
 export function festivalName(f: Festival, lang: Lang): string {
   return f.names[lang];
@@ -281,6 +281,30 @@ export function issueUrl(repo: string, template: string, title: string, fields: 
   const q = new URLSearchParams({ template, title });
   for (const [id, value] of Object.entries(fields)) if (value) q.set(id, value);
   return `https://github.com/${repo}/issues/new?${q.toString()}`;
+}
+
+/**
+ * «Construir <país>»: the build-country issue form with the code prefilled. Only issues the owner
+ * opens start a build (pipeline.yml), so a visitor's request waits for the owner.
+ */
+export function buildAction(ctx: Ctx, code: string, label = ctx.t("build.action", { country: countryName(code, ctx.lang) })): EmptyAction {
+  return { label, href: issueUrl(ctx.repo, "build-country.yml", ctx.t("build.issueTitle", { code }), { country: code }), newTab: ctx.t("link.newTab"), primary: true, key: "build-country" };
+}
+
+/**
+ * World and region views say which countries are live and that any other one can be built:
+ * by name while the list is short, by count after that. Home and Explorar say the same.
+ */
+export function liveNote(index: PublicIndex, scope: Scope, ctx: Ctx, inline = false): HTMLElement | null {
+  if (scope.kind === "country" || !index.countries.length) return null;
+  const names = index.countries.map((c) => countryName(c.code, ctx.lang)).sort((a, b) => a.localeCompare(b, ctx.lang));
+  const text =
+    names.length <= LIVE_NAMES_MAX
+      ? ctx.t("home.pilot", { countries: new Intl.ListFormat(ctx.lang, { type: "conjunction" }).format(names) })
+      : ctx.t("home.pilotMany", { count: names.length });
+  // Inline: a plain line inside a block that already carries the globe (Explorar's world hint).
+  if (inline) return h("p", { "data-testid": "pilot-note" }, text);
+  return h("p", { class: "pilot-note", "data-testid": "pilot-note" }, icon("globe"), h("span", null, text));
 }
 
 /** R11 «Sugerir una fiesta»: the suggestion form, with the country prefilled when one is in view. */

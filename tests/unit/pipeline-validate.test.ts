@@ -107,8 +107,11 @@ describe("reviewChange: rule window, language and injection (R1, R3, R7)", () =>
     const wrongDay = reviewChange(change({ new: "2027-01-03" }), nyb());
     expect(wrongDay.verdict).toBe("flagged");
     expect(wrongDay.flags.join()).toMatch(/revisar idioma: la fecha de la cita no coincide/);
+    // A Spanish quote labelled French is read with the French months, so «enero» states nothing.
     const french = reviewChange(change({ quote_language: "fr" }), nyb());
-    expect(french.flags.join()).toMatch(/revisar idioma: sin lector de fechas para «fr»/);
+    expect(french.flags.join()).toMatch(/revisar idioma: la fecha de la cita no coincide/);
+    const unknown = reviewChange(change({ quote_language: "xx" }), nyb());
+    expect(unknown.flags.join()).toMatch(/revisar idioma: sin lector de fechas para «xx»/);
   });
 
   test("an instruction phrase in the note, quote or cited text is flagged, never applied", () => {

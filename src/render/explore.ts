@@ -14,6 +14,7 @@ import {
   dateBand,
   emptyState,
   festivalName,
+  liveNote,
   locationAction,
   locationProblem,
   occurrenceDates,
@@ -439,7 +440,7 @@ function travelDates(f: ExploreState, count: number, ctx: Ctx, go: (next: Explor
   );
 }
 
-/** World view: why only Nivel 1 shows, with a one-tap way into each country's own list. */
+/** World view: why only Nivel 1 shows, which countries are live, and a one-tap way into each country's own list. */
 function worldHint(f: ExploreState, data: ExploreData, ctx: Ctx, go: (next: ExploreState) => void): HTMLElement | null {
   if (f.countries.length) return null;
   const ways = data.index.countries
@@ -454,6 +455,7 @@ function worldHint(f: ExploreState, data: ExploreData, ctx: Ctx, go: (next: Expl
       "div",
       { class: "explore-hint__body" },
       h("p", null, ctx.t("explore.worldHint")),
+      liveNote(data.index, { kind: "world" }, ctx, true),
       ways.length
         ? h(
             "p",

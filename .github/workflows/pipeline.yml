@@ -1,0 +1,277 @@
+# The AI pipeline (scripts/pipeline.ts): one workflow for building countries on request and keeping
+# the published ones fresh, within MONTHLY_BUDGET_USD. Accepted changes are applied by the checks
+# alone and committed straight to main; risky ones are held on the «Needs a look» issue. After the
+# push it starts ci.yml, and deploy.yml publishes once CI is green, as for any change on main.
+name: pipeline
+
+on:
+  schedule:
+    - cron: "0 11 * * *" # daily; the planner decides what is due and what fits the budget
+  issues:
+    types: [opened, reopened, labeled]
+  workflow_dispatch:
+    inputs:
+      country:
+        description: "Construir este país (ISO 3166-1 alfa-2), p. ej. JP / build this country"
+        required: false
+        type: string
+        default: ""
+      plan_only:
+        description: "Solo el plan, sin llamadas a la API / plan only, no API calls"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# One run at a time: every run spends from the same ledger and commits to main.
+concurrency:
+  group: ai-pipeline
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "10.33.3"
+
+jobs:
+  # A «build-country» issue from anyone but the owner spends nothing: it gets one reply and waits
+  # until the owner adds the label themselves.
+  acknowledge:
+    name: acknowledge request
+    if: >-
+      github.event_name == 'issues' && github.event.action == 'opened' &&
+      contains(github.event.issue.labels.*.name, 'build-country') &&
+      github.event.issue.author_association != 'OWNER'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    steps:
+      - name: Reply
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          printf '%s\n' "Thanks! Building a country spends the owner's API budget, so it starts when the owner adds the build-country label to this issue." > "${RUNNER_TEMP}/reply.md"
+          gh issue comment "${NUMBER}" --repo "${REPO}" --body-file "${RUNNER_TEMP}/reply.md"
+
+  pipeline:
+    name: pipeline
+    # Schedule and dispatch always run (dispatch only from main). An issue runs only when the owner
+    # opened it (with the label, or the form's «Build:» title in case the label does not exist yet),
+    # or the owner added the label to someone else's issue.
+    if: >-
+      github.ref == 'refs/heads/main' && (
+        github.event_name != 'issues' ||
+        (github.event.issue.state == 'open' && (
+          (github.event.action != 'labeled' && github.event.issue.author_association == 'OWNER' && (contains(github.event.issue.labels.*.name, 'build-country') || startsWith(github.event.issue.title, 'Build:'))) ||
+          (github.event.action == 'labeled' && github.event.label.name == 'build-country' && github.event.sender.login == github.repository_owner)
+        ))
+      )
+    # SEC-12: ANTHROPIC_API_KEY and ARCHIVE_* live in this environment, limited to main (README).
+    environment: ai-pipeline
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    permissions:
+      contents: write # commit the data straight to main
+      issues: write # request comments and the «Needs a look» issue
+      actions: write # start ci.yml after the push (a GITHUB_TOKEN push starts nothing by itself)
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      # No dependency cache in jobs that hold write tokens (cache poisoning).
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # R13 needs this week's link verdicts; links.yml raises the R6 alert. Mondays only, no secret.
+      - name: Check links for R13 (Mondays)
+        id: links
+        continue-on-error: true
+        run: |
+          if [ "$(date -u +%u)" != "1" ]; then exit 0; fi
+          day="$(date -u +%F)"
+          node scripts/check-links.ts "--today=${day}" || echo "::warning::check-links reported broken links; see the artifact."
+          if [ -f "proposals/links-${day}.json" ]; then
+            echo "path=${PWD}/proposals/links-${day}.json" >> "${GITHUB_OUTPUT}"
+          fi
+
+      # Issue text reaches the script only through env vars, never through the command line.
+      - name: Run the pipeline
+        id: run
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL || 'claude-sonnet-5-5' }}
+          MONTHLY_BUDGET_USD: ${{ vars.MONTHLY_BUDGET_USD || '20' }}
+          MAX_FESTIVALS_PER_RUN: ${{ vars.MAX_FESTIVALS_PER_RUN || '40' }}
+          MAX_FOLLOWUPS_PER_RUN: ${{ vars.MAX_FOLLOWUPS_PER_RUN || '6' }}
+          ARCHIVE_ACCESS_KEY: ${{ secrets.ARCHIVE_ACCESS_KEY }}
+          ARCHIVE_SECRET_KEY: ${{ secrets.ARCHIVE_SECRET_KEY }}
+          LINKS_REPORT_PATH: ${{ steps.links.outputs.path }}
+          SITE_URL: ${{ vars.SITE_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+          ISSUE_NUMBER: ${{ github.event_name == 'issues' && github.event.issue.number || '' }}
+          ISSUE_TITLE: ${{ github.event_name == 'issues' && github.event.issue.title || '' }}
+          ISSUE_BODY: ${{ github.event_name == 'issues' && github.event.issue.body || '' }}
+          INPUT_COUNTRY: ${{ inputs.country }}
+          PLAN_ONLY: ${{ inputs.plan_only && 'true' || 'false' }}
+        run: |
+          if [ -z "${ANTHROPIC_API_KEY}" ] && [ "${PLAN_ONLY}" != "true" ]; then
+            echo "::error::Secret ANTHROPIC_API_KEY is not set in the ai-pipeline environment (README, first-time setup)."
+            exit 1
+          fi
+          # Empty issue vars mean «not an issue run»: drop them so the script does not read them.
+          [ -n "${ISSUE_NUMBER}" ] || unset ISSUE_NUMBER ISSUE_TITLE ISSUE_BODY
+          args=()
+          if [ -n "${INPUT_COUNTRY}" ]; then
+            if [[ ! "${INPUT_COUNTRY}" =~ ^[A-Za-z]{2}$ ]]; then
+              echo "::error::'country' must be a two-letter ISO 3166-1 code."
+              exit 1
+            fi
+            args+=("--request=${INPUT_COUNTRY^^}")
+          fi
+          if [ "${PLAN_ONLY}" = "true" ]; then args+=("--plan"); fi
+          pnpm pipeline -- "${args[@]}"
+          if [ -f "proposals/pipeline-$(date -u +%F).md" ]; then
+            cat "proposals/pipeline-$(date -u +%F).md" >> "${GITHUB_STEP_SUMMARY}"
+          fi
+
+      # Schema, R2 and domain checks over every country file, and the index CI compares. A file
+      # the pipeline broke stops here: its data is not committed (the spend still is, below).
+      - name: Validate data and regenerate data/index.json
+        id: validate
+        continue-on-error: true
+        run: node scripts/build-data.ts
+
+      - name: Commit to main
+        id: commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          VALID: ${{ steps.validate.outcome }}
+        run: |
+          paths=(data/countries data/changelog.json data/index.json data/state config/sources config/official-domains)
+          message=proposals/commit-message.txt
+          if [ "${VALID}" != "success" ]; then
+            # R10: data that fails build-data is dropped, but the money it cost stays on record,
+            # or the next run would plan against a month that looks cheaper than it was.
+            git checkout -- data/countries data/changelog.json data/index.json config 2>/dev/null || true
+            git clean -fdq -- data/countries config
+            git checkout -- data/state/requests.json data/state/holds.json 2>/dev/null || true
+            paths=(data/state/ledger.jsonl)
+            printf 'chore(data): pipeline %s · spend only (data failed build-data)\n\nThe data of this run was discarded; see the pipeline artifact.\n' "$(date -u +%F)" > "${RUNNER_TEMP}/spend-only.txt"
+            message="${RUNNER_TEMP}/spend-only.txt"
+          fi
+          if [ -z "$(git status --porcelain -- "${paths[@]}")" ]; then
+            echo "pushed=false" >> "${GITHUB_OUTPUT}"
+            echo "::notice::No data changes this run."
+            exit 0
+          fi
+          git config user.name "traveler-pipeline[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- "${paths[@]}"
+          if [ -f "${message}" ]; then
+            git commit --quiet -F "${message}"
+          else
+            git commit --quiet -m "chore(data): pipeline $(date -u +%F)"
+          fi
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
+          # Someone may have pushed while the run was researching: rebase once and retry.
+          for _ in 1 2 3; do
+            if git push --quiet "${remote}" HEAD:main; then
+              echo "pushed=true" >> "${GITHUB_OUTPUT}"
+              git log -1 --format='- Committed %h: %s' >> "${GITHUB_STEP_SUMMARY}"
+              exit 0
+            fi
+            git pull --quiet --rebase "${remote}" main
+          done
+          echo "::error::Could not push the data commit after three attempts."
+          exit 1
+
+      - name: Start CI on main (deploy follows a green run)
+        if: steps.commit.outputs.pushed == 'true' && steps.validate.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: gh workflow run ci.yml --repo "${REPO}" --ref main
+
+      # Only when the data went in: a «now live» reply about data build-data rejected would be false.
+      - name: Answer request issues
+        if: always() && steps.run.outcome != 'skipped' && steps.validate.outcome == 'success' && steps.commit.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          file=proposals/issue-updates.json
+          [ -f "${file}" ] || exit 0
+          count="$(jq 'length' "${file}")"
+          for i in $(seq 0 $((count - 1))); do
+            number="$(jq -r ".[${i}].issue" "${file}")"
+            [[ "${number}" =~ ^[0-9]+$ ]] || continue
+            jq -r ".[${i}].comment" "${file}" > "${RUNNER_TEMP}/comment.md"
+            gh issue comment "${number}" --repo "${REPO}" --body-file "${RUNNER_TEMP}/comment.md" || true
+            if [ "$(jq -r ".[${i}].close" "${file}")" = "true" ]; then
+              gh issue close "${number}" --repo "${REPO}" || true
+            fi
+          done
+
+      # One open issue mirrors data/state/holds.json; created on the first hold, closed when empty.
+      - name: Update the «Needs a look» issue
+        if: always() && steps.commit.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          [ -f proposals/holds.md ] || exit 0
+          held="$(jq 'length' data/state/holds.json 2>/dev/null || echo 0)"
+          number="$(gh issue list --repo "${REPO}" --label needs-a-look --state open --json number --jq '.[0].number // empty')"
+          if [ "${held}" = "0" ]; then
+            if [ -n "${number}" ]; then gh issue close "${number}" --repo "${REPO}" --comment "Nothing is held any more."; fi
+            exit 0
+          fi
+          gh label create needs-a-look --repo "${REPO}" --color FBCA04 --description "Changes the pipeline held back" 2>/dev/null || true
+          if [ -n "${number}" ]; then
+            gh issue edit "${number}" --repo "${REPO}" --body-file proposals/holds.md
+          else
+            gh issue create --repo "${REPO}" --title "Needs a look: changes the pipeline held back" --label needs-a-look --body-file proposals/holds.md
+          fi
+
+      - name: Upload the run summary
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: pipeline-${{ github.run_id }}
+          path: proposals/
+          if-no-files-found: warn
+          retention-days: 90
+
+      # BE-04: what was applied is committed first; then the run goes red if the pipeline failed
+      # (budget stop, bad credentials, blind search) or a festival hit an unexpected error.
+      - name: Fail when the pipeline did
+        if: steps.run.outcome == 'failure' || steps.validate.outcome == 'failure'
+        env:
+          RUN: ${{ steps.run.outcome }}
+          VALID: ${{ steps.validate.outcome }}
+        run: |
+          if [ "${VALID}" = "failure" ]; then echo "::error::build-data rejected the data; only the spend was committed. See the pipeline artifact."; fi
+          if [ "${RUN}" = "failure" ]; then echo "::error::The pipeline step failed; see its log and the pipeline artifact."; fi
+          exit 1

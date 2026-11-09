@@ -1,6 +1,6 @@
 // Data access for the screens: the index first, then only the country files a view needs
 // (lazy, cached per country). Scores come from config/scoring.json bundled by Vite.
-import type { PublicIndex, IndexCountry } from "../../scripts/build-data.ts";
+import type { PublicIndex, IndexCountry, IndexRequest } from "../../scripts/build-data.ts";
 import { addDays, addMonths, diffDays, effectiveEnd, effectiveStart, type ISO, type Occurrence } from "../dates.ts";
 import { applyFilters, buildEntries, isPendingPostponement, isVisible, sortByDate, type FestivalEntry, type FilterHit, type Filters, type Scope } from "../festivals.ts";
 import type { ChangelogEntry, CountryFile, FestivalType, KeyEvent, Source } from "../schema.ts";
@@ -10,15 +10,15 @@ import scoringJson from "../../config/scoring.json";
 import { origins as advisoryOrigins } from "../../config/advisories.json";
 import { parseOrigins, pickAdvisory, type Advisory } from "./advisory.ts";
 
-export type { PublicIndex, IndexCountry };
+export type { PublicIndex, IndexCountry, IndexRequest };
 
 export const scoring = scoringJson as ScoringConfig;
 export const BASE = import.meta.env.BASE_URL;
 export const STALE_DAYS = 30;
 /** Below this share of dates backed by an A source, a country shows «cobertura parcial» (PRD R2). */
 export const PARTIAL_SHARE = 0.6;
-/** The pilot launches with 5 countries; until then the world view says which ones are in. */
-export const PILOT_TARGET = 5;
+/** The world view names the live countries while there are at most this many; then it counts them. */
+export const LIVE_NAMES_MAX = 8;
 
 export class DataError extends Error {
   readonly kind: "offline" | "missing" | "invalid";
@@ -62,7 +62,8 @@ let changelogPromise: Promise<ChangelogEntry[]> | null = null;
 export function loadIndex(): Promise<PublicIndex> {
   indexPromise ??= getJson<unknown>("data/index.json").then((v) => {
     if (!isIndex(v)) throw new DataError("invalid", "data/index.json has an unexpected shape");
-    return v;
+    // An index cached by the service worker before requests existed has none.
+    return { ...v, requests: Array.isArray(v.requests) ? v.requests : [] };
   });
   indexPromise.catch(() => {
     indexPromise = null;
@@ -111,6 +112,11 @@ export function published(index: PublicIndex): IndexCountry[] {
 
 export function countryInfo(index: PublicIndex, code: string): IndexCountry | undefined {
   return index.countries.find((c) => c.code === code);
+}
+
+/** Where the build of a requested country stands; undefined when nobody asked for it. */
+export function requestFor(index: PublicIndex, code: string): IndexRequest | undefined {
+  return index.requests.find((r) => r.code === code);
 }
 
 /** Country files a scope needs: one for a country, its members for a region, tier-1 owners for the world. */

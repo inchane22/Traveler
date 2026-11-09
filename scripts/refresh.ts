@@ -1,17 +1,17 @@
-// Weekly verification (H4, RF-15) and news sweep (R9). Usage, from docs/architecture.md:
+// One verification or news sweep (H4, R9) by hand; pipeline.ts runs them on a schedule. Usage:
 //   pnpm refresh -- [--dry-run] [--only=<slug>] [--country=<cc>] [--today=YYYY-MM-DD] [--fixtures=<dir>]
 //                   [--sweep=news [--within=<days>]]
-// Env beyond the API ones: USAGE_FALLBACK_PATH (usage.json of the last run artifact, R10),
-// LINKS_REPORT_PATH (proposals/links-<date>.json from check-links, R13) and MAX_FOLLOWUPS_PER_RUN
-// (wider follow-up searches for missing dates, weekly run only; 6 by default, 0 turns them off).
+// Env beyond the API ones: LINKS_REPORT_PATH (proposals/links-<date>.json from check-links, R13)
+// and MAX_FOLLOWUPS_PER_RUN (wider follow-up searches for missing dates; 6 by default, 0 = off).
+// Every call is appended to data/state/ledger.jsonl (R10), dry runs included: they spend too.
 // Locally the key comes from 1Password: op run --env-file=.env.op -- pnpm refresh -- --dry-run
 import { existsSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { resolve } from "node:path";
 import { refreshArgs, UsageError } from "./lib/args.ts";
 import { archiverFor } from "./lib/archive.ts";
-import { fileUsageStore, memoryUsageStore, readUsageFallback, UsageFile, withUsageFallback } from "./lib/budget.ts";
+import { usageStoreFor } from "./lib/budget-store.ts";
 import { anthropicTransport, fixtureDirTransport } from "./lib/client.ts";
-import { readJson, readJsonOr, stdLogger, writeJson, type Logger } from "./lib/io.ts";
+import { readJson, stdLogger, type Logger } from "./lib/io.ts";
 import { readLinksReport } from "./lib/links.ts";
 import { runRefresh } from "./lib/refresh-run.ts";
 import { isMainModule } from "./lib/is-main.ts";
@@ -28,13 +28,7 @@ export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root
     throw error;
   }
   const offline = args.fixtures !== null;
-  const usagePath = join(root, "data", "usage.json");
-  // Recorded responses cost nothing, so a fixture run never touches data/usage.json.
-  const base = offline
-    ? memoryUsageStore(UsageFile.parse(readJsonOr(usagePath, [])))
-    : fileUsageStore(usagePath, { read: readJson, write: writeJson, exists: existsSync });
-  const fallback = readUsageFallback(env.USAGE_FALLBACK_PATH, { read: readJson, exists: existsSync }, log);
-  const usage = withUsageFallback(base, fallback, { persist: !offline, log });
+  const usage = usageStoreFor(root, offline);
   const links = readLinksReport(env.LINKS_REPORT_PATH, args.today, { read: readJson, exists: existsSync }, log);
   const result = await runRefresh(
     {
@@ -48,7 +42,6 @@ export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root
       perCountry: args.perCountry,
       maxFollowups: args.maxFollowups,
       budgetUsd: args.budgetUsd,
-      ...(args.trapSecret ? { trapSecret: args.trapSecret } : {}),
       ...(args.githubOutput ? { githubOutput: args.githubOutput } : {}),
       ...(args.sweepWithin !== undefined ? { sweepWithin: args.sweepWithin } : {}),
       ...(links ? { links } : {}),

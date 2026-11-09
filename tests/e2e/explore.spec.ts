@@ -152,6 +152,13 @@ test.describe("Explorar", () => {
     await expect(page).toHaveURL(/desde=2026-10-26&hasta=2026-10-31/);
   });
 
+  test("the world view says which countries are live, so two chips are not mistaken for the whole world", async ({ page }) => {
+    await open(page, "#/explorar");
+    await expect(page.locator(".explore-hint").getByTestId("pilot-note")).toContainText(/Ya publicados: Brasil, Colombia y Perú\. Cualquier otro país se puede construir/);
+    await open(page, "#/explorar?pais=co");
+    await expect(page.getByTestId("pilot-note")).toHaveCount(0);
+  });
+
   test("the world view offers each country's own list in one tap", async ({ page }) => {
     await open(page, "#/explorar");
     const way = page.locator(".explore-hint").getByRole("button", { name: /^Ver las \d+ de Colombia$/ });

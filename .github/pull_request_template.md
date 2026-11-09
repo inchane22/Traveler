@@ -1,8 +1,8 @@
-## Revisión humana (R12, R3)
+## Revisión (R3)
 
-Abre cada fuente antes de aprobar. Rechazar un cambio dudoso es un buen resultado: cada mes hay una propuesta trampa con un error sembrado, y CI la bloquea aunque la apruebes.
+Los datos de la IA ya no llegan por PR: `pipeline.yml` los aplica con los controles en código y los sube a `main` (lo dudoso queda en el issue «Needs a look»). Esta lista es para los PRs hechos a mano. Abre cada fuente antes de aprobar.
 
-### Si el PR toca `data/`
+### Si el PR toca `data/` a mano
 
 - [ ] Cada cambio tiene una fuente https que abrí, y la fuente dice exactamente eso.
 - [ ] Por **cada fecha de Nivel 1** pegué abajo el fragmento que leí yo en la fuente, no la cita que trae la IA.
@@ -11,8 +11,8 @@ Abre cada fuente antes de aprobar. Rechazar un cambio dudoso es un buen resultad
 - [ ] La edición es la correcta: la fuente habla de este año, no de la edición anterior.
 - [ ] Nada parece sembrado: fecha fuera de la ventana de la regla, salto raro de asistentes, dominio desconocido, una «confirmada» que pasa a «tentativa» sin fuente, una fiesta borrada. Si dudo, rechazo ese cambio.
 - [ ] Idioma de las fuentes que leí: ______. No apruebo cambios marcados «revisar idioma» en un idioma que no leo. (R3)
-- [ ] El PR tiene 15 cambios o menos; si tiene más, pido dividirlo.
-- [ ] Un país pasa de `borrador` a `publicado` solo con 3 fiestas o más con fecha y fuente A o B, y regeneré `data/index.json` con `node scripts/build-data.ts`.
+- [ ] No cambié `status` de un país: el pipeline publica solo cuando pasa el control R2 (`scripts/lib/publish.ts`).
+- [ ] Regeneré `data/index.json` con `node scripts/build-data.ts`.
 
 | Fiesta | Fecha propuesta | Fragmento literal que leí en la fuente | URL | Idioma |
 | --- | --- | --- | --- | --- |

@@ -11,7 +11,7 @@ import { fixtureDirTransport, replayTransport, type MessagesTransport } from "..
 import { memoryLogger } from "../../scripts/lib/io.ts";
 import { buildQueue, compareItems, monthlySlot, reasonsFor } from "../../scripts/lib/queue.ts";
 import { runRefresh, type RefreshDeps } from "../../scripts/lib/refresh-run.ts";
-import { dataChangeCount, PR_MAX_CHANGES, selectForPr } from "../../scripts/lib/select.ts";
+import { dataChangeCount, selectForApply } from "../../scripts/lib/select.ts";
 import type { ReviewedChange } from "../../scripts/lib/validate.ts";
 import { config, countries, country, githubOutput, json, message, readJsonFile, REFRESH_FIXTURES, refreshOptions, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
 import type { RefreshReport } from "../../scripts/lib/report.ts";
@@ -77,12 +77,12 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
 
     expect(result.files.map((f) => f.slice(root.length + 1)).sort()).toEqual(["proposals/2026-10-26.json", "proposals/2026-10-26.md"]);
     expect(readFileSync(join(root, "data", "countries", "co.json"), "utf8")).toBe(before);
-    expect(githubOutput(out)).toEqual({ changes: String(r.applied.length + r.confirmations.length), branch: "refresh/2026-10-26", flagged: "4", unexpected: "0", verified: String(r.festivals.filter((f) => !["api_error", "error", "no_fixture", "skipped_budget", "not_run"].includes(f.outcome)).length) });
+    expect(githubOutput(out)).toEqual({ changes: String(r.applied.length + r.confirmations.length), flagged: "4", unexpected: "0", verified: String(r.festivals.filter((f) => !["api_error", "error", "no_fixture", "skipped_budget", "not_run"].includes(f.outcome)).length) });
 
     const md = readFileSync(join(root, "proposals", "2026-10-26.md"), "utf8");
-    expect(md).toContain("### Fechas de Nivel 1: pega lo que viste en la fuente");
+    expect(md).toContain(`### Cambios aplicados (${r.applied.length})`);
     expect(md).toContain("**Nivel 1**");
-    expect(md).toContain("### Para revisar, no aplicados (4)");
+    expect(md).toContain("### Retenidos, no aplicados (4)");
     expect(md).toContain("Rechazados por la validación (1)");
     expect(md).not.toMatch(/<script|@\w/);
   });
@@ -276,29 +276,32 @@ describe("queue", () => {
   });
 });
 
-describe("PR selection (R12)", () => {
+describe("auto-approval selection", () => {
   const base = (i: number, over: Partial<ReviewedChange> = {}): ReviewedChange =>
     ({ country: "CO", slug: `f${String(i).padStart(2, "0")}`, name: "F", tier: 2, year: 2027, daysToStart: i, field: "start", old: null, new: "2027-01-01", kind: "change", sources: [], quote_url: null, quote: "", quote_language: "es", proposed_confidence: "prensa", confidence: "prensa", note: "", verdict: "accepted", flags: [], reasons: [], adjustments: [], risk: 70, ...over }) as ReviewedChange;
 
-  test("at most 15 changes, tier-1 dates first; the trap takes one slot; the rest wait for the next run", () => {
-    const all = [...Array.from({ length: 18 }, (_, i) => base(i)), base(30, { tier: 1, risk: 100 }), base(31, { kind: "confirmation" }), base(32, { verdict: "rejected" })];
-    const s = selectForPr(all, null);
-    expect(s.applied).toHaveLength(PR_MAX_CHANGES);
+  test("every accepted change is applied, riskiest first, with no cap; flagged ones are held", () => {
+    const all = [...Array.from({ length: 18 }, (_, i) => base(i)), base(30, { tier: 1, risk: 100 }), base(31, { kind: "confirmation" }), base(32, { verdict: "rejected" }), base(33, { verdict: "flagged" })];
+    const s = selectForApply(all);
+    expect(s.applied).toHaveLength(19);
     expect(s.applied[0]!.slug).toBe("f30");
-    expect(s.deferred).toHaveLength(4);
     expect(s.confirmations).toHaveLength(1);
     expect(s.rejected).toHaveLength(1);
-    expect(dataChangeCount(s)).toBe(16);
-    const withTrap = selectForPr(all, base(99, { tier: 1, risk: 115 }));
-    expect(withTrap.applied).toHaveLength(PR_MAX_CHANGES);
-    expect(withTrap.applied[0]!.slug).toBe("f99");
+    expect(s.flagged.map((c) => c.slug)).toEqual(["f33"]);
+    expect(dataChangeCount(s)).toBe(20);
+  });
+
+  test("a confirmation of a field the same run changes is dropped, so apply cannot undo the change", () => {
+    const s = selectForApply([base(1, { new: "2027-01-02" }), base(1, { kind: "confirmation", new: "2027-01-01" })]);
+    expect(s.applied).toHaveLength(1);
+    expect(s.confirmations).toHaveLength(0);
   });
 });
 
 describe("CLI (docs/architecture.md «Pipeline CLI»)", () => {
   test("flags and env vars", () => {
     const now = new Date("2026-10-26T12:00:00Z");
-    expect(refreshArgs(["--", "--dry-run", "--only=feria-de-cali", "--country=co"], { MAX_FESTIVALS_PER_RUN: "12", MONTHLY_BUDGET_USD: "7.5", TRAP_SECRET: " s ", GITHUB_OUTPUT: "/tmp/o" }, now)).toEqual({
+    expect(refreshArgs(["--", "--dry-run", "--only=feria-de-cali", "--country=co"], { MAX_FESTIVALS_PER_RUN: "12", MONTHLY_BUDGET_USD: "7.5", GITHUB_OUTPUT: "/tmp/o" }, now)).toEqual({
       dryRun: true,
       today: "2026-10-26",
       fixtures: null,
@@ -309,7 +312,6 @@ describe("CLI (docs/architecture.md «Pipeline CLI»)", () => {
       country: "CO",
       maxFestivals: 12,
       perCountry: 10,
-      trapSecret: "s",
       maxFollowups: 6,
     });
     expect(refreshArgs([], { MAX_FOLLOWUPS_PER_RUN: "0" }, now).maxFollowups).toBe(0);
@@ -322,12 +324,12 @@ describe("CLI (docs/architecture.md «Pipeline CLI»)", () => {
     expect(parseFlags(["--verbose"]).get("verbose")).toBe(true);
   });
 
-  test("pnpm refresh -- --fixtures runs offline and never writes data/usage.json", async () => {
+  test("pnpm refresh -- --fixtures runs offline and never writes the ledger", async () => {
     const root = tempRepo();
     const log = memoryLogger();
     const code = await refreshMain(["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], {}, root, log);
     expect(code).toBe(0);
-    expect(readFileSync(join(root, "data", "usage.json"), "utf8")).toBe("[]\n");
+    expect(existsSync(join(root, "data", "state", "ledger.jsonl"))).toBe(false);
     expect(log.lines.filter((l) => l.startsWith("wrote "))).toHaveLength(2);
     const report = readJsonFile<RefreshReport>(join(root, "proposals", `${TODAY}.json`));
     expect(report.kind).toBe("refresh");

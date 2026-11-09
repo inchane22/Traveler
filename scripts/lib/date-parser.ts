@@ -1,8 +1,11 @@
-// Language-aware date reader for quotes in es/en/pt (R3). It never guesses a missing year: a
-// mention without a year matches any year, and the rule-window check guards the year instead.
+// Language-aware date reader for quotes (R3). It never guesses a missing year: a mention without
+// a year matches any year, and the rule-window check guards the year instead. Spanish, Portuguese
+// and English have hand-made vocabularies; any other language reads its month names from the
+// platform's CLDR data, plus the English ones, native digits, Chinese/Japanese/Korean 年月日
+// dates and Thai Buddhist-era years (2570 = 2027).
 import { parseISODate } from "../../src/dates.ts";
 import type { Lang } from "../../src/schema.ts";
-import { foldText } from "./lang.ts";
+import { foldText, primaryLang } from "./lang.ts";
 
 export interface PartialDate {
   y: number | null;
@@ -46,6 +49,70 @@ const FILLER: Record<Lang, readonly string[]> = {
   en: ["of", "the", "on", "from", "between", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", ","],
 };
 
+/** Range words of other common languages (folded): fr, de, it, nl, ca, pl, cs, ro, sv, da, tr, ru, el, id, vi, … */
+const OTHER_RANGE = ["au", "a", "et", "jusqu", "bis", "und", "al", "e", "tot", "en", "fins", "do", "i", "az", "till", "och", "til", "og", "ile", "по", "и", "до", "έως", "και", "hingga", "sampai", "dan", "den", "đen", "va", "-"];
+const OTHER_FILLER = ["du", "le", "les", "de", "des", "vom", "am", "den", "zum", "dal", "il", "dei", "van", "het", "del", "od", "ot", "με", "από", "с", "tanggal", "ngay", "tu", ","];
+
+const ENGLISH_MONTHS = ["", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+const generated = new Map<string, Record<string, number> | null>();
+
+/**
+ * Month names from CLDR for a language without a hand-made table: long and short, in both the
+ * standalone form and the one used inside a date (Russian «февраля», Polish «lutego»), folded.
+ * null when the platform does not know the language (it would answer in another one).
+ */
+function cldrMonths(lang: string): Record<string, number> | null {
+  if (generated.has(lang)) return generated.get(lang)!;
+  let table: Record<string, number> | null = null;
+  try {
+    const resolved = primaryLang(new Intl.DateTimeFormat(lang).resolvedOptions().locale);
+    if (resolved === lang) {
+      table = {};
+      const forms: Intl.DateTimeFormatOptions[] = [{ month: "long" }, { month: "short" }, { day: "numeric", month: "long" }, { day: "numeric", month: "short" }];
+      for (let m = 1; m <= 12; m++) {
+        const date = new Date(Date.UTC(2021, m - 1, 15));
+        for (const options of forms) {
+          const part = new Intl.DateTimeFormat(lang, { ...options, timeZone: "UTC" }).formatToParts(date).find((p) => p.type === "month")?.value ?? "";
+          const name = foldText(part).replace(/\.$/, "");
+          // Names with digits (2月, 2월) are read by the CJK pass instead.
+          if (name && !/\d/.test(name)) table[name] = m;
+        }
+      }
+      for (let m = 1; m <= 12; m++) table[ENGLISH_MONTHS[m]!] ??= m;
+    }
+  } catch {
+    table = null;
+  }
+  generated.set(lang, table);
+  return table;
+}
+
+interface Vocabulary {
+  months: Record<string, number>;
+  range: ReadonlySet<string>;
+  filler: ReadonlySet<string>;
+  /** Order of a numeric date with slashes or dots: d/m/y, m/d/y or y/m/d. */
+  order: "dmy" | "mdy" | "ymd";
+}
+
+const CJK = new Set(["ja", "zh", "ko"]);
+
+function vocabulary(tag: string): Vocabulary | null {
+  const lang = primaryLang(tag);
+  if (lang === "es" || lang === "pt" || lang === "en") {
+    return { months: MONTHS[lang], range: new Set(RANGE[lang]), filler: new Set(FILLER[lang]), order: lang === "en" ? "mdy" : "dmy" };
+  }
+  const months = cldrMonths(lang);
+  if (!months) return null;
+  return { months, range: new Set(OTHER_RANGE), filler: new Set(OTHER_FILLER), order: CJK.has(lang) ? "ymd" : "dmy" };
+}
+
+/** True when quotes in this language can be checked for a date. */
+export function hasDateReader(tag: string): boolean {
+  return vocabulary(tag) !== null;
+}
+
 type Token =
   | { t: "num"; v: number; raw: string }
   | { t: "month"; v: number }
@@ -53,34 +120,69 @@ type Token =
   | { t: "full"; date: PartialDate }
   | { t: "word" };
 
-function normalize(text: string): string {
-  return foldText(text)
+/** Zero of each decimal digit block quotes arrive in: Arabic-Indic, Persian, Devanagari, Bengali, Thai, Lao, Myanmar, Khmer, fullwidth. */
+const DIGIT_ZEROS = [0x0660, 0x06f0, 0x0966, 0x09e6, 0x0e50, 0x0ed0, 0x1040, 0x17e0, 0xff10];
+
+function asciiDigits(text: string): string {
+  return text.replace(/\p{Nd}/gu, (c) => {
+    const code = c.codePointAt(0)!;
+    const zero = DIGIT_ZEROS.find((z) => code >= z && code <= z + 9);
+    return zero === undefined ? c : String(code - zero);
+  });
+}
+
+const CJK_YEAR = String.raw`(?:(\d{4})\s*[年년]\s*)?`;
+const CJK_MONTH = String.raw`(\d{1,2})\s*[月월]\s*`;
+const CJK_DAY = String.raw`(\d{1,2})\s*[日일号號]?`;
+const CJK_TO = String.raw`\s*(?:[～〜~\-–—至到]|から|부터)\s*`;
+
+/** 2027年2月14日～18日, 2월 14일부터 18일까지, 2月14日至3月2日 → «14 - 18 february 2027» and so on. */
+function cjkDates(text: string): string {
+  const en = (m: string): string => ENGLISH_MONTHS[Number(m)] ?? m;
+  return text
+    .replace(new RegExp(`${CJK_YEAR}${CJK_MONTH}${CJK_DAY}${CJK_TO}${CJK_MONTH}${CJK_DAY}`, "g"), (_x, y = "", m1, d1, m2, d2) => ` ${d1} ${en(m1)} - ${d2} ${en(m2)} ${y} `)
+    .replace(new RegExp(`${CJK_YEAR}${CJK_MONTH}${CJK_DAY}${CJK_TO}${CJK_DAY}`, "g"), (_x, y = "", m, d1, d2) => ` ${d1} - ${d2} ${en(m)} ${y} `)
+    .replace(new RegExp(`${CJK_YEAR}${CJK_MONTH}${CJK_DAY}`, "g"), (_x, y = "", m, d) => ` ${d} ${en(m)} ${y} `);
+}
+
+function normalize(text: string, lang: string): string {
+  let t = asciiDigits(text);
+  // Before folding: NFD would split the Hangul syllables the CJK pass looks for.
+  if (CJK.has(lang)) t = cjkDates(t);
+  t = foldText(t);
+  // Thai sources count years in the Buddhist era (CE + 543).
+  if (lang === "th") t = t.replace(/\b(2[45]\d\d)\b/g, (y) => String(Number(y) - 543));
+  return t
     .replace(/[‐-―−]/g, "-")
     .replace(/\b1(?:ro|er)\b/g, "1")
     .replace(/\bprimero\b/g, "1")
     .replace(/(\d+)\s*(?:st|nd|rd|th|\.?[ºª°])/g, "$1");
 }
 
-function numericDate(raw: string, lang: Lang): PartialDate | null {
+function numericDate(raw: string, order: Vocabulary["order"]): PartialDate | null {
   const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
   if (iso) return { y: Number(iso[1]), m: Number(iso[2]), d: Number(iso[3]) };
-  const slash = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(raw);
-  if (!slash) return null;
-  const [a, b, y] = [Number(slash[1]), Number(slash[2]), Number(slash[3])];
-  return lang === "en" ? { y, m: a, d: b } : { y, m: b, d: a };
+  const ymd = /^(\d{4})[/.](\d{1,2})[/.](\d{1,2})$/.exec(raw);
+  if (ymd) return { y: Number(ymd[1]), m: Number(ymd[2]), d: Number(ymd[3]) };
+  const sep = order === "dmy" ? /^(\d{1,2})[/.](\d{1,2})[/.](\d{4})$/ : /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
+  const m = sep.exec(raw);
+  if (!m) return null;
+  const [a, b, y] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  return order === "mdy" ? { y, m: a, d: b } : { y, m: b, d: a };
 }
 
-function tokenize(text: string, lang: Lang): Token[] {
-  const filler = new Set(FILLER[lang]);
-  const range = new Set(RANGE[lang]);
+function tokenize(text: string, tag: string): Token[] {
+  const lang = primaryLang(tag);
+  const vocab = vocabulary(lang);
+  if (!vocab) return [];
   const out: Token[] = [];
-  for (const raw of normalize(text).match(/\d{4}-\d{2}-\d{2}|\d{1,2}\/\d{1,2}\/\d{4}|\d+|[a-z]+|[-,]/g) ?? []) {
-    if (filler.has(raw)) continue;
-    const full = numericDate(raw, lang);
+  for (const raw of normalize(text, lang).match(/\d{4}-\d{2}-\d{2}|\d{4}[/.]\d{1,2}[/.]\d{1,2}|\d{1,2}[/.]\d{1,2}[/.]\d{4}|\d+|\p{L}+|[-,]/gu) ?? []) {
+    if (vocab.filler.has(raw)) continue;
+    const full = numericDate(raw, vocab.order);
     if (full) out.push({ t: "full", date: full });
     else if (/^\d+$/.test(raw)) out.push({ t: "num", v: Number(raw), raw });
-    else if (range.has(raw)) out.push({ t: "range" });
-    else if (MONTHS[lang][raw] !== undefined) out.push({ t: "month", v: MONTHS[lang][raw]! });
+    else if (vocab.range.has(raw)) out.push({ t: "range" });
+    else if (vocab.months[raw] !== undefined) out.push({ t: "month", v: vocab.months[raw]! });
     else out.push({ t: "word" });
   }
   return out;
@@ -148,7 +250,7 @@ function isReal(p: PartialDate): boolean {
 }
 
 /** Every date or date range the text states, in order. */
-export function parseDateMentions(text: string, lang: Lang): DateMention[] {
+export function parseDateMentions(text: string, lang: string): DateMention[] {
   const toks = tokenize(text, lang);
   const out: DateMention[] = [];
   let i = 0;
@@ -193,7 +295,7 @@ export function matchesPartial(p: PartialDate, iso: string): boolean {
 export type DateRole = "start" | "end" | "any";
 
 /** Does the quote state `iso` in the given role? `any` accepts a start, an end or a single day. */
-export function quoteStatesDate(quote: string, lang: Lang, iso: string, role: DateRole): boolean {
+export function quoteStatesDate(quote: string, lang: string, iso: string, role: DateRole): boolean {
   return parseDateMentions(quote, lang).some((mention) => {
     if (role === "start") return matchesPartial(mention.start, iso);
     if (role === "end") return matchesPartial(mention.end, iso);

@@ -6,10 +6,12 @@ import { countryName } from "../ics.ts";
 import type { HomeQuery, Route } from "../router.ts";
 import {
   asyncView,
+  buildAction,
   countdownBlock,
   countdownText,
   emptyState,
   festivalName,
+  liveNote,
   moonNote,
   notice,
   occurrenceDates,
@@ -20,13 +22,14 @@ import {
   suggestAction,
   trustMark,
   typeTag,
+  type EmptyAction,
 } from "./components.ts";
 import type { Ctx } from "./context.ts";
-import { percent, relativeDays } from "./format.ts";
+import { longDate, percent, relativeDays } from "./format.ts";
 import { icon } from "./icons.ts";
 import { marksButton } from "./marks.ts";
 import { resource } from "../resource.ts";
-import { countdown, countryInfo, loadScope, PARTIAL_SHARE, PILOT_TARGET, timelineHits, type IndexCountry, type PublicIndex, type ScopeData } from "./model.ts";
+import { countdown, countryInfo, loadScope, PARTIAL_SHARE, requestFor, timelineHits, type IndexCountry, type ScopeData } from "./model.ts";
 import { openScopeSheet } from "./scope.ts";
 import { subscribeBlock } from "./subscribe.ts";
 import { legend, timeline } from "./timeline.ts";
@@ -116,14 +119,6 @@ function freshness(info: IndexCountry | undefined, ctx: Ctx): HTMLElement | null
   );
 }
 
-/** While the pilot is still filling up, the world and region views say which countries are in. */
-function pilotNote(index: PublicIndex, scope: Scope, ctx: Ctx): HTMLElement | null {
-  if (scope.kind === "country" || !index.countries.length || index.countries.length >= PILOT_TARGET) return null;
-  const names = index.countries.map((c) => countryName(c.code, ctx.lang)).sort((a, b) => a.localeCompare(b, ctx.lang));
-  const countries = new Intl.ListFormat(ctx.lang, { type: "conjunction" }).format(names);
-  return h("p", { class: "pilot-note", "data-testid": "pilot-note" }, icon("globe"), h("span", null, ctx.t("home.pilot", { countries })));
-}
-
 function tier2Switch(scope: Scope, query: HomeQuery, ctx: Ctx): HTMLElement {
   return h(
     "button",
@@ -140,16 +135,32 @@ function tier2Switch(scope: Scope, query: HomeQuery, ctx: Ctx): HTMLElement {
   );
 }
 
+/**
+ * A country with no data: offer to build it, or say where its build stands (data/state/requests.json
+ * through the index): being built, trying again on a date, or given up (ask again).
+ */
 function unpublished(code: string, data: ScopeData, ctx: Ctx): HTMLElement {
-  return emptyState(ctx.t("home.unpublishedTitle", { country: countryName(code, ctx.lang) }), ctx.t("home.unpublishedBody"), [
-    ...data.index.countries.slice(0, 3).map((c, i) => ({
+  const country = countryName(code, ctx.lang);
+  const request = requestFor(data.index, code);
+  const elsewhere = [
+    ...data.index.countries.slice(0, 3).map((c) => ({
       label: ctx.t("home.seeCountry", { country: countryName(c.code, ctx.lang) }),
       href: ctx.href({ name: "country", code: c.code, query: { tier2: false } }),
-      primary: i === 0,
     })),
     { label: ctx.t("home.seeWorld"), href: ctx.href({ name: "home", query: { tier2: false } }) },
-    suggestAction(ctx, code),
-  ]);
+  ];
+  const view = (title: string, body: string, first: EmptyAction[]) =>
+    h("div", { "data-testid": "unbuilt", "data-build": request?.status ?? "none" }, emptyState(title, body, [...first, ...elsewhere]));
+  switch (request?.status) {
+    case "queued":
+      return view(ctx.t("build.queuedTitle", { country }), ctx.t("build.queuedBody"), []);
+    case "retry":
+      return view(ctx.t("build.retryTitle", { country }), ctx.t("build.retryBody", { date: request.retry_after ? longDate(request.retry_after, ctx.lang) : "—" }), []);
+    case "gave_up":
+      return view(ctx.t("build.gaveUpTitle", { country }), ctx.t("build.gaveUpBody"), [buildAction(ctx, code, ctx.t("build.askAgain"))]);
+    default:
+      return view(ctx.t("home.unpublishedTitle", { country }), ctx.t("home.unpublishedBody"), [buildAction(ctx, code), suggestAction(ctx, code)]);
+  }
 }
 
 function content(scope: Scope, query: HomeQuery, data: ScopeData, ctx: Ctx): HTMLElement[] {
@@ -165,7 +176,7 @@ function content(scope: Scope, query: HomeQuery, data: ScopeData, ctx: Ctx): HTM
   const out: (HTMLElement | null)[] = [
     staleNotice(info, ctx),
     draft,
-    pilotNote(data.index, scope, ctx),
+    liveNote(data.index, scope, ctx),
     first
       ? hero(first, ctx)
       : emptyState(ctx.t("home.emptyTitle"), ctx.t("home.emptyBody"), [

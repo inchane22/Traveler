@@ -1,13 +1,13 @@
 // Code-side validation of every proposed change before it can reach a PR (PRD «Validación en código»
 // plus the R1, R2, R3, R7 controls of the risk register, which win where they differ). Pure.
 import { addDays, resolveRule, type DateWindow, type RuleContext } from "../../src/dates.ts";
-import { Confidence, ISODate, Proposal, Status, type Festival, type Lang } from "../../src/schema.ts";
+import { Confidence, ISODate, Proposal, Status, type Festival } from "../../src/schema.ts";
 import type { Tier } from "../../src/score.ts";
-import { quoteStatesDate, type DateRole } from "./date-parser.ts";
+import { hasDateReader, quoteStatesDate, type DateRole } from "./date-parser.ts";
 import type { DomainPolicy } from "./domains.ts";
 import { checkSources, citedTextsFor, meetsTier1SourceRule, quoteIsVerbatim, quoteNumbers, quoteYears, type CitedSource } from "./evidence.ts";
 import { hasInjection } from "./injection.ts";
-import { isSupportedLang, primaryLang, quoteSupportsStatus } from "./lang.ts";
+import { primaryLang, quoteSupportsStatus } from "./lang.ts";
 import type { Citation } from "./research.ts";
 
 export type Verdict = "accepted" | "flagged" | "rejected";
@@ -182,8 +182,8 @@ export function reviewChange(change: Proposed, ctx: ReviewContext): ReviewedChan
   // R3: the quote must state the extracted date in its own language.
   if (!fieldIssue && isDateField(change.field) && typeof value === "string") {
     const lang = primaryLang(change.quote_language);
-    if (!isSupportedLang(lang)) flags.push(`revisar idioma: sin lector de fechas para «${change.quote_language}»`);
-    else if (!quoteStatesDate(change.quote, lang as Lang, value, roleOf(change.field))) flags.push("revisar idioma: la fecha de la cita no coincide con la extraída");
+    if (!hasDateReader(lang)) flags.push(`revisar idioma: sin lector de fechas para «${change.quote_language}»`);
+    else if (!quoteStatesDate(change.quote, lang, value, roleOf(change.field))) flags.push("revisar idioma: la fecha de la cita no coincide con la extraída");
   }
 
   // Rule window ±30 días; out of window blocks tier-1 dates (R1) and flags the rest.

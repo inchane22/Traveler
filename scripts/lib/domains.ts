@@ -62,12 +62,19 @@ export function matchesAny(host: string, domains: readonly string[]): boolean {
   return domains.some((d) => matchesDomain(host, d));
 }
 
-/** eTLD+1, with the small suffix list above (no network, no PSL dependency). */
+/**
+ * Second-level labels that country registries hand out under their ccTLD worldwide (co.jp, or.kr,
+ * gov.za, ac.nz…), so a country outside the list above still keeps «two independent sources».
+ */
+const GENERIC_SECOND_LEVEL = new Set(["com", "co", "gov", "gob", "gub", "gouv", "go", "govt", "org", "or", "net", "ne", "edu", "ac", "mil", "nic", "art", "nom", "info", "biz", "ltd", "plc", "sch"]);
+
+/** eTLD+1, with the suffix rules above (no network, no PSL dependency). */
 export function registrableDomain(host: string): string {
   const labels = host.split(".");
   if (labels.length <= 2) return host;
   const lastTwo = labels.slice(-2).join(".");
-  return MULTI_LABEL_SUFFIXES.has(lastTwo) ? labels.slice(-3).join(".") : lastTwo;
+  const multi = MULTI_LABEL_SUFFIXES.has(lastTwo) || (labels.at(-1)!.length === 2 && GENERIC_SECOND_LEVEL.has(labels.at(-2)!));
+  return multi ? labels.slice(-3).join(".") : lastTwo;
 }
 
 /** Canonical form used to compare a proposal URL with the search citations. */
@@ -116,9 +123,15 @@ export function emptyPolicy(country: string): DomainPolicy {
  * Fallback for a country with no config yet (onboarding): its government suffixes and UNESCO count
  * as A and official; there is no press list, so press stays C until a person writes config/sources.
  */
+/** Government domains that do not follow the `gov.<cc>` pattern. */
+const GOVERNMENT_EXTRAS: Readonly<Record<string, readonly string[]>> = {
+  GB: ["gov.uk"], CA: ["gc.ca", "canada.ca"], CH: ["admin.ch"], AT: ["gv.at"], DE: ["bund.de"], NZ: ["govt.nz"],
+  IN: ["nic.in"], IT: ["governo.it", "beniculturali.it"], NL: ["overheid.nl", "rijksoverheid.nl"], BE: ["belgium.be"],
+};
+
 export function defaultGovernmentDomains(country: string): string[] {
   const cc = country.toLowerCase();
-  return [`gov.${cc}`, `gob.${cc}`, `gub.${cc}`, `gouv.${cc}`, `go.${cc}`, "unesco.org"];
+  return [`gov.${cc}`, `gob.${cc}`, `gub.${cc}`, `gouv.${cc}`, `go.${cc}`, ...(GOVERNMENT_EXTRAS[country.toUpperCase()] ?? []), "unesco.org"];
 }
 
 /** A person has written config for the country: some official, A or B domain is listed. */

@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { noopArchiver } from "../../scripts/lib/archive.ts";
@@ -9,13 +9,14 @@ import {
   costOf,
   createBudgetGuard,
   emptyMonth,
-  fileUsageStore,
+  ledgerUsageStore,
   levelOf,
   memoryUsageStore,
   priceFor,
 } from "../../scripts/lib/budget.ts";
 import { fixtureDirTransport } from "../../scripts/lib/client.ts";
-import { memoryLogger, readJson, writeJson } from "../../scripts/lib/io.ts";
+import { memoryLogger } from "../../scripts/lib/io.ts";
+import { averageJobCost, lastDays, parseLedger, readLedger, spendByPool, type LedgerEntry } from "../../scripts/lib/ledger.ts";
 import { runRefresh } from "../../scripts/lib/refresh-run.ts";
 import { githubOutput, REFRESH_FIXTURES, refreshOptions, tempRepo } from "../fixtures/pipeline/helpers.ts";
 
@@ -45,7 +46,6 @@ describe("budget guard", () => {
     const store = memoryUsageStore([{ month: "2026-09", searches: 9, input_tokens: 9, output_tokens: 9, usd: 9 }]);
     const log = memoryLogger();
     const guard = createBudgetGuard({ month: "2026-10", budgetUsd: 4, model: "claude-sonnet-5-5", store, log });
-    expect(guard.firstRunOfMonth).toBe(true);
     guard.beforeCall(ctx);
     guard.afterCall(ctx, call); // 3.01 of 4 → 75%
     guard.afterCall(ctx, { ...call, searches: 0, input_tokens: 0, output_tokens: 10_000 }); // 3.11 → 78%
@@ -59,18 +59,66 @@ describe("budget guard", () => {
     expect(store.saved.at(-1)!.map((m) => m.month)).toEqual(["2026-09", "2026-10"]);
   });
 
-  test("a month already on record is not a first run", () => {
-    const guard = createBudgetGuard({ month: "2026-10", budgetUsd: 20, model: "m", store: memoryUsageStore([emptyMonth("2026-10")]), log: memoryLogger() });
-    expect(guard.firstRunOfMonth).toBe(false);
+  test("every call is one ledger line tagged with its job; as() records another job on the same budget", () => {
+    const store = memoryUsageStore([{ ...emptyMonth("2026-10"), usd: 1 }]);
+    const guard = createBudgetGuard({ month: "2026-10", today: "2026-10-12", budgetUsd: 20, model: "claude-sonnet-5-5", store, log: memoryLogger(), job: "sweep" });
+    guard.afterCall(ctx, call);
+    guard.as("followup").afterCall({ key: "CO/y", kind: "extract" }, call);
+    expect(store.entries.map((e) => [e.day, e.job, e.key, e.call])).toEqual([
+      ["2026-10-12", "sweep", "CO/x", "research"],
+      ["2026-10-12", "followup", "CO/y", "extract"],
+    ]);
+    expect(store.entries[0]).toMatchObject({ searches: 1, input_tokens: 1_000_000, output_tokens: 100_000, usd: 3.01 });
+    expect(guard.calls).toBe(2);
+    expect(guard.current().usd).toBeCloseTo(1 + 6.02, 6);
+    expect(store.load()).toEqual([{ month: "2026-10", searches: 2, input_tokens: 2_000_000, output_tokens: 200_000, usd: 7.02 }]);
   });
 
-  test("data/usage.json store: missing file is empty, writes the whole history", () => {
+  test("ledger file: missing is empty, each call appends one line, months are derived from the lines", () => {
     const root = tempRepo({ countries: [] });
-    const path = join(root, "data", "usage-test.json");
-    const store = fileUsageStore(path, { read: readJson, write: writeJson, exists: existsSync });
+    const path = join(root, "data", "state", "ledger.jsonl");
+    const store = ledgerUsageStore(path);
     expect(store.load()).toEqual([]);
-    store.save([emptyMonth("2026-10")]);
-    expect(store.load()).toEqual([emptyMonth("2026-10")]);
+    const guard = createBudgetGuard({ month: "2026-11", today: "2026-11-09", budgetUsd: 20, model: "claude-sonnet-5-5", store, log: memoryLogger(), job: "onboard" });
+    guard.afterCall({ key: "onboard/JP", kind: "research" }, call);
+    guard.afterCall({ key: "onboard/JP", kind: "extract" }, { ...call, searches: 0 });
+    expect(readFileSync(path, "utf8").trim().split("\n")).toHaveLength(2);
+    expect(store.load()).toEqual([{ month: "2026-11", searches: 1, input_tokens: 2_000_000, output_tokens: 200_000, usd: 6.01 }]);
+    expect(readLedger(path).map((e) => e.job)).toEqual(["onboard", "onboard"]);
+    expect(() => parseLedger('{"day":"2026-11-09"}\n')).toThrow(/ledger line 1/);
+    expect(() => parseLedger("nope\n")).toThrow(/not JSON/);
+    expect(parseLedger("\n\n")).toEqual([]);
+  });
+});
+
+describe("what the ledger tells the planner", () => {
+  const line = (over: Partial<LedgerEntry>): LedgerEntry => ({ day: "2026-11-02", job: "verify", key: "CO/a", call: "research", model: "m", searches: 0, input_tokens: 0, output_tokens: 0, usd: 0.1, ...over });
+  const entries = [
+    line({}),
+    line({ call: "extract", usd: 0.05 }),
+    line({ key: "CO/b", day: "2026-11-05", usd: 0.25 }),
+    line({ job: "sweep", key: "CO/a", day: "2026-11-07", usd: 0.04 }),
+    line({ job: "onboard", key: "onboard/JP", day: "2026-11-08", usd: 1.5 }),
+    line({ job: "build", key: "JP/x", day: "2026-11-08", usd: 0.3 }),
+    line({ job: "verify", key: "carryover/2026-10", day: "2026-10-31", call: "carryover", usd: 2.21 }),
+  ];
+
+  test("a job is one key on one day: the verification of CO/a cost 0.15, CO/b 0.25; carry-over is left out", () => {
+    expect(averageJobCost(entries, "verify")).toEqual({ jobs: 2, usd: 0.2 });
+    expect(averageJobCost(entries, "followup")).toEqual({ jobs: 0, usd: 0 });
+  });
+
+  test("spend splits into the new-country pool and upkeep", () => {
+    expect(spendByPool(entries, "2026-11")).toEqual({ build: 1.8, upkeep: 0.44 });
+    expect(spendByPool(entries, "2026-10")).toEqual({ build: 0, upkeep: 2.21 });
+  });
+
+  test("last day a festival was checked, per kind of job", () => {
+    const checks = lastDays(entries, new Set(["verify", "followup", "build"]));
+    expect(checks.get("CO/a")).toBe("2026-11-02");
+    expect(checks.get("JP/x")).toBe("2026-11-08");
+    expect(checks.has("carryover/2026-10")).toBe(false);
+    expect(lastDays(entries, new Set(["sweep"])).get("CO/a")).toBe("2026-11-07");
   });
 });
 

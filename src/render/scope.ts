@@ -9,7 +9,7 @@ import type { FestivalEntry } from "../festivals.ts";
 import { festivalName, placeLine } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { icon } from "./icons.ts";
-import { entriesFor, loadCountry, loadIndex, PILOT_TARGET, type PublicIndex } from "./model.ts";
+import { entriesFor, loadCountry, loadIndex, requestFor, type PublicIndex } from "./model.ts";
 import { closeSheet, openSheet } from "./sheet.ts";
 
 const MAX_RESULTS = 8;
@@ -48,7 +48,9 @@ export function openScopeSheet(current: Scope, ctx: Ctx): void {
 
   const countryDetail = (code: string): string => {
     const info = index?.countries.find((c) => c.code === code);
-    return info ? ctx.t("scope.festivals", { count: info.festivals }) : ctx.t("scope.noData");
+    if (info) return ctx.t("scope.festivals", { count: info.festivals });
+    const request = index ? requestFor(index, code) : undefined;
+    return request?.status === "queued" || request?.status === "retry" ? ctx.t("scope.building") : ctx.t("scope.noData");
   };
 
   const pick = (code: string) => () => {
@@ -78,8 +80,8 @@ export function openScopeSheet(current: Scope, ctx: Ctx): void {
           h("ul", { class: "options" }, pub.map((code) => h("li", null, optionLink(ctx.href({ name: "country", code, query: { tier2: false } }), countryName(code, ctx.lang), countryDetail(code), current.kind === "country" && current.code === code, `pub-${code}`, pick(code))))),
         );
       }
-      // While the pilot fills up, a short list says more countries are coming, not that this is all.
-      if (index && publishedCodes.length < PILOT_TARGET) blocks.push(h("p", { class: "scope__none", "data-testid": "scope-more" }, ctx.t("scope.more")));
+      // The list is what is live, not all there is: any other country can be built from its page.
+      if (index) blocks.push(h("p", { class: "scope__none", "data-testid": "scope-more" }, ctx.t("scope.more")));
       status.textContent = "";
     } else {
       const fest = search(festivals, query, 5).map((hit) => hit.item.entry);

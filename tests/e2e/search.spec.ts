@@ -58,9 +58,24 @@ test.describe("Scope selector", () => {
     await expect(opener).toBeFocused();
   });
 
-  test("a country without published data shows an empty state with actions", async ({ page }) => {
-    await open(page, "#/pais/pe");
-    await expect(page.locator(".empty")).toContainText("Perú");
-    await expect(page.locator(".empty__actions").getByRole("link").first()).toBeVisible();
+  test("a country without data offers to build it: the build-country form with its code", async ({ page }) => {
+    await open(page, "#/pais/jp");
+    await expect(page.getByTestId("unbuilt")).toHaveAttribute("data-build", "none");
+    await expect(page.locator(".empty")).toContainText("Japón todavía no está en el calendario");
+    const build = page.locator(".empty__actions").getByRole("link", { name: /Construir Japón/ });
+    await expect(build).toBeVisible();
+    const href = new URL((await build.getAttribute("href"))!);
+    expect(href.pathname).toMatch(/\/issues\/new$/);
+    expect(Object.fromEntries(href.searchParams)).toMatchObject({ template: "build-country.yml", title: "Build: JP", country: "JP" });
+  });
+
+  test("a requested country says it is being built instead of offering the button again", async ({ page }) => {
+    await open(page, "#/pais/bo");
+    await expect(page.getByTestId("unbuilt")).toHaveAttribute("data-build", "queued");
+    await expect(page.locator(".empty")).toContainText("Estamos construyendo Bolivia");
+    await expect(page.locator(".empty__actions").getByRole("link", { name: /Construir/ })).toHaveCount(0);
+    await page.getByRole("button", { name: /\(cambiar\)/ }).click();
+    await page.getByRole("searchbox").fill("bolivia");
+    await expect(page.getByTestId("country-results").getByRole("link", { name: /Bolivia/ })).toContainText("En construcción");
   });
 });

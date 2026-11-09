@@ -1,0 +1,23 @@
+# Builds a country on request (pipeline.yml). The app links here from a country without data:
+# issues/new?template=build-country.yml&title=Build:+<CC>&country=<CC>
+# Field ids are a contract with the app and with countryFromIssue (scripts/lib/requests.ts): country.
+# Only issues the repository owner opens (or labels) start a build: it spends the owner's API budget.
+name: Construir un país (build a country)
+description: Pide que se investiguen las fiestas de un país y se publiquen cuando sus fechas pasen los controles. (Ask for a country to be built.)
+title: "Build: "
+labels: ["build-country"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        La IA busca las fiestas más grandes del país, verifica cada fecha contra fuentes oficiales o la prensa nacional y lo publica cuando al menos 3 fiestas tienen fecha con fuente. Te responde en este issue.
+        _The AI researches the country's biggest festivals, checks each date against official sources or the national press, and publishes it once at least 3 festivals have a sourced date. It answers on this issue._
+
+  - type: input
+    id: country
+    attributes:
+      label: Código de país (country code)
+      description: Código ISO de dos letras, por ejemplo JP, FR o MA. (Two-letter ISO code.)
+      placeholder: JP
+    validations:
+      required: true

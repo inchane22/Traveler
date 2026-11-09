@@ -76,7 +76,7 @@ describe("follow-up search for missing dates", () => {
     expect(r.drafts).toEqual([{ country: "BR", before, after: before + 1, needed: 3 }]);
     const md = readFileSync(join(root, "proposals", `${TODAY}.md`), "utf8");
     expect(md).toContain("### Países en borrador (R2)");
-    expect(md).toContain("**Listo para publicar:**");
+    expect(md).toContain("**Listo:** se publica solo al final de esta corrida.");
     expect(md).toContain("búsqueda amplia para inicio, fin, estado: ok, 1 citas, propuso inicio, fin");
   });
 

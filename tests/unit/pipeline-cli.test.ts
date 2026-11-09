@@ -5,8 +5,6 @@ import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { FIXTURES, githubOutput, REFRESH_FIXTURES, REPO, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
 
-const SECRET = "test-trap-secret-not-real";
-
 function run(script: string, args: readonly string[], cwd: string, env: Record<string, string> = {}) {
   // Only PATH from the parent: no ANTHROPIC_API_KEY or other secret reaches the child.
   const r = spawnSync(process.execPath, [join(REPO, "scripts", script), ...args], { cwd, env: { PATH: process.env.PATH ?? "", ...env }, encoding: "utf8", timeout: 60_000 });
@@ -14,23 +12,19 @@ function run(script: string, args: readonly string[], cwd: string, env: Record<s
 }
 
 describe("pipeline CLIs (offline)", () => {
-  test("refresh: --fixtures with --dry-run writes the proposals and exits 0; then check-trap catches the trap", () => {
+  test("refresh: --fixtures with --dry-run writes the proposals, exits 0 and reports what it holds", () => {
     const root = tempRepo({ countries: ["co"] });
     // The recorded responses were captured against the PRD-era CO file: replay them against that frozen copy.
     cpSync(join(REPO, "tests", "fixtures", "prd", "co.json"), join(root, "data", "countries", "co.json"));
     const out = join(root, "gh");
     writeFileSync(out, "");
-    const r = run("refresh.ts", ["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], root, { GITHUB_OUTPUT: out, TRAP_SECRET: SECRET });
+    const r = run("refresh.ts", ["--dry-run", "--country=CO", `--today=${TODAY}`, `--fixtures=${REFRESH_FIXTURES}`], root, { GITHUB_OUTPUT: out });
     expect(r.code, r.stderr).toBe(0);
     expect(r.stdout).toMatch(new RegExp(`wrote .*/proposals/${TODAY}\\.md`));
     const values = githubOutput(out);
-    expect(values).toMatchObject({ branch: `refresh/${TODAY}`, flagged: "4" });
-    expect(values.trap_fingerprint).toMatch(/^[0-9a-f]{64}$/);
-
-    const caught = run("check-trap.ts", [], root, { TRAP_SECRET: SECRET, TRAP_FINGERPRINTS: values.trap_fingerprint! });
-    expect(caught.code).toBe(1);
-    expect(caught.stderr).toMatch(/monthly trap change/);
-    expect(run("check-trap.ts", [], root, {}).code).toBe(0);
+    expect(values).toMatchObject({ flagged: "4", unexpected: "0" });
+    expect(values.branch).toBeUndefined();
+    expect(existsSync(join(root, "data", "state", "ledger.jsonl"))).toBe(false);
   });
 
   test("refresh: a bad flag exits 2 before any work", () => {

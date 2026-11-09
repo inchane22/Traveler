@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Calendario anual de las fiestas con más gente y más calle, por país, con verificación semanal por IA.",
+  "description": "Calendario anual de las fiestas con m\u00e1s gente y m\u00e1s calle, por pa\u00eds, con verificaci\u00f3n semanal por IA.",
   "engines": {
     "node": ">=22.18"
   },
@@ -21,6 +21,7 @@
     "check-secrets": "node scripts/check-secrets.ts",
     "refresh": "node scripts/refresh.ts",
     "onboard": "node scripts/onboard.ts",
+    "pipeline": "node scripts/pipeline.ts",
     "validate-data": "node scripts/build-data.ts"
   },
   "dependencies": {

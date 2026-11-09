@@ -1,0 +1,16 @@
+{
+  "new_country_share": 0.3,
+  "release_build_pool_days": 7,
+  "max_builds_per_run": 2,
+  "build_topups": 5,
+  "max_build_attempts": 3,
+  "retry_days": 30,
+  "default_job_usd": {
+    "policy": 0.03,
+    "onboard": 1.2,
+    "build": 0.3,
+    "verify": 0.15,
+    "followup": 0.12,
+    "sweep": 0.08
+  }
+}
