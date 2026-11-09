@@ -179,6 +179,29 @@ describe("countryEvents", () => {
     expect(soon?.summary).toMatch(/^\[Cancelada\] /);
     expect(countryEvents(cancelled, config, "es", t, TODAY, SITE).some((e) => e.uid === "petronio-alvarez-2026@traveler")).toBe(false);
   });
+
+  // R9: the news sweep stores a cancellation or a postponement without dates. Subscribers hold the
+  // rule's event at SEQUENCE 0; apply starts the edition at 1 so that event updates, not vanishes.
+  test("an undated cancellation keeps the rule's event, now CANCELLED with the new SEQUENCE (R9, RF-18)", () => {
+    const t = makeTranslator(ES, "es");
+    const uid = "negros-y-blancos-2027@traveler";
+    const before = countryEvents(co, config, "es", t, TODAY, SITE).find((e) => e.uid === uid);
+    expect(before).toMatchObject({ status: "TENTATIVE", sequence: 0 });
+    const source = { url: "https://www.pasto.gov.co/", publisher: "Alcaldía de Pasto", accessed: TODAY, tier: "A" };
+    const cancelled = withEdition("negros-y-blancos", "2027", { status: "cancelada", confidence: "oficial", sources: [source], sequence: 1 });
+    const after = countryEvents(cancelled, config, "es", t, TODAY, SITE).find((e) => e.uid === uid);
+    expect(after).toMatchObject({ status: "CANCELLED", sequence: 1, start: before!.start, end: before!.end });
+    expect(after?.summary).toMatch(/^\[Cancelada\] /);
+
+    const postponed = withEdition("negros-y-blancos", "2027", { status: "aplazada", confidence: "oficial", sources: [source], sequence: 1 });
+    expect(countryEvents(postponed, config, "es", t, TODAY, SITE).find((e) => e.uid === uid)).toMatchObject({ status: "TENTATIVE", sequence: 1, summary: expect.stringMatching(/^\[Aplazada\] /) });
+  });
+
+  test("an undated edition that is only not announced yet still has no event", () => {
+    const t = makeTranslator(ES, "es");
+    const unknown = withEdition("negros-y-blancos", "2027", { status: "por_anunciar", confidence: "patron", sequence: 1 });
+    expect(countryEvents(unknown, config, "es", t, TODAY, SITE).some((e) => e.uid === "negros-y-blancos-2027@traveler")).toBe(false);
+  });
 });
 
 describe("buildCountryCalendars", () => {

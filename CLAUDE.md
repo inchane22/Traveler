@@ -13,6 +13,10 @@ a milestone closes only when its tests are green.
 - No visible text outside `locales/`.
 - Tests first for `src/dates.ts` and `src/score.ts`; every new screen gets an e2e + axe test.
 - External data is rendered with `textContent` (or the `h()` helper), never `innerHTML`.
+- Lifecycles have one home (docs/architecture.md «State machines»). For behaviour (does an edition
+  take place, is it settled, do calendars keep it) ask `STATUS_TRAITS` in `src/status.ts`; compare a
+  status string only for its own wording or style. Move «Cerca de mí» only through `nextGeo` and
+  load screen data only through `resource`.
 
 ## Commands
 

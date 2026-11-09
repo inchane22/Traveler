@@ -9,7 +9,8 @@ import type { Ctx } from "./context.ts";
 import { compactNumber, fullNumber, percent, relativeDays, shortDate } from "./format.ts";
 import { icon } from "./icons.ts";
 import { marksKey } from "./marks.ts";
-import { isStale, loadChangelog, loadCountry, loadIndex, PARTIAL_SHARE, resource, scoring, type PublicIndex } from "./model.ts";
+import { resource } from "../resource.ts";
+import { isStale, loadChangelog, loadCountry, loadIndex, PARTIAL_SHARE, scoring, type PublicIndex } from "./model.ts";
 import { subscribeLinks } from "./subscribe.ts";
 
 function scoringSection(ctx: Ctx): HTMLElement {

@@ -5,6 +5,7 @@ import { addDays, addMonths, diffDays, effectiveEnd, effectiveStart, type ISO, t
 import { applyFilters, buildEntries, isPendingPostponement, isVisible, sortByDate, type FestivalEntry, type FilterHit, type Filters, type Scope } from "../festivals.ts";
 import type { ChangelogEntry, CountryFile, FestivalType, KeyEvent, Source } from "../schema.ts";
 import type { ScoringConfig } from "../score.ts";
+import { STATUS_TRAITS } from "../status.ts";
 import scoringJson from "../../config/scoring.json";
 import { origins as advisoryOrigins } from "../../config/advisories.json";
 import { parseOrigins, pickAdvisory, type Advisory } from "./advisory.ts";
@@ -183,10 +184,13 @@ export type Countdown =
   | { kind: "ongoing"; daysLeft: number }
   | { kind: "ended" }
   | { kind: "postponed" }
+  | { kind: "cancelled" }
   | { kind: "unknown" };
 
 export function countdown(occ: Occurrence | null, today: ISO): Countdown {
   if (!occ) return { kind: "unknown" };
+  // Its days are the ones it will not have: no count towards them (src/status.ts).
+  if (!STATUS_TRAITS[occ.status].takesPlace) return { kind: "cancelled" };
   // Its old window says nothing about when it happens now: not «ended», a new date is coming.
   if (isPendingPostponement(occ)) return { kind: "postponed" };
   const start = occ.start ?? occ.window?.start;
@@ -328,35 +332,4 @@ export function coveredOrigins(): string[] {
 /** Official page of the user's origin country for this destination (see advisory.ts). */
 export function advisoryFor(origin: string | null, destination: string): Advisory | null {
   return pickAdvisory(advisoryTable, origin, destination);
-}
-
-// ---------- Resources: settled values are read synchronously, so a re-render never flashes a skeleton ----------
-
-export interface Resource<T> {
-  promise: Promise<T>;
-  value?: T;
-  error?: unknown;
-}
-
-const resources = new Map<string, Resource<unknown>>();
-
-export function resource<T>(key: string, factory: () => Promise<T>): Resource<T> {
-  const existing = resources.get(key) as Resource<T> | undefined;
-  if (existing && existing.error === undefined) return existing;
-  const created: Resource<T> = { promise: factory() };
-  created.promise.then(
-    (value) => {
-      created.value = value;
-    },
-    (error: unknown) => {
-      created.error = error;
-    },
-  );
-  resources.set(key, created as Resource<unknown>);
-  return created;
-}
-
-/** Forget failed loads so «Reintentar» fetches again. */
-export function clearFailed(): void {
-  for (const [key, r] of resources) if (r.error !== undefined) resources.delete(key);
 }

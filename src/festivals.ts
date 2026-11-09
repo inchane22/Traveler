@@ -2,6 +2,7 @@
 import { addDays, addMonths, effectiveEnd, effectiveStart, occurrenceFor, overlaps, parseISODate, resolveRule, type ISO, type Occurrence, type RuleContext } from "./dates.ts";
 import type { CountryFile, Festival, FestivalType } from "./schema.ts";
 import { scoreFestival, type ScoreResult, type ScoringConfig } from "./score.ts";
+import { STATUS_TRAITS } from "./status.ts";
 
 export interface FestivalEntry {
   country: string;
@@ -126,7 +127,7 @@ export function sortByDate(a: FestivalEntry, b: FestivalEntry): number {
 export function upcoming(entries: readonly FestivalEntry[], today: ISO, limit: number): FestivalEntry[] {
   const horizon = addMonths(today, 12);
   return entries
-    .filter((e) => e.occurrence && effectiveStart(e.occurrence) < horizon && effectiveEnd(e.occurrence) >= today && e.occurrence.status !== "cancelada")
+    .filter((e) => e.occurrence && effectiveStart(e.occurrence) < horizon && effectiveEnd(e.occurrence) >= today && STATUS_TRAITS[e.occurrence.status].takesPlace)
     .sort(sortByDate)
     .slice(0, limit);
 }

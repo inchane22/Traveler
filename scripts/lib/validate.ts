@@ -131,6 +131,24 @@ interface Proposed {
   note: string;
 }
 
+/**
+ * The evidence a status move needs, on top of the checks every change gets (a cited https source,
+ * a literal quote, the Nivel 1 source rule). The lifecycle itself is in src/status.ts; «confirmada»
+ * also needs start, end and a source on the resulting edition, which only the whole proposal can
+ * tell (checkConfirmedStatus). `from` is the stored edition's status, undefined for a rule-only one.
+ */
+export function statusMoveCheck(from: Status | undefined, to: Status, quote: string): { reasons: string[]; flags: string[] } {
+  const reasons: string[] = [];
+  const flags: string[] = [];
+  if (from === "confirmada" && (to === "tentativa" || to === "por_anunciar") && !quoteSupportsStatus(quote, "tentativa")) {
+    reasons.push("una fecha confirmada no vuelve a tentativa sin una fuente que lo diga");
+  }
+  if ((to === "cancelada" || to === "aplazada") && !quoteSupportsStatus(quote, to)) flags.push(`revisar: la cita no dice ${to}`);
+  // A page from before the cancellation reads just like the festival coming back: a person decides.
+  if (from === "cancelada") flags.push("revisar: la edición estaba cancelada; una persona confirma que vuelve");
+  return { reasons, flags };
+}
+
 /** Validates one change in isolation. Cross-field checks (start ≤ end) run in reviewProposal. */
 export function reviewChange(change: Proposed, ctx: ReviewContext): ReviewedChange {
   const { festival, year, tier } = ctx;
@@ -181,11 +199,11 @@ export function reviewChange(change: Proposed, ctx: ReviewContext): ReviewedChan
 
   // Status moves must be backed by what the source says.
   const storedStatus = stored?.status;
-  if (change.field === "status" && typeof value === "string" && kind === "change") {
-    if (storedStatus === "confirmada" && (value === "tentativa" || value === "por_anunciar") && !quoteSupportsStatus(change.quote, "tentativa")) {
-      reasons.push("una fecha confirmada no vuelve a tentativa sin una fuente que lo diga");
-    }
-    if ((value === "cancelada" || value === "aplazada") && !quoteSupportsStatus(change.quote, value)) flags.push(`revisar: la cita no dice ${value}`);
+  const target = Status.safeParse(value);
+  if (change.field === "status" && target.success && kind === "change") {
+    const move = statusMoveCheck(storedStatus, target.data, change.quote);
+    reasons.push(...move.reasons);
+    flags.push(...move.flags);
   }
 
   // R1/R2: tier-1 date and status changes need one A source or two B sources on different domains.

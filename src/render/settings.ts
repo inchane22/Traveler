@@ -7,7 +7,7 @@ import type { Lang } from "../schema.ts";
 import { countryItems } from "../search.ts";
 import type { WeekStart } from "../store.ts";
 import { countryName } from "../ics.ts";
-import { notice } from "./components.ts";
+import { actionButton, locationAction, locationProblem, notice } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { icon } from "./icons.ts";
 import { coveredOrigins } from "./model.ts";
@@ -57,16 +57,7 @@ function nearBlock(ctx: Ctx): HTMLElement {
       h("div", { class: "setting__actions" }, h("a", { class: "btn btn--primary", href: ctx.href({ name: "explore", filters: { countries: [], months: [], types: [], tier2: false, sort: "near" } }) }, ctx.t("near.see")), h("button", { type: "button", class: "btn btn--secondary", "data-key": "geo-forget", onclick: () => ctx.forgetGeo() }, ctx.t("near.forget"))),
     );
   } else {
-    if (geo.status === "denied") body.push(notice("info", "alert", h("p", null, ctx.t("near.denied"))));
-    if (geo.status === "unavailable") body.push(notice("info", "alert", h("p", null, ctx.t("near.unavailable"))));
-    body.push(
-      h(
-        "button",
-        { type: "button", class: "btn btn--primary", "data-key": "geo-enable", disabled: geo.status === "asking", "aria-busy": geo.status === "asking" ? "true" : null, onclick: () => ctx.requestGeo() },
-        icon("pin"),
-        ctx.t(geo.status === "asking" ? "near.asking" : "near.enable"),
-      ),
-    );
+    body.push(locationProblem(ctx), actionButton(locationAction(ctx)));
   }
   return h("section", { class: "setting", "aria-labelledby": "near-title" }, h("h2", { class: "setting__legend display", id: "near-title" }, ctx.t("near.title")), h("p", { class: "setting__hint" }, ctx.t("near.privacy")), ...body);
 }

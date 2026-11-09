@@ -168,6 +168,14 @@ describe("missing date facts", () => {
     expect(missingDateFacts(item("carnaval-recife"), [reviewed("start", "flagged"), reviewed("end", "accepted")])).toEqual([]);
     expect(missingDateFacts(item("cirio-de-nazare"), [])).toEqual(["start", "end", "status"]);
   });
+
+  test("a cancelled edition has no dates to look for: no follow-up is spent on it", () => {
+    const recife = item("carnaval-recife");
+    const source = { url: "https://www.recife.pe.gov.br/", publisher: "Prefeitura do Recife", accessed: TODAY, tier: "A" as const };
+    const cancelled = { status: "cancelada" as const, confidence: "oficial" as const, key_events: [], sources: [source], sequence: 1 };
+    const festival = { ...recife.festival, editions: { ...recife.festival.editions, [String(recife.year)]: cancelled } };
+    expect(missingDateFacts({ ...recife, festival }, [])).toEqual([]);
+  });
 });
 
 describe("blind search check", () => {
