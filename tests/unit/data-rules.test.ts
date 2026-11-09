@@ -169,8 +169,8 @@ describe("build-data checks that need config/ (prd-F02, prd-F12, DH-03, DH-05)",
     expect(isABacked(dated("c", "https://www.eltiempo.com/c").editions["2027"]!, "CO", policy)).toBe(false);
   });
 
-  test("live Colombia: share_a is 0.5, so the partial-coverage notice shows (DH-03)", () => {
-    const countries = loadCountries("data/countries");
+  test("Colombia as frozen for the tests: share_a is 0.5, so the partial-coverage notice shows (DH-03)", () => {
+    const countries = loadCountries("tests/fixtures/site/countries");
     const live = new Map(countries.map((c) => [c.country, loadDomainPolicy(".", c.country)]));
     expect(dataProblems(countries, live, "2026-10-26")).toEqual([]);
     expect(buildIndex(countries, config, false, live).countries.find((c) => c.code === "CO")?.share_a).toBe(0.5);

@@ -1,5 +1,5 @@
-// Shared test helpers for the AI pipeline suites: a throwaway copy of the repo data (tests never
-// touch data/countries/*.json) and small builders for Messages API responses.
+// Shared test helpers for the AI pipeline suites: a throwaway copy of the frozen test data (tests
+// never touch data/countries/*.json) and small builders for Messages API responses.
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -15,6 +15,13 @@ import type { ScoringConfig } from "../../../src/score.ts";
 
 export const REPO = fileURLToPath(new URL("../../../", import.meta.url));
 export const FIXTURES = join(REPO, "tests", "fixtures", "pipeline");
+/**
+ * The data the behaviour tests run against, frozen on 2026-11-09 (merge of the build-on-request
+ * pipeline). data/ changes every day through the pipeline's own commits; a test that asserts a
+ * date, a status or a count reads this copy, so those commits never turn CI red. Checks that must
+ * hold for any data (schema, R2, the committed index) still read data/.
+ */
+export const SITE_DATA = join(REPO, "tests", "fixtures", "site");
 /** One `--fixtures` dir serves both CLIs: `<cc>/<slug>.json` for refresh, `onboard/<cc>.json` for onboarding. */
 export const REFRESH_FIXTURES = FIXTURES;
 export const TODAY = "2026-10-26";
@@ -23,12 +30,12 @@ export const config = JSON.parse(readFileSync(join(REPO, "config", "scoring.json
 export const coPolicy = loadDomainPolicy(REPO, "CO");
 
 export function countries(): CountryFile[] {
-  return loadCountries(join(REPO, "data", "countries"));
+  return loadCountries(join(SITE_DATA, "countries"));
 }
 
 /** One country file only, so a file another change is still editing cannot break unrelated tests. */
 export function country(cc: string): CountryFile {
-  return CountryFile.parse(JSON.parse(readFileSync(join(REPO, "data", "countries", `${cc.toLowerCase()}.json`), "utf8")));
+  return CountryFile.parse(JSON.parse(readFileSync(join(SITE_DATA, "countries", `${cc.toLowerCase()}.json`), "utf8")));
 }
 
 export function festival(cc: string, slug: string): Festival {
@@ -53,9 +60,9 @@ export function tempRepo(opts: { countries?: readonly string[] } = {}): string {
   cpSync(join(REPO, "config"), join(root, "config"), { recursive: true });
   mkdirSync(join(root, "data", "countries"), { recursive: true });
   for (const cc of opts.countries ?? ["bo", "co", "pe"]) {
-    cpSync(join(REPO, "data", "countries", `${cc}.json`), join(root, "data", "countries", `${cc}.json`));
+    cpSync(join(SITE_DATA, "countries", `${cc}.json`), join(root, "data", "countries", `${cc}.json`));
   }
-  cpSync(join(REPO, "data", "changelog.json"), join(root, "data", "changelog.json"));
+  cpSync(join(SITE_DATA, "changelog.json"), join(root, "data", "changelog.json"));
   return root;
 }
 

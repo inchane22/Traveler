@@ -1,0 +1,279 @@
+{
+  "country": "BR",
+  "status": "publicado",
+  "generated_at": "2026-10-26",
+  "timezone": "America/Sao_Paulo",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "carnaval-rio-de-janeiro",
+      "names": { "local": "Carnaval do Rio de Janeiro", "es": "Carnaval de Río de Janeiro", "en": "Rio de Janeiro Carnival", "pt": "Carnaval do Rio de Janeiro" },
+      "city": "Rio de Janeiro",
+      "subdivision": "BR-RJ",
+      "timezone": "America/Sao_Paulo",
+      "coords": { "lat": -22.9111, "lon": -43.2056 },
+      "nearest_airport": "GIG",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -51, "end": -47 },
+      "editions": {
+        "2027": {
+          "start": "2027-02-05",
+          "end": "2027-02-09",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desfiles-serie-ouro", "name": { "es": "Desfiles de la Série Ouro en el Sambódromo", "en": "Série Ouro parades at the Sambadrome", "pt": "Desfiles da Série Ouro na Sapucaí" }, "date": "2027-02-05", "end": "2027-02-06", "confidence": "prensa" },
+            { "id": "desfiles-grupo-especial", "name": { "es": "Desfiles del Grupo Especial", "en": "Grupo Especial samba school parades", "pt": "Desfiles do Grupo Especial" }, "date": "2027-02-07", "end": "2027-02-09", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.poder360.com.br/poder-gente/carnaval-2027-veja-a-ordem-dos-desfiles-no-rio-de-janeiro/", "publisher": "Poder360 (con Agência Brasil)", "accessed": "2026-10-26", "tier": "B", "quote": "vai iniciar os desfiles na 3ª feira (9.fev.2027)" },
+            { "url": "https://diariodorio.com/serie-ouro-define-ordem-dos-desfiles-para-o-carnaval-2027-na-sapucai/", "publisher": "Diário do Rio", "accessed": "2026-10-26", "tier": "B", "quote": "Oito escolas se apresentam na sexta-feira, 5 de fevereiro." }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "Orden de desfiles sorteado por Liesa en abril de 2026; la agenda de blocos aún no se publica.", "en": "Parade order drawn by Liesa in April 2026; the bloco schedule is not out yet.", "pt": "Ordem dos desfiles sorteada pela Liesa em abril de 2026; a agenda dos blocos ainda não saiu." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 8000000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-02/rio-espera-receber-8-milhoes-de-folioes-para-o-carnaval", "note": { "es": "Proyección previa a la fiesta, no balance final.", "en": "Pre-event projection, not a final count.", "pt": "Projeção anterior à festa, não balanço final." } },
+        "calle": null,
+        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://planalto.gov.br/ccivil_03/_ato2023-2026/2023/Lei/L14567.htm", "note": { "es": "Ley 14.567/2023: escuelas de samba y sus desfiles, cultura nacional.", "en": "Law 14,567/2023: samba schools and their parades as national culture.", "pt": "Lei 14.567/2023: escolas de samba e seus desfiles, cultura nacional." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Rio_de_Janeiro/Gale%C3%A3o_International_Airport" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Rio_de_Janeiro" }
+      },
+      "street_tip": { "es": "Los blocos de calle son gratis y arrancan semanas antes; el Sambódromo es la parte con boleta, así que arma tus días con la agenda de blocos.", "en": "Street blocos are free and start weeks earlier; the Sambadrome is the ticketed part, so plan your days around the bloco schedule.", "pt": "Os blocos de rua são gratuitos e começam semanas antes; o Sambódromo é a parte com ingresso, então monte seus dias pela agenda dos blocos." }
+    },
+    {
+      "slug": "carnaval-salvador",
+      "names": { "local": "Carnaval de Salvador", "es": "Carnaval de Salvador de Bahía", "en": "Salvador Carnival", "pt": "Carnaval de Salvador" },
+      "city": "Salvador",
+      "subdivision": "BR-BA",
+      "timezone": "America/Bahia",
+      "coords": { "lat": -12.9747, "lon": -38.4767 },
+      "nearest_airport": "SSA",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -52, "end": -47 },
+      "editions": {
+        "2027": {
+          "start": "2027-02-04",
+          "end": "2027-02-09",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "pipoco", "name": { "es": "Pipoco, inicio de la previa", "en": "Pipoco, start of the pre-carnival", "pt": "Pipoco, abertura do pré-Carnaval" }, "date": "2027-01-29", "confidence": "prensa" },
+            { "id": "abertura-oficial", "name": { "es": "Apertura oficial", "en": "Official opening", "pt": "Abertura oficial" }, "date": "2027-02-04", "confidence": "prensa" },
+            { "id": "arrastao-quarta-de-cinzas", "name": { "es": "Arrastão del Miércoles de Ceniza", "en": "Ash Wednesday Arrastão", "pt": "Arrastão da Quarta-feira de Cinzas" }, "date": "2027-02-10", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://atarde.com.br/carnaval/carnaval-de-salvador-2027-veja-tudo-o-que-ja-esta-confirmado-para-a-folia-1405888", "publisher": "A Tarde", "accessed": "2026-10-26", "tier": "B", "quote": "A folia, marcada para ocorrer entre 4 e 9 de fevereiro, já conta com blocos anunciados" },
+            { "url": "https://www.correio24horas.com.br/carnaval/prefeitura-altera-data-do-pipoco-de-leo-santana-e-confirma-calendario-do-carnaval-de-salvador-2027-0226", "publisher": "Correio", "accessed": "2026-10-26", "tier": "B", "quote": "Já na quinta-feira, 4 de fevereiro de 2027, tem início oficialmente o Carnaval de Salvador, abrindo os circuitos da cidade para seis dias de folia." }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "Calendario anunciado por el alcalde Bruno Reis; con la previa suma 13 días de fiesta.", "en": "Calendar announced by mayor Bruno Reis; with the pre-carnival it adds up to 13 days.", "pt": "Calendário anunciado pelo prefeito Bruno Reis; com o pré-Carnaval soma 13 dias de festa." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 12000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://atarde.com.br/carnaval/carnaval-de-salvador-recebeu-mais-de-12-milhoes-de-folioes-nas-ruas-1380098", "note": { "es": "Cifra difundida por la Secretaría de Seguridad Pública de Bahía.", "en": "Figure released by the Bahia Public Security Secretariat.", "pt": "Número divulgado pela Secretaria da Segurança Pública da Bahia." } },
+        "calle": null,
+        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/L15196.htm", "note": { "es": "Ley 15.196/2025, manifestación de la cultura nacional.", "en": "Law 15,196/2025, expression of national culture.", "pt": "Lei 15.196/2025, manifestação da cultura nacional." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Salvador_Bahia_Airport" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Salvador,_Bahia" }
+      },
+      "street_tip": { "es": "Ir de «pipoca», sin abadá, es gratis: sigue a los tríos eléctricos desde la acera en los circuitos Barra-Ondina o Campo Grande.", "en": "Going \"pipoca\", without an abadá, is free: follow the trios elétricos from the sidewalk on the Barra-Ondina or Campo Grande circuits.", "pt": "Ir de pipoca, sem abadá, é de graça: acompanhe os trios elétricos pela calçada nos circuitos Barra-Ondina ou Campo Grande." },
+      "etiquette": { "es": "Los afoxés, como Filhos de Gandhy, llevan a la calle la tradición del candomblé: míralos desde fuera de la cuerda y pide permiso antes de fotografiar de cerca.", "en": "Afoxés such as Filhos de Gandhy bring candomblé tradition to the street: watch from outside the rope and ask before close-up photos.", "pt": "Os afoxés, como o Filhos de Gandhy, levam a tradição do candomblé para a rua: assista de fora da corda e peça licença antes de fotos de perto." }
+    },
+    {
+      "slug": "carnaval-recife",
+      "names": { "local": "Carnaval do Recife", "es": "Carnaval de Recife", "en": "Recife Carnival", "pt": "Carnaval do Recife" },
+      "city": "Recife",
+      "subdivision": "BR-PE",
+      "timezone": "America/Recife",
+      "coords": { "lat": -8.05, "lon": -34.9 },
+      "nearest_airport": "REC",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -50, "end": -47 },
+      "editions": {
+        "2027": {
+          "status": "tentativa",
+          "confidence": "patron",
+          "key_events": [
+            { "id": "galo-da-madrugada", "name": { "es": "Galo da Madrugada", "en": "Galo da Madrugada parade", "pt": "Galo da Madrugada" }, "date": "2027-02-06", "rule": { "type": "relative_to", "ref": "carnaval-recife", "anchor": "start", "offset": 0, "duration_days": 1 }, "confidence": "estimacion" }
+          ],
+          "sources": [
+            { "url": "https://portaldeprefeitura.com.br/entretenimento/galo-da-madrugada-anuncia-tema-do-carnaval-2027-e-homenageia-caboclo/633674/", "publisher": "Portal de Prefeitura", "accessed": "2026-10-26", "tier": "C", "quote": "O desfile está marcado para 6 de fevereiro, no Sábado de Zé Pereira." }
+          ],
+          "last_verified": "2026-10-26",
+          "sequence": 0,
+          "note": { "es": "Solo está anunciada la fecha del Galo; la Prefeitura aún no publica la programación.", "en": "Only the Galo date is announced; the city has not published the program yet.", "pt": "Só a data do Galo foi anunciada; a Prefeitura ainda não publicou a programação." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 3700000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.diariodepernambuco.com.br/vida-urbana/2026/02/11707898-recife-apresenta-balanco-do-carnaval-2026-37-milhoes-de-folioes-nas-ruas-e-rs-28-bi-injetados-na-economia.html", "note": { "es": "Balance presentado por la Prefeitura do Recife.", "en": "Count presented by the Recife city government.", "pt": "Balanço apresentado pela Prefeitura do Recife." } },
+        "calle": null,
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/frevo-performing-arts-of-the-carnival-of-recife-00603", "note": { "es": "Frevo, inscrito en 2012.", "en": "Frevo, inscribed in 2012.", "pt": "Frevo, inscrito em 2012." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Recife/Guararapes%E2%80%93Gilberto_Freyre_International_Airport" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Recife" }
+      },
+      "street_tip": { "es": "El sábado por la mañana el Galo da Madrugada llena el centro de Recife; ve con ropa ligera, agua y una sombrilla de frevo.", "en": "On Saturday morning the Galo da Madrugada fills downtown Recife; bring light clothes, water and a frevo umbrella.", "pt": "No sábado de manhã o Galo da Madrugada toma o centro do Recife; vá de roupa leve, água e uma sombrinha de frevo." }
+    },
+    {
+      "slug": "cirio-de-nazare",
+      "names": { "local": "Círio de Nazaré", "es": "Círio de Nazaré", "en": "Círio de Nazaré", "pt": "Círio de Nazaré" },
+      "city": "Belém",
+      "subdivision": "BR-PA",
+      "timezone": "America/Belem",
+      "coords": { "lat": -1.4558, "lon": -48.5039 },
+      "nearest_airport": "BEL",
+      "type": "tradicion_religiosa",
+      "rule": { "type": "nth_weekday", "month": 10, "weekday": 0, "n": 2, "duration_days": 1 },
+      "editions": {},
+      "score": {
+        "convocatoria": { "measure": { "attendance": 2300000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.oliberal.com/belem/cerca-de-2-3-milh-es-de-pessoas-acompanharam-o-cirio-neste-domingo-11-1.1181573", "note": { "es": "Estimación preliminar de la Diretoria da Festa de Nazaré.", "en": "Preliminary estimate by the festival board.", "pt": "Estimativa preliminar da Diretoria da Festa de Nazaré." } },
+        "calle": null,
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/cirio-de-nazare-the-taper-of-our-lady-of-nazareth-in-the-city-of-belem-para-00602", "note": { "es": "Inscrito en 2013.", "en": "Inscribed in 2013.", "pt": "Inscrito em 2013." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Bel%C3%A9m_International_Airport" },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Bel%C3%A9m" }
+      },
+      "street_tip": { "es": "La Trasladação del sábado por la noche y la procesión del domingo por la mañana cruzan el centro de Belém; busca tu lugar en la ruta antes del amanecer.", "en": "Saturday night's Trasladação and Sunday morning's procession cross central Belém; claim your spot on the route before dawn.", "pt": "A Trasladação no sábado à noite e a procissão de domingo de manhã cruzam o centro de Belém; garanta seu lugar no percurso antes do amanhecer." },
+      "etiquette": { "es": "Es un acto de fe: la cuerda es de los promesantes, no te metas en ella, y guarda silencio cuando pase la imagen de la Virgen.", "en": "It is an act of faith: the rope belongs to the pilgrims keeping vows, so stay off it, and keep quiet as the image of the Virgin passes.", "pt": "É um ato de fé: a corda é dos promesseiros, não entre nela, e faça silêncio quando a imagem da Virgem passar." }
+    },
+    {
+      "slug": "festival-parintins",
+      "names": { "local": "Festival Folclórico de Parintins", "es": "Festival Folclórico de Parintins", "en": "Parintins Folklore Festival", "pt": "Festival Folclórico de Parintins" },
+      "city": "Parintins",
+      "subdivision": "BR-AM",
+      "timezone": "America/Manaus",
+      "coords": { "lat": -2.6278, "lon": -56.7358 },
+      "nearest_airport": "PIN",
+      "type": "musica",
+      "rule": { "type": "nth_weekday", "month": 6, "weekday": 5, "n": -1, "duration_days": 3 },
+      "editions": {},
+      "score": {
+        "convocatoria": { "measure": { "attendance": 120000, "qualifier": "more_than", "unit": "visitors", "year": 2025 }, "confidence": "estimacion", "source": "https://portalamazonia.com/turismo/festival-parintins-2025-visitas/", "note": { "es": "Balance del gobernador Wilson Lima, citado por prensa regional.", "en": "Governor Wilson Lima's count, as reported by regional press.", "pt": "Balanço do governador Wilson Lima, citado pela imprensa regional." } },
+        "calle": null,
+        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://planalto.gov.br/ccivil_03/_ato2023-2026/2024/Lei/L14960.htm", "note": { "es": "Ley 14.960/2024, manifestación de la cultura nacional.", "en": "Law 14,960/2024, expression of national culture.", "pt": "Lei 14.960/2024, manifestação da cultura nacional." } },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/J%C3%BAlio_Bel%C3%A9m_Airport" },
+        "local": { "measure": "intermedia", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Parintins" }
+      },
+      "street_tip": { "es": "Además del Bumbódromo, los ensayos en los currais de Garantido y Caprichoso en las semanas previas dejan ver la fiesta de cerca.", "en": "Beyond the Bumbódromo, rehearsals at the Garantido and Caprichoso currais in the weeks before let you see the festival up close.", "pt": "Além do Bumbódromo, os ensaios nos currais do Garantido e do Caprichoso nas semanas anteriores mostram a festa de perto." },
+      "etiquette": { "es": "La fiesta cuenta historias y rituales de pueblos indígenas de la Amazonía: respeta a la hinchada rival y no uses esos rituales como disfraz.", "en": "The festival tells stories and rituals of Amazonian Indigenous peoples: respect the rival fans and don't turn those rituals into a costume.", "pt": "A festa conta histórias e rituais de povos indígenas da Amazônia: respeite a torcida rival e não transforme esses rituais em fantasia." }
+    },
+    {
+      "slug": "carnaval-olinda",
+      "names": { "local": "Carnaval de Olinda", "es": "Carnaval de Olinda", "en": "Olinda Carnival", "pt": "Carnaval de Olinda" },
+      "city": "Olinda",
+      "subdivision": "BR-PE",
+      "timezone": "America/Recife",
+      "coords": { "lat": -8.0089, "lon": -34.855 },
+      "nearest_airport": "REC",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -52, "end": -46 },
+      "editions": {},
+      "score": {
+        "convocatoria": { "measure": { "attendance": 4000000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://olinda.pe.gov.br/noticias/carnaval-de-olinda-2026-ta-todo-mundo-aqui-celebrou-diversidade-sustentabilidade-e-desenvolvimento-social", "quote": "A edição deste ano reuniu cerca de 4 milhões de pessoas, circulando em todos os pontos da cidade.", "note": { "es": "Balance de la Prefeitura de Olinda del 19 de febrero de 2026; g1 publicó la misma cifra.", "en": "Olinda city government's count of 19 February 2026; g1 reported the same figure.", "pt": "Balanço da Prefeitura de Olinda de 19 de fevereiro de 2026; o g1 publicou o mesmo número." } },
+        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://olinda.pe.gov.br/noticias/carnaval-de-olinda-2026-tem-como-tema-ta-todo-mundo-aqui", "quote": "É essa multidão diversa que se reconhece e se mistura nas ruas, que inspira o tema de 2026 e reafirma o espírito do carnaval como festa do povo e para o povo.", "note": { "es": "Troças, blocos y orquestas de frevo recorren a pie las ladeiras del Sitio Histórico; las fiestas privadas con entrada son la excepción.", "en": "Troças, blocos and frevo orchestras walk the hillside streets of the Historic Site; private ticketed parties are the exception.", "pt": "Troças, blocos e orquestras de frevo percorrem a pé as ladeiras do Sítio Histórico; as festas privadas com ingresso são a exceção." } },
+        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://www.lexml.gov.br/urn/urn:lex:br:federal:lei:2025-05-21;15137", "quote": "Reconhece o Carnaval de Pernambuco como manifestação da cultura nacional.", "note": { "es": "Ley 15.137/2025. El frevo es Patrimonio UNESCO (2012), pero la inscripción nombra el Carnaval de Recife, así que aquí cuenta como nacional.", "en": "Law 15,137/2025. Frevo is on UNESCO's list (2012), but the inscription names the Recife Carnival, so it counts as national here.", "pt": "Lei 15.137/2025. O frevo é Patrimônio da UNESCO (2012), mas a inscrição cita o Carnaval do Recife, por isso aqui conta como nacional." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Recife/Guararapes%E2%80%93Gilberto_Freyre_International_Airport", "quote": "The airport is located 14 km (9 mi) from downtown Recife.", "note": { "es": "REC, en Recife (ciudad vecina de Olinda), con vuelos a Lisboa (TAP) y Santiago (LATAM).", "en": "REC, in Recife (Olinda's neighbouring city), with flights to Lisbon (TAP) and Santiago (LATAM).", "pt": "REC, no Recife (cidade vizinha de Olinda), com voos para Lisboa (TAP) e Santiago (LATAM)." } },
+        "local": { "measure": "intermedia", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Olinda", "quote": "It has a population of 349,976 people", "note": { "es": "349.976 habitantes (censo 2022), dentro del área metropolitana de Recife.", "en": "349,976 inhabitants (2022 census), inside the Recife metropolitan area.", "pt": "349.976 habitantes (censo 2022), na Região Metropolitana do Recife." } }
+      },
+      "street_tip": { "es": "Sube temprano a las ladeiras del Sitio Histórico y sigue a cualquier orquesta de frevo; no te pierdas los bonecos gigantes ni la salida del Homem da Meia-Noite el sábado a medianoche.", "en": "Head up the Historic Site's hillside streets early and follow any frevo orchestra; don't miss the giant puppets or the Homem da Meia-Noite setting off at Saturday midnight.", "pt": "Suba cedo as ladeiras do Sítio Histórico e siga qualquer orquestra de frevo; não perca os bonecos gigantes nem a saída do Homem da Meia-Noite no sábado à meia-noite." }
+    },
+    {
+      "slug": "lavagem-do-bonfim",
+      "names": { "local": "Lavagem do Bonfim", "es": "Lavagem do Bonfim", "en": "Washing of Bonfim", "pt": "Lavagem do Bonfim" },
+      "city": "Salvador",
+      "subdivision": "BR-BA",
+      "timezone": "America/Bahia",
+      "coords": { "lat": -12.9236, "lon": -38.5076 },
+      "nearest_airport": "SSA",
+      "type": "tradicion_religiosa",
+      "rule": { "type": "announced", "window": { "start": "01-11", "end": "01-17" } },
+      "editions": {
+        "2027": {
+          "start": "2027-01-14",
+          "end": "2027-01-14",
+          "status": "tentativa",
+          "confidence": "estimacion",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.salvadordabahia.com/eventos/caminhada-lavagem-de-corpo-e-alma-2027-17a-edicao/", "publisher": "Salvador da Bahia (portal de turismo)", "accessed": "2026-11-08", "tier": "A", "quote": "Já estão à venda as camisas oficiais da 17ª edição da caminhada “Lavagem de Corpo e Alma”, que acontece em 14 de janeiro de 2027, no mesmo dia da tradicional Lavagem do Bonfim, em Salvador" }
+          ],
+          "last_verified": "2026-11-08",
+          "sequence": 0,
+          "note": { "es": "Fecha tomada de la caminata que organiza la Basílica del Bonfim; coincide con la regla (jueves antes del segundo domingo tras Reyes). Falta el anuncio de la Basílica.", "en": "Date taken from the walk organized by the Bonfim Basilica; it matches the rule (Thursday before the second Sunday after Epiphany). The Basilica's own announcement is still missing.", "pt": "Data tirada da caminhada organizada pela Basílica do Bonfim; bate com a regra (quinta-feira antes do segundo domingo depois de Reis). Falta o anúncio da própria Basílica." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 1000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://salvador.ba.gov.br/com-expectativa-de-mais-de-1-milhao-de-pessoas-lavagem-do-bonfim-e-ponto-alto-do-verao-de-salvador-e-ajuda-a-ampliar-numero-de-visitantes/", "quote": "Nesta quinta-feira (15), o que se vê mais uma vez é a Cidade Baixa lotada, desde o Comércio até a Colina Sagrada, com a expectativa da Prefeitura de reunir mais de 1 milhão de pessoas ao longo do trajeto.", "note": { "es": "Expectativa de la Prefeitura (Saltur) el mismo día, 15 de enero de 2026; no es un conteo final.", "en": "City government (Saltur) projection on the day itself, 15 January 2026; not a final count.", "pt": "Expectativa da Prefeitura (Saltur) no próprio dia, 15 de janeiro de 2026; não é balanço final." } },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.correio24horas.com.br/salvador/muda-todo-ano-qual-e-a-data-exata-da-lavagem-do-senhor-do-bonfim-0126", "quote": "Vários cortejos fazem o trajeto, inclusive as baianas que ao chegarem, lavam a escadaria da igreja.", "note": { "es": "Cortejo a pie de 8 km por la calle, de la Conceição da Praia a la Colina Sagrada, sin entrada.", "en": "An 8 km walking procession through the streets, from Conceição da Praia to the Colina Sagrada, with no tickets.", "pt": "Cortejo a pé de 8 km pelas ruas, da Conceição da Praia à Colina Sagrada, sem ingresso." } },
+        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://www.gov.br/iphan/pt-br/superintendencias/bahia", "quote": "Do total de bens registrados como Patrimônio Cultural Imaterial do Brasil, cinco deles encontram suas origens na Bahia: a Festa do Senhor do Bonfim, o Samba de Roda do Recôncavo Baiano, o Ofício das Baianas de Acarajé, a Roda de Capoeira e o Ofício dos Mestres de Capoeira.", "note": { "es": "Registro del IPHAN de la Festa do Senhor do Bonfim, cuyo día central es la Lavagem.", "en": "IPHAN registration of the Festa do Senhor do Bonfim, whose central day is the Lavagem.", "pt": "Registro do IPHAN da Festa do Senhor do Bonfim, cujo dia central é a Lavagem." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Salvador_Bahia_Airport", "quote": "The airport is located 28 km (17 mi) north from downtown Salvador da Bahia.", "note": { "es": "SSA, con vuelos a Lisboa, Madrid, París y Buenos Aires.", "en": "SSA, with flights to Lisbon, Madrid, Paris and Buenos Aires.", "pt": "SSA, com voos para Lisboa, Madri, Paris e Buenos Aires." } },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Salvador,_Bahia", "quote": "With more than 2.4 million inhabitants as of 2020, it is the most populous municipality in the Northeast, the fifth most-populous city in Brazil, and the ninth largest Latin American city." }
+      },
+      "street_tip": { "es": "Vístete de blanco, sal temprano de la Conceição da Praia y camina con la multitud hasta la Colina Sagrada entre bandas, carrozas y puestos; lleva agua y sombrero.", "en": "Dress in white, leave Conceição da Praia early and walk with the crowd up to the Colina Sagrada among bands, carts and stalls; bring water and a hat.", "pt": "Vá de branco, saia cedo da Conceição da Praia e caminhe com a multidão até a Colina Sagrada entre bandas, carroças e barracas; leve água e chapéu." },
+      "etiquette": { "es": "Es fe católica y de candomblé a la vez: abre paso a las baianas con sus jarras, no les tomes fotos de cerca sin pedir permiso y recibe el agua perfumada con respeto.", "en": "It is Catholic and candomblé faith at once: make way for the baianas and their jugs, ask before close-up photos and accept the scented water respectfully.", "pt": "É fé católica e do candomblé ao mesmo tempo: abra caminho para as baianas com suas quartinhas, peça licença antes de fotos de perto e receba a água de cheiro com respeito." }
+    },
+    {
+      "slug": "sao-joao-campina-grande",
+      "names": { "local": "O Maior São João do Mundo", "es": "São João de Campina Grande", "en": "São João of Campina Grande", "pt": "São João de Campina Grande" },
+      "city": "Campina Grande",
+      "subdivision": "BR-PB",
+      "timezone": "America/Fortaleza",
+      "coords": { "lat": -7.2306, "lon": -35.8811 },
+      "nearest_airport": "CPV",
+      "type": "cosecha_temporada",
+      "rule": { "type": "announced", "window": { "start": "05-29", "end": "07-06" } },
+      "editions": {},
+      "score": {
+        "convocatoria": { "measure": { "attendance": 3400000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://g1.globo.com/pb/paraiba/sao-joao/noticia/2026/07/06/sao-joao-2026-de-campina-grande-tem-publico-de-34-milhoes-de-pessoas-e-registra-aumento-de-67percent.ghtml", "quote": "O São João 2026 de Campina Grande recebeu ao menos 3,4 milhões de pessoas durante os 33 dias de festa, encerrados neste domingo (5).", "note": { "es": "Cifra de la Prefeitura y de la productora Arte Produções, citada por g1; suma los 33 días (3 de junio a 5 de julio de 2026).", "en": "Figure from the city government and producer Arte Produções, reported by g1; it adds up all 33 days (3 June to 5 July 2026).", "pt": "Número da Prefeitura e da produtora Arte Produções, citado pelo g1; soma os 33 dias (3 de junho a 5 de julho de 2026)." } },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://jornaldaparaiba.com.br/qualaboa/sao-joao-2026-de-campina-grande-veja-o-que-nao-pode-entrar-no-parque-do-povo", "quote": "O São João 2026 de Campina Grande começa nesta quarta-feira (3) e vai até 5 de julho com shows gratuitos no Parque do Povo.", "note": { "es": "Entrada libre al Parque do Povo, el recinto principal, todas las noches.", "en": "Free entry to the Parque do Povo, the main venue, every night.", "pt": "Entrada livre no Parque do Povo, o principal polo, todas as noites." } },
+        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://www.lexml.gov.br/urn/urn:lex:br:federal:lei:2023-04-25;14555", "quote": "Reconhece as festas juninas como manifestação da cultura nacional.", "note": { "es": "Ley 14.555/2023 sobre las fiestas juninas; la ley estatal de 2026 que llama a Campina Grande «ciudad del Mayor São João del Mundo» no se cuenta por ser estatal.", "en": "Law 14,555/2023 on June festivals; the 2026 state law naming Campina Grande «city of the Greatest São João in the World» is not counted because it is a state law.", "pt": "Lei 14.555/2023 sobre as festas juninas; a lei estadual de 2026 que declara Campina Grande «cidade do Maior São João do Mundo» não conta por ser estadual." } },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Campina_Grande_Airport", "quote": "The airport is located 7 km (4 mi) from downtown Campina Grande.", "note": { "es": "CPV solo tiene vuelos nacionales (Recife, Brasilia, Belo Horizonte, Fortaleza, Maceió).", "en": "CPV only has domestic flights (Recife, Brasília, Belo Horizonte, Fortaleza, Maceió).", "pt": "CPV só tem voos nacionais (Recife, Brasília, Belo Horizonte, Fortaleza, Maceió)." } },
+        "local": { "measure": "intermedia", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Campina_Grande", "quote": "is the second most populous Brazilian city in the State of Paraíba after João Pessoa", "note": { "es": "419.379 habitantes (censo 2022, ficha de la página).", "en": "419,379 inhabitants (2022 census, page infobox).", "pt": "419.379 habitantes (censo 2022, quadro da página)." } }
+      },
+      "street_tip": { "es": "Además de los shows del Parque do Povo, busca las quadrilhas y los forrós pé-de-serra de barrios y distritos: ahí se baila en pareja con la gente del lugar.", "en": "Beyond the Parque do Povo shows, look for the quadrilhas and pé-de-serra forró in the neighbourhoods and districts: that is where you dance in pairs with locals.", "pt": "Além dos shows do Parque do Povo, procure as quadrilhas e o forró pé-de-serra dos bairros e distritos: é ali que se dança agarradinho com o povo da cidade." }
+    },
+    {
+      "slug": "bumba-meu-boi-sao-luis",
+      "names": { "local": "Bumba-meu-boi do Maranhão", "es": "Bumba-meu-boi de São Luís", "en": "Bumba-meu-boi of São Luís", "pt": "Bumba-meu-boi de São Luís" },
+      "city": "São Luís",
+      "subdivision": "BR-MA",
+      "timezone": "America/Fortaleza",
+      "coords": { "lat": -2.5283, "lon": -44.3044 },
+      "nearest_airport": "SLZ",
+      "type": "cosecha_temporada",
+      "rule": { "type": "fixed", "start": "06-23", "end": "06-30" },
+      "editions": {},
+      "score": {
+        "convocatoria": { "measure": { "attendance": 642000, "qualifier": "more_than", "unit": "visitors", "year": 2025 }, "confidence": "oficial", "source": "https://www.cultura.ma.gov.br/noticias/tradicional-arraial-do-ipem-quase-pronto-para-o-maior-sao-joao-do-mundo", "quote": "No ano passado, o Arraial do Ipem aconteceu no período de 14 de junho a 13 de julho, recebendo mais de 642 mil visitantes.", "note": { "es": "Solo el Arraial do Ipem en 2025, uno de los 25 arraiales oficiales de São Luís; el gobierno no publica un total de la ciudad, así que es un piso.", "en": "Only the Arraial do Ipem in 2025, one of São Luís's 25 official arraiais; the state publishes no city total, so this is a floor.", "pt": "Só o Arraial do Ipem em 2025, um dos 25 arraiais oficiais de São Luís; o governo não publica um total da cidade, então é um piso." } },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://oimparcial.com.br/noticias/2026/05/governo-do-estado-lanca-sao-joao-do-maranhao-2026-com-mais-de-700-atracoes/", "quote": "O evento é realizado a partir de parceria público-privada e possibilita acesso gratuito, assim com os 25 arraiais do circuito oficial.", "note": { "es": "Los 25 arraiales oficiales son gratis, y los encuentros de São Pedro y São Marçal son en la calle.", "en": "The 25 official arraiais are free, and the São Pedro and São Marçal gatherings take place in the street.", "pt": "Os 25 arraiais oficiais são gratuitos, e os encontros de São Pedro e São Marçal acontecem na rua." } },
+        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/cultural-complex-of-bumba-meu-boi-from-maranhao-01510", "quote": "The Cultural Complex of Bumba-meu-boi from Maranhão is a ritualistic practice involving forms of musical, choreographic, performing and ludic expression, in which the practitioners’ relationship with the sacred is mediated by the figure of the ox.", "note": { "es": "Lista Representativa de la UNESCO, inscrito en 2019; el ciclo llega a su punto máximo a fines de junio.", "en": "UNESCO Representative List, inscribed in 2019; the cycle peaks at the end of June.", "pt": "Lista Representativa da UNESCO, inscrito em 2019; o ciclo atinge o auge no fim de junho." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://jornalpequeno.com.br/2026/10/23/tap-inicia-voos-lisboa-sao-luis-outubro-2026/", "quote": "A partir da próxima semana, o Maranhão passa a integrar a malha internacional regular da TAP Air Portugal, com a estreia da ligação aérea entre Lisboa e São Luís marcada para segunda-feira, 26 de outubro.", "note": { "es": "SLZ está a 15 km del centro (Wikipedia); vuelo regular a Lisboa desde octubre de 2026.", "en": "SLZ is 15 km from downtown (Wikipedia); scheduled flight to Lisbon since October 2026.", "pt": "SLZ fica a 15 km do centro (Wikipédia); voo regular para Lisboa desde outubro de 2026." } },
+        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/S%C3%A3o_Lu%C3%ADs,_Maranh%C3%A3o", "quote": "The city proper has a population of some 1,088,057 people (2024 IBGE census)." }
+      },
+      "street_tip": { "es": "El 29 de junio sigue a los bois hasta la Capela de São Pedro, en Madre Deus, y el 30 madruga para el Encontro de Bois de São Marçal en João Paulo, donde la gente toca matracas junto a los grupos.", "en": "On 29 June follow the bois to the Capela de São Pedro in Madre Deus, and on the 30th get up early for the São Marçal Encontro de Bois in João Paulo, where people play matracas alongside the groups.", "pt": "No dia 29 de junho acompanhe os bois até a Capela de São Pedro, na Madre Deus, e no dia 30 madrugue para o Encontro de Bois de São Marçal, no João Paulo, onde o povo toca matraca junto com os grupos." },
+      "etiquette": { "es": "Para los grupos el boi es también devoción a los santos de junio: respeta los rituales de bautizo y muerte del boi y pide permiso antes de fotografiar a los brincantes de cerca.", "en": "For the groups the boi is also devotion to the June saints: respect the boi's baptism and death rituals and ask before close-up photos of the performers.", "pt": "Para os grupos o boi também é devoção aos santos juninos: respeite os rituais de batizado e morte do boi e peça licença antes de fotografar os brincantes de perto." }
+    },
+    {
+      "slug": "sao-joao-caruaru",
+      "names": { "local": "São João de Caruaru", "es": "São João de Caruaru", "en": "São João of Caruaru", "pt": "São João de Caruaru" },
+      "city": "Caruaru",
+      "subdivision": "BR-PE",
+      "timezone": "America/Recife",
+      "coords": { "lat": -8.2828, "lon": -35.9758 },
+      "nearest_airport": "CAU",
+      "type": "cosecha_temporada",
+      "rule": { "type": "announced", "window": { "start": "05-28", "end": "06-30" } },
+      "editions": {},
+      "score": {
+        "convocatoria": { "measure": { "attendance": 4000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://jc.uol.com.br/cultura/2026/06/30/sao-joao-de-caruaru-2026-teve-impacto-economico-superior-a-rs-805-milhoes.html", "quote": "Ao longo de 72 dias de programação, a festa reuniu mais de 4 milhões de pessoas, promoveu mais de 1.500 atrações distribuídas pelos polos de animação e movimentou mais de R$ 805 milhões na economia do município, reafirmando sua importância para a cultura, o turismo e a geração de emprego e renda.", "note": { "es": "Balance de la Prefeitura de Caruaru citado por el Jornal do Commercio; suma 72 días, desde el São João na Roça de abril.", "en": "Caruaru city government count, reported by Jornal do Commercio; it adds up 72 days, starting with the rural São João na Roça in April.", "pt": "Balanço da Prefeitura de Caruaru citado pelo Jornal do Commercio; soma 72 dias, desde o São João na Roça de abril." } },
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion", "source": "https://blog.jamjoy.com.br/blog/sao-joao-de-caruaru-2026-programacao-do-patio-de-eventos-alto-do-moura-e-como-chegar", "quote": "A entrada no Pátio de Eventos Luiz Gonzaga é gratuita durante os 29 dias de festa.", "note": { "es": "Fuente no oficial (blog de viajes); hay camarotes pagos. Falta confirmarlo con la Prefeitura.", "en": "Unofficial source (travel blog); there are paid boxes. Still to be confirmed with the city government.", "pt": "Fonte não oficial (blog de viagem); há camarotes pagos. Falta confirmar com a Prefeitura." } },
+        "reconocimiento": { "measure": "nacional", "confidence": "oficial", "source": "https://www.lexml.gov.br/urn/urn:lex:br:federal:lei:2023-04-25;14555", "quote": "Reconhece as festas juninas como manifestação da cultura nacional.", "note": { "es": "Ley 14.555/2023 sobre las fiestas juninas.", "en": "Law 14,555/2023 on June festivals.", "pt": "Lei 14.555/2023 sobre as festas juninas." } },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Caruaru_Airport", "quote": "The airport is located 5 km (3 mi) from downtown Caruaru.", "note": { "es": "CAU solo tiene vuelos de Azul Conecta a Recife.", "en": "CAU only has Azul Conecta flights to Recife.", "pt": "CAU só tem voos da Azul Conecta para o Recife." } },
+        "local": { "measure": "intermedia", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Caruaru", "quote": "According to the 2025 census, its population is 405,408 inhabitants, making it the second most populous municipality in the interior of Pernambuco" }
+      },
+      "street_tip": { "es": "Además del Pátio de Eventos, ve al polo del Alto do Moura, donde el forró pé-de-serra se baila en la calle y en los bares.", "en": "Beyond the Pátio de Eventos, go to the Alto do Moura hub, where pé-de-serra forró is danced in the street and in the bars.", "pt": "Além do Pátio de Eventos, vá ao polo do Alto do Moura, onde o forró pé-de-serra é dançado na rua e nos bares." }
+    }
+  ]
+}

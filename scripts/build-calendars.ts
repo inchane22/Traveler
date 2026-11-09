@@ -164,7 +164,8 @@ if (isMain) {
     const includeDrafts = process.env.INCLUDE_DRAFTS === "1";
     const config = JSON.parse(readFileSync("config/scoring.json", "utf8")) as ScoringConfig;
     const files = buildAllCalendars({
-      countries: loadCountries("data/countries"),
+      // DATA_DIR: same data tree as build-data (the e2e suite builds from tests/fixtures/site).
+      countries: loadCountries(join(process.env.DATA_DIR?.trim() || "data", "countries")),
       config,
       messages: loadMessages("locales"),
       siteUrl: process.env.SITE_URL || DEFAULT_SITE_URL,

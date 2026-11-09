@@ -157,6 +157,6 @@ describe("R5: sensitive terms per type force a review (prd-F08)", () => {
     const { loadSensitiveTerms, sensitiveHits } = await import("../../scripts/lib/sensitive.ts");
     const { loadCountries } = await import("../../scripts/build-data.ts");
     const terms = loadSensitiveTerms(".");
-    expect(loadCountries("data/countries").flatMap((c) => c.festivals.flatMap((f) => sensitiveHits(f, terms)))).toEqual([]);
+    expect(loadCountries("tests/fixtures/site/countries").flatMap((c) => c.festivals.flatMap((f) => sensitiveHits(f, terms)))).toEqual([]);
   });
 });
