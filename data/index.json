@@ -18,6 +18,15 @@
       "festivals": 10,
       "last_verified": "2026-10-26",
       "share_a": 0.5
+    },
+    {
+      "code": "PE",
+      "status": "publicado",
+      "region": "sudamerica",
+      "timezone": "America/Lima",
+      "festivals": 4,
+      "last_verified": "2026-10-26",
+      "share_a": 0
     }
   ],
   "tier1": [
@@ -52,6 +61,10 @@
     "carnaval-riosucio": "CO",
     "independencia-cartagena": "CO",
     "feria-de-las-flores": "CO",
-    "petronio-alvarez": "CO"
+    "petronio-alvarez": "CO",
+    "candelaria-puno": "PE",
+    "inti-raymi": "PE",
+    "carnaval-cajamarca": "PE",
+    "senor-de-los-milagros": "PE"
   }
 }
