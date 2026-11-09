@@ -293,18 +293,27 @@ export function buildAction(ctx: Ctx, code: string, label = ctx.t("build.action"
 
 /**
  * World and region views say which countries are live and that any other one can be built:
- * by name while the list is short, by count after that. Home and Explorar say the same.
+ * by name while the list is short, by count after that, with a button to the country search
+ * (`onFind`), where a country without data leads to its «Construir» page. Home and Explorar say
+ * the same.
  */
-export function liveNote(index: PublicIndex, scope: Scope, ctx: Ctx, inline = false): HTMLElement | null {
+export function liveNote(index: PublicIndex, scope: Scope, ctx: Ctx, onFind: () => void, inline = false): HTMLElement | null {
   if (scope.kind === "country" || !index.countries.length) return null;
   const names = index.countries.map((c) => countryName(c.code, ctx.lang)).sort((a, b) => a.localeCompare(b, ctx.lang));
   const text =
     names.length <= LIVE_NAMES_MAX
       ? ctx.t("home.pilot", { countries: new Intl.ListFormat(ctx.lang, { type: "conjunction" }).format(names) })
       : ctx.t("home.pilotMany", { count: names.length });
-  // Inline: a plain line inside a block that already carries the globe (Explorar's world hint).
-  if (inline) return h("p", { "data-testid": "pilot-note" }, text);
-  return h("p", { class: "pilot-note", "data-testid": "pilot-note" }, icon("globe"), h("span", null, text));
+  const find = h(
+    "button",
+    { type: "button", class: "btn btn--secondary btn--small live-note__find", "aria-haspopup": "dialog", "data-key": inline ? "find-country-explore" : "find-country", onclick: onFind },
+    icon("search"),
+    ctx.t("build.find"),
+  );
+  const body = h("div", { class: "live-note__body" }, h("p", null, text), h("p", null, find));
+  // Inline: inside a block that already carries the globe (Explorar's world hint).
+  if (inline) return h("div", { class: "live-note", "data-testid": "pilot-note" }, body);
+  return h("div", { class: "pilot-note live-note", "data-testid": "pilot-note" }, icon("globe"), body);
 }
 
 /** R11 «Sugerir una fiesta»: the suggestion form, with the country prefilled when one is in view. */

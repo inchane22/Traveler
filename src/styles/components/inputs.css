@@ -108,6 +108,19 @@
   color: var(--ink-3);
 }
 
+/* «+ Agregar un país»: opens the country search; no count, quieter than a filter chip. */
+.chip--add {
+  padding-inline: 0.7rem 0.9rem;
+  border-color: var(--ink-3);
+  background: transparent;
+  color: var(--ink-2);
+}
+
+.chip--add .icon {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
 /* Uncounted pill buttons: date shortcuts, active filters, jump links. */
 .pill {
   display: inline-flex;

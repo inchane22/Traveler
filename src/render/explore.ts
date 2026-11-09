@@ -32,6 +32,7 @@ import { resource } from "../resource.ts";
 import { entriesFor, filtersFrom, haversineKm, loadCountry, loadIndex, rollingMonths, type PublicIndex } from "./model.ts";
 import { icon } from "./icons.ts";
 import { marksButton } from "./marks.ts";
+import { openScopeSheet } from "./scope.ts";
 import { openSheet } from "./sheet.ts";
 
 interface ExploreData {
@@ -134,9 +135,16 @@ function filterGroups(f: ExploreState, data: ExploreData, ctx: Ctx, opts: GroupO
   );
   const tier2Count = run(data.all, { ...f, tier2: true }, ctx.today).length;
   const id = (k: string): string => `${prefix || "fl"}-${k}`;
+  // Any other country: the country search, where one without data leads to its «Construir» page.
+  const addCountry = h(
+    "button",
+    { type: "button", class: "chip chip--add", "aria-haspopup": "dialog", "data-key": key("add-country"), onclick: () => openScopeSheet({ kind: "world" }, ctx) },
+    icon("plus"),
+    h("span", { class: "chip__label" }, ctx.t("explore.addCountry")),
+  );
 
   return [
-    chipRow(ctx.t("filters.country"), id("country"), key("row-country"), countryChips),
+    chipRow(ctx.t("filters.country"), id("country"), key("row-country"), [...countryChips, addCountry]),
     chipRow(ctx.t("filters.month"), id("month"), key("row-month"), monthChips),
     chipRow(ctx.t("filters.type"), id("type"), key("row-type"), typeChips),
     h(
@@ -455,7 +463,7 @@ function worldHint(f: ExploreState, data: ExploreData, ctx: Ctx, go: (next: Expl
       "div",
       { class: "explore-hint__body" },
       h("p", null, ctx.t("explore.worldHint")),
-      liveNote(data.index, { kind: "world" }, ctx, true),
+      liveNote(data.index, { kind: "world" }, ctx, () => openScopeSheet({ kind: "world" }, ctx), true),
       ways.length
         ? h(
             "p",

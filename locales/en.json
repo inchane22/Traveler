@@ -123,7 +123,7 @@
   "scope.festivalsGroup": "Festivals",
   "scope.festivals.one": "{count} festival",
   "scope.festivals.other": "{count} festivals",
-  "scope.noData": "No verified festivals yet",
+  "scope.noData": "Not built yet: open it to build",
   "scope.building": "Being built",
   "scope.noResults": "Nothing matches “{query}”. Try the name in another language.",
   "scope.resultsCount.one": "{count} result",
@@ -150,6 +150,7 @@
   "build.gaveUpTitle": "No reliable dates for {country} yet",
   "build.gaveUpBody": "Three tries didn't find enough festival dates with a reliable source. You can ask again.",
   "build.askAgain": "Ask again",
+  "build.find": "Find a country to build",
 
   "fresh.verified": "Verified {when}.",
   "fresh.verifiedOn": "Verified {when}, on {date}.",
@@ -197,6 +198,7 @@
 
   "explore.title": "Explore",
   "explore.worldHint": "Worldwide view: only the biggest (Tier 1). Pick a country to also see its top 5.",
+  "explore.addCountry": "Add a country",
   "explore.results.one": "{count} festival",
   "explore.results.other": "{count} festivals",
   "explore.count.one": "{count} festival",

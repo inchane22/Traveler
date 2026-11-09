@@ -38,6 +38,9 @@ test.describe("Inicio", () => {
     await open(page, "#/");
     // Lists every published country, so it grows with each country the pipeline builds.
     await expect(page.getByTestId("pilot-note")).toContainText(/Ya publicados: Brasil, Colombia y Perú\. Cualquier otro país se puede construir/);
+    await page.getByTestId("pilot-note").getByRole("button", { name: "Buscar un país para construir" }).click();
+    await expect(page.getByRole("dialog").getByRole("searchbox")).toBeFocused();
+    await page.keyboard.press("Escape");
     await open(page, "#/region/sudamerica");
     await expect(page.getByTestId("pilot-note")).toBeVisible();
     await open(page, "#/pais/co");

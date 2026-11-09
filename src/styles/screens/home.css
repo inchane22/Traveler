@@ -11,7 +11,7 @@
   outline-offset: 2px;
 }
 
-/* World and region views while the pilot fills up: which countries are in. */
+/* World and region views: which countries are live. */
 .pilot-note {
   display: flex;
   gap: var(--sp-2);
@@ -25,6 +25,19 @@
   inline-size: 1.125rem;
   block-size: 1.125rem;
   margin-block-start: 0.1rem;
+}
+
+/* Which countries are live, and the way to build another one (Inicio and Explorar). */
+.live-note__body {
+  display: grid;
+  gap: var(--sp-2);
+  min-inline-size: 0;
+}
+
+.live-note__find .icon {
+  inline-size: 1rem;
+  block-size: 1rem;
+  margin-block-start: 0;
 }
 
 .freshness__partial {

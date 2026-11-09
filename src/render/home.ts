@@ -176,7 +176,7 @@ function content(scope: Scope, query: HomeQuery, data: ScopeData, ctx: Ctx): HTM
   const out: (HTMLElement | null)[] = [
     staleNotice(info, ctx),
     draft,
-    liveNote(data.index, scope, ctx),
+    liveNote(data.index, scope, ctx, () => openScopeSheet(scope, ctx)),
     first
       ? hero(first, ctx)
       : emptyState(ctx.t("home.emptyTitle"), ctx.t("home.emptyBody"), [
