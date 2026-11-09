@@ -298,7 +298,7 @@ Meta: 90% de tareas completadas y facilidad media de 5,5 o más en la pregunta �
 - **Una marca de confianza en las listas (RF-07, RF-08):** filas y portada muestran «■ Confirmada, fuente oficial» en lugar de dos insignias; la ficha conserva ambas. Ninguna fecha pierde su etiqueta. Vocabulario llano: «Por confirmar», «Años anteriores», «Estimada», «medianas (Nivel 2)»; la leyenda «Cómo leer las marcas» está a un toque de las listas.
 - **Sin navegación inferior en la ficha («Pulgar primero»):** la ficha tiene «Volver» arriba a la izquierda y la barra «Guardar» / «Agregar al calendario» ocupa la zona del pulgar; las barras fijas suman 15 % o menos de la pantalla.
 - **Cuenta regresiva honesta:** una fecha no confirmada dice «en unos N días».
-- **Países a la vista:** la vista del mundo y la de región, en Inicio y en Explorar, dicen qué países están publicados (por nombre hasta 8, luego cuántos) y que cualquier otro se puede construir. Un país sin datos ofrece «Construir <país>»; uno pedido dice en qué va su construcción.
+- **Países a la vista:** la vista del mundo y la de región, en Inicio y en Explorar, dicen qué países están publicados (por nombre hasta 8, luego cuántos) y que cualquier otro se puede construir. Esa nota trae «Buscar un país para construir» y, en Explorar, la fila de países termina con «Agregar un país»: ambos abren el buscador de países, donde uno sin datos dice «Aún sin construir» y lleva a su página. Un país sin datos ofrece «Construir <país>»; uno pedido dice en qué va su construcción.
 
 ## Modelo de datos
 

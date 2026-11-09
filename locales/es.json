@@ -123,7 +123,7 @@
   "scope.festivalsGroup": "Fiestas",
   "scope.festivals.one": "{count} fiesta",
   "scope.festivals.other": "{count} fiestas",
-  "scope.noData": "Sin fiestas verificadas todavía",
+  "scope.noData": "Aún sin construir: ábrelo para construirlo",
   "scope.building": "En construcción",
   "scope.noResults": "Nada coincide con «{query}». Prueba con el nombre en otro idioma.",
   "scope.resultsCount.one": "{count} resultado",
@@ -150,6 +150,7 @@
   "build.gaveUpTitle": "Todavía no hay fechas confiables para {country}",
   "build.gaveUpBody": "Tres intentos no encontraron suficientes fechas con una fuente confiable. Puedes pedirlo de nuevo.",
   "build.askAgain": "Pedirlo de nuevo",
+  "build.find": "Buscar un país para construir",
 
   "fresh.verified": "Verificado {when}.",
   "fresh.verifiedOn": "Verificado {when}, el {date}.",
@@ -197,6 +198,7 @@
 
   "explore.title": "Explorar",
   "explore.worldHint": "Vista global: solo las más grandes (Nivel 1). Al elegir un país ves también sus 5 mejores.",
+  "explore.addCountry": "Agregar un país",
   "explore.results.one": "{count} fiesta",
   "explore.results.other": "{count} fiestas",
   "explore.count.one": "{count} fiesta",

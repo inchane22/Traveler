@@ -18,7 +18,8 @@ test.describe("Explorar", () => {
     expect(listed).toBeGreaterThan(0);
     await expect(count(page)).toHaveText(`${listed} fiestas`);
     await openFilters(page);
-    const chips = filterChips(page).locator(".chip");
+    // Every filter chip; «Agregar un país» opens the country search and has no count.
+    const chips = filterChips(page).locator(".chip:not(.chip--add)");
     expect(await chips.count()).toBeGreaterThan(15);
     for (const chip of await chips.all()) await expect(chip.locator(".chip__count")).toHaveText(/\d+/);
     const colombia = filterChips(page).getByRole("button", { name: `Colombia (${listed} fiestas)` });
@@ -150,6 +151,25 @@ test.describe("Explorar", () => {
     await expect(page).toHaveURL(/#\/explorar\?pais=co$/);
     await page.getByRole("button", { name: "Este mes" }).click();
     await expect(page).toHaveURL(/desde=2026-10-26&hasta=2026-10-31/);
+  });
+
+  test("any other country is one search away: from Explorar to its «Construir» page", async ({ page }) => {
+    await open(page, "#/explorar");
+    await page.locator(".explore-hint").getByRole("button", { name: "Buscar un país para construir" }).click();
+    const dialog = page.getByRole("dialog");
+    await dialog.getByRole("searchbox").fill("japon");
+    const japan = dialog.getByTestId("country-results").getByRole("link", { name: /Japón/ });
+    await expect(japan).toContainText("Aún sin construir");
+    await japan.click();
+    await expect(page).toHaveURL(/#\/pais\/jp$/);
+    await expect(page.getByRole("link", { name: /Construir Japón/ })).toBeVisible();
+  });
+
+  test("the country chips end with «Agregar un país», which opens the country search", async ({ page }) => {
+    await open(page, "#/explorar");
+    await openFilters(page);
+    await filterChips(page).getByRole("button", { name: "Agregar un país" }).click();
+    await expect(page.getByRole("dialog").getByRole("searchbox")).toBeFocused();
   });
 
   test("the world view says which countries are live, so two chips are not mistaken for the whole world", async ({ page }) => {
