@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
 import { findLeaks, scan, ScanError, trackedFiles } from "../../scripts/check-secrets.ts";
 import { readRequests } from "../../scripts/lib/requests.ts";
-import { buildIndex, loadCountries } from "../../scripts/build-data.ts";
+import { buildIndex, loadCountries, publicChangelog } from "../../scripts/build-data.ts";
 import { loadDomainPolicy } from "../../scripts/lib/domains.ts";
 import type { ScoringConfig } from "../../src/score.ts";
 
@@ -45,8 +45,12 @@ describe("check-secrets (R8)", () => {
 });
 
 describe("build-data", () => {
-  const countries = loadCountries("data/countries");
+  // data/ is rewritten by the pipeline every day: value checks read the frozen copy; the
+  // committed-index check below must read data/ itself.
+  const countries = loadCountries("tests/fixtures/site/countries");
+  const live = loadCountries("data/countries");
   test("every country file validates and the index lists tier-1 festivals", () => {
+    expect(live.length).toBeGreaterThan(0);
     const index = buildIndex(countries, config, false);
     expect(index.countries.every((c) => c.status === "publicado")).toBe(true);
     expect(index.tier1).toContain("CO/carnaval-barranquilla");
@@ -62,8 +66,13 @@ describe("build-data", () => {
   test("the committed data/index.json is up to date", () => {
     const committed = JSON.parse(readFileSync("data/index.json", "utf8"));
     // The same policies and requests build-data's main uses, so a source without a declared tier cannot diverge.
-    const policies = new Map(countries.map((c) => [c.country, loadDomainPolicy(".", c.country)]));
-    expect(committed).toEqual(buildIndex(countries, config, false, policies, readRequests(".")));
+    const policies = new Map(live.map((c) => [c.country, loadDomainPolicy(".", c.country)]));
+    expect(committed).toEqual(buildIndex(live, config, false, policies, readRequests(".")));
+  });
+
+  test("the site's change log leaves out countries it does not serve (a draft's changes stay private)", () => {
+    const entry = (country: string) => ({ date: "2026-11-09", country, slug: "fest", field: "start", old: null, new: "2027-01-04", source_urls: ["https://example.org/a"] });
+    expect(publicChangelog([entry("CO"), entry("MX"), entry("PE")], new Set(["CO", "PE"])).map((e) => e.country)).toEqual(["CO", "PE"]);
   });
 
   test("requested countries that are not live yet are listed, so their page says where the build is", () => {

@@ -1,16 +1,18 @@
 // Validates data/countries/*.json against src/schema.ts and writes what the site serves:
 // data/index.json (committed, published only) and public/data/** (build output).
 // Drafts («borrador») are copied only with INCLUDE_DRAFTS=1, so they never reach production.
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+// DATA_DIR (default `data`) builds from another data tree: the e2e suite builds the site from the
+// frozen copy in tests/fixtures/site, so the pipeline's daily commits cannot break UI tests.
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { addMonths, todayIn, type ISO } from "../src/dates.ts";
-import { CountryFile, MIN_SOURCED_FESTIVALS, type CountryFile as Country, type Edition } from "../src/schema.ts";
+import { ChangelogEntry, CountryFile, MIN_SOURCED_FESTIVALS, type CountryFile as Country, type Edition } from "../src/schema.ts";
 import { CRITERIA, scoreFestival, type ScoringConfig } from "../src/score.ts";
 import { quoteStatesDate } from "./lib/date-parser.ts";
 import { hasConfig, isOfficial, loadDomainPolicy, tierOf, type DomainPolicy } from "./lib/domains.ts";
 import { isMainModule } from "./lib/is-main.ts";
 import { localLangFor } from "./lib/lang.ts";
-import { readRequests, type CountryRequest } from "./lib/requests.ts";
+import { RequestsFile, type CountryRequest } from "./lib/requests.ts";
 import { loadSensitiveTerms, sensitiveHits } from "./lib/sensitive.ts";
 
 export interface IndexCountry {
@@ -130,6 +132,11 @@ export function dataProblems(countries: readonly Country[], policies: ReadonlyMa
   return problems;
 }
 
+/** Changelog entries the site may show: only countries it serves (a draft's changes stay private). */
+export function publicChangelog(entries: readonly ChangelogEntry[], shown: ReadonlySet<string>): ChangelogEntry[] {
+  return entries.filter((e) => shown.has(e.country));
+}
+
 export function buildIndex(countries: readonly Country[], config: ScoringConfig, includeDrafts: boolean, policies?: ReadonlyMap<string, DomainPolicy>, requests: readonly CountryRequest[] = []): PublicIndex {
   const shown = countries.filter((c) => c.status === "publicado" || includeDrafts);
   const slugs: Record<string, string> = {};
@@ -167,8 +174,9 @@ export function buildIndex(countries: readonly Country[], config: ScoringConfig,
 const isMain = isMainModule(import.meta.url);
 if (isMain) {
   const includeDrafts = process.env.INCLUDE_DRAFTS === "1";
+  const dataDir = process.env.DATA_DIR?.trim() || "data";
   const config = JSON.parse(readFileSync("config/scoring.json", "utf8")) as ScoringConfig;
-  const countries = loadCountries("data/countries");
+  const countries = loadCountries(join(dataDir, "countries"));
   const policies = new Map(countries.map((c) => [c.country, loadDomainPolicy(".", c.country)]));
   const today = todayIn("UTC");
   const problems = dataProblems(countries, policies, today);
@@ -182,18 +190,25 @@ if (isMain) {
     console.warn(`build-data: R5 review ${hit.slug} ${hit.field}: «${hit.term}»`);
   }
 
-  const requests = readRequests(".");
-  writeFileSync("data/index.json", `${JSON.stringify(buildIndex(countries, config, false, policies, requests), null, 2)}\n`);
+  const requestsPath = join(dataDir, "state", "requests.json");
+  const requests = existsSync(requestsPath) ? RequestsFile.parse(JSON.parse(readFileSync(requestsPath, "utf8"))) : [];
+  writeFileSync(join(dataDir, "index.json"), `${JSON.stringify(buildIndex(countries, config, false, policies, requests), null, 2)}\n`);
 
   rmSync("public/data", { recursive: true, force: true });
   mkdirSync("public/data/countries", { recursive: true });
   writeFileSync("public/data/index.json", JSON.stringify(buildIndex(countries, config, includeDrafts, policies, requests)));
+  const shown = new Set<string>();
   for (const c of countries) {
     if (c.status === "publicado" || includeDrafts) {
       writeFileSync(`public/data/countries/${c.country.toLowerCase()}.json`, JSON.stringify(c));
+      shown.add(c.country);
     }
   }
-  if (existsSync("data/changelog.json")) copyFileSync("data/changelog.json", "public/data/changelog.json");
+  const changelogPath = join(dataDir, "changelog.json");
+  if (existsSync(changelogPath)) {
+    const entries = ChangelogEntry.array().parse(JSON.parse(readFileSync(changelogPath, "utf8")));
+    writeFileSync("public/data/changelog.json", JSON.stringify(publicChangelog(entries, shown)));
+  }
   const drafts = countries.filter((c) => c.status === "borrador").map((c) => c.country);
   console.log(`build-data: ${countries.length} countries validated; drafts ${includeDrafts ? "included" : "excluded"}: ${drafts.join(", ") || "none"}`);
 }

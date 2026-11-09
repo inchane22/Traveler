@@ -71,7 +71,7 @@ const PREFIXES: Record<Lang, RegExp> = {
 };
 
 const config = JSON.parse(readFileSync("config/scoring.json", "utf8")) as ScoringConfig;
-const rawCo = JSON.parse(readFileSync("data/countries/co.json", "utf8")) as unknown;
+const rawCo = JSON.parse(readFileSync("tests/fixtures/site/countries/co.json", "utf8")) as unknown;
 const co = CountryFile.parse(rawCo);
 const TODAY = "2026-10-26";
 const SITE = "https://inchane22.github.io/traveler/";
@@ -242,7 +242,7 @@ describe("buildCountryCalendars", () => {
 });
 
 describe("buildAllCalendars", () => {
-  const countries = loadCountries("data/countries");
+  const countries = loadCountries("tests/fixtures/site/countries");
   const draft: Country = { ...co, country: "ZZ", status: "borrador", festivals: [] };
 
   test("drafts are left out unless INCLUDE_DRAFTS is on", () => {

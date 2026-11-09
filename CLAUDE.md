@@ -41,6 +41,8 @@ only erasable TS syntax is allowed (no enums, no parameter properties).
 
 - `src/` app (vanilla TS, no UI framework), `src/core/` pure logic shared with `scripts/`.
 - `data/countries/<cc>.json` one file per country; `data/index.json` is generated.
+- `tests/fixtures/site/` frozen data for behaviour tests and the e2e site; never assert values
+  of `data/` in a test (the pipeline rewrites it daily).
 - `data/state/` pipeline state: `ledger.jsonl` (one line per API call, append only),
   `requests.json` (countries asked for), `holds.json` (changes the checks held back).
 - `config/` scoring weights, official domains, source tiers.

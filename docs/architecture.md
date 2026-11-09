@@ -106,6 +106,18 @@ Known gaps, found 2026-11-08 and left for their own change:
 - `ReviewedChange.verdict` is stored next to `reasons` and `flags` instead of derived from them, so
   the type allows a `rejected` change without a reason.
 
+## Test data
+
+`data/` changes every day through the pipeline's own commits, so a test that asserts a date, a
+status or a count must not read it. Behaviour tests read the frozen copy in `tests/fixtures/site/`
+(countries, changelog, requests and index as of 2026-11-09): the unit helpers (`countries()`,
+`country()`, `tempRepo()`) and the e2e site, which Playwright builds with
+`DATA_DIR=tests/fixtures/site` (build-data and build-calendars read `DATA_DIR`, default `data`).
+Only checks that must hold for any data read `data/`: the committed index matches, every file
+validates, no unsourced «oficial» figure. build-data enforces those before the pipeline commits.
+The site's `changelog.json` keeps only countries it serves (`publicChangelog`): a draft's changes
+stay private until it goes live.
+
 ## Runtime hooks for tests
 
 - `?today=YYYY-MM-DD` on the page URL fixes «today» and shows a «Fecha simulada» banner with a link

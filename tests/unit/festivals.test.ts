@@ -86,7 +86,7 @@ describe("garbled links never throw", () => {
 });
 
 describe("pending postponement (UI-2)", () => {
-  const live = CountryFile.parse(JSON.parse(readFileSync("data/countries/co.json", "utf8")));
+  const live = CountryFile.parse(JSON.parse(readFileSync("tests/fixtures/site/countries/co.json", "utf8")));
   const petronio = live.festivals.find((f) => f.slug === "petronio-alvarez");
 
   test("the dateless postponed Petronio 2026 is a pending postponement after its old window", () => {

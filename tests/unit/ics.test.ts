@@ -44,7 +44,7 @@ const t: Translate = (key, params) => {
 };
 
 const config = JSON.parse(readFileSync("config/scoring.json", "utf8")) as ScoringConfig;
-const rawCo = JSON.parse(readFileSync("data/countries/co.json", "utf8")) as unknown;
+const rawCo = JSON.parse(readFileSync("tests/fixtures/site/countries/co.json", "utf8")) as unknown;
 const co = CountryFile.parse(rawCo);
 const TODAY = "2026-10-26";
 const SITE = "https://example.test/traveler/";

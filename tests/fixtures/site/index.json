@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-10-26",
+  "countries": [
+    {
+      "code": "BR",
+      "status": "publicado",
+      "region": "sudamerica",
+      "timezone": "America/Sao_Paulo",
+      "festivals": 10,
+      "last_verified": "2026-11-08",
+      "share_a": 0.33
+    },
+    {
+      "code": "CO",
+      "status": "publicado",
+      "region": "sudamerica",
+      "timezone": "America/Bogota",
+      "festivals": 10,
+      "last_verified": "2026-10-26",
+      "share_a": 0.5
+    },
+    {
+      "code": "PE",
+      "status": "publicado",
+      "region": "sudamerica",
+      "timezone": "America/Lima",
+      "festivals": 4,
+      "last_verified": "2026-10-26",
+      "share_a": 0
+    }
+  ],
+  "tier1": [
+    "BR/carnaval-recife",
+    "BR/cirio-de-nazare",
+    "BR/carnaval-olinda",
+    "BR/lavagem-do-bonfim",
+    "BR/sao-joao-campina-grande",
+    "BR/bumba-meu-boi-sao-luis",
+    "BR/sao-joao-caruaru",
+    "CO/carnaval-barranquilla",
+    "CO/negros-y-blancos",
+    "CO/feria-de-las-flores"
+  ],
+  "slugs": {
+    "carnaval-rio-de-janeiro": "BR",
+    "carnaval-salvador": "BR",
+    "carnaval-recife": "BR",
+    "cirio-de-nazare": "BR",
+    "festival-parintins": "BR",
+    "carnaval-olinda": "BR",
+    "lavagem-do-bonfim": "BR",
+    "sao-joao-campina-grande": "BR",
+    "bumba-meu-boi-sao-luis": "BR",
+    "sao-joao-caruaru": "BR",
+    "carnaval-barranquilla": "CO",
+    "negros-y-blancos": "CO",
+    "feria-de-cali": "CO",
+    "festival-vallenato": "CO",
+    "san-pacho": "CO",
+    "festival-tambores-palenque": "CO",
+    "carnaval-riosucio": "CO",
+    "independencia-cartagena": "CO",
+    "feria-de-las-flores": "CO",
+    "petronio-alvarez": "CO",
+    "candelaria-puno": "PE",
+    "inti-raymi": "PE",
+    "carnaval-cajamarca": "PE",
+    "senor-de-los-milagros": "PE"
+  },
+  "requests": [
+    {
+      "code": "BO",
+      "status": "queued"
+    },
+    {
+      "code": "MX",
+      "status": "queued"
+    }
+  ]
+}
