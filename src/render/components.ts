@@ -9,6 +9,7 @@ import type { Ctx } from "./context.ts";
 import { range, relativeDays, shortDate } from "./format.ts";
 import { icon, type IconName } from "./icons.ts";
 import type { Resource } from "../resource.ts";
+import { STATUS_TRAITS } from "../status.ts";
 import { countdown, DataError, dateKind, isStale, isUnconfirmed, type Countdown, type IndexCountry } from "./model.ts";
 
 export function festivalName(f: Festival, lang: Lang): string {
@@ -110,7 +111,8 @@ export function posterBand(occ: Occurrence | null): HTMLElement {
 
 export function occurrenceDates(occ: Occurrence | null, lang: Lang, t: Ctx["t"], withYear = true): string {
   if (occ?.start && occ.end) return range(occ.start, occ.end, lang, withYear);
-  if (occ?.window && isPendingPostponement(occ)) return t("date.originalWindow", { range: range(occ.window.start, occ.window.end, lang, withYear) });
+  // Postponed without new dates, or cancelled: the window is when it was meant to be, not a forecast.
+  if (occ?.window && (isPendingPostponement(occ) || !STATUS_TRAITS[occ.status].takesPlace)) return t("date.originalWindow", { range: range(occ.window.start, occ.window.end, lang, withYear) });
   if (occ?.window) return t("date.window", { range: range(occ.window.start, occ.window.end, lang, withYear) });
   return t("date.unknown");
 }
@@ -129,6 +131,8 @@ export function countdownText(cd: Countdown, t: Ctx["t"]): string {
       return t("countdown.ended");
     case "postponed":
       return t("countdown.postponed");
+    case "cancelled":
+      return t("countdown.cancelled");
     case "unknown":
       return t("countdown.unknown");
   }

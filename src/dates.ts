@@ -187,6 +187,23 @@ export function resolveRule(rule: Rule, year: number, ctx: RuleContext): Resolve
   }
 }
 
+/**
+ * Whether the rule resolves to exact days (`computed`, `table`) rather than a probable window. So an
+ * occurrence's `window` holds the rule's own days unless the rule is «announced».
+ */
+export function ruleGivesDays(rule: Rule): boolean {
+  switch (rule.type) {
+    case "announced":
+      return false;
+    case "fixed":
+    case "easter_offset":
+    case "nth_weekday":
+    case "relative_to":
+    case "lunisolar_table":
+      return true;
+  }
+}
+
 /** One edition of a festival: stored data wins over the rule (PRD: organizer beats rule). */
 export function occurrenceFor(festival: Festival, year: number, ctx: RuleContext): Occurrence | null {
   if (!parityMatches(festival.rule, year)) return null;

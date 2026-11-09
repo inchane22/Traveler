@@ -302,6 +302,8 @@ test.describe("RF-07 and RF-19 on served fixture data", () => {
     await open(page, "#/fiesta/feria-de-cali");
     await expect(page.getByRole("heading", { level: 1 })).toHaveClass(/is-struck/);
     await expect(page.locator(".when .status")).toHaveText("Cancelada");
+    // No countdown towards days it will not have (src/status.ts).
+    await expect(page.locator(".when [data-countdown]")).toHaveText("No se realizará");
     await expect(page.locator(".notice--cancel a")).toHaveAttribute("href", /^https:\/\//);
     await page.getByRole("button", { name: "Agregar al calendario" }).click();
     const { text } = await downloadText(page, page.getByTestId("ics-download"));

@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { ctxFor } from "../../src/festivals.ts";
 import { ChangelogEntry, CountryFile, MIN_SOURCED_FESTIVALS, Proposal } from "../../src/schema.ts";
 import type { ScoringConfig } from "../../src/score.ts";
+import { STATUS_TRAITS } from "../../src/status.ts";
 import { loadCountries, sourcedFestivals } from "../build-data.ts";
 import { applyChanges, changelogEntries, trialApply } from "./apply.ts";
 import { archiveAll, type Archiver } from "./archive.ts";
@@ -70,12 +71,13 @@ interface FollowupBudget {
 }
 
 /**
- * Date facts an edition without confirmed dates still lacks after the first pass. That pass stops
- * at official sites, which often cite the festival without stating the next edition's dates.
+ * Date facts an edition a source has not settled still lacks after the first pass. That pass stops
+ * at official sites, which often cite the festival without stating the next edition's dates. A
+ * settled edition (confirmed, with its dates; or cancelled) has none to find (src/status.ts).
  */
 export function missingDateFacts(item: QueueItem, changes: readonly ReviewedChange[]): FollowupFact[] {
   const e = item.festival.editions[String(item.year)];
-  if (e?.start && e.end && e.status === "confirmada") return [];
+  if (e && STATUS_TRAITS[e.status].settled) return [];
   const answered = new Set(changes.filter((c) => c.verdict !== "rejected").map((c) => c.field));
   if (answered.has("start") && answered.has("end")) return [];
   return FOLLOWUP_FACTS.filter((f) => !answered.has(f));

@@ -230,6 +230,24 @@ describe("queue", () => {
     expect(buildQueue([br], config, "2026-12-07", { max: 40, perCountry: 10 }).map((i) => i.slug)).toContain("cirio-de-nazare");
   });
 
+  // src/status.ts: a cancellation is settled like a confirmation, and has nothing left to sweep for.
+  test("a cancelled edition is re-verified only when stale and never swept", () => {
+    expect(reasonsFor(100, "cancelada", TODAY, TODAY)).toEqual([]);
+    expect(reasonsFor(100, "cancelada", "2026-10-11", TODAY)).toEqual(["stale"]);
+    expect(reasonsFor(200, "cancelada", null, "2026-11-07")).toEqual(["stale"]);
+
+    const co = country("CO");
+    const sweep = (c: CountryFile) => buildQueue([c], config, TODAY, { max: 40, perCountry: 10, sweepWithin: 45 }).map((i) => i.slug);
+    expect(sweep(co)).toContain("independencia-cartagena");
+    const source = { url: "https://www.cartagena.gov.co/", publisher: "Alcaldía de Cartagena", accessed: TODAY, tier: "A" as const };
+    const cancelled = CountryFile.parse({
+      ...co,
+      festivals: co.festivals.map((f) => (f.slug === "independencia-cartagena" ? { ...f, editions: { ...f.editions, "2026": { status: "cancelada", confidence: "oficial", sources: [source], last_verified: TODAY, sequence: 1 } } } : f)),
+    });
+    expect(sweep(cancelled)).not.toContain("independencia-cartagena");
+    expect(buildQueue([cancelled], config, TODAY, { max: 40, perCountry: 10 }).map((i) => i.slug)).not.toContain("independencia-cartagena");
+  });
+
   test("a postponed edition without new dates stays in the weekly run but out of the news sweeps", () => {
     const co = country("CO");
     const sweep = buildQueue([co], config, TODAY, { max: 40, perCountry: 10, sweepWithin: 45 }).map((i) => i.slug);

@@ -5,6 +5,7 @@ import { addDays, addMonths, diffDays, effectiveEnd, effectiveStart, type ISO, t
 import { applyFilters, buildEntries, isPendingPostponement, isVisible, sortByDate, type FestivalEntry, type FilterHit, type Filters, type Scope } from "../festivals.ts";
 import type { ChangelogEntry, CountryFile, FestivalType, KeyEvent, Source } from "../schema.ts";
 import type { ScoringConfig } from "../score.ts";
+import { STATUS_TRAITS } from "../status.ts";
 import scoringJson from "../../config/scoring.json";
 import { origins as advisoryOrigins } from "../../config/advisories.json";
 import { parseOrigins, pickAdvisory, type Advisory } from "./advisory.ts";
@@ -183,10 +184,13 @@ export type Countdown =
   | { kind: "ongoing"; daysLeft: number }
   | { kind: "ended" }
   | { kind: "postponed" }
+  | { kind: "cancelled" }
   | { kind: "unknown" };
 
 export function countdown(occ: Occurrence | null, today: ISO): Countdown {
   if (!occ) return { kind: "unknown" };
+  // Its days are the ones it will not have: no count towards them (src/status.ts).
+  if (!STATUS_TRAITS[occ.status].takesPlace) return { kind: "cancelled" };
   // Its old window says nothing about when it happens now: not «ended», a new date is coming.
   if (isPendingPostponement(occ)) return { kind: "postponed" };
   const start = occ.start ?? occ.window?.start;

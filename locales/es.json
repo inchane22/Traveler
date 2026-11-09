@@ -91,6 +91,7 @@
   "countdown.lastDay": "En curso, último día",
   "countdown.ended": "Ya terminó",
   "countdown.postponed": "Nueva fecha por anunciar",
+  "countdown.cancelled": "No se realizará",
   "countdown.unknown": "Sin fecha aún",
 
   "save.save": "Guardar",

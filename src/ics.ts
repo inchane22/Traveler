@@ -1,7 +1,8 @@
 // RFC 5545 calendar output (RF-10, RF-18), shared by the app and scripts/build-calendars.ts.
 // Pure: no DOM, no fs, no locale imports. Visible strings come from the caller's `t`.
-import { addDays, parseISODate, type ISO, type Occurrence } from "./dates.ts";
+import { addDays, parseISODate, ruleGivesDays, type DateWindow, type ISO, type Occurrence } from "./dates.ts";
 import type { Festival, Lang, LocalizedText, Status } from "./schema.ts";
+import { STATUS_TRAITS } from "./status.ts";
 
 export type IcsStatus = "TENTATIVE" | "CONFIRMED" | "CANCELLED";
 
@@ -77,10 +78,23 @@ export function countryName(code: string, lang: Lang): string {
   return new Intl.DisplayNames([lang], { type: "region", fallback: "code" }).of(upper) ?? upper;
 }
 
-/** One all-day event per dated occurrence. Window-only or missing occurrences return null. */
+/**
+ * The days an event spans: the occurrence's dates. A cancelled or postponed edition stored without
+ * dates keeps the days its rule gave, which is the event subscribed calendars already hold, so they
+ * get the new status and SEQUENCE instead of losing the event (R9, RF-18). A probable window
+ * («announced» rule) never was an event.
+ */
+function eventDays(festival: Festival, occurrence: Occurrence): DateWindow | null {
+  if (occurrence.start && occurrence.end) return { start: occurrence.start, end: occurrence.end };
+  if (STATUS_TRAITS[occurrence.status].keepsRuleDays && occurrence.window && ruleGivesDays(festival.rule)) return occurrence.window;
+  return null;
+}
+
+/** One all-day event per dated occurrence (see eventDays). Window-only or missing occurrences return null. */
 export function eventFor(source: EventSource, lang: Lang, t: Translate, siteUrl: string): IcsEvent | null {
   const { festival, occurrence, country } = source;
-  if (!occurrence?.start || !occurrence.end) return null;
+  const days = occurrence ? eventDays(festival, occurrence) : null;
+  if (!occurrence || !days) return null;
 
   const url = `${withSlash(siteUrl)}#/fiesta/${festival.slug}`;
   const name = festival.names[lang];
@@ -103,8 +117,8 @@ export function eventFor(source: EventSource, lang: Lang, t: Translate, siteUrl:
 
   return {
     uid: `${festival.slug}-${occurrence.year}@traveler`,
-    start: occurrence.start,
-    end: occurrence.end,
+    start: days.start,
+    end: days.end,
     summary: prefix ? `${prefix} ${name}` : name,
     description,
     location: `${festival.city}, ${countryName(country, lang)}`,

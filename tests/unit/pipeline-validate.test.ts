@@ -1,8 +1,9 @@
 import { describe, expect, test } from "vitest";
 import { ctxFor } from "../../src/festivals.ts";
+import type { Edition } from "../../src/schema.ts";
 import type { Tier } from "../../src/score.ts";
 import type { Citation } from "../../scripts/lib/research.ts";
-import { capConfidence, checkDateOrder, currentValue, fieldProblem, reviewChange, reviewProposal, riskOf, ruleWindow, type ReviewContext } from "../../scripts/lib/validate.ts";
+import { capConfidence, checkDateOrder, currentValue, fieldProblem, reviewChange, reviewProposal, riskOf, ruleWindow, statusMoveCheck, type ReviewContext } from "../../scripts/lib/validate.ts";
 import { cite, coPolicy, country, festival } from "../fixtures/pipeline/helpers.ts";
 
 const CO = country("CO");
@@ -144,6 +145,29 @@ describe("reviewChange: fields and values (LLM05)", () => {
   test("a cancellation the quote does not state is flagged", () => {
     const r = reviewChange(change({ field: "status", new: "cancelada", quote: "del 2 al 7 de enero de 2027" }), nyb());
     expect(r.flags.join()).toMatch(/la cita no dice cancelada/);
+  });
+
+  // A page published before the cancellation still lists the dates: it reads like a reinstatement.
+  test("leaving a cancellation always goes to a person, even on an official page with the dates", () => {
+    const f = festival("CO", "negros-y-blancos");
+    const stored: Edition = { status: "cancelada", confidence: "oficial", key_events: [], sources: [{ url: PASTO, publisher: "pasto.gov.co", accessed: "2026-10-01", tier: "A" }], sequence: 1 };
+    const cancelled = { ...nyb(), festival: { ...f, editions: { ...f.editions, "2027": stored } } };
+    const back = reviewChange(change({ field: "status", new: "tentativa", quote: "del 2 al 7 de enero de 2027" }), cancelled);
+    expect(back.kind).toBe("change");
+    expect(back.verdict).toBe("flagged");
+    expect(back.flags.join()).toMatch(/estaba cancelada/);
+  });
+
+  test("statusMoveCheck: the evidence each status move needs", () => {
+    const none = { reasons: [], flags: [] };
+    expect(statusMoveCheck(undefined, "confirmada", "del 2 al 7 de enero")).toEqual(none);
+    expect(statusMoveCheck("tentativa", "confirmada", "del 2 al 7 de enero")).toEqual(none);
+    expect(statusMoveCheck("aplazada", "confirmada", "nuevas fechas: del 2 al 7 de marzo")).toEqual(none);
+    expect(statusMoveCheck("tentativa", "aplazada", "el carnaval fue aplazado")).toEqual(none);
+    expect(statusMoveCheck("confirmada", "por_anunciar", "fechas por confirmar")).toEqual(none);
+    expect(statusMoveCheck("confirmada", "por_anunciar", "Carnaval 2027").reasons).toHaveLength(1);
+    expect(statusMoveCheck("tentativa", "cancelada", "Carnaval 2027").flags).toEqual(["revisar: la cita no dice cancelada"]);
+    expect(statusMoveCheck("cancelada", "confirmada", "se reanuda: del 2 al 7 de enero").flags).toHaveLength(1);
   });
 
   test("key events: a known one is checked like a date, a new one needs a name", () => {
