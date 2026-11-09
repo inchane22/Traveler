@@ -455,7 +455,7 @@ function worldHint(f: ExploreState, data: ExploreData, ctx: Ctx, go: (next: Expl
       "div",
       { class: "explore-hint__body" },
       h("p", null, ctx.t("explore.worldHint")),
-      liveNote(data.index, { kind: "world" }, ctx),
+      liveNote(data.index, { kind: "world" }, ctx, true),
       ways.length
         ? h(
             "p",

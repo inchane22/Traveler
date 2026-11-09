@@ -295,13 +295,15 @@ export function buildAction(ctx: Ctx, code: string, label = ctx.t("build.action"
  * World and region views say which countries are live and that any other one can be built:
  * by name while the list is short, by count after that. Home and Explorar say the same.
  */
-export function liveNote(index: PublicIndex, scope: Scope, ctx: Ctx): HTMLElement | null {
+export function liveNote(index: PublicIndex, scope: Scope, ctx: Ctx, inline = false): HTMLElement | null {
   if (scope.kind === "country" || !index.countries.length) return null;
   const names = index.countries.map((c) => countryName(c.code, ctx.lang)).sort((a, b) => a.localeCompare(b, ctx.lang));
   const text =
     names.length <= LIVE_NAMES_MAX
       ? ctx.t("home.pilot", { countries: new Intl.ListFormat(ctx.lang, { type: "conjunction" }).format(names) })
       : ctx.t("home.pilotMany", { count: names.length });
+  // Inline: a plain line inside a block that already carries the globe (Explorar's world hint).
+  if (inline) return h("p", { "data-testid": "pilot-note" }, text);
   return h("p", { class: "pilot-note", "data-testid": "pilot-note" }, icon("globe"), h("span", null, text));
 }
 
