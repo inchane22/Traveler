@@ -1,6 +1,23 @@
 {
   "country": "BR",
-  "A": ["gov.br", "leg.br", "prefeitura.rio", "unesco.org"],
+  "A": [
+    "gov.br",
+    "leg.br",
+    "prefeitura.rio",
+    "unesco.org",
+    "riotur.rio",
+    "carnaval.rio",
+    "reveillon.rio",
+    "liesa.org.br",
+    "salvadordabahia.com",
+    "arquidiocesesalvador.org.br",
+    "galodamadrugada.com.br",
+    "ciriodenazare.com.br",
+    "boicaprichoso.com",
+    "garantido.com.br",
+    "portalbelohorizonte.com.br",
+    "spturis.com"
+  ],
   "B": [
     "ebc.com.br",
     "globo.com",
@@ -9,11 +26,38 @@
     "poder360.com.br",
     "cnnbrasil.com.br",
     "metropoles.com",
+    "r7.com",
+    "gazetadopovo.com.br",
+    "abril.com.br",
     "diariodorio.com",
+    "odia.ig.com.br",
     "atarde.com.br",
     "correio24horas.com.br",
+    "bnews.com.br",
+    "bahianoticias.com.br",
+    "ibahia.com",
     "diariodepernambuco.com.br",
-    "oliberal.com"
+    "jc.uol.com.br",
+    "folhape.com.br",
+    "jornaldaparaiba.com.br",
+    "oliberal.com",
+    "dol.com.br",
+    "acritica.com",
+    "portalamazonia.com",
+    "imirante.com",
+    "oimparcial.com.br",
+    "otempo.com.br",
+    "em.com.br",
+    "uai.com.br"
   ],
-  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+  "blocked": [
+    "viagogo.com",
+    "stubhub.com",
+    "allevents.in",
+    "happeningnext.com",
+    "programacaocarnavalrecife.com.br",
+    "carnavalsalvadorbahia.com.br",
+    "riocarnaval.org",
+    "camarotecarnaval.com"
+  ]
 }
