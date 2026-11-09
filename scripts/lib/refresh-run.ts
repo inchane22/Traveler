@@ -165,7 +165,8 @@ async function verifyFestival(item: QueueItem, country: CountryFile, policy: Dom
 /**
  * Second, open search (block list only) for the date facts the first pass did not state. Its
  * proposals go through the same validation against its own citations; only the missing facts are
- * kept, so the first pass always wins. A failure here keeps the first pass's results.
+ * kept, so the first pass always wins. An API failure or the budget here keeps the first pass's
+ * results; rejected credentials and bugs fail the festival like a first-pass error (BE-04).
  */
 async function followUp(item: QueueItem, country: CountryFile, policy: DomainPolicy, req: ResearchRequest, missing: readonly FollowupFact[], run: FestivalRun, opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard): Promise<FestivalRun> {
   const fields = [...missing];
@@ -323,7 +324,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   // BE-04: unexpected errors alone do not fail a run that verified other festivals (their PR still
   // opens; refresh.yml fails the job afterwards), but a run that verified nothing goes red.
   const unexpected = logs.filter((l) => l.outcome === "error").length;
-  const verified = logs.filter((l) => VERIFIED.has(l.outcome)).length;
+  const verified = logs.filter((l) => VERIFIED[l.outcome]).length;
   const blind = searchedBlind(logs, sweep);
   if (blind) {
     const line = `refresh ${opts.today}: all ${verified} festivals came back without a single citation; check the search setup (tool version, allowed_callers, domain lists) before the festivals`;
@@ -350,8 +351,23 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   return { exitCode, report, files, calls: guard.calls };
 }
 
-/** Outcomes where the model answered: the pipeline worked for that festival, whatever it found. */
-const VERIFIED: ReadonlySet<FestivalLog["outcome"]> = new Set(["ok", "no_citations", "refusal", "truncated", "invalid_proposal"]);
+/**
+ * Whether the model answered: the pipeline worked for that festival, whatever it found. It decides
+ * `verified`, the blind-search check and the exit code, so every outcome must say (a new one is a
+ * compile error here until it does).
+ */
+const VERIFIED: Readonly<Record<FestivalOutcome, boolean>> = {
+  ok: true,
+  no_citations: true,
+  refusal: true,
+  truncated: true,
+  invalid_proposal: true,
+  api_error: false,
+  error: false,
+  no_fixture: false,
+  skipped_budget: false,
+  not_run: false,
+};
 
 /**
  * A weekly run where every researched festival (two or more) got no citation at all: the search
@@ -359,7 +375,7 @@ const VERIFIED: ReadonlySet<FestivalLog["outcome"]> = new Set(["ok", "no_citatio
  * went green. A sweep can legitimately find nothing, so it is never judged this way.
  */
 export function searchedBlind(logs: readonly FestivalLog[], sweep: number | undefined): boolean {
-  const researched = logs.filter((l) => VERIFIED.has(l.outcome));
+  const researched = logs.filter((l) => VERIFIED[l.outcome]);
   return sweep === undefined && researched.length >= 2 && researched.every((l) => l.outcome === "no_citations");
 }
 
