@@ -11,6 +11,8 @@ shapes; this file fixes the interfaces between modules that are built in paralle
 | `src/dates.ts` | core | civil-date rule engine. `occurrenceFor`, `resolveRule`, `formatDateRange`, `todayIn`. |
 | `src/score.ts` | core | `scoreFestival(inputs, config)` → `{low, high, tier, criteria}`. |
 | `src/festivals.ts` | core | `buildEntries`, `isVisible(entry, scope, tier2)`, `upcoming`, `applyFilters`. |
+| `src/status.ts` | core | Edition status lifecycle: `STATUS_TRAITS` (what each status means). See «State machines». |
+| `src/geo.ts`, `src/resource.ts` | ui | Pure state machines for «Cerca de mí» (`nextGeo`) and screen loads (`resource`), unit-tested. |
 | `src/ics.ts` | calendar | RFC 5545 output, used by the browser and by `scripts/build-calendars.ts`. |
 | `src/i18n.ts`, `locales/*.json` | ui | `t(key, params)`; every visible string lives in `locales/`. |
 | `src/render/**`, `src/app.ts`, `src/router.ts`, `src/store.ts`, `src/search.ts`, `src/styles/**`, `index.html`, `public/sw.js` | ui | vanilla TS, DOM built with `h()` (textContent only). |
@@ -65,6 +67,45 @@ older than 30 days (RF-13).
 - `pnpm build` runs `scripts/check-csp.ts` (exact CSP in `dist/index.html`) before the secret scan;
   the secret scan fails closed when git cannot list files or a file cannot be read.
 
+## State machines
+
+Every lifecycle in the repo and where its transitions live. The explicit ones have one transition
+function or table with a unit test: change behaviour there, not with a new status check elsewhere.
+
+| Lifecycle | States | Transitions | Read through |
+| --- | --- | --- | --- |
+| Edition status (RF-07, R9) | `por_anunciar`, `tentativa`, `confirmada`, `aplazada`, `cancelada` | pipeline only: `statusMoveCheck` + `checkConfirmedStatus` (validate.ts), stored by apply.ts (SEQUENCE); what a status needs to be stored: `Edition` (schema.ts) | `STATUS_TRAITS` (src/status.ts): `takesPlace`, `settled`, `keepsRuleDays` |
+| «Cerca de mí» (RF-14) | `off`, `asking`, `on`, `denied`, `unavailable` | `nextGeo(state, event)` (src/geo.ts); app.ts makes the browser call and feeds the answer back | `ctx.geo()`; `locationAction` / `locationProblem` in components.ts draw it the same in Ajustes and Explorar |
+| Screen load | `loading` → `ready` (kept per key) or `failed` → next read loads again | `resource(key, factory)` (src/resource.ts) | `asyncView` (components.ts); «Reintentar» is a re-render |
+| Refresh outcome per festival | `FestivalOutcome` (report.ts) | refresh-run.ts | `VERIFIED` record: every outcome says whether the model answered (verified count, blind check, exit code) |
+| Budget level (R10) | `ok`, `warn50`, `degraded80`, `stopped` | derived from the month's spend on every read (`levelOf`), never stored | `allowedAtLevel`, the follow-up budget |
+| Link verdict (R13) | `ok`, `broken`, `unknown` | `checkLink` (links.ts); a downgrade happens once, keyed by its changelog entry | `applyLostSources` |
+| Country | `borrador` → `publicado` | by hand, guarded by build-data (`MIN_SOURCED_FESTIVALS` dated A/B festivals) | drafts are built only with `INCLUDE_DRAFTS=1` |
+
+Implicit on purpose (small, local, covered by e2e): app.ts navigation bookkeeping (`navKind` one-shot
+push/replace flag, `inAppDepth` in `history.state`, `pendingFocus`/`pendingScroll` applied by
+`ctx.settled()`), the Explorar filter sheet (a local draft: «Ver N fiestas» applies it as one history
+entry, closing discards), the single open sheet (sheet.ts), the `?today=` clock (simulated or live,
+re-read on focus, wake and every minute) and store persistence (persistent until the device refuses
+a write, then memory only).
+
+Known gaps, found 2026-11-08 and left for their own change:
+
+- R12 trap slot: `firstRunOfMonth` is spent by the month's first weekly-mode run that makes an API
+  call, also when it plants no trap (no real change) or is a manual `--only`/`--country` dispatch, so
+  that month gets no trap. Fix: record «trap planted» per month in `data/usage.json` (the
+  `USAGE_FALLBACK_PATH` merge must keep it) and plant while none is.
+- `aplazada` with stored dates: nothing says whether they are the old or the new ones, and apply
+  cannot clear dates, so a postponement the pipeline records never becomes a pending postponement
+  (`isPendingPostponement` needs no start).
+- Onboarding stores a `cancelada` or `aplazada` next edition as `tentativa` (it verifies the dates,
+  not the status).
+- R2 count: onboarding's «solo N fiestas» counts festivals with any A/B source (government
+  fallback), build-data's `sourcedFestivals` needs a dated edition on a config A/B source, so the
+  onboarding PR can miss the warning that build-data later enforces.
+- `ReviewedChange.verdict` is stored next to `reasons` and `flags` instead of derived from them, so
+  the type allows a `rejected` change without a reason.
+
 ## Runtime hooks for tests
 
 - `?today=YYYY-MM-DD` on the page URL fixes «today» and shows a «Fecha simulada» banner with a link
@@ -88,6 +129,10 @@ outlookCalendarUrl(e: IcsEvent): string
 ```
 
 UID = `<slug>-<year>@traveler`. All-day: `DTSTART;VALUE=DATE`, `DTEND;VALUE=DATE` = day after `end`.
+An event needs days: the occurrence's dates, or, for a cancelled or postponed edition stored without
+dates (`STATUS_TRAITS[status].keepsRuleDays`), the days its rule computes, so the event subscribers
+already hold updates to CANCELLED or «[Aplazada]» with the new SEQUENCE (R9, RF-18). A probable window
+(«announced» rule, or a `por_anunciar` edition) has no event.
 Not confirmed → summary prefixed with `t("ics.prefix.tentative")`; cancelled → `t("ics.prefix.cancelled")`;
 postponed → `t("ics.prefix.postponed")`. SEQUENCE = `edition.sequence`. CRLF, 75-octet folding.
 
@@ -158,9 +203,13 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   the month is at 80%. Report: `followup` in each festival log.
 - R2 progress: `drafts` in the report lists each «borrador» country the run researched with its
   sourced festivals before and after the selected changes; at 3 the Markdown says how to publish.
-- Queue cadence (R10): unconfirmed editions weekly under 180 days and in the first week of the
-  month otherwise; confirmed ones only when stale (30 days, 14 under 120). `--country` always
-  gets the monthly ones. A postponed edition without new dates is out of the news sweeps.
+- Queue cadence (R10): unsettled editions weekly under 180 days and in the first week of the
+  month otherwise; settled ones (confirmed or cancelled, `STATUS_TRAITS[status].settled`) only when
+  stale (30 days, 14 under 120), and they never get a follow-up search. `--country` always gets the
+  monthly ones. A postponed edition without new dates and a cancelled one are out of the news sweeps.
+- Status moves (`statusMoveCheck` in validate.ts): confirmada → tentativa/por_anunciar is rejected
+  unless the quote says the dates are unconfirmed; a move to cancelada/aplazada is flagged unless the
+  quote says so; leaving cancelada is always flagged (an old page reads like a reinstatement).
 - RF-18 in apply: an edition stored for the first time starts at `sequence` 1 when its dates or
   status differ from the rule-based event calendars already had (`firstEditionSequence`), and every
   change of dates or status still bumps it.
