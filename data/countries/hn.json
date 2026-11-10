@@ -1,0 +1,194 @@
+{
+  "country": "HN",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Tegucigalpa",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "carnaval-la-ceiba",
+      "names": { "local": "Gran Carnaval Internacional de la Amistad", "es": "Gran Carnaval Internacional de la Amistad de La Ceiba", "en": "La Ceiba International Friendship Carnival", "pt": "Grande Carnaval Internacional da Amizade de La Ceiba" },
+      "city": "La Ceiba",
+      "subdivision": "HN-AT",
+      "timezone": "America/Tegucigalpa",
+      "coords": { "lat": 15.7597, "lon": -86.7822 },
+      "nearest_airport": "LCE",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "05-10", "end": "05-31" } },
+      "editions": {
+        "2026": {
+          "start": "2026-05-15",
+          "end": "2026-05-23",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "gran-carnaval", "name": { "es": "Desfile de carrozas y Gran Carnaval en la avenida San Isidro", "en": "Float parade and Grand Carnival on Avenida San Isidro", "pt": "Desfile de carros alegóricos e Grande Carnaval na avenida San Isidro" }, "date": "2026-05-23", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.laprensa.hn/honduras/honduras-la-ceiba-carnaval-fiesta-feria-isidra-carnavalitos-lamakina-farruko-ND30668027", "publisher": "La Prensa (Honduras)", "accessed": "2026-11-09", "tier": "B", "quote": "La Ceiba enciende sus motores este viernes 15 de mayo con el inicio de los tradicionales carnavalitos, en el marco de la Feria Isidra, culminando el próximo sábado 23 de mayo con el Gran Carnaval Internacional de la Amistad 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Los carnavalitos de barrio fueron del 15 al 22 de mayo y el Gran Carnaval, con desfile de carrozas y conciertos, el sábado 23 de mayo de 2026.", "en": "The neighbourhood carnavalitos ran from May 15 to 22 and the Grand Carnival, with its float parade and concerts, took place on Saturday, May 23, 2026.", "pt": "Os carnavalitos de bairro foram de 15 a 22 de maio e o Grande Carnaval, com desfile de carros alegóricos e shows, no sábado, 23 de maio de 2026." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://www.laprensa.hn/honduras/honduras-la-ceiba-carnaval-fiesta-feria-isidra-carnavalitos-lamakina-farruko-ND30668027", "quote": "La fiesta carnavalesca diaria continuará mañana sábado 16 de mayo en barrio Danto, colonia Pineda y barrio La Julia" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.laprensa.hn/honduras/honduras-la-ceiba-carnaval-fiesta-feria-isidra-carnavalitos-lamakina-farruko-ND30668027", "quote": "listo para recibir a miles de turistas nacionales y extranjeros en la fiesta carnavalesca más alegre de Honduras" },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Golos%C3%B3n_International_Airport", "note": { "es": "Aeropuerto Golosón (LCE), a unos 10 km del centro, con vuelos nacionales y a Gran Caimán.", "en": "Golosón Airport (LCE), about 10 km from the centre, with domestic flights and service to Grand Cayman.", "pt": "Aeroporto Golosón (LCE), a cerca de 10 km do centro, com voos domésticos e para Grand Cayman." } }
+      },
+      "street_tip": { "es": "La semana previa los carnavalitos cambian de barrio cada noche; el sábado grande conviene llegar a la avenida San Isidro por la tarde para ver las carrozas y quedarse a la fiesta nocturna.", "en": "In the week before, the carnavalitos move to a different neighbourhood every night; on the big Saturday, reach Avenida San Isidro in the afternoon for the floats and stay for the night party.", "pt": "Na semana anterior os carnavalitos mudam de bairro a cada noite; no grande sábado, chegue à avenida San Isidro à tarde para ver os carros e fique para a festa noturna." },
+      "etiquette": { "es": "Hay mucha gente y alcohol en la calle: lleva poco efectivo, cuida el teléfono y acuerda un punto de encuentro con tu grupo.", "en": "Crowds and street drinking are heavy: carry little cash, guard your phone and agree on a meeting point with your group.", "pt": "Há muita gente e bebida na rua: leve pouco dinheiro, cuide do celular e combine um ponto de encontro com o grupo." }
+    },
+    {
+      "slug": "feria-juniana",
+      "names": { "local": "Feria Juniana", "es": "Feria Juniana de San Pedro Sula", "en": "Feria Juniana (June Fair) of San Pedro Sula", "pt": "Feira Juniana de San Pedro Sula" },
+      "city": "San Pedro Sula",
+      "subdivision": "HN-CR",
+      "timezone": "America/Tegucigalpa",
+      "coords": { "lat": 15.5042, "lon": -88.025 },
+      "nearest_airport": "SAP",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "05-25", "end": "06-30" } },
+      "editions": {
+        "2026": {
+          "start": "2026-05-29",
+          "end": "2026-06-29",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desfile-de-carrozas", "name": { "es": "Desfile de carrozas por la avenida Circunvalación", "en": "Float parade along Avenida Circunvalación", "pt": "Desfile de carros alegóricos pela avenida Circunvalación" }, "date": "2026-06-27", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.laprensa.hn/sanpedro/feria-juniana-2026-san-pedro-sula-actividades-derrama-economica-CP30849586", "publisher": "La Prensa (Honduras)", "accessed": "2026-11-09", "tier": "B", "quote": "El programa festivo inicia este 29 de mayo con el lanzamiento oficial de la Feria Juniana en Plaza Las Banderas" },
+            { "url": "https://www.laprensa.hn/sanpedro/feria-juniana-2026-san-pedro-sula-actividades-derrama-economica-CP30849586", "publisher": "La Prensa (Honduras)", "accessed": "2026-11-09", "tier": "B", "quote": "El lunes 29 de junio, Día de San Pedro Apóstol, se celebrará una misa solemne en la Catedral Metropolitana San Pedro Apóstol, como parte del cierre de la feria patronal." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La feria abrió el 29 de mayo de 2026 y cerró el 29 de junio, día de San Pedro; en 2026 no hubo carnaval de cierre, sino desfile de carrozas el 27 de junio.", "en": "The fair opened on May 29, 2026 and closed on June 29, Saint Peter's Day; in 2026 there was no closing carnival, only a float parade on June 27.", "pt": "A feira abriu em 29 de maio de 2026 e terminou em 29 de junho, dia de São Pedro; em 2026 não houve carnaval de encerramento, só um desfile de carros alegóricos em 27 de junho." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.laprensa.hn/sanpedro/feria-juniana-2026-san-pedro-sula-actividades-derrama-economica-CP30849586", "quote": "se desarrollarán carnavalitos en distintos barrios y colonias desde el viernes 5 de junio" },
+        "viajeros": null,
+        "calle": { "measure": "mixta", "confidence": "prensa", "source": "https://www.laprensa.hn/sanpedro/feria-juniana-2026-san-pedro-sula-actividades-derrama-economica-CP30849586", "quote": "El valor de la entrada variará según el grupo artístico invitado.", "note": { "es": "Los carnavalitos de barrio son en la calle; la Plaza Juniana cobra entrada según el artista.", "en": "The neighbourhood carnavalitos are on the street; Plaza Juniana charges entry depending on the act.", "pt": "Os carnavalitos de bairro são na rua; a Plaza Juniana cobra entrada conforme o artista." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ram%C3%B3n_Villeda_Morales_International_Airport", "note": { "es": "Aeropuerto Ramón Villeda Morales (SAP), a unos 13 km del centro, con vuelos internacionales.", "en": "Ramón Villeda Morales Airport (SAP), about 13 km from the centre, with international flights.", "pt": "Aeroporto Ramón Villeda Morales (SAP), a cerca de 13 km do centro, com voos internacionais." } }
+      },
+      "street_tip": { "es": "La feria dura un mes: para la fiesta de calle sigue el calendario de carnavalitos de los fines de semana y deja una noche para la Plaza Juniana.", "en": "The fair lasts a month: for street partying follow the weekend carnavalito schedule and keep one night for Plaza Juniana.", "pt": "A feira dura um mês: para a festa de rua siga o calendário de carnavalitos dos fins de semana e reserve uma noite para a Plaza Juniana." },
+      "etiquette": { "es": "Muévete en taxi o transporte de confianza por la noche y deja los objetos de valor en el hotel.", "en": "Use a taxi or trusted transport at night and leave valuables at the hotel.", "pt": "À noite use táxi ou transporte de confiança e deixe objetos de valor no hotel." }
+    },
+    {
+      "slug": "carnaval-tegucigalpa",
+      "names": { "local": "Carnaval Capitalino", "es": "Carnaval de Tegucigalpa", "en": "Tegucigalpa Carnival", "pt": "Carnaval de Tegucigalpa" },
+      "city": "Tegucigalpa",
+      "subdivision": "HN-FM",
+      "timezone": "America/Tegucigalpa",
+      "coords": { "lat": 14.0723, "lon": -87.1921 },
+      "nearest_airport": "TGU",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "09-10", "end": "09-30" } },
+      "editions": {
+        "2026": {
+          "start": "2026-09-19",
+          "end": "2026-09-19",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.elheraldo.hn/tegucigalpa/tegucigalpa-capital-tendra-seis-dias-actividades-448-anos-aniversario-HG32072476", "publisher": "El Heraldo (Honduras)", "accessed": "2026-11-09", "tier": "B", "quote": "La programación arranca este sábado 19 de septiembre con el tradicional carnaval capitalino en el bulevar Suyapa" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "En 2026 la alcaldía concentró el carnaval en un concierto gratuito de Ozuna en el bulevar Suyapa, frente a la UNAH; en 2025 hubo desfile de carrozas y varios escenarios a lo largo del bulevar.", "en": "In 2026 the city held the carnival as a free Ozuna concert on Bulevar Suyapa, by the UNAH campus; in 2025 it had a float parade and several stages along the boulevard.", "pt": "Em 2026 a prefeitura concentrou o carnaval num show gratuito de Ozuna no bulevar Suyapa, em frente à UNAH; em 2025 houve desfile de carros alegóricos e vários palcos ao longo do bulevar." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.elheraldo.hn/tegucigalpa/carnaval-tegucigalpa-espera-miles-asistentes-27-septiembre-DD27534601", "quote": "El carnaval también ofrecerá siete escenarios musicales con artistas nacionales e internacionales." },
+        "viajeros": { "measure": "regional", "confidence": "prensa", "source": "https://www.elheraldo.hn/tegucigalpa/tegucigalpa-feria-carnaval-conciertos-448-anos-aniversario-EN31966651", "quote": "La cantidad está determinada por la capacidad de la calle y estamos preparando el espacio para recibir a todos los capitalinos" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.elheraldo.hn/tegucigalpa/tegucigalpa-feria-carnaval-conciertos-448-anos-aniversario-EN31966651", "quote": "tanto el carnaval como las actividades infantiles y la feria tendrán acceso gratuito" },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Toncont%C3%ADn_International_Airport", "note": { "es": "Toncontín (TGU), en la ciudad, solo tiene vuelos nacionales; los internacionales usan Palmerola (XPL), a unos 70 km.", "en": "Toncontín (TGU), in the city, has domestic flights only; international flights use Palmerola (XPL), about 70 km away.", "pt": "Toncontín (TGU), na cidade, só tem voos domésticos; os internacionais usam Palmerola (XPL), a cerca de 70 km." } }
+      },
+      "street_tip": { "es": "Es una sola jornada sobre el bulevar Suyapa: llega temprano, porque los accesos se cierran y el transporte se satura al terminar.", "en": "It is a single day on Bulevar Suyapa: arrive early, as access roads close and transport is packed when it ends.", "pt": "É um único dia no bulevar Suyapa: chegue cedo, porque os acessos fecham e o transporte lota no fim." },
+      "etiquette": { "es": "Sigue las indicaciones de la policía municipal en los cierres y no lleves objetos de valor a la multitud.", "en": "Follow the municipal police at the closures and keep valuables out of the crowd.", "pt": "Siga as orientações da polícia municipal nos bloqueios e não leve objetos de valor para a multidão." }
+    },
+    {
+      "slug": "feria-agostina-puerto-cortes",
+      "names": { "local": "Feria Agostina y Noche Veneciana", "es": "Noche Veneciana y Carnaval Agostino de Puerto Cortés", "en": "Venetian Night and August Carnival of Puerto Cortés", "pt": "Noite Veneziana e Carnaval de Agosto de Puerto Cortés" },
+      "city": "Puerto Cortés",
+      "subdivision": "HN-CR",
+      "timezone": "America/Tegucigalpa",
+      "coords": { "lat": 15.8333, "lon": -87.95 },
+      "nearest_airport": "SAP",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "08-15", "end": "08-31" } },
+      "editions": {
+        "2025": {
+          "start": "2025-08-22",
+          "end": "2025-08-23",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "noche-veneciana", "name": { "es": "Noche Veneciana en la playa El Porvenir", "en": "Venetian Night on El Porvenir beach", "pt": "Noite Veneziana na praia El Porvenir" }, "date": "2025-08-22", "confidence": "oficial" },
+            { "id": "gran-carnaval-agostino", "name": { "es": "Gran Carnaval Agostino en la 3.ª avenida", "en": "Grand August Carnival on 3rd Avenue", "pt": "Grande Carnaval de Agosto na 3.ª avenida" }, "date": "2025-08-23", "confidence": "oficial" }
+          ],
+          "sources": [
+            { "url": "https://www.iht.hn/es/puerto-cortes-brilla-con-gondolas-luces-y-la-magia-de-la-noche-veneciana", "publisher": "Instituto Hondureño de Turismo", "accessed": "2026-11-09", "tier": "A", "quote": "Puerto Cortés brilló con la esperada Noche Veneciana, una celebración que iluminó la Playa Municipal El Porvenir el pasado viernes 22 de agosto" },
+            { "url": "https://ampcwp.ampuertocortes.hn/2025/07/03/228205/", "publisher": "Municipalidad de Puerto Cortés", "accessed": "2026-11-09", "tier": "A", "quote": "Sábado 23 de agosto: Gran Carnaval Agostino desde las 9:00 p.m. a lo largo de la 3ª avenida" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La Feria Agostina ocupa todo agosto; aquí se registra su fin de semana fuerte: Noche Veneciana (22 de agosto de 2025) y Gran Carnaval Agostino (23 de agosto). Las fechas de 2026 no se registran por falta de una fuente que las fije.", "en": "The Feria Agostina fills all of August; this records its peak weekend: Venetian Night (August 22, 2025) and the Grand August Carnival (August 23). The 2026 dates are not recorded for lack of a source stating them.", "pt": "A Feria Agostina ocupa todo agosto; aqui fica o fim de semana principal: Noite Veneziana (22 de agosto de 2025) e Grande Carnaval de Agosto (23 de agosto). As datas de 2026 não constam por falta de uma fonte que as informe." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://www.iht.hn/es/puerto-cortes-brilla-con-gondolas-luces-y-la-magia-de-la-noche-veneciana", "quote": "el icónico grupo puertorriqueño Grupo Manía puso a bailar a todos los presentes, seguido por la energía contagiosa de La Gran Banda" },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://www.iht.hn/es/puerto-cortes-brilla-con-gondolas-luces-y-la-magia-de-la-noche-veneciana", "quote": "La velada alcanzó su punto culminante con vibrantes conciertos gratuitos" },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ram%C3%B3n_Villeda_Morales_International_Airport", "note": { "es": "Sin aeropuerto a menos de 40 km; el más cercano es SAP (San Pedro Sula), a unos 70 km por carretera.", "en": "No airport within 40 km; the nearest is SAP (San Pedro Sula), about 70 km by road.", "pt": "Sem aeroporto a menos de 40 km; o mais próximo é SAP (San Pedro Sula), a cerca de 70 km por estrada." } }
+      },
+      "street_tip": { "es": "La Noche Veneciana se ve desde la playa El Porvenir: busca sitio en la arena antes de que salgan las góndolas iluminadas y quédate a los conciertos.", "en": "Watch the Venetian Night from El Porvenir beach: grab a spot on the sand before the lit gondolas sail out and stay for the concerts.", "pt": "A Noite Veneziana se vê da praia El Porvenir: pegue um lugar na areia antes da saída das gôndolas iluminadas e fique para os shows." },
+      "etiquette": { "es": "No te metas al mar de noche después de beber y respeta el paso de la imagen de la Virgen que abre el desfile de góndolas.", "en": "Do not swim at night after drinking, and make way for the image of the Virgin that leads the gondola parade.", "pt": "Não entre no mar à noite depois de beber e respeite a passagem da imagem da Virgem que abre o desfile de gôndolas." }
+    },
+    {
+      "slug": "festival-del-maiz-danli",
+      "names": { "local": "Festival Internacional del Maíz (FESTIMA)", "es": "Festival Internacional del Maíz de Danlí", "en": "Danlí International Corn Festival", "pt": "Festival Internacional do Milho de Danlí" },
+      "city": "Danlí",
+      "subdivision": "HN-EP",
+      "timezone": "America/Tegucigalpa",
+      "coords": { "lat": 14.0333, "lon": -86.5833 },
+      "nearest_airport": "TGU",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "08-15", "end": "09-05" } },
+      "editions": {
+        "2025": {
+          "start": "2025-08-22",
+          "end": "2025-08-31",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.hondudiario.com/2025/08/12/danli-celebra-el-festival-internacional-del-maiz-del-22-al-31-de-agosto/", "publisher": "Hondudiario", "accessed": "2026-11-09", "tier": "B", "quote": "Las autoridades de Danlí en el Paraíso informaron sobre el lanzamiento del Festival Internacional del Maíz el cual se va a celebrar del 22 al 31 de agosto" },
+            { "url": "https://hch.tv/con-un-colorido-desfile-arranca-el-festival-internacional-del-maiz-festima-2025-en-danli/", "publisher": "HCH Televisión Digital", "accessed": "2026-11-09", "tier": "B", "quote": "Este viernes, Danlí dio inicio al Festival Internacional del Maíz «FESTIMA 2025» con un desfile lleno de colores y alegría." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La edición 47 se celebró en agosto de 2026, pero ninguna fuente A o B publicó sus fechas de inicio y cierre; se registra la de 2025.", "en": "The 47th edition took place in August 2026, but no A or B source published its opening and closing dates; the 2025 edition is recorded instead.", "pt": "A 47.ª edição aconteceu em agosto de 2026, mas nenhuma fonte A ou B publicou as datas de abertura e encerramento; registra-se a de 2025." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://hch.tv/con-un-colorido-desfile-arranca-el-festival-internacional-del-maiz-festima-2025-en-danli/", "quote": "Las calles se llenaron de música, comparsas y carrozas decoradas con motivos del maíz, el protagonista del festival." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://hch.tv/con-un-colorido-desfile-arranca-el-festival-internacional-del-maiz-festima-2025-en-danli/", "quote": "Productores, artesanos y visitantes de distintas partes del país se reunieron para celebrar esta importante tradición hondureña." },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Toncont%C3%ADn_International_Airport", "note": { "es": "Sin aeropuerto a menos de 40 km; el más cercano es Toncontín (TGU), en Tegucigalpa, a unos 95 km por carretera.", "en": "No airport within 40 km; the nearest is Toncontín (TGU) in Tegucigalpa, about 95 km by road.", "pt": "Sem aeroporto a menos de 40 km; o mais próximo é Toncontín (TGU), em Tegucigalpa, a cerca de 95 km por estrada." } }
+      },
+      "street_tip": { "es": "Prueba los platos de maíz en los puestos del centro (atol, montucas, tamalitos de elote) y reserva el último fin de semana para el desfile de carrozas y el carnaval.", "en": "Try the corn dishes at the stalls downtown (atol, montucas, sweet-corn tamales) and save the last weekend for the float parade and carnival.", "pt": "Prove os pratos de milho nas barracas do centro (atol, montucas, tamalitos de milho verde) e reserve o último fim de semana para o desfile e o carnaval." },
+      "etiquette": { "es": "Es una fiesta de pueblo con muchas familias: compra a los productores locales y no bloquees el paso de los desfiles escolares.", "en": "It is a family-heavy town fair: buy from local producers and do not block the school parades.", "pt": "É uma festa de cidade cheia de famílias: compre dos produtores locais e não bloqueie a passagem dos desfiles escolares." }
+    }
+  ]
+}

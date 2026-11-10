@@ -1,0 +1,19 @@
+{
+  "country": "VE",
+  "A": ["gob.ve", "unesco.org"],
+  "B": [
+    "eluniversal.com",
+    "ultimasnoticias.com.ve",
+    "elnacional.com",
+    "efectococuyo.com",
+    "talcualdigital.com",
+    "versionfinal.com.ve",
+    "diarioversionfinal.com",
+    "panorama.com.ve",
+    "vtv.gob.ve",
+    "vtv.com.ve",
+    "avn.info.ve",
+    "elpitazo.net"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

@@ -1,0 +1,175 @@
+{
+  "country": "HT",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Port-au-Prince",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "carnaval-jacmel",
+      "names": { "local": "Kanaval Jakmèl", "es": "Carnaval de Jacmel", "en": "Jacmel Carnival", "pt": "Carnaval de Jacmel" },
+      "city": "Jacmel",
+      "subdivision": "HT-SE",
+      "timezone": "America/Port-au-Prince",
+      "coords": { "lat": 18.2342, "lon": -72.5347 },
+      "nearest_airport": "JAK",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -56, "end": -56 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-08",
+          "end": "2026-02-08",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://lenouvelliste.com/article/264356/quand-les-villes-de-province-celebrent-le-carnaval", "publisher": "Le Nouvelliste", "accessed": "2026-11-09", "tier": "B", "quote": "la 34e édition du Carnaval a été officiellement lancée le dimanche 8 février lors d’une cérémonie organisée par la mairie en collaboration avec le comité du carnaval" },
+            { "url": "https://haitiantimes.com/2026/01/18/haitians-divided-2026-over-carnival-celebrations/", "publisher": "The Haitian Times", "accessed": "2026-11-09", "tier": "B", "quote": "with a pre-parade scheduled for Feb. 1, the main Carnival on Feb. 8 and final celebrations on Feb. 15-17." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 34: el gran desfile fue el domingo 8 de febrero, una semana antes de los días grasos; hubo un predesfile el 1 de febrero y celebraciones finales del 15 al 17 de febrero.", "en": "34th edition: the main parade was on Sunday, February 8, one week before the national carnival days; there was a pre-parade on February 1 and final celebrations on February 15-17.", "pt": "34ª edição: o grande desfile foi no domingo, 8 de fevereiro, uma semana antes dos dias gordos; houve um pré-desfile em 1º de fevereiro e celebrações finais de 15 a 17 de fevereiro." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://lenouvelliste.com/article/264356/quand-les-villes-de-province-celebrent-le-carnaval", "quote": "Des milliers de carnavaliers, dont de nombreux membres de la diaspora, ont ensuite envahi l’avenue Barranquilla pour assister au défilé de troupes de danse, de groupes de mascarades et de seize bandes à pied" },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://lenouvelliste.com/article/264356/quand-les-villes-de-province-celebrent-le-carnaval", "quote": "Des milliers de carnavaliers, dont de nombreux membres de la diaspora, ont ensuite envahi l’avenue Barranquilla" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Jacmel_Airport", "note": { "es": "El aeropuerto de Jacmel (JAK) está junto a la ciudad y solo tiene vuelos internos de Sunrise Airways (Puerto Príncipe, Cabo Haitiano).", "en": "Jacmel Airport (JAK) is next to the town and only has domestic Sunrise Airways flights (Port-au-Prince, Cap-Haïtien).", "pt": "O aeroporto de Jacmel (JAK) fica junto à cidade e só tem voos domésticos da Sunrise Airways (Porto Príncipe, Cap-Haïtien)." } }
+      },
+      "street_tip": { "es": "El desfile recorre la avenida Barranquilla con máscaras de papel maché hechas en los talleres de la ciudad; ve de día para verlas bien y quédate a la noche, cuando salen las bandas y los DJ.", "en": "The parade runs along Avenue Barranquilla with papier-mâché masks made in the town's workshops; go by day to see them up close and stay into the night, when the bands and DJs come out.", "pt": "O desfile percorre a avenida Barranquilla com máscaras de papel machê feitas nas oficinas da cidade; vá de dia para vê-las de perto e fique até a noite, quando saem as bandas e os DJs." },
+      "etiquette": { "es": "Antes de viajar a Haití revisa los avisos de seguridad de tu país y las noticias locales; en el desfile, pide permiso antes de fotografiar a los enmascarados.", "en": "Before travelling to Haiti, check your country's security advisories and local news; at the parade, ask before photographing the masked performers.", "pt": "Antes de viajar ao Haiti, consulte os alertas de segurança do seu país e o noticiário local; no desfile, peça licença antes de fotografar os mascarados." }
+    },
+    {
+      "slug": "carnaval-cap-haitien",
+      "names": { "local": "Kanaval Okap", "es": "Carnaval de Cabo Haitiano", "en": "Cap-Haïtien Carnival", "pt": "Carnaval de Cap-Haïtien" },
+      "city": "Cap-Haïtien",
+      "subdivision": "HT-ND",
+      "timezone": "America/Port-au-Prince",
+      "coords": { "lat": 19.759, "lon": -72.201 },
+      "nearest_airport": "CAP",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -49, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-15",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://haitiantimes.com/2026/02/16/haiti-carnival-2026-first-day/", "publisher": "The Haitian Times", "accessed": "2026-11-09", "tier": "B", "quote": "Drummers electrifying the streets of Cap-Haïtien on Dimanche Gras, the first day of carnival, on Sunday, Feb. 15, 2026." },
+            { "url": "https://haitiantimes.com/2026/02/23/young-girls-nail-it-down-in-cap-haitien-carnival-2026-photos/", "publisher": "The Haitian Times", "accessed": "2026-11-09", "tier": "B", "quote": "A performer in black and red walks along the boulevard during the third day of carnival in Cap-Haïtien on Feb. 17, 2026." },
+            { "url": "https://lenouvelliste.com/en/article/264356/quand-les-villes-de-province-celebrent-le-carnaval", "publisher": "Le Nouvelliste", "accessed": "2026-11-09", "tier": "B", "quote": "dance and vibrate on the last Mardi Gras day, Tuesday, February 17." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Los tres días grasos, del domingo 15 al martes 17 de febrero de 2026, con el lema «Konbit pou yon lòt Okap».", "en": "The three carnival days, Sunday, February 15 to Tuesday, February 17, 2026, under the theme «Konbit pou yon lòt Okap».", "pt": "Os três dias gordos, de domingo, 15, a terça, 17 de fevereiro de 2026, com o lema «Konbit pou yon lòt Okap»." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://lenouvelliste.com/article/264379/malgre-le-black-out-total-et-les-contraintes-le-cap-haitien-celebre-un-carnaval-haut-en-couleur", "quote": "ont fait vibrer la chaussée, soulevant une marée humaine compacte et enthousiaste." },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Cap-Ha%C3%AFtien_International_Airport", "note": { "es": "CAP está a unos 5 km del centro, con vuelos a Miami, Fort Lauderdale, Newark, Boston y otras islas del Caribe.", "en": "CAP is about 5 km from downtown, with flights to Miami, Fort Lauderdale, Newark, Boston and other Caribbean islands.", "pt": "O CAP fica a cerca de 5 km do centro, com voos para Miami, Fort Lauderdale, Newark, Boston e outras ilhas do Caribe." } }
+      },
+      "street_tip": { "es": "Los carros musicales salen por la tarde y siguen hasta la madrugada por el boulevard; la ciudad tuvo apagones en 2026, así que lleva linterna y efectivo.", "en": "The music floats roll out in the afternoon and keep going until the early hours along the boulevard; the city had blackouts in 2026, so bring a flashlight and cash.", "pt": "Os carros de som saem à tarde e seguem até a madrugada pelo boulevard; a cidade teve apagões em 2026, então leve lanterna e dinheiro vivo." },
+      "etiquette": { "es": "Revisa los avisos de seguridad antes de viajar y sigue las indicaciones de la policía en el recorrido; baila con el grupo pero no te subas a los carros sin permiso.", "en": "Check security advisories before you travel and follow police instructions along the route; dance with the crowd but don't climb onto the floats without permission.", "pt": "Consulte os alertas de segurança antes de viajar e siga as orientações da polícia no percurso; dance com a multidão, mas não suba nos carros sem permissão." }
+    },
+    {
+      "slug": "carnaval-les-cayes",
+      "names": { "local": "Kanaval Okay", "es": "Carnaval de Les Cayes", "en": "Les Cayes Carnival", "pt": "Carnaval de Les Cayes" },
+      "city": "Les Cayes",
+      "subdivision": "HT-SD",
+      "timezone": "America/Port-au-Prince",
+      "coords": { "lat": 18.1933, "lon": -73.7461 },
+      "nearest_airport": "CYA",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -49, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-15",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://rnhaiti.com/2026/02/16/lancement-officiel-du-carnaval-des-cayes-le-dimanche-15-fevrier/", "publisher": "Radio Nationale d'Haïti", "accessed": "2026-11-09", "tier": "B", "quote": "Lancement officiel du Carnaval des Cayes le dimanche 15 février" },
+            { "url": "https://lenouvelliste.com/article/264346/carnaval-mardi-17-et-mercredi-18-feries-sur-toute-letendue-du-territoire", "publisher": "Le Nouvelliste", "accessed": "2026-11-09", "tier": "B", "quote": "Les festivités carnavalesques se dérouleront les dimanche 15, lundi 16 et mardi 17 février." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La alcaldía abrió el carnaval el domingo 15; la fecha de cierre (martes 17) es la del calendario nacional de días grasos anunciado por la Presidencia.", "en": "City hall opened the carnival on Sunday the 15th; the closing date (Tuesday the 17th) is the national carnival calendar announced by the Presidency.", "pt": "A prefeitura abriu o carnaval no domingo, 15; a data de encerramento (terça, 17) é a do calendário nacional dos dias gordos anunciado pela Presidência." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://rnhaiti.com/2026/02/16/lancement-officiel-du-carnaval-des-cayes-le-dimanche-15-fevrier/", "quote": "Défilé artistique, Chorégraphies de danse, Show de bicyclettes et Prestations de bandes à pieds" },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Antoine_Simon_Airport", "note": { "es": "El aeropuerto Antoine-Simon (CYA) está a 9 km al norte de la ciudad, con vuelos internos de Sunrise Airways.", "en": "Antoine-Simon Airport (CYA) is 9 km north of the city, with domestic Sunrise Airways flights.", "pt": "O aeroporto Antoine-Simon (CYA) fica 9 km ao norte da cidade, com voos domésticos da Sunrise Airways." } }
+      },
+      "street_tip": { "es": "Las bandas a pie como Vèkèlè arrastran a su gente por la Grand-Rue hacia el boulevard; sigue a una banda en vez de esperar en un punto fijo.", "en": "Street bands like Vèkèlè pull their followers along the Grand-Rue toward the boulevard; follow a band instead of waiting in one spot.", "pt": "As bandas a pé como a Vèkèlè arrastam seus seguidores pela Grand-Rue até o boulevard; acompanhe uma banda em vez de esperar num ponto fixo." },
+      "etiquette": { "es": "Revisa los avisos de seguridad antes de viajar; en 2026 el recorrido tuvo poca iluminación de noche, así que no te separes de tu grupo.", "en": "Check security advisories before travelling; in 2026 the route was poorly lit at night, so stay with your group.", "pt": "Consulte os alertas de segurança antes de viajar; em 2026 o percurso teve pouca iluminação à noite, então não se separe do seu grupo." }
+    },
+    {
+      "slug": "papjazz-port-au-prince",
+      "names": { "local": "Festival International de Jazz de Port-au-Prince (PAPJAZZ)", "es": "Festival Internacional de Jazz de Puerto Príncipe (PAPJAZZ)", "en": "Port-au-Prince International Jazz Festival (PAPJAZZ)", "pt": "Festival Internacional de Jazz de Porto Príncipe (PAPJAZZ)" },
+      "city": "Pétion-Ville",
+      "subdivision": "HT-OU",
+      "timezone": "America/Port-au-Prince",
+      "coords": { "lat": 18.5125, "lon": -72.2853 },
+      "nearest_airport": "PAP",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "01-05", "end": "01-31" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-07",
+          "end": "2026-01-10",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://papjazzhaiti.org/press-release-fr", "publisher": "Fondation Haïti Jazz (PAPJAZZ)", "accessed": "2026-11-09", "tier": "A", "quote": "Du 7 au 10 janvier prochain, le jazz va à nouveau faire vibrer la capitale." },
+            { "url": "https://www.juno7.ht/papjazz-2026-port-au-prince-retrouve-le-souffle-du-jazz-international/", "publisher": "Juno7", "accessed": "2026-11-09", "tier": "B", "quote": "Du 7 au 10 janvier 2026, la capitale haïtienne accueille la 19e édition du PAPJAZZ, Festival international de Jazz de Port-au-Prince." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 19, reducida a cuatro días: los grandes conciertos fueron en el hotel Karibe y los afters gratuitos en bares de Pétion-Ville. La edición 20 está prevista para enero de 2027, sin fechas aún.", "en": "19th edition, cut to four days: the main concerts were at the Karibe hotel and the free afters in Pétion-Ville bars. The 20th edition is planned for January 2027, with no dates yet.", "pt": "19ª edição, reduzida a quatro dias: os grandes shows foram no hotel Karibe e os afters gratuitos em bares de Pétion-Ville. A 20ª edição está prevista para janeiro de 2027, ainda sem datas." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://papjazzhaiti.org/about-fr", "quote": "Jusqu’à 42 concerts, dont au moins 50 % gratuits" },
+        "viajeros": null,
+        "calle": { "measure": "mixta", "confidence": "oficial", "source": "https://papjazzhaiti.org/about-fr", "quote": "Jusqu’à 42 concerts, dont au moins 50 % gratuits" },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Toussaint_Louverture_International_Airport", "note": { "es": "PAP está a unos 10 km de Pétion-Ville; las aerolíneas de EE. UU. siguen suspendidas y en 2026 operaban sobre todo vuelos internos de Sunrise Airways.", "en": "PAP is about 10 km from Pétion-Ville; US airlines remain suspended and in 2026 mostly domestic Sunrise Airways flights operated.", "pt": "O PAP fica a cerca de 10 km de Pétion-Ville; as companhias dos EUA seguem suspensas e em 2026 operavam sobretudo voos domésticos da Sunrise Airways." } }
+      },
+      "street_tip": { "es": "Los conciertos grandes son con entrada; los afters nocturnos en bares de Pétion-Ville suelen ser gratis y es donde más se baila.", "en": "The main concerts are ticketed; the late-night afters in Pétion-Ville bars are usually free and are where people dance the most.", "pt": "Os grandes shows são pagos; os afters da noite em bares de Pétion-Ville costumam ser gratuitos e é onde mais se dança." },
+      "etiquette": { "es": "La zona metropolitana de Puerto Príncipe vive una grave crisis de seguridad: consulta los avisos oficiales y muévete solo con transporte de confianza.", "en": "The Port-au-Prince metropolitan area is in a serious security crisis: check official advisories and only move around with trusted transport.", "pt": "A região metropolitana de Porto Príncipe vive uma grave crise de segurança: consulte os alertas oficiais e circule só com transporte de confiança." }
+    },
+    {
+      "slug": "rara-leogane",
+      "names": { "local": "Rara Leyogàn", "es": "Rara de Léogâne", "en": "Léogâne Rara", "pt": "Rara de Léogâne" },
+      "city": "Léogâne",
+      "subdivision": "HT-OU",
+      "timezone": "America/Port-au-Prince",
+      "coords": { "lat": 18.5108, "lon": -72.6339 },
+      "nearest_airport": "PAP",
+      "type": "musica",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -2, "end": 0 },
+      "editions": {},
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://haitiantimes.com/2026/04/02/haiti-leogane-suspension-rara-music/", "quote": "Over several hours, they draw crowds that follow them around town, dancing and chanting to the rhythm of drums and bamboo horns." },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Toussaint_Louverture_International_Airport", "note": { "es": "PAP queda a más de 40 km por carretera, cruzando la capital; Léogâne no tiene aeropuerto con vuelos regulares.", "en": "PAP is more than 40 km away by road, across the capital; Léogâne has no airport with scheduled flights.", "pt": "O PAP fica a mais de 40 km por estrada, atravessando a capital; Léogâne não tem aeroporto com voos regulares." } }
+      },
+      "street_tip": { "es": "En 2025 y 2026 la alcaldía suspendió los desfiles oficiales por la inseguridad, aunque las bandas siguieron saliendo; confirma la situación antes de planear el viaje.", "en": "In 2025 and 2026 city hall suspended the official parades over insecurity, though bands kept marching; check the situation before planning a trip.", "pt": "Em 2025 e 2026 a prefeitura suspendeu os desfiles oficiais por causa da insegurança, embora as bandas continuassem saindo; confirme a situação antes de planejar a viagem." },
+      "etiquette": { "es": "El rara tiene raíces en el vudú: respeta las ceremonias de las bandas y pide permiso antes de fotografiar a músicos y abanderados.", "en": "Rara is rooted in Vodou: respect the bands' ceremonies and ask before photographing musicians and flag bearers.", "pt": "O rara tem raízes no vodu: respeite as cerimônias das bandas e peça licença antes de fotografar músicos e porta-bandeiras." }
+    }
+  ]
+}

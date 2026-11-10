@@ -1,0 +1,182 @@
+{
+  "country": "PA",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Panama",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "carnaval-las-tablas",
+      "names": { "local": "Carnaval de Las Tablas", "es": "Carnaval de Las Tablas", "en": "Las Tablas Carnival", "pt": "Carnaval de Las Tablas" },
+      "city": "Las Tablas",
+      "subdivision": "PA-7",
+      "timezone": "America/Panama",
+      "coords": { "lat": 7.7667, "lon": -80.275 },
+      "nearest_airport": "CTD",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -50, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-14",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://micultura.gob.pa/2026/02/16/el-topon-tableno-el-encuentro-final-que-resume-la-esencia-del-carnaval-de-las-tablas/", "publisher": "Ministerio de Cultura de Panamá", "accessed": "2026-11-09", "tier": "A", "quote": "Esta festividad, que se desarrolla durante los cuatro días previos al Miércoles de Ceniza, del sábado 14 al martes 17 de febrero, reúne a miles de personas en torno a una tradición centenaria que combina música, baile, alegría, sana competencia y un profundo sentido de identidad cultural." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://micultura.gob.pa/2026/02/16/el-topon-tableno-el-encuentro-final-que-resume-la-esencia-del-carnaval-de-las-tablas/", "quote": "Su esencia gira en torno a la histórica rivalidad entre las tunas de Calle Arriba y Calle Abajo, cuyos culecos, desfiles, presentaciones nocturnas y espectáculos artísticos llenan de vida la calle principal del distrito." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Cap._Alonso_Valderrama_Airport", "note": { "es": "CTD, en Chitré, está a unos 29 km en línea recta y solo tiene vuelos de Air Panama a la Ciudad de Panamá.", "en": "CTD, in Chitré, is about 29 km in a straight line and only has Air Panama flights to Panama City.", "pt": "CTD, em Chitré, fica a cerca de 29 km em linha reta e só tem voos da Air Panama para a Cidade do Panamá." } }
+      },
+      "street_tip": { "es": "Los culecos de día son camiones cisterna que mojan a la multitud en la calle principal: ve con ropa que se pueda empapar y el celular en bolsa impermeable. Reserva alojamiento con meses de antelación, porque Las Tablas se llena.", "en": "The daytime culecos are water trucks soaking the crowd on the main street: wear clothes you can get drenched in and keep your phone in a waterproof pouch. Book lodging months ahead, as Las Tablas fills up.", "pt": "Os culecos de dia são caminhões-pipa que molham a multidão na rua principal: vá com roupa que possa encharcar e o celular em bolsa impermeável. Reserve hospedagem com meses de antecedência, porque Las Tablas lota." },
+      "etiquette": { "es": "La rivalidad entre Calle Arriba y Calle Abajo se vive con pasión: puedes sumarte a una tuna, pero no te burles de la otra ni te metas en su desfile.", "en": "The Calle Arriba vs Calle Abajo rivalry runs deep: join one side's tuna if you like, but don't mock the other or cut into its parade.", "pt": "A rivalidade entre Calle Arriba e Calle Abajo é levada a sério: pode se juntar a uma tuna, mas não zombe da outra nem entre no desfile dela." }
+    },
+    {
+      "slug": "carnaval-ciudad-de-panama",
+      "names": { "local": "Carnaval de la Ciudad de Panamá", "es": "Carnaval de la Ciudad de Panamá", "en": "Panama City Carnival", "pt": "Carnaval da Cidade do Panamá" },
+      "city": "Ciudad de Panamá",
+      "subdivision": "PA-8",
+      "timezone": "America/Panama",
+      "coords": { "lat": 8.9824, "lon": -79.5199 },
+      "nearest_airport": "PTY",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -51, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-13",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://mupa.gob.pa/mas-de-300-mil-personas-disfrutaron-del-festival-carnavalistico-volumen-caribe-2026/", "publisher": "Alcaldía de Panamá", "accessed": "2026-11-09", "tier": "A", "quote": "Durante cinco días, del 13 al 17 de febrero, el público vibró con una cartelera internacional" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "En 2026 la Alcaldía lo organizó como Festival Carnavalístico Volumen Caribe, en la Cinta Costera.", "en": "In 2026 the city ran it as the Festival Carnavalístico Volumen Caribe on the Cinta Costera.", "pt": "Em 2026 a prefeitura o organizou como Festival Carnavalístico Volumen Caribe, na Cinta Costera." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 300000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://mupa.gob.pa/mas-de-300-mil-personas-disfrutaron-del-festival-carnavalistico-volumen-caribe-2026/", "quote": "Más de 300 mil personas disfrutaron del Festival Carnavalístico Volumen Caribe 2026 en la Cinta Costera" },
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://www.atp.gob.pa/mas-de-100-mil-personas-incluyendo-13-mil-turistas-internacionales-disfrutaron-el-carnaval-de-la-ciudad/", "quote": "Más de 45 mil personas abarrotaron los culecos durante el día" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://www.atp.gob.pa/mas-de-100-mil-personas-incluyendo-13-mil-turistas-internacionales-disfrutaron-el-carnaval-de-la-ciudad/", "quote": "Más de 100 mil personas, incluyendo 13 mil turistas internacionales disfrutaron el Carnaval de la ciudad.", "note": { "es": "Cifra de la ATP para la edición 2023.", "en": "Tourism Authority figure for the 2023 edition.", "pt": "Número da Autoridade de Turismo para a edição de 2023." } },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Tocumen_International_Airport", "note": { "es": "PTY (Tocumen) sirve al área metropolitana de la capital.", "en": "PTY (Tocumen) serves the capital's metropolitan area.", "pt": "PTY (Tocumen) atende a região metropolitana da capital." } }
+      },
+      "street_tip": { "es": "De día hay culecos con agua y música en la Cinta Costera; de noche, tarimas con artistas y comparsas. Usa el Metro, porque la Cinta Costera y la Avenida Balboa se cierran al tráfico.", "en": "By day there are culecos with water and music on the Cinta Costera; at night, stages with artists and comparsas. Take the Metro, since the Cinta Costera and Avenida Balboa close to traffic.", "pt": "De dia há culecos com água e música na Cinta Costera; à noite, palcos com artistas e comparsas. Use o metrô, porque a Cinta Costera e a Avenida Balboa fecham para o trânsito." },
+      "etiquette": { "es": "En el culeco mojarse es parte del juego, pero no lances agua ni espuma a quien está fuera de la zona de fiesta.", "en": "Getting soaked is part of the culeco, but don't throw water or foam at people outside the party area.", "pt": "No culeco se molhar faz parte da brincadeira, mas não jogue água nem espuma em quem está fora da área da festa." }
+    },
+    {
+      "slug": "desfile-mil-polleras",
+      "names": { "local": "Desfile de las Mil Polleras", "es": "Desfile de las Mil Polleras", "en": "Thousand Polleras Parade", "pt": "Desfile das Mil Polleras" },
+      "city": "Las Tablas",
+      "subdivision": "PA-7",
+      "timezone": "America/Panama",
+      "coords": { "lat": 7.7667, "lon": -80.275 },
+      "nearest_airport": "CTD",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "01-08", "end": "01-25" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-17",
+          "end": "2026-01-17",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.atp.gob.pa/atp-y-micultura-presentan-en-conferencia-de-prensa-el-desfile-de-las-mil-polleras-2026-una-celebracion-de-identidad-turismo-y-desarrollo/", "publisher": "Autoridad de Turismo de Panamá", "accessed": "2026-11-09", "tier": "A", "quote": "El desfile se realizará el sábado 17 de enero de 2026, a partir de la 1:00 p.m., en Las Tablas, provincia de Los Santos" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 288750, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://www.atp.gob.pa/desfile-de-las-mil-polleras-2026-consolida-su-impacto-turistico-con-mas-de-288-mil-asistentes-y-un-aporte-economico-superior-a-b-43-millones/", "quote": "logrando una asistencia aproximada de 288,750 personas" },
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://micultura.gob.pa/2026/01/17/miles-celebran-la-identidad-panamena-en-el-desfile-de-las-mil-polleras/", "quote": "La comitiva avanzó entre aplausos, banderas y música de tunas, marcando el inicio de una jornada que reune a miles de visitantes y portadoras de polleras de distintas regiones del país" },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://www.atp.gob.pa/desfile-de-las-mil-polleras-2026-consolida-su-impacto-turistico-con-mas-de-288-mil-asistentes-y-un-aporte-economico-superior-a-b-43-millones/", "quote": "La edición 2026 reunió a 105 delegaciones provenientes de distintas regiones del país, así como a visitantes nacionales e internacionales" },
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Cap._Alonso_Valderrama_Airport", "note": { "es": "CTD, en Chitré, está a unos 29 km en línea recta y solo tiene vuelos de Air Panama a la Ciudad de Panamá.", "en": "CTD, in Chitré, is about 29 km in a straight line and only has Air Panama flights to Panama City.", "pt": "CTD, em Chitré, fica a cerca de 29 km em linha reta e só tem voos da Air Panama para a Cidade do Panamá." } }
+      },
+      "street_tip": { "es": "El desfile arranca a primera hora de la tarde y dura horas; lleva sombrero, agua y protector solar, y aprovecha la semana previa para ver los puestos de artesanos de polleras.", "en": "The parade starts in the early afternoon and runs for hours; bring a hat, water and sunscreen, and use the days before to browse the pollera artisans' stalls.", "pt": "O desfile começa no início da tarde e dura horas; leve chapéu, água e protetor solar, e aproveite os dias anteriores para ver as barracas dos artesãos de polleras." },
+      "etiquette": { "es": "Las polleras y sus joyas son piezas de familia que valen mucho: mira y fotografía, pero no las toques sin permiso.", "en": "Polleras and their jewellery are valuable family heirlooms: look and photograph, but don't touch without permission.", "pt": "As polleras e suas joias são peças de família muito valiosas: olhe e fotografe, mas não toque sem permissão." }
+    },
+    {
+      "slug": "festival-mejorana-guarare",
+      "names": { "local": "Festival Nacional de la Mejorana", "es": "Festival Nacional de la Mejorana", "en": "National Mejorana Festival", "pt": "Festival Nacional da Mejorana" },
+      "city": "Guararé",
+      "subdivision": "PA-7",
+      "timezone": "America/Panama",
+      "coords": { "lat": 7.8139, "lon": -80.2828 },
+      "nearest_airport": "CTD",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "09-15", "end": "10-05" } },
+      "editions": {
+        "2026": {
+          "start": "2026-09-19",
+          "end": "2026-09-28",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://micultura.gob.pa/2026/09/16/ministerio-de-cultura-respalda-el-festival-nacional-de-la-mejorana-de-guarare/", "publisher": "Ministerio de Cultura de Panamá", "accessed": "2026-11-09", "tier": "A", "quote": "Del 19 al 28 de septiembre, Guararé volverá a convertirse en escenario de una de las principales celebraciones del calendario folclórico nacional" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://micultura.gob.pa/2026/09/16/ministerio-de-cultura-respalda-el-festival-nacional-de-la-mejorana-de-guarare/", "quote": "El Festival Nacional de la Mejorana reúne cada año en Guararé a cultores, músicos, bailadores, artesanos, agrupaciones folclóricas y público en general" },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://micultura.gob.pa/2026/09/16/ministerio-de-cultura-respalda-el-festival-nacional-de-la-mejorana-de-guarare/", "quote": "ofreciendo un espacio para que estas expresiones sean compartidas con las nuevas generaciones y con visitantes nacionales y extranjeros" },
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Cap._Alonso_Valderrama_Airport", "note": { "es": "CTD, en Chitré, está a unos 24 km en línea recta y solo tiene vuelos de Air Panama a la Ciudad de Panamá.", "en": "CTD, in Chitré, is about 24 km in a straight line and only has Air Panama flights to Panama City.", "pt": "CTD, em Chitré, fica a cerca de 24 km em linha reta e só tem voos da Air Panama para a Cidade do Panamá." } }
+      },
+      "street_tip": { "es": "El programa mezcla concursos de mejorana, desfiles con trajes típicos y presentaciones de conjuntos; revisa la agenda del patronato y, si Guararé está lleno, duerme en Chitré o Las Tablas.", "en": "The programme mixes mejorana contests, parades in traditional dress and folk band shows; check the organizers' schedule and, if Guararé is full, stay in Chitré or Las Tablas.", "pt": "A programação mistura concursos de mejorana, desfiles com trajes típicos e apresentações de conjuntos; confira a agenda do patronato e, se Guararé estiver lotada, durma em Chitré ou Las Tablas." },
+      "etiquette": { "es": "En los concursos de mejorana y décima guarda silencio mientras tocan o cantan: se juzga cada detalle.", "en": "During the mejorana and décima contests stay quiet while people play or sing: every detail is judged.", "pt": "Nos concursos de mejorana e décima faça silêncio enquanto tocam ou cantam: cada detalhe é avaliado." }
+    },
+    {
+      "slug": "feria-flores-cafe-boquete",
+      "names": { "local": "Feria de las Flores y del Café", "es": "Feria de las Flores y del Café de Boquete", "en": "Boquete Flower and Coffee Fair", "pt": "Feira das Flores e do Café de Boquete" },
+      "city": "Boquete",
+      "subdivision": "PA-4",
+      "timezone": "America/Panama",
+      "coords": { "lat": 8.7803, "lon": -82.4411 },
+      "nearest_airport": "DAV",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "01-05", "end": "01-25" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-07",
+          "end": "2026-01-18",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://ensegundos.com.pa/2026/01/06/feria-de-las-flores-y-el-cafe-de-boquete-proyecta-un-impacto-economico-de-20-millones/", "publisher": "En Segundos", "accessed": "2026-11-09", "tier": "B", "quote": "Para esta edición, se espera la llegada de más de 200,000 visitantes durante los doce días del evento, que se desarrollará del 7 al 18 de enero, superando las cifras de años anteriores." },
+            { "url": "https://ensegundos.com.pa/2026/01/06/temporada-de-ferias-2026-en-panama-inician-el-miercoles-en-boquete/", "publisher": "En Segundos", "accessed": "2026-11-09", "tier": "B", "quote": "Feria Internacional de las Flores y del Café en Boquete, Chiriquí, del 7 al 18 de enero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Los más de 200.000 visitantes eran una proyección de los organizadores antes de la feria, no un balance.", "en": "The 200,000+ visitors was the organizers' projection before the fair, not a final count.", "pt": "Os mais de 200.000 visitantes eram uma projeção dos organizadores antes da feira, não um balanço." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://ensegundos.com.pa/2026/01/06/feria-de-las-flores-y-el-cafe-de-boquete-proyecta-un-impacto-economico-de-20-millones/", "quote": "La Feria de las Flores y el Café es un evento anual que resalta la belleza floral y la calidad del café de altura, complementado con actividades culturales, desfiles y degustaciones que ponen en valor la tradición agrícola de la región." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Enrique_Malek_International_Airport", "note": { "es": "El aeropuerto más cercano, DAV en David, está a más de 40 km de Boquete y solo tiene vuelos nacionales.", "en": "The nearest airport, DAV in David, is more than 40 km from Boquete and has domestic flights only.", "pt": "O aeroporto mais próximo, DAV em David, fica a mais de 40 km de Boquete e só tem voos nacionais." } }
+      },
+      "street_tip": { "es": "La feria se recorre de día entre jardines y pabellones; en Boquete refresca por la noche, así que lleva una chaqueta ligera.", "en": "The fair is best explored by day among the gardens and pavilions; Boquete gets cool at night, so bring a light jacket.", "pt": "A feira se percorre de dia entre jardins e pavilhões; em Boquete esfria à noite, então leve um casaco leve." },
+      "etiquette": { "es": "Los arreglos florales son obra de productores locales: no arranques flores ni pises los jardines para la foto.", "en": "The flower displays are local growers' work: don't pick flowers or step into the beds for a photo.", "pt": "Os arranjos florais são trabalho de produtores locais: não arranque flores nem pise nos canteiros para a foto." }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "country": "CU",
+  "A": ["gob.cu", "cubatravel.cu", "cubaminrex.cu", "jazzcuba.com", "unesco.org"],
+  "B": [
+    "granma.cu",
+    "cubadebate.cu",
+    "juventudrebelde.cu",
+    "acn.cu",
+    "prensa-latina.cu",
+    "plenglish.com",
+    "cubasi.cu",
+    "radiohc.cu",
+    "trabajadores.cu",
+    "cubahora.cu",
+    "icrt.cu",
+    "sierramaestra.cu",
+    "ahora.cu",
+    "adelante.cu",
+    "vanguardia.cu"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

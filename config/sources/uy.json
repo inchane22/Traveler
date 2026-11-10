@@ -1,0 +1,19 @@
+{
+  "country": "UY",
+  "A": ["gub.uy", "unesco.org", "patriagaucha.com.uy"],
+  "B": [
+    "elpais.com.uy",
+    "elobservador.com.uy",
+    "montevideo.com.uy",
+    "ladiaria.com.uy",
+    "subrayado.com.uy",
+    "telemundo.com.uy",
+    "telenoche.com.uy",
+    "teledoce.com",
+    "tnu.com.uy",
+    "busqueda.com.uy",
+    "radiocarve.uy",
+    "carasycaretas.com.uy"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

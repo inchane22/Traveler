@@ -1,0 +1,20 @@
+{
+  "country": "CR",
+  "A": ["go.cr", "visitcostarica.com", "unesco.org"],
+  "B": [
+    "nacion.com",
+    "crhoy.com",
+    "teletica.com",
+    "ameliarueda.com",
+    "elmundo.cr",
+    "diarioextra.com",
+    "larepublica.net",
+    "repretel.com",
+    "observador.cr",
+    "crc891.com",
+    "lateja.cr",
+    "elfinancierocr.com",
+    "delfino.cr"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

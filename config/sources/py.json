@@ -1,0 +1,18 @@
+{
+  "country": "PY",
+  "A": [
+    "gov.py",
+    "visitparaguay.travel",
+    "carnavalencarnaceno.com.py",
+    "arp.org.py",
+    "unesco.org"
+  ],
+  "B": [
+    "abc.com.py",
+    "ultimahora.com",
+    "lanacion.com.py",
+    "hoy.com.py",
+    "npy.com.py"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

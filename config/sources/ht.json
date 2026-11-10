@@ -1,0 +1,20 @@
+{
+  "country": "HT",
+  "A": ["gouv.ht", "papjazzhaiti.org", "unesco.org"],
+  "B": [
+    "lenouvelliste.com",
+    "lenational.org",
+    "alterpresse.org",
+    "hpnhaiti.com",
+    "rnhaiti.com",
+    "radiotelevisioncaraibes.com",
+    "metropolehaiti.com",
+    "radiokiskeya.com",
+    "ayibopost.com",
+    "gazettehaiti.com",
+    "juno7.ht",
+    "haiti.loopnews.com",
+    "haitiantimes.com"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

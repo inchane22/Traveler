@@ -1,0 +1,221 @@
+{
+  "country": "EC",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Guayaquil",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "diablada-pillarena",
+      "names": { "local": "Diablada Pillareña", "es": "Diablada Pillareña", "en": "Píllaro Devil Dance Festival", "pt": "Diablada de Píllaro" },
+      "city": "Píllaro",
+      "subdivision": "EC-T",
+      "timezone": "America/Guayaquil",
+      "coords": { "lat": -1.1667, "lon": -78.5333 },
+      "nearest_airport": "UIO",
+      "type": "danza",
+      "rule": { "type": "fixed", "start": "01-01", "end": "01-06" },
+      "editions": {
+        "2026": {
+          "start": "2026-01-01",
+          "end": "2026-01-06",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.eltelegrafo.com.ec/noticias/locales/232/diablada-pillarena-2026-cronograma-enero", "publisher": "El Telégrafo", "accessed": "2026-11-09", "tier": "B", "quote": "la Diablada Pillareña, que se desarrollará del 1 al 6 de enero en el cantón Píllaro, provincia de Tungurahua" },
+            { "url": "https://www.teleamazonas.com/tendencias/entretenimiento/cultura/diablada-pillarena-2026-cronograma-participacion-partida-108138/", "publisher": "Teleamazonas", "accessed": "2026-11-09", "tier": "B", "quote": "Del 1 al 6 de enero de 2026, Píllaro se llenará de magia, color y tradición" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://www.primicias.ec/sociedad/diablada-pillaro-fiesta-ecuador-tradiciones-113030/", "quote": "la Diablada atrae a turistas locales y extranjeros que, para participar, pagan USD 3, dinero con el que financian la banda musical que los acompaña durante la jornada" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.elcomercio.com/videos/banda-pueblo-baile-diablada-pillaro/", "quote": "A la celebración arriban turistas de Guayaquil, Quito, Cuenca, Riobamba, Manta y de otras ciudades." },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mariscal_Sucre_International_Airport", "note": { "es": "Píllaro no tiene aeropuerto con vuelos de pasajeros; el de Latacunga (LTX) solo recibe carga y el más práctico es Quito (UIO), a unos 150 km.", "en": "Píllaro has no passenger airport; Latacunga (LTX) handles cargo only, so the practical one is Quito (UIO), about 150 km away.", "pt": "Píllaro não tem aeroporto de passageiros; o de Latacunga (LTX) só recebe carga e o mais prático é Quito (UIO), a uns 150 km." } }
+      },
+      "street_tip": { "es": "Las partidas recorren un circuito de unos dos kilómetros por el centro cada tarde; si quieres bailar como diablo, busca a una partida y pregunta cómo sumarte antes de que arranque.", "en": "The troupes loop a roughly two-kilometre circuit through the centre every afternoon; if you want to dance as a devil, find a troupe and ask how to join before it sets off.", "pt": "As partidas percorrem um circuito de uns dois quilômetros pelo centro toda tarde; se quiser dançar como diabo, procure uma partida e pergunte como entrar antes da saída." },
+      "etiquette": { "es": "Las máscaras son piezas artesanales de mucho trabajo: no las toques sin permiso y deja paso a los cabecillas que ordenan cada partida.", "en": "The masks are painstaking handmade pieces: do not touch them without asking, and make way for the leaders who keep each troupe in order.", "pt": "As máscaras são peças artesanais de muito trabalho: não toque sem pedir e dê passagem aos líderes que organizam cada partida." }
+    },
+    {
+      "slug": "fiesta-fruta-flores-ambato",
+      "names": { "local": "Fiesta de la Fruta y de las Flores", "es": "Fiesta de la Fruta y de las Flores", "en": "Festival of Fruit and Flowers", "pt": "Festa da Fruta e das Flores" },
+      "city": "Ambato",
+      "subdivision": "EC-T",
+      "timezone": "America/Guayaquil",
+      "coords": { "lat": -1.2491, "lon": -78.6168 },
+      "nearest_airport": "UIO",
+      "type": "fiesta_popular",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -51, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-13",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://ambato.gob.ec/ambato-proyecta-a-nivel-nacional-la-fiesta-de-la-fruta-y-de-las-flores-2026/", "publisher": "GAD Municipalidad de Ambato", "accessed": "2026-11-09", "tier": "A", "quote": "La Fiesta de la Fruta y de las Flores 2026 se desarrollará del 13 al 17 de febrero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 75, del viernes al martes de carnaval.", "en": "75th edition, from the Friday to the Tuesday of carnival.", "pt": "75ª edição, de sexta a terça-feira de carnaval." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://fiestasdeambato.com/", "quote": "esta festividad resalta la riqueza agrícola y el espíritu de su gente mediante desfiles, carros alegóricos decorados con flores y frutas, y diversas actividades culturales" },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://fiestasdeambato.com/", "quote": "Cada año atrae a miles de turistas nacionales e internacionales, consolidándose como la fiesta más grande e importante del centro del país." },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mariscal_Sucre_International_Airport", "note": { "es": "Ambato no tiene vuelos de pasajeros; el aeropuerto práctico es Quito (UIO), a unos 150 km.", "en": "Ambato has no passenger flights; the practical airport is Quito (UIO), about 150 km away.", "pt": "Ambato não tem voos de passageiros; o aeroporto prático é Quito (UIO), a uns 150 km." } }
+      },
+      "street_tip": { "es": "Los desfiles grandes del domingo y el lunes se ven mejor desde los graderíos; si vas por libre, llega temprano a las aceras del recorrido.", "en": "The big Sunday and Monday parades are best seen from the grandstands; if you go without a seat, get to the kerbside along the route early.", "pt": "Os grandes desfiles de domingo e segunda se veem melhor das arquibancadas; se for sem lugar marcado, chegue cedo às calçadas do percurso." },
+      "etiquette": { "es": "Esta fiesta celebra flores, frutas y desfiles, no el juego con agua: no mojes a nadie en los recorridos.", "en": "This festival is about flowers, fruit and parades rather than water fights: do not soak anyone along the routes.", "pt": "Esta festa celebra flores, frutas e desfiles, não a brincadeira com água: não molhe ninguém nos percursos." }
+    },
+    {
+      "slug": "carnaval-guaranda",
+      "names": { "local": "Carnaval de Guaranda", "es": "Carnaval de Guaranda", "en": "Guaranda Carnival", "pt": "Carnaval de Guaranda" },
+      "city": "Guaranda",
+      "subdivision": "EC-B",
+      "timezone": "America/Guayaquil",
+      "coords": { "lat": -1.5928, "lon": -79.001 },
+      "nearest_airport": "GYE",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "01-20", "end": "03-15" } },
+      "editions": {
+        "2026": {
+          "start": "2026-02-06",
+          "end": "2026-02-22",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desfile-de-comparsas", "name": { "es": "Desfile de comparsas", "en": "Comparsas parade", "pt": "Desfile de comparsas" }, "date": "2026-02-15", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.eluniverso.com/guayaquil/comunidad/carnaval-de-guaranda-2026-con-artistas-nacionales-e-internacionales-hasta-el-22-de-febrero-nota/", "publisher": "El Universo", "accessed": "2026-11-09", "tier": "B", "quote": "este año la programación en Guaranda ya se inició el viernes 6 de febrero" },
+            { "url": "https://www.eluniverso.com/guayaquil/comunidad/carnaval-de-guaranda-2026-con-artistas-nacionales-e-internacionales-hasta-el-22-de-febrero-nota/", "publisher": "El Universo", "accessed": "2026-11-09", "tier": "B", "quote": "Carnaval de Guaranda 2026 con artistas nacionales e internacionales hasta el 22 de febrero" },
+            { "url": "https://www.eluniverso.com/noticias/ecuador/el-carnaval-de-guaranda-atrajo-a-miles-y-sus-comparsas-llenaron-las-calles-de-alegria-e-ingenio-nota/", "publisher": "El Universo", "accessed": "2026-11-09", "tier": "B", "quote": "encabezó el desfile en la capital de la provincia de Bolívar este domingo, 15 de febrero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Programa municipal del 6 al 22 de febrero; los días grandes fueron el feriado de carnaval, del sábado 14 al martes 17, con el desfile de comparsas el domingo 15.", "en": "Municipal program from February 6 to 22; the big days were the carnival holiday, Saturday 14 to Tuesday 17, with the comparsas parade on Sunday 15.", "pt": "Programação municipal de 6 a 22 de fevereiro; os dias principais foram o feriado de carnaval, de sábado 14 a terça 17, com o desfile de comparsas no domingo 15." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://www.guaranda.gob.ec/carnaval-de-guaranda/", "quote": "En el Carnaval de Guaranda se juega con serpentinas, talcos, lociones, flores, confites, polvo y por supuesto agua; es una fiesta animada por comparsas, pregones, contrapuntos, bailes públicos y festival de comidas típicas que forman parte de la cultura carnavalesca." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.eluniverso.com/noticias/ecuador/ecuador-celebro-carnaval-2026-con-alta-ocupacion-hotelera-y-un-record-guinness-este-es-el-balance-del-sector-nota/", "quote": "las preferencias para carnaval eran la Sierra centro, con Ambato y su Fiesta de la Fruta y de las Flores, y Guaranda" },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Jos%C3%A9_Joaqu%C3%ADn_de_Olmedo_International_Airport", "note": { "es": "Guaranda no tiene aeropuerto; el más cercano con vuelos es Guayaquil (GYE), a unos 150 km por carretera.", "en": "Guaranda has no airport; the nearest one with flights is Guayaquil (GYE), about 150 km by road.", "pt": "Guaranda não tem aeroporto; o mais próximo com voos é Guayaquil (GYE), a uns 150 km de estrada." } }
+      },
+      "street_tip": { "es": "En la calle te van a mojar y pintar con polvo o talco: lleva ropa vieja, protege el celular y reserva alojamiento con tiempo, porque los hoteles se llenan en el feriado.", "en": "Out on the street you will get soaked and dusted with powder or talc: wear old clothes, protect your phone and book lodging early, as hotels fill up over the holiday.", "pt": "Na rua você vai ser molhado e pintado com pó ou talco: use roupa velha, proteja o celular e reserve hospedagem cedo, porque os hotéis lotam no feriado." },
+      "etiquette": { "es": "El juego con agua y polvo es parte de la fiesta, pero se juega con quien está en la calle festejando: no apuntes a quien va de paso con niños o de trabajo.", "en": "Water and powder play is part of the party, but it is for people out celebrating: leave alone those passing by with children or on their way to work.", "pt": "A brincadeira com água e pó faz parte da festa, mas é com quem está na rua festejando: deixe em paz quem passa com crianças ou indo trabalhar." }
+    },
+    {
+      "slug": "mama-negra-latacunga",
+      "names": { "local": "Fiesta de la Mama Negra", "es": "Fiesta de la Mama Negra", "en": "Mama Negra Festival", "pt": "Festa da Mama Negra" },
+      "city": "Latacunga",
+      "subdivision": "EC-X",
+      "timezone": "America/Guayaquil",
+      "coords": { "lat": -0.9352, "lon": -78.6155 },
+      "nearest_airport": "UIO",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "11-01", "end": "11-15" } },
+      "editions": {
+        "2026": {
+          "start": "2026-11-07",
+          "end": "2026-11-07",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.ecuavisa.com/ecuador/fiesta-mama-negra-2026-latacunga-20261108-0021.html", "publisher": "Ecuavisa", "accessed": "2026-11-09", "tier": "B", "quote": "El evento masivo se realizó el sábado 7 de noviembre de 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Es la Mama Negra cívica de noviembre, por la independencia de Latacunga; la de septiembre, en honor a la Virgen de la Merced, es otra celebración.", "en": "This is the civic Mama Negra of November, for Latacunga's independence; the September one, for the Virgin of Mercy, is a separate celebration.", "pt": "É a Mama Negra cívica de novembro, pela independência de Latacunga; a de setembro, em honra à Virgem das Mercês, é outra celebração." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 200000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.ecuavisa.com/ecuador/fiesta-mama-negra-2026-latacunga-20261108-0021.html", "quote": "Unas 200 000 personas se congregaron para disfrutar del festejo", "note": { "es": "Estimación del gobernador de Cotopaxi para el desfile del 7 de noviembre de 2026.", "en": "Cotopaxi governor's estimate for the November 7, 2026 parade.", "pt": "Estimativa do governador de Cotopaxi para o desfile de 7 de novembro de 2026." } },
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.ecuavisa.com/ecuador/fiesta-mama-negra-2026-latacunga-20261108-0021.html", "quote": "Ellos bailaron al ritmo de las bandas musicales y saludaron a los miles de espectadores." },
+        "viajeros": { "measure": "nacional", "confidence": "estimacion", "source": "https://lagaceta.com.ec/mama-negra-dejo-30-toneladas-adicionales-de-basura-en-latacunga/", "quote": "convocó a miles de visitantes de distintas provincias del país" },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Cotopaxi_International_Airport", "note": { "es": "El aeropuerto de Latacunga (LTX) solo opera carga; para llegar en avión se usa Quito (UIO), a unos 90 km.", "en": "Latacunga's airport (LTX) handles cargo only; flying in means Quito (UIO), about 90 km away.", "pt": "O aeroporto de Latacunga (LTX) só opera carga; para chegar de avião usa-se Quito (UIO), a uns 90 km." } }
+      },
+      "street_tip": { "es": "El desfile dura todo el día, de la mañana a la tarde, a lo largo de unos tres kilómetros; si alquilas silla o tarima en la acera, pregunta el precio antes de sentarte.", "en": "The parade runs all day, from morning to late afternoon, along about three kilometres; if you rent a chair or a spot on a stand by the kerb, ask the price before you sit down.", "pt": "O desfile dura o dia todo, de manhã até o fim da tarde, ao longo de uns três quilômetros; se alugar cadeira ou palanque na calçada, pergunte o preço antes de sentar." },
+      "etiquette": { "es": "Si un personaje te ofrece un trago o te salpica, tómalo con humor: es parte del ritual; si no quieres beber, basta con agradecer.", "en": "If a character offers you a drink or splashes you, take it in good humour: it is part of the ritual; if you would rather not drink, a thank-you is enough.", "pt": "Se um personagem oferecer um gole ou te molhar, leve na esportiva: faz parte do ritual; se não quiser beber, basta agradecer." }
+    },
+    {
+      "slug": "inti-raymi-cotacachi",
+      "names": { "local": "Inti Raymi de Cotacachi", "es": "Inti Raymi de Cotacachi", "en": "Cotacachi Inti Raymi", "pt": "Inti Raymi de Cotacachi" },
+      "city": "Cotacachi",
+      "subdivision": "EC-I",
+      "timezone": "America/Guayaquil",
+      "coords": { "lat": 0.3014, "lon": -78.2665 },
+      "nearest_airport": "UIO",
+      "type": "danza",
+      "rule": { "type": "announced", "window": { "start": "06-20", "end": "07-05" } },
+      "editions": {
+        "2026": {
+          "start": "2026-06-23",
+          "end": "2026-07-01",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "hatun-puncha", "name": { "es": "Hatun Puncha, toma de la plaza", "en": "Hatun Puncha, taking of the square", "pt": "Hatun Puncha, tomada da praça" }, "date": "2026-06-24", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.lahora.com.ec/imbaburacarchi/cotacachi-activa-plan-de-seguridad-para-el-inti-raymi-2026-20260612-0009.html", "publisher": "La Hora", "accessed": "2026-11-09", "tier": "B", "quote": "Las actividades comenzarán el 23 de junio con la celebración del Wawa Puncha" },
+            { "url": "https://www.lahora.com.ec/imbaburacarchi/cotacachi-activa-plan-de-seguridad-para-el-inti-raymi-2026-20260612-0009.html", "publisher": "La Hora", "accessed": "2026-11-09", "tier": "B", "quote": "Las festividades concluirán el 1 de julio de 2026 con el Warmi Puncha" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La toma de la plaza fue el 24, 25, 29 y 30 de junio; el 23 fue el Wawa Puncha (niños) y el 1 de julio el Warmi Puncha (mujeres).", "en": "The taking of the square was on June 24, 25, 29 and 30; June 23 was Wawa Puncha (children) and July 1 Warmi Puncha (women).", "pt": "A tomada da praça foi em 24, 25, 29 e 30 de junho; o dia 23 foi o Wawa Puncha (crianças) e 1º de julho o Warmi Puncha (mulheres)." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.lahora.com.ec/imbaburacarchi/imbabura-cotacachi-celebra-el-inti-raymi-con-plan-de-seguridad-municipal-y-sin-presencia-militar-20260624-0026.html", "quote": "Algunos turistas extranjeros tienen cámaras fotográficas profesionales y capturan imágenes de los danzantes en pleno ritual o tocando flautas, rondines y bandolines." },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://www.lahora.com.ec/imbaburacarchi/imbabura-cotacachi-celebra-el-inti-raymi-con-plan-de-seguridad-municipal-y-sin-presencia-militar-20260624-0026.html", "quote": "En el parque se concentra una gran cantidad de danzantes, turistas nacionales y extranjeros." },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mariscal_Sucre_International_Airport", "note": { "es": "Cotacachi no tiene aeropuerto; el más cercano es Quito (UIO), a unos 100 km.", "en": "Cotacachi has no airport; the nearest is Quito (UIO), about 100 km away.", "pt": "Cotacachi não tem aeroporto; o mais próximo é Quito (UIO), a uns 100 km." } }
+      },
+      "street_tip": { "es": "La toma de la plaza se vive desde las veredas del parque central; quédate fuera de los círculos de baile, que giran con fuerza y sin parar.", "en": "The taking of the square is best watched from the edges of the central park; stay outside the dancing circles, which turn hard and without stopping.", "pt": "A tomada da praça se acompanha das calçadas do parque central; fique fora das rodas de dança, que giram com força e sem parar." },
+      "etiquette": { "es": "Es un ritual de las comunidades kichwa, no un espectáculo: pide permiso antes de fotografiar de cerca y no te metas entre los grupos de danzantes.", "en": "This is a Kichwa community ritual, not a show: ask before taking close-up photos and do not step between the dancing groups.", "pt": "É um ritual das comunidades kichwa, não um espetáculo: peça licença antes de fotografar de perto e não se meta entre os grupos de dançarinos." }
+    },
+    {
+      "slug": "fiestas-de-quito",
+      "names": { "local": "Fiestas de Quito", "es": "Fiestas de Quito", "en": "Quito Festivities", "pt": "Festas de Quito" },
+      "city": "Quito",
+      "subdivision": "EC-P",
+      "timezone": "America/Guayaquil",
+      "coords": { "lat": -0.2203, "lon": -78.5123 },
+      "nearest_airport": "UIO",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "11-15", "end": "12-06" } },
+      "editions": {
+        "2026": {
+          "status": "por_anunciar",
+          "confidence": "estimacion",
+          "key_events": [],
+          "sources": [],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Las fiestas culminan cada 6 de diciembre, aniversario de la fundación; al 9 de noviembre de 2026 el Municipio aún no había publicado la agenda.", "en": "The festivities peak every December 6, the city's founding anniversary; as of November 9, 2026 the city had not yet published the program.", "pt": "As festas culminam todo 6 de dezembro, aniversário da fundação; em 9 de novembro de 2026 a prefeitura ainda não havia publicado a programação." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": null,
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mariscal_Sucre_International_Airport", "note": { "es": "UIO está en Tababela, a unos 40 km por carretera del centro, con vuelos a América y Europa.", "en": "UIO is in Tababela, about 40 km by road from the centre, with flights to the Americas and Europe.", "pt": "O UIO fica em Tababela, a uns 40 km de estrada do centro, com voos para as Américas e a Europa." } }
+      },
+      "street_tip": { "es": "Buena parte de la fiesta ocurre en los barrios, no en un solo escenario: revisa la agenda de tu zona cuando el Municipio la publique.", "en": "Much of the party happens in the neighbourhoods rather than on one stage: check the program for your area once the city publishes it.", "pt": "Boa parte da festa acontece nos bairros, não num único palco: confira a programação da sua região quando a prefeitura publicar." }
+    }
+  ]
+}

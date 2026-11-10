@@ -1,6 +1,6 @@
 {
   "country": "MX",
-  "status": "borrador",
+  "status": "publicado",
   "generated_at": "2026-11-10",
   "timezone": "America/Mexico_City",
   "region": "norteamerica",
@@ -54,11 +54,29 @@
       "nearest_airport": "OAX",
       "type": "danza",
       "rule": { "type": "announced", "window": { "start": "07-17", "end": "08-01" } },
-      "editions": {},
+      "editions": {
+        "2026": {
+          "start": "2026-07-20",
+          "end": "2026-07-27",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "lunes-del-cerro", "name": { "es": "Lunes del Cerro", "en": "Monday on the Hill", "pt": "Segunda-feira do Cerro" }, "date": "2026-07-20", "confidence": "prensa" },
+            { "id": "octava", "name": { "es": "Octava del Lunes del Cerro", "en": "Octave of the Monday on the Hill", "pt": "Oitava da Segunda-feira do Cerro" }, "date": "2026-07-27", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.cronica.com.mx/estados/2026/05/21/gobierno-de-oaxaca-presenta-la-guelaguetza-2026-con-mas-de-140-actividades/", "publisher": "La Crónica de Hoy", "accessed": "2026-11-09", "tier": "B", "quote": "los tradicionales Lunes del Cerro y su octava se realizarán los días 20 y 27 de julio en el Auditorio Guelaguetza" },
+            { "url": "https://www.razon.com.mx/estados/2026/07/27/oaxaca-cierra-con-broche-de-oro-la-guelaguetza-2026-preven-derrama-superior-a-los-1477-mdp/", "publisher": "La Razón de México", "accessed": "2026-11-09", "tier": "B", "quote": "se vivió intensamente en las cuatro presentaciones" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Fechas de los dos Lunes del Cerro en el Auditorio Guelaguetza; los convites y las calendas por el centro de Oaxaca se reparten por todo julio.", "en": "Dates of the two Mondays on the Hill at the Guelaguetza Auditorium; the convites and calendas through central Oaxaca are spread across July.", "pt": "Datas das duas Segundas-feiras do Cerro no Auditório Guelaguetza; os convites e as calendas pelo centro de Oaxaca se espalham por todo julho." }
+        }
+      },
       "score": {
         "convocatoria": { "measure": { "attendance": 148000, "qualifier": "more_than", "unit": "visitors", "year": 2026 }, "confidence": "prensa", "source": "https://www.razon.com.mx/estados/2026/07/27/oaxaca-cierra-con-broche-de-oro-la-guelaguetza-2026-preven-derrama-superior-a-los-1477-mdp/", "note": { "es": "Visitantes en julio; el medio no cita la fuente oficial.", "en": "Visitors in July; the outlet does not name the official source.", "pt": "Visitantes em julho; o veículo não cita a fonte oficial." } },
-        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.oaxaca.gob.mx/comunicacion/artesanias-mezcal-conciertos-bailes-y-danzas-daran-realce-a-la-guelaguetza-2023/", "quote": "todos los días tendrán presentaciones de grupos, bandas y organizaciones musicales diversas, Dj’s, orquestas, marimbas, danzantes y" },
-        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://www.oaxaca.gob.mx/comunicacion/guelaguetza-2023-recupero-su-esencia-popular-mas-de-40-mil-asistieron-al-auditorio-del-cerro-del-fortin/", "quote": "En estas fiestas visitaron Oaxaca turistas de Estados Unidos, Suiza, España, Colombia, Italia y Francia." },
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.razon.com.mx/estados/2026/07/27/oaxaca-cierra-con-broche-de-oro-la-guelaguetza-2026-preven-derrama-superior-a-los-1477-mdp/", "quote": "se vivió intensamente en las cuatro presentaciones; dieciséis pueblos originarios y afromexicanos compartieron su legado" },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://www.razon.com.mx/estados/2026/07/27/oaxaca-cierra-con-broche-de-oro-la-guelaguetza-2026-preven-derrama-superior-a-los-1477-mdp/", "quote": "atrayendo a más de 148 mil visitantes nacionales e internacionales" },
         "calle": { "measure": "mixta", "confidence": "prensa", "source": "https://www.cronica.com.mx/estados/2026/05/21/gobierno-de-oaxaca-presenta-la-guelaguetza-2026-con-mas-de-140-actividades/", "note": { "es": "Palcos A y B con boleto; C y D gratuitos (2026).", "en": "Sections A and B ticketed; C and D free (2026).", "pt": "Setores A e B pagos; C e D gratuitos (2026)." } },
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Oaxaca_City" }
       },
@@ -78,8 +96,8 @@
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 1000000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.publimetro.com.mx/jalisco/2026/10/12/la-fe-pudo-mas-y-un-millon-acompano-a-la-virgen-de-zapopan-pese-a-alerta-por-simon/", "note": { "es": "Estimación de la Arquidiócesis de Guadalajara; hubo alerta de lluvia por el huracán Simon.", "en": "Estimate by the Archdiocese of Guadalajara; there was a rain alert from Hurricane Simon.", "pt": "Estimativa da Arquidiocese de Guadalajara; houve alerta de chuva pelo furacão Simon." } },
-        "fiesta": { "measure": "solemne", "confidence": "oficial", "source": "https://www.zapopan.gob.mx/v3/ciudad/fiestas-y-tradiciones", "quote": "Se celebra cada 13 de octubre en el primer cuadro de la Cabecera Municipal, donde miles de danzantes del Área Metropolitana de Guadalajara" },
-        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://www.zapopan.gob.mx/v3/noticias/zapopan-prepara-el-plan-operativo-integral-para-recibir-la-romeria-292", "quote": "se prevé la participación de 40 mil 609 danzantes, provenientes de distintos cuarteles y de entidades como Jalisco, Estado de" },
+        "fiesta": { "measure": "solemne", "confidence": "prensa", "source": "https://www.publimetro.com.mx/jalisco/2026/10/12/la-fe-pudo-mas-y-un-millon-acompano-a-la-virgen-de-zapopan-pese-a-alerta-por-simon/", "quote": "acompañar a la Virgen de Zapopan en uno de los recorridos religiosos más importantes de Jalisco" },
+        "viajeros": { "measure": "nacional", "confidence": "estimacion", "source": "https://www.aztecajalisco.com/arte-y-cultura/dia-del-danzante-2026-cuando-es-y-que-actividades-habra-tras-la-romeria-de-la-virgen-de-zapopan/", "quote": "se espera la participación de más de 40 mil danzantes de Jalisco y otros estados de México" },
         "calle": null,
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Guadalajara_International_Airport", "note": { "es": "Aeropuerto de la zona metropolitana, en Tlajomulco.", "en": "Metro-area airport, in Tlajomulco.", "pt": "Aeroporto da região metropolitana, em Tlajomulco." } }
       },
@@ -97,24 +115,34 @@
       "type": "danza",
       "rule": { "type": "fixed", "start": "01-04", "end": "01-23" },
       "editions": {
-        "2027": {
-          "start": "2027-01-04",
-          "end": "2027-01-23",
+        "2026": {
+          "start": "2026-01-04",
+          "end": "2026-01-23",
           "status": "tentativa",
-          "confidence": "prensa",
+          "confidence": "estimacion",
           "key_events": [],
           "sources": [
-            { "url": "https://visitmexico.com/en/actividad/131/fiesta-grande-de-chiapa-de-corzo", "publisher": "visitmexico.com", "accessed": "2026-11-09", "tier": "C", "quote": "**Date(s)**: 2027-01-04 - 2027-01-23" },
+            { "url": "https://www.aztecachiapas.com/tendencia-noticias-hoy-viral/calendario-oficial-de-la-fiesta-grande-de-enero-2026-en-chiapa-de-corzo-fechas-y-actividades/", "publisher": "Azteca Chiapas", "accessed": "2026-11-09", "tier": "C", "quote": "Del 4 al 23 de enero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Solo una fuente de nivel C fecha la edición 2026.", "en": "Only a tier C source dates the 2026 edition.", "pt": "Só uma fonte de nível C data a edição 2026." }
+        },
+        "2027": {
+          "status": "por_anunciar",
+          "confidence": "estimacion",
+          "key_events": [],
+          "sources": [
             { "url": "https://losmundosdemexico.com/parachicos-fiesta-grande-chiapa-de-corzo/", "publisher": "losmundosdemexico.com", "accessed": "2026-11-09", "tier": "C", "quote": "Para 2027 no se localizó un anuncio oficial al cierre de esta revisión, el 22 de octubre de 2026." }
           ],
           "last_verified": "2026-11-09",
-          "sequence": 1
+          "sequence": 2
         }
       },
       "score": {
         "convocatoria": null,
-        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.patrimoniomundialmexico.inah.gob.mx/publico/listado_elementos_detalle.php?idLista=OA%3D%3D", "quote": "Los Parachicos (término con el que se designa a la vez a los danzantes y al tipo de baile que ejecutan de la mañana a la noche)" },
-        "viajeros": { "measure": "internacional", "confidence": "estimacion", "source": "https://www.aztecachiapas.com/turismo-chiapas/chiapa-de-corzo-espera-un-aumento-turistico-de-hasta-el-80-para-diciembre-y-la-fiesta-grande/", "quote": "El optimismo se fundamenta en que ya se registran **reservaciones** tanto de turismo nacional, especialmente del centro del país, como de visitantes i" },
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/parachicos-in-the-traditional-january-feast-of-chiapa-de-corzo-00399", "quote": "They start in the morning and conclude at night, as the dancers carry statues of saints throughout the city, visiting places of worship." },
+        "viajeros": { "measure": "internacional", "confidence": "estimacion", "source": "https://www.aztecachiapas.com/turismo-chiapas/chiapa-de-corzo-espera-un-aumento-turistico-de-hasta-el-80-para-diciembre-y-la-fiesta-grande/", "quote": "El optimismo se fundamenta en que ya se registran reservaciones tanto de turismo nacional, especialmente del centro del país, como de visitantes internacionales provenientes de Estados Unidos y Colombia" },
         "calle": null,
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/%C3%81ngel_Albino_Corzo_International_Airport", "note": { "es": "TGZ está en el municipio; su única ruta internacional (Houston) se reanuda el 28 de octubre de 2026.", "en": "TGZ is in the municipality; its only international route (Houston) resumes on October 28, 2026.", "pt": "TGZ fica no município; sua única rota internacional (Houston) volta em 28 de outubro de 2026." } }
       },
@@ -134,13 +162,161 @@
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 2797500, "qualifier": "exact", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://www.iztapalapa.cdmx.gob.mx/principal/boletines/boletines/Abril2026/030426BOL565.pdf", "note": { "es": "Del Domingo de Ramos al Viernes Santo, edición 183.", "en": "Palm Sunday to Good Friday, 183rd edition.", "pt": "Do Domingo de Ramos à Sexta-feira Santa, 183ª edição." } },
-        "fiesta": { "measure": "solemne", "confidence": "oficial", "source": "https://lugares.inah.gob.mx/en/node/6409", "quote": "The Way of the Cross on Good Friday, accompanied by thousands of Nazarenes carrying crosses and performing corporal penances" },
+        "fiesta": { "measure": "solemne", "confidence": "prensa", "source": "https://www.excelsior.com.mx/ciudad-de-mexico/turistas-extranjeros-sorprenden-por-viacrucis-iztapalapa-cdmx", "quote": "Lo que les sorprende es el peso de las cruces de los “nazarenos”, de hasta 120 kilos." },
         "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://www.excelsior.com.mx/ciudad-de-mexico/turistas-extranjeros-sorprenden-por-viacrucis-iztapalapa-cdmx", "quote": "congregó en su 183 edición, a turistas extranjeros, provenientes de países como Alemania y Corea del Sur" },
         "calle": null,
         "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mexico_City_International_Airport" }
       },
       "street_tip": { "es": "El Viernes Santo el viacrucis sube al Cerro de la Estrella; llega temprano en Metro y lleva agua, sombrero y poco más.", "en": "On Good Friday the Way of the Cross climbs Cerro de la Estrella; arrive early by Metro and bring water, a hat and little else.", "pt": "Na Sexta-feira Santa a via-sacra sobe o Cerro de la Estrella; chegue cedo de metrô e leve água, chapéu e pouca coisa." },
       "etiquette": { "es": "Es una promesa comunitaria de casi dos siglos: no cruces el paso de los nazarenos y guarda silencio durante la crucifixión.", "en": "It is a community vow almost two centuries old: don't cross the nazarenos' path and keep quiet during the crucifixion.", "pt": "É uma promessa comunitária de quase dois séculos: não atravesse o caminho dos nazarenos e faça silêncio durante a crucificação." }
+    },
+    {
+      "slug": "carnaval-mazatlan",
+      "names": { "local": "Carnaval Internacional de Mazatlán", "es": "Carnaval de Mazatlán", "en": "Mazatlán Carnival", "pt": "Carnaval de Mazatlán" },
+      "city": "Mazatlán",
+      "subdivision": "MX-SIN",
+      "timezone": "America/Mazatlan",
+      "coords": { "lat": 23.2494, "lon": -106.4111 },
+      "nearest_airport": "MZT",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -52, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-12",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "combate-naval", "name": { "es": "Combate Naval", "en": "Naval Combat show", "pt": "Combate Naval" }, "date": "2026-02-14", "confidence": "oficial" },
+            { "id": "primer-desfile", "name": { "es": "Primer desfile del Carnaval", "en": "First Carnival parade", "pt": "Primeiro desfile do Carnaval" }, "date": "2026-02-15", "confidence": "oficial" },
+            { "id": "segundo-desfile", "name": { "es": "Segundo desfile del Carnaval", "en": "Second Carnival parade", "pt": "Segundo desfile do Carnaval" }, "date": "2026-02-17", "confidence": "oficial" }
+          ],
+          "sources": [
+            { "url": "https://www.gob.mx/sectur/articulos/al-ritmo-de-tambora-el-carnaval-de-mazatlan-2026-proyecta-derrama-superior-a-mil-200-mdp", "publisher": "Secretaría de Turismo (gob.mx)", "accessed": "2026-11-09", "tier": "A", "quote": "que se llevará a cabo del 12 al 17 de febrero" },
+            { "url": "https://www.unotv.com/turismo/inicia-el-carnaval-de-mazatlan-2026-arriba-la-tambora-con-mas-de-25-mil-asistentes", "publisher": "Uno TV", "accessed": "2026-11-09", "tier": "B", "quote": "El Carnaval Internacional Mazatlán 2026 continuará con coronaciones, desfiles y presentaciones artísticas hasta el martes 17 de febrero." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 1340000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.cronica.com.mx/estados/2026/02/18/mazatlan-cierra-su-carnaval-con-mas-de-13-millones-de-visitantes-y-una-derrama-economica-historica/", "note": { "es": "Asistencia total de los seis días según las autoridades.", "en": "Total attendance over the six days, per the authorities.", "pt": "Público total dos seis dias, segundo as autoridades." } },
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://culturamazatlan.com/prensa/2026/01/olas-altas-sera-epicentro-de-la-tambora-habra-taquilla-digital-y-venta-itinerante-de-boletos-en-el-sur/", "quote": "Este año, la monumental fiesta junto al mar estará amenizada exclusivamente con música de banda, el acceso se mantiene en 70 pesos" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.cronica.com.mx/estados/2026/02/18/mazatlan-cierra-su-carnaval-con-mas-de-13-millones-de-visitantes-y-una-derrama-economica-historica/", "quote": "para hacer de esta edición un momento memorable para visitantes nacionales y extranjeros" },
+        "calle": { "measure": "mixta", "confidence": "oficial", "source": "https://culturamazatlan.com/prensa/2026/01/olas-altas-sera-epicentro-de-la-tambora-habra-taquilla-digital-y-venta-itinerante-de-boletos-en-el-sur/", "note": { "es": "Los desfiles recorren el malecón; las noches de fiesta en Olas Altas cobran acceso (70 pesos en 2026).", "en": "The parades run along the malecón; the party nights at Olas Altas charge entry (70 pesos in 2026).", "pt": "Os desfiles percorrem o malecón; as noites de festa em Olas Altas cobram entrada (70 pesos em 2026)." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mazatl%C3%A1n_International_Airport", "note": { "es": "MZT está a unos 20 km al sureste del centro.", "en": "MZT is about 20 km southeast of downtown.", "pt": "MZT fica a cerca de 20 km a sudeste do centro." } }
+      },
+      "street_tip": { "es": "Para los desfiles busca lugar en el malecón con tiempo; de noche la fiesta grande está en Olas Altas, donde se paga una entrada barata.", "en": "For the parades, grab a spot on the malecón early; at night the big party is at Olas Altas, which has a cheap entry fee.", "pt": "Para os desfiles, garanta um lugar no malecón cedo; à noite a festa grande é em Olas Altas, com entrada barata." },
+      "etiquette": { "es": "La tambora es el orgullo del puerto: si una banda toca en la calle, únete al baile, pero no te subas a los carros alegóricos ni cruces el desfile.", "en": "Tambora brass is the port's pride: if a band plays in the street, join the dancing, but don't climb onto floats or cut across the parade.", "pt": "A tambora é o orgulho do porto: se uma banda tocar na rua, entre na dança, mas não suba nos carros alegóricos nem atravesse o desfile." }
+    },
+    {
+      "slug": "carnaval-veracruz",
+      "names": { "local": "Carnaval de Veracruz", "es": "Carnaval de Veracruz", "en": "Veracruz Carnival", "pt": "Carnaval de Veracruz" },
+      "city": "Veracruz",
+      "subdivision": "MX-VER",
+      "timezone": "America/Mexico_City",
+      "coords": { "lat": 19.1738, "lon": -96.1342 },
+      "nearest_airport": "VER",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -54, "end": -46 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-10",
+          "end": "2026-02-18",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "quema-del-mal-humor", "name": { "es": "Quema del Mal Humor", "en": "Burning of Bad Mood", "pt": "Queima do Mau Humor" }, "date": "2026-02-10", "confidence": "prensa" },
+            { "id": "desfiles", "name": { "es": "Desfiles de carros alegóricos por el bulevar", "en": "Float parades along the boulevard", "pt": "Desfiles de carros alegóricos pelo bulevar" }, "date": "2026-02-14", "end": "2026-02-17", "confidence": "oficial" },
+            { "id": "entierro-de-juan-carnaval", "name": { "es": "Entierro de Juan Carnaval", "en": "Burial of Juan Carnaval", "pt": "Enterro de Juan Carnaval" }, "date": "2026-02-18", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://veracruzmunicipio.gob.mx/aprueba-cabildo-de-veracruz-costos-accesibles-para-gradas-del-carnaval-2026/", "publisher": "H. Ayuntamiento de Veracruz", "accessed": "2026-11-09", "tier": "A", "quote": "demás actividades carnestolendas que se desarrollarán del 10 al 18 de febrero" },
+            { "url": "https://veracruzmunicipio.gob.mx/aprueba-cabildo-de-veracruz-costos-accesibles-para-gradas-del-carnaval-2026/", "publisher": "H. Ayuntamiento de Veracruz", "accessed": "2026-11-09", "tier": "A", "quote": "durante los paseos de carros alegóricos programados del sábado 14 al martes 17 de febrero del presente año" },
+            { "url": "https://www.unotv.com/estados/veracruz/carnaval-de-veracruz-2026-confirma-a-artistas-que-encabezaran-los-conciertos/", "publisher": "Uno TV", "accessed": "2026-11-09", "tier": "B", "quote": "dio a conocer la agenda que se llevará a cabo del 10 al 18 de febrero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "En 2026 el carnaval volvió a su fecha tradicional antes del Miércoles de Ceniza, tras varias ediciones en verano.", "en": "In 2026 the carnival returned to its traditional date before Ash Wednesday, after several summer editions.", "pt": "Em 2026 o carnaval voltou à data tradicional antes da Quarta-feira de Cinzas, depois de várias edições no verão." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://veracruzmunicipio.gob.mx/recolecta-ayuntamiento-de-veracruz-18-toneladas-de-desechos-al-termino-del-primer-gran-desfile-del-carnaval/", "quote": "para el disfrute de los miles de veracruzanos y visitantes que han acudido a presenciar los paseos, conciertos y bailes efectuados en distintos puntos de la ciudad" },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://veracruzmunicipio.gob.mx/conciertos-del-carnaval-2026-son-gratuitos-reitera-ayuntamiento-de-veracruz/", "note": { "es": "Todos los conciertos masivos son gratuitos; las gradas de los desfiles costaron 50 pesos (2026).", "en": "All the big concerts are free; parade bleacher seats cost 50 pesos (2026).", "pt": "Todos os shows grandes são gratuitos; as arquibancadas dos desfiles custaram 50 pesos (2026)." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Veracruz_International_Airport", "note": { "es": "VER está a unos 11 km del centro.", "en": "VER is about 11 km from downtown.", "pt": "VER fica a cerca de 11 km do centro." } }
+      },
+      "street_tip": { "es": "Los desfiles van por el bulevar Ávila Camacho frente al mar; si no quieres pagar grada, llega temprano a la banqueta, y por la noche hay concierto gratis en el malecón.", "en": "The parades run along Ávila Camacho boulevard by the sea; if you don't want a bleacher seat, get to the sidewalk early, and at night there's a free concert on the malecón.", "pt": "Os desfiles passam pelo bulevar Ávila Camacho à beira-mar; se não quiser pagar arquibancada, chegue cedo à calçada, e à noite há show grátis no malecón." },
+      "etiquette": { "es": "Hay revendedores de accesos a conciertos que son gratuitos: no pagues por ellos, y deja libre el carril de las comparsas.", "en": "Some people resell access to concerts that are free: don't pay for it, and keep clear of the troupes' lane.", "pt": "Há quem revenda acesso a shows que são gratuitos: não pague por isso, e deixe livre a faixa das comparsas." }
+    },
+    {
+      "slug": "feria-san-marcos-aguascalientes",
+      "names": { "local": "Feria Nacional de San Marcos", "es": "Feria Nacional de San Marcos", "en": "San Marcos National Fair", "pt": "Feira Nacional de San Marcos" },
+      "city": "Aguascalientes",
+      "subdivision": "MX-AGU",
+      "timezone": "America/Mexico_City",
+      "coords": { "lat": 21.8818, "lon": -102.2916 },
+      "nearest_airport": "AGU",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "04-12", "end": "05-15" } },
+      "editions": {
+        "2026": {
+          "start": "2026-04-18",
+          "end": "2026-05-10",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://informacion.aguascalientes.gob.mx/news/tere-jim%C3%A9nez-presenta-el-programa-oficial-de-la-feria-nacional-de-san-marcos-2026", "publisher": "Gobierno del Estado de Aguascalientes", "accessed": "2026-11-09", "tier": "A", "quote": "La edición 198 de la Feria Nacional se realizará del 18 de abril al 10 de mayo" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 8000000, "qualifier": "more_than", "unit": "visitors", "year": 2026 }, "confidence": "oficial", "source": "https://informacion.aguascalientes.gob.mx/news/resultados-consolidan-a-la-feria-nacional-de-san-marcos-como-una-de--las-m%C3%A1s-importantes-del-mundo-", "note": { "es": "Cuenta visitas, no personas: quien va varios días cuenta varias veces.", "en": "Counts visits, not people: someone who goes on several days counts several times.", "pt": "Conta visitas, não pessoas: quem vai em vários dias conta várias vezes." } },
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://informacion.aguascalientes.gob.mx/news/tere-jim%C3%A9nez-presenta-el-programa-oficial-de-la-feria-nacional-de-san-marcos-2026", "quote": "la verbena se vivirá en más de 93 hectáreas llenas de color, música y alegría" },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://informacion.aguascalientes.gob.mx/news/resultados-consolidan-a-la-feria-nacional-de-san-marcos-como-una-de--las-m%C3%A1s-importantes-del-mundo-", "quote": "Aguascalientes recibió visitantes de países como Estados Unidos, Colombia, España, El Salvador y Guatemala, así como de diversas entidades del país" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://informacion.aguascalientes.gob.mx/news/tere-jim%C3%A9nez-presenta-el-programa-oficial-de-la-feria-nacional-de-san-marcos-2026", "note": { "es": "Según el programa oficial 2026, el 80 % de los más de 2 mil eventos es gratuito.", "en": "According to the official 2026 program, 80% of its more than 2,000 events are free.", "pt": "Segundo o programa oficial 2026, 80% dos mais de 2 mil eventos são gratuitos." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Aguascalientes_International_Airport", "note": { "es": "AGU está a unos 20 km al sur del centro.", "en": "AGU is about 20 km south of downtown.", "pt": "AGU fica a cerca de 20 km ao sul do centro." } }
+      },
+      "street_tip": { "es": "La feria dura más de tres semanas: los fines de semana se llena, así que entre semana se camina mejor; los conciertos grandes del foro principal se llenan horas antes.", "en": "The fair runs for more than three weeks: weekends are packed, so weekdays are easier to walk around; the big main-stage concerts fill up hours ahead.", "pt": "A feira dura mais de três semanas: nos fins de semana lota, então nos dias úteis se anda melhor; os shows grandes do palco principal enchem horas antes." },
+      "etiquette": { "es": "Es una feria familiar de día y muy fiestera de noche: modera el alcohol, cuida tus cosas entre la multitud y respeta las filas de los foros.", "en": "It's a family fair by day and a big party by night: go easy on the alcohol, watch your belongings in the crowd and respect the lines at the stages.", "pt": "É uma feira familiar de dia e muito festeira à noite: modere o álcool, cuide das suas coisas na multidão e respeite as filas dos palcos." }
+    },
+    {
+      "slug": "festival-cervantino-guanajuato",
+      "names": { "local": "Festival Internacional Cervantino", "es": "Festival Internacional Cervantino", "en": "Cervantino International Festival", "pt": "Festival Internacional Cervantino" },
+      "city": "Guanajuato",
+      "subdivision": "MX-GUA",
+      "timezone": "America/Mexico_City",
+      "coords": { "lat": 21.019, "lon": -101.2574 },
+      "nearest_airport": "BJX",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "10-01", "end": "10-31" } },
+      "editions": {
+        "2026": {
+          "start": "2026-10-03",
+          "end": "2026-10-18",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://festivalcervantino.gob.mx/boletin/782/el-54-festival-internacional-cervantino-reune-a-mas-de-386-mil-asistentes-y-amplia-su-alcance-nacional", "publisher": "Festival Internacional Cervantino (Secretaría de Cultura)", "accessed": "2026-11-09", "tier": "A", "quote": "Del 3 al 18 de octubre de 2026, el Festival reunió a 3,325 artistas de 29 países" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 386000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://festivalcervantino.gob.mx/boletin/782/el-54-festival-internacional-cervantino-reune-a-mas-de-386-mil-asistentes-y-amplia-su-alcance-nacional", "note": { "es": "Incluye el Circuito Cervantino en otras ciudades del país.", "en": "Includes the Cervantino Circuit in other cities of the country.", "pt": "Inclui o Circuito Cervantino em outras cidades do país." } },
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://festivalcervantino.gob.mx/boletin/782/el-54-festival-internacional-cervantino-reune-a-mas-de-386-mil-asistentes-y-amplia-su-alcance-nacional", "quote": "concluye su edición 54 con una asistencia de más de 386 mil personas a sus actividades artísticas, exposiciones y programas de formación de públicos" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Del_Baj%C3%ADo_International_Airport", "note": { "es": "BJX está en Silao, a unos 30 km de Guanajuato capital.", "en": "BJX is in Silao, about 30 km from the city of Guanajuato.", "pt": "BJX fica em Silao, a cerca de 30 km da cidade de Guanajuato." } }
+      },
+      "street_tip": { "es": "Además de las funciones con boleto hay programación en plazas y calles; los fines de semana el centro se satura, así que reserva hospedaje con tiempo.", "en": "Besides the ticketed shows there's programming in squares and streets; on weekends downtown gets packed, so book lodging early.", "pt": "Além das apresentações pagas há programação em praças e ruas; nos fins de semana o centro lota, então reserve hospedagem com antecedência." },
+      "etiquette": { "es": "Guanajuato es una ciudad de callejones estrechos donde vive gente: baja la voz de madrugada y no dejes basura en las escalinatas.", "en": "Guanajuato is a city of narrow alleys where people live: keep it down late at night and don't leave trash on the stairways.", "pt": "Guanajuato é uma cidade de becos estreitos onde mora gente: fale baixo de madrugada e não deixe lixo nas escadarias." }
     }
   ]
 }

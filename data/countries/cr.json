@@ -1,0 +1,200 @@
+{
+  "country": "CR",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Costa_Rica",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "fiestas-palmares",
+      "names": { "local": "Fiestas de Palmares", "es": "Fiestas de Palmares", "en": "Palmares Festival", "pt": "Festas de Palmares" },
+      "city": "Palmares",
+      "subdivision": "CR-A",
+      "timezone": "America/Costa_Rica",
+      "coords": { "lat": 10.0546, "lon": -84.4361 },
+      "nearest_airport": "SJO",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "01-08", "end": "01-31" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-15",
+          "end": "2026-01-26",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://crhoy.com/entretenimiento/fiestas-de-palmares-2026-conozca-las-fechas-conciertos-y-actividades/", "publisher": "CR Hoy", "accessed": "2026-11-09", "tier": "B", "quote": "Las festividades darán inicio el jueves 15 de enero y se extenderán hasta el lunes 26 de enero" },
+            { "url": "https://www.teletica.com/entretenimiento/palmares-2026-combina-conciertos-cultura-y-tradicion-durante-12-dias-de-fiesta_400564", "publisher": "Teletica", "accessed": "2026-11-09", "tier": "B", "quote": "Las Fiestas Cívicas de Palmares 2026 se desarrollan desde el pasado jueves hasta el 26 de enero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://crhoy.com/entretenimiento/fiestas-de-palmares-2026-conozca-las-fechas-conciertos-y-actividades/", "quote": "quienes pondrán a bailar al público al ritmo de clásicos del género en el redondel de Palmares" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.diarioextra.com/noticia/fiestas-de-palmares-2026-todo-listo-para-una-edicion-historica/", "quote": "Palmares se declara oficialmente listo para recibir a Costa Rica y a miles de visitantes con las Fiestas Palmares 2026" },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Juan_Santamar%C3%ADa_International_Airport", "note": { "es": "SJO, en Alajuela, está a unos 26 km en línea recta de Palmares.", "en": "SJO, in Alajuela, is about 26 km in a straight line from Palmares.", "pt": "SJO, em Alajuela, fica a cerca de 26 km em linha reta de Palmares." } }
+      },
+      "street_tip": { "es": "Los conciertos grandes del redondel van con entrada, pero el tope, los pasacalles y el ambiente del campo ferial se viven a pie; reserva transporte de vuelta porque las noches terminan tarde.", "en": "The big bullring concerts are ticketed, but the horse parade, street bands and fairground buzz can be enjoyed on foot; book your ride back, as nights run late.", "pt": "Os grandes shows no redondel exigem ingresso, mas o desfile a cavalo, os cortejos de rua e o clima do parque de festas se aproveitam a pé; garanta a volta, porque as noites acabam tarde." },
+      "etiquette": { "es": "En el tope no te metas entre los caballos ni los asustes con flash o ruido; deja paso a los jinetes y a las familias.", "en": "At the horse parade, stay out from between the horses and don't startle them with flash or noise; give way to riders and families.", "pt": "No desfile a cavalo, não fique entre os animais nem os assuste com flash ou barulho; dê passagem aos cavaleiros e às famílias." }
+    },
+    {
+      "slug": "fiestas-zapote",
+      "names": { "local": "Fiestas de Zapote", "es": "Fiestas de Zapote", "en": "Zapote Year-End Festivities", "pt": "Festas de Zapote" },
+      "city": "San José (Zapote)",
+      "subdivision": "CR-SJ",
+      "timezone": "America/Costa_Rica",
+      "coords": { "lat": 9.9206, "lon": -84.0592 },
+      "nearest_airport": "SJO",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "12-20", "end": "01-10" } },
+      "editions": {
+        "2025": {
+          "start": "2025-12-25",
+          "end": "2026-01-04",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.larepublica.net/noticia/zapote-anuncia-programacion-corridas-de-toros-y-conciertos-son-parte-de-la-agenda", "publisher": "La República", "accessed": "2026-11-09", "tier": "B", "quote": "Del 25 de diciembre de 2025 al 4 de enero de 2026, el campo ferial abrirá sus puertas a familias, vecinos y visitantes de todo el país." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 2025-2026, de Navidad al primer domingo de enero.", "en": "2025-2026 edition, from Christmas Day to the first Sunday of January.", "pt": "Edição 2025-2026, do Natal ao primeiro domingo de janeiro." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.larepublica.net/noticia/zapote-anuncia-programacion-corridas-de-toros-y-conciertos-son-parte-de-la-agenda", "quote": "La oferta combina corridas de toros, parque de atracciones mecánicas, conciertos diarios y un ambiente seguro" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.larepublica.net/noticia/zapote-anuncia-programacion-corridas-de-toros-y-conciertos-son-parte-de-la-agenda", "quote": "Del 25 de diciembre de 2025 al 4 de enero de 2026, el campo ferial abrirá sus puertas a familias, vecinos y visitantes de todo el país." },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Juan_Santamar%C3%ADa_International_Airport", "note": { "es": "SJO sirve al área metropolitana de San José.", "en": "SJO serves the San José metropolitan area.", "pt": "SJO atende a região metropolitana de San José." } }
+      },
+      "street_tip": { "es": "La corrida a la tica (toreros improvisados y toros sin muerte) es el plato fuerte; la entrada al redondel se paga aparte, pero los conciertos del campo ferial suelen ser gratis.", "en": "The Costa Rican-style bullfight (amateur bullfighters, no bulls killed) is the highlight; the bullring is ticketed, while the fairground concerts are usually free.", "pt": "A tourada à costarriquenha (toureiros amadores, sem matar o touro) é o ponto alto; a arena é paga à parte, mas os shows do parque de festas costumam ser gratuitos." },
+      "etiquette": { "es": "Si no vas como improvisado, no saltes al redondel: cada año la Cruz Roja atiende a heridos de las corridas.", "en": "Unless you are there as an amateur bullfighter, don't jump into the ring: every year the Red Cross treats people hurt at the bullfights.", "pt": "Se você não for como toureiro amador, não pule na arena: todo ano a Cruz Vermelha atende feridos das touradas." }
+    },
+    {
+      "slug": "carnaval-limon",
+      "names": { "local": "Carnavales de Limón", "es": "Carnaval de Limón", "en": "Limón Carnival", "pt": "Carnaval de Limón" },
+      "city": "Limón",
+      "subdivision": "CR-L",
+      "timezone": "America/Costa_Rica",
+      "coords": { "lat": 9.9907, "lon": -83.036 },
+      "nearest_airport": "LIO",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "10-01", "end": "10-25" } },
+      "editions": {
+        "2026": {
+          "start": "2026-10-09",
+          "end": "2026-10-18",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "gran-desfile", "name": { "es": "Gran desfile de carnaval", "en": "Grand carnival parade", "pt": "Grande desfile de carnaval" }, "date": "2026-10-17", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.teletica.com/masqn/limon-se-prepara-para-vivir-su-gran-fiesta_418586", "publisher": "Teletica", "accessed": "2026-11-09", "tier": "B", "quote": "El sabor, la música y la alegría del Caribe se tomarán el cantón central de Limón durante 10 días, del 9 al 18 de octubre, con una agenda cargada de actividades para toda la familia." },
+            { "url": "https://www.teletica.com/masqn/limon-se-prepara-para-vivir-su-gran-fiesta_418586", "publisher": "Teletica", "accessed": "2026-11-09", "tier": "B", "quote": "Uno de los momentos más esperados será el sábado 17 de octubre, a partir de las 11 de la mañana, cuando el tradicional desfile tome las calles del centro de Limón." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.diarioextra.com/noticia/sabor-caribeno-se-aduena-de-las-calles-de-limon-durante-los-carnavales/", "quote": "Los Carnavales de Limón, que empezaron desde el 11 de octubre, se viven por todo lo alto en la provincia del Caribe con música, baile, comidas y mucho folclore." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Lim%C3%B3n_International_Airport", "note": { "es": "LIO está a unos 4 km del centro; Wikipedia lista vuelos de Sansa a San José.", "en": "LIO is about 4 km from the centre; Wikipedia lists Sansa flights to San José.", "pt": "LIO fica a cerca de 4 km do centro; a Wikipedia lista voos da Sansa para San José." } }
+      },
+      "street_tip": { "es": "El sábado del gran desfile las comparsas recorren el centro de Puerto Limón desde media mañana; llega temprano a la ruta y quédate para el calipso y la comida caribeña de la noche.", "en": "On the Saturday of the grand parade the troupes wind through central Puerto Limón from mid-morning; get to the route early and stay for the calypso and Caribbean food at night.", "pt": "No sábado do grande desfile as comparsas percorrem o centro de Puerto Limón desde o meio da manhã; chegue cedo ao trajeto e fique para o calipso e a comida caribenha à noite." },
+      "etiquette": { "es": "Es una fiesta de la identidad afrocaribeña: pregunta antes de fotografiar de cerca a bailarines y músicos y no interrumpas a las comparsas en plena coreografía.", "en": "This is a celebration of Afro-Caribbean identity: ask before close-up photos of dancers and musicians, and don't cut through troupes mid-routine.", "pt": "É uma festa da identidade afro-caribenha: peça licença antes de fotografar de perto dançarinos e músicos e não atravesse as comparsas no meio da coreografia." }
+    },
+    {
+      "slug": "fiestas-santa-cruz-guanacaste",
+      "names": { "local": "Fiestas Típicas Nacionales de Santa Cruz", "es": "Fiestas Típicas Nacionales de Santa Cruz", "en": "Santa Cruz National Folk Festival", "pt": "Festas Típicas Nacionais de Santa Cruz" },
+      "city": "Santa Cruz",
+      "subdivision": "CR-G",
+      "timezone": "America/Costa_Rica",
+      "coords": { "lat": 10.2613, "lon": -85.5853 },
+      "nearest_airport": "TNO",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "01-08", "end": "01-25" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-14",
+          "end": "2026-01-18",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://crc891.com/nacionales/cruz-roja-atendio-a-mas-de-130-personas-en-fiestas-de-santa-cruz/", "publisher": "CRC 89.1", "accessed": "2026-11-09", "tier": "B", "quote": "La Cruz Roja Costarricense atendió a un total de 135 personas durante los festejos populares de Santa Cruz en Guanacaste, que se llevaron a cabo del 14 al 18 de enero." },
+            { "url": "https://www.diarioextra.com/noticia/santa-cruz-se-llena-de-emprendimientos-cultura-y-musica/", "publisher": "Diario Extra", "accessed": "2026-11-09", "tier": "B", "quote": "Como parte del cierre de actividades, el domingo 18 de enero se llevará a cabo un concierto familiar gratuito con el grupo Malpaís" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.diarioextra.com/noticia/santa-cruz-se-llena-de-emprendimientos-cultura-y-musica/", "quote": "reconocida por sus cimarronas, montaderas, marimbas y el ambiente festivo que durante varios días transforma a Santa Cruz en la llamada Ciudad Folclórica de Costa Rica" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Tamarindo_Airport", "note": { "es": "TNO (Tamarindo), a unos 26 km en línea recta, solo tiene vuelos nacionales; el internacional LIR (Liberia) queda a unos 37 km en línea recta y más de 40 km por carretera.", "en": "TNO (Tamarindo), about 26 km in a straight line, has domestic flights only; the international LIR (Liberia) is about 37 km in a straight line and over 40 km by road.", "pt": "TNO (Tamarindo), a cerca de 26 km em linha reta, só tem voos nacionais; o internacional LIR (Liberia) fica a cerca de 37 km em linha reta e a mais de 40 km por estrada." } }
+      },
+      "street_tip": { "es": "La cimarrona (banda de vientos) y la marimba suenan por las calles; el tope recorre el pueblo y las montaderas de toros llenan el redondel.", "en": "Cimarrona brass bands and marimba fill the streets; the horse parade winds through town and bull riding packs the ring.", "pt": "A cimarrona (banda de sopros) e a marimba tocam pelas ruas; o desfile a cavalo percorre a cidade e a montaria de touros lota a arena." },
+      "etiquette": { "es": "Las fiestas son en honor al Santo Cristo de Esquipulas: respeta los actos religiosos y no bebas ni grites cerca de la iglesia durante las misas.", "en": "The festival honours the Santo Cristo de Esquipulas: respect the religious services and don't drink or shout near the church during Mass.", "pt": "As festas são em honra ao Santo Cristo de Esquipulas: respeite os atos religiosos e não beba nem grite perto da igreja durante as missas." }
+    },
+    {
+      "slug": "festival-de-la-luz-san-jose",
+      "names": { "local": "Festival de la Luz", "es": "Festival de la Luz de San José", "en": "San José Festival of Light", "pt": "Festival da Luz de San José" },
+      "city": "San José",
+      "subdivision": "CR-SJ",
+      "timezone": "America/Costa_Rica",
+      "coords": { "lat": 9.9328, "lon": -84.0795 },
+      "nearest_airport": "SJO",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "12-05", "end": "12-20" } },
+      "editions": {
+        "2025": {
+          "start": "2025-12-13",
+          "end": "2025-12-13",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.teletica.com/nacional/siga-aqui-el-festival-de-la-luz-2025_398826", "publisher": "Teletica", "accessed": "2026-11-09", "tier": "B", "quote": "Este sábado 13 de diciembre se lleva a cabo el XXVIII Festival de la Luz, uno de los eventos más emblemáticos del país" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "En 2025 el desfile se hizo alrededor del parque La Sabana.", "en": "In 2025 the parade looped around La Sabana park.", "pt": "Em 2025 o desfile contornou o parque La Sabana." }
+        },
+        "2026": {
+          "start": "2026-12-12",
+          "end": "2026-12-12",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://observador.cr/las-14-bandas-que-audicionaron-estaran-en-el-festival-de-la-luz-2026/", "publisher": "El Observador", "accessed": "2026-11-09", "tier": "B", "quote": "La Municipalidad de San José anunció que el Festival de la Luz 2026, que se realizará el próximo 12 de diciembre, contará con 14 bandas." },
+            { "url": "https://www.teletica.com/nacional/festival-de-la-luz-ya-tiene-a-sus-bandas-musicales_418110", "publisher": "Teletica", "accessed": "2026-11-09", "tier": "B", "quote": "El Festival de la Luz 2026 se llevará a cabo el próximo 12 de diciembre" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Anunciado con 14 bandas. A finales de septiembre la Municipalidad aún no confirmaba la ruta ni con qué reemplazará las carrozas.", "en": "Announced with 14 marching bands. In late September the city had not yet confirmed the route or what will replace the floats.", "pt": "Anunciado com 14 bandas. No fim de setembro a prefeitura ainda não havia confirmado o trajeto nem o que substituirá os carros alegóricos." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.teletica.com/nacional/siga-aqui-el-festival-de-la-luz-2025_398826", "quote": "reunirá a miles de familias para presenciar el tradicional desfile de bandas y carrozas" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Juan_Santamar%C3%ADa_International_Airport", "note": { "es": "SJO sirve al área metropolitana de San José.", "en": "SJO serves the San José metropolitan area.", "pt": "SJO atende a região metropolitana de San José." } }
+      },
+      "street_tip": { "es": "Es un desfile nocturno gratuito de bandas y luces; busca sitio en la ruta con varias horas de antelación y usa transporte público, porque cierran muchas calles.", "en": "It is a free night parade of marching bands and lights; claim a spot on the route hours ahead and use public transport, since many streets close.", "pt": "É um desfile noturno gratuito de bandas e luzes; garanta lugar no trajeto com horas de antecedência e use transporte público, porque muitas ruas fecham." },
+      "etiquette": { "es": "Mucha gente va con niños: no te pongas delante de quienes llegaron antes ni invadas la calzada del desfile.", "en": "Many people come with children: don't stand in front of those who arrived earlier or step onto the parade route.", "pt": "Muita gente vai com crianças: não fique na frente de quem chegou antes nem invada a pista do desfile." }
+    }
+  ]
+}

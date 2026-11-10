@@ -1,0 +1,298 @@
+{
+  "country": "AR",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Argentina/Buenos_Aires",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "carnaval-gualeguaychu",
+      "names": { "local": "Carnaval del País", "es": "Carnaval del País (Gualeguaychú)", "en": "Gualeguaychú Carnival (Carnaval del País)", "pt": "Carnaval de Gualeguaychú (Carnaval del País)" },
+      "city": "Gualeguaychú",
+      "subdivision": "AR-E",
+      "timezone": "America/Argentina/Cordoba",
+      "coords": { "lat": -33.0094, "lon": -58.5172 },
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "01-02", "end": "03-10" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-03",
+          "end": "2026-02-28",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "fin-de-semana-largo", "name": { "es": "Fin de semana largo de Carnaval", "en": "Carnival long weekend", "pt": "Feriado prolongado de Carnaval" }, "date": "2026-02-14", "end": "2026-02-16", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.clarin.com/informacion-general/carnaval-gualeguaychu-2026-comprar-entradas-cuestan_0_isbddbfHtJ.html", "publisher": "Clarín", "accessed": "2026-11-09", "tier": "B", "quote": "La edición 2026 comenzó el pasado 3 de enero en el Corsódromo José Luis Gestro de la ciudad entrerriana y aún restan siete noches para seguir disfrutando de una de las fiestas más convocantes del verano." },
+            { "url": "https://gualeguaychu.gov.ar/agenda/29689-carnaval-del-pais-2026:-ultimas-noches-de-competencia-y-gran-cierre-del-fin-de-semana-largo", "publisher": "Municipalidad de Gualeguaychú", "accessed": "2026-11-09", "tier": "A", "quote": "además de las noches del viernes 21 y sábado 28 de febrero, que marcarán el cierre de la temporada." },
+            { "url": "https://www.lanacion.com.ar/que-sale/carnaval-de-gualeguaychu-2026-cuando-desfilan-las-carrozas-en-la-fiesta-mas-grande-del-pais-nid25112025/", "publisher": "La Nación", "accessed": "2026-11-09", "tier": "B", "quote": "Un momento cúlmine será el tradicional fin de semana largo de carnaval, que ofrecerá una experiencia prolongada del sábado 14 al lunes 16 de febrero, sumando tres días consecutivos de desfiles." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Once noches de desfile en el Corsódromo: todos los sábados de enero y febrero más el fin de semana largo de Carnaval (14 al 16 de febrero).", "en": "Eleven parade nights at the Corsódromo: every Saturday in January and February plus the Carnival long weekend (February 14 to 16).", "pt": "Onze noites de desfile no Corsódromo: todos os sábados de janeiro e fevereiro mais o feriado de Carnaval (14 a 16 de fevereiro)." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.lanacion.com.ar/que-sale/carnaval-de-gualeguaychu-2026-cuando-desfilan-las-carrozas-en-la-fiesta-mas-grande-del-pais-nid25112025/", "quote": "El Corsódromo, corazón de la fiesta, tiene capacidad para recibir a más de 25.000 espectadores por noche, quienes vibrarán con cada paso de las comparsas." },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://gualeguaychu.gov.ar/redaccion/el-fin-de-semana-de-carnaval-volvio-a-poner-a-gualeguaychu-en-la-escena-nacional-e-internacional", "quote": "con una marcada presencia de turistas extranjeros y visitantes provenientes de distintos puntos de la Argentina" },
+        "calle": { "measure": "mayoria_boleta", "confidence": "prensa", "source": "https://www.clarin.com/informacion-general/carnaval-gualeguaychu-2026-comprar-entradas-cuestan_0_isbddbfHtJ.html", "note": { "es": "El desfile es dentro del Corsódromo, con entrada paga.", "en": "The parade runs inside the Corsódromo, with paid tickets.", "pt": "O desfile acontece dentro do Corsódromo, com ingresso pago." } },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Gualeguaych%C3%BA_Airport", "note": { "es": "El aeródromo de Gualeguaychú no tiene vuelos regulares; los más cercanos con vuelos están en Buenos Aires, a unos 230 km.", "en": "Gualeguaychú's airfield has no scheduled flights; the nearest airports with flights are in Buenos Aires, about 230 km away.", "pt": "O aeródromo de Gualeguaychú não tem voos regulares; os mais próximos com voos ficam em Buenos Aires, a cerca de 230 km." } }
+      },
+      "street_tip": { "es": "Compra la entrada con tiempo para las noches del fin de semana largo, que se llenan; el desfile empieza tarde y termina de madrugada.", "en": "Buy tickets early for the long-weekend nights, which sell out; the parade starts late and ends in the small hours.", "pt": "Compre o ingresso com antecedência para as noites do feriado, que lotam; o desfile começa tarde e termina de madrugada." },
+      "etiquette": { "es": "Las comparsas son clubes del barrio que compiten: alienta a todas y no invadas la pasarela para sacar fotos.", "en": "The troupes are neighborhood clubs in competition: cheer for all of them and keep off the parade runway when taking photos.", "pt": "As comparsas são clubes de bairro em competição: torça por todas e não invada a passarela para tirar fotos." }
+    },
+    {
+      "slug": "festival-cosquin",
+      "names": { "local": "Festival Nacional de Folklore de Cosquín", "es": "Festival Nacional de Folklore de Cosquín", "en": "Cosquín National Folklore Festival", "pt": "Festival Nacional de Folclore de Cosquín" },
+      "city": "Cosquín",
+      "subdivision": "AR-X",
+      "timezone": "America/Argentina/Cordoba",
+      "coords": { "lat": -31.2451, "lon": -64.4653 },
+      "nearest_airport": "COR",
+      "type": "musica",
+      "rule": { "type": "nth_weekday", "month": 1, "weekday": 6, "n": 4, "duration_days": 9 },
+      "editions": {
+        "2026": {
+          "start": "2026-01-24",
+          "end": "2026-02-01",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://aquicosquin.com.ar/2025/12/15/informacion-general-entradas-cosquin-2026/", "publisher": "Comisión Municipal de Folklore de Cosquín", "accessed": "2026-11-09", "tier": "A", "quote": "El festival se llevará a cabo desde el sábado 24 de enero hasta el domingo 1 de febrero de 2026" },
+            { "url": "https://www.perfil.com/noticias/cordoba/cosquin-2026-bajo-nueve-lunas-grilla-completa-y-claves-del-festival-nacional-de-folklore.phtml", "publisher": "Perfil", "accessed": "2026-11-09", "tier": "B", "quote": "Del 24 de enero al 1° de febrero, la Plaza Próspero Molina vuelve a ser el epicentro del folklore argentino con nueve noches consecutivas de música" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        },
+        "2027": {
+          "start": "2027-01-23",
+          "end": "2027-01-31",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://aquicosquin.com.ar/edicion-2027/", "publisher": "Comisión Municipal de Folklore de Cosquín", "accessed": "2026-11-09", "tier": "A", "quote": "El Festival Nacional de Folklore de Cosquín celebra su 67ª edición del 23 al 31 de enero de 2027, en la tradicional Plaza Próspero Molina" },
+            { "url": "https://www.clarin.com/espectaculos/cosquin-2027-grilla-completa-luna-luna-festival-nacional-folclore_0_dbnp3E2CSQ.html", "publisher": "Clarín", "accessed": "2026-11-09", "tier": "B", "quote": "La edición número 67 del Festival Nacional de Folclore tendrá sus tradicionales nueve lunas entre el sábado 23 y el domingo 31 de enero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 1000000, "qualifier": "more_than", "unit": "visitors", "year": 2026 }, "confidence": "oficial", "source": "https://aquicosquin.com.ar/2026/02/05/cosquin-2026-para-la-historia-record-de-publico-diversidad-artistica-y-renovacion-necesaria/", "quote": "+1.000.000 de visitantes", "note": { "es": "Balance de la organización: visitantes en la ciudad durante el festival, no solo público de la plaza.", "en": "Organizer's figure: visitors in town during the festival, not only the audience in the main square.", "pt": "Balanço da organização: visitantes na cidade durante o festival, não só o público da praça." } },
+        "fiesta": null,
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ingeniero_Aeron%C3%A1utico_Ambrosio_L.V._Taravella_International_Airport", "note": { "es": "El aeropuerto de Córdoba (COR) queda a unos 58 km por ruta de Cosquín.", "en": "Córdoba airport (COR) is about 58 km by road from Cosquín.", "pt": "O aeroporto de Córdoba (COR) fica a cerca de 58 km de Cosquín por estrada." } }
+      },
+      "street_tip": { "es": "Las nueve lunas se ven en la Plaza Próspero Molina con entrada, pero después de cada noche las peñas del centro siguen con música y baile hasta el amanecer.", "en": "The nine nights play in Plaza Próspero Molina with a ticket, but after each show the peñas in town keep the music and dancing going until dawn.", "pt": "As nove noites acontecem na Plaza Próspero Molina com ingresso, mas depois de cada show as peñas do centro seguem com música e dança até o amanhecer." },
+      "etiquette": { "es": "Si en una peña se arma una zamba o una chacarera, sumarse es bienvenido; pregunta antes de grabar de cerca a los músicos.", "en": "If a zamba or chacarera starts up in a peña, joining in is welcome; ask before filming musicians up close.", "pt": "Se numa peña começar uma zamba ou chacarera, entrar na dança é bem-vindo; pergunte antes de filmar os músicos de perto." }
+    },
+    {
+      "slug": "vendimia-mendoza",
+      "names": { "local": "Fiesta Nacional de la Vendimia", "es": "Fiesta Nacional de la Vendimia", "en": "National Grape Harvest Festival (Vendimia)", "pt": "Festa Nacional da Vindima" },
+      "city": "Mendoza",
+      "subdivision": "AR-M",
+      "timezone": "America/Argentina/Mendoza",
+      "coords": { "lat": -32.8895, "lon": -68.8458 },
+      "nearest_airport": "MDZ",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "02-25", "end": "03-15" } },
+      "editions": {
+        "2026": {
+          "start": "2026-03-06",
+          "end": "2026-03-08",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "via-blanca", "name": { "es": "Vía Blanca de las Reinas", "en": "Vía Blanca night parade of the Queens", "pt": "Vía Blanca das Rainhas" }, "date": "2026-03-06", "confidence": "oficial" },
+            { "id": "carrusel", "name": { "es": "Carrusel", "en": "Carrusel daytime parade", "pt": "Carrusel" }, "date": "2026-03-07", "confidence": "oficial" },
+            { "id": "acto-central", "name": { "es": "Acto Central en el Teatro Griego", "en": "Main show at the Greek Theatre", "pt": "Ato Central no Teatro Grego" }, "date": "2026-03-08", "confidence": "oficial" },
+            { "id": "segunda-noche", "name": { "es": "Segunda noche (repetición)", "en": "Second night (repeat show)", "pt": "Segunda noite (repetição)" }, "date": "2026-03-11", "confidence": "oficial" }
+          ],
+          "sources": [
+            { "url": "https://www.mendoza.gob.ar/noticias/este-sera-el-recorrido-de-via-blanca-y-carrusel-2026/", "publisher": "Gobierno de Mendoza", "accessed": "2026-11-09", "tier": "A", "quote": "El viernes 6 de marzo, desde las 21, las calles céntricas se convierten en el escenario de la Vía Blanca de las Reinas, uno de los eventos más esperados del calendario vendimial." },
+            { "url": "https://www.mendoza.gob.ar/noticias/este-sera-el-recorrido-de-via-blanca-y-carrusel-2026/", "publisher": "Gobierno de Mendoza", "accessed": "2026-11-09", "tier": "A", "quote": "Al día siguiente, el sábado 7 de marzo, desde las 9, la celebración popular continúa con el tradicional Carrusel." },
+            { "url": "https://prensa.mendoza.gob.ar/vendimia-2026-reprogramacion-del-acto-central-repeticion-y-cambio-de-entradas/", "publisher": "Prensa Gobierno de Mendoza", "accessed": "2026-11-09", "tier": "A", "quote": "el Acto Central de la Fiesta Nacional de la Vendimia ha sido reprogramado para el domingo 8 de marzo, a las 21." },
+            { "url": "https://prensa.mendoza.gob.ar/vendimia-2026-reprogramacion-del-acto-central-repeticion-y-cambio-de-entradas/", "publisher": "Prensa Gobierno de Mendoza", "accessed": "2026-11-09", "tier": "A", "quote": "la segunda noche de la Fiesta Nacional de la Vendimia también debió reprogramarse y se realizará el miércoles 11 de marzo a las 21." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Las fechas cubren los desfiles y el Acto Central. Por tormentas, el Acto Central pasó del sábado 7 al domingo 8 de marzo y la segunda noche al miércoles 11.", "en": "Dates cover the parades and the main show. Storms moved the main show from Saturday March 7 to Sunday March 8 and the second night to Wednesday March 11.", "pt": "As datas cobrem os desfiles e o Ato Central. Por causa de tempestades, o Ato Central passou de sábado 7 para domingo 8 de março e a segunda noite para quarta-feira 11." }
+        },
+        "2027": {
+          "start": "2027-03-05",
+          "end": "2027-03-07",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "via-blanca", "name": { "es": "Vía Blanca de las Reinas", "en": "Vía Blanca night parade of the Queens", "pt": "Vía Blanca das Rainhas" }, "date": "2027-03-05", "confidence": "prensa" },
+            { "id": "acto-central", "name": { "es": "Carrusel y Acto Central", "en": "Carrusel parade and main show", "pt": "Carrusel e Ato Central" }, "date": "2027-03-06", "confidence": "oficial" },
+            { "id": "segunda-noche", "name": { "es": "Segunda noche", "en": "Second night", "pt": "Segunda noite" }, "date": "2027-03-07", "confidence": "oficial" }
+          ],
+          "sources": [
+            { "url": "https://www.losandes.com.ar/sociedad/mendoza-confirmo-el-calendario-la-fiesta-nacional-la-vendimia-2027-n6002461", "publisher": "Los Andes", "accessed": "2026-11-09", "tier": "B", "quote": "Vía Blanca de las reinas: viernes 5 de marzo" },
+            { "url": "https://www.losandes.com.ar/sociedad/mendoza-confirmo-el-calendario-la-fiesta-nacional-la-vendimia-2027-n6002461", "publisher": "Los Andes", "accessed": "2026-11-09", "tier": "B", "quote": "Segunda Noche: domingo 7 de marzo." },
+            { "url": "https://prensa.mendoza.gob.ar/la-fiesta-de-la-vendimia-2027-se-llamara-vendimia-de-una-misma-raiz/", "publisher": "Prensa Gobierno de Mendoza", "accessed": "2026-11-09", "tier": "A", "quote": "El Acto Central se desarrollará en el Teatro Griego Frank Romero Day, el 6 y 7 de marzo del año próximo." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 41500, "qualifier": "more_than", "unit": "tourists", "year": 2026 }, "confidence": "prensa", "source": "https://www.losandes.com.ar/sociedad/vendimia-2026-vinieron-mendoza-mas-41500-turistas-10-mas-que-2025-n5983435", "quote": "Vendimia 2026: vinieron a Mendoza más de 41.500 turistas, 10% más que en 2025", "note": { "es": "Solo turistas alojados (Ente Mendoza Turismo); no cuenta al público local de los desfiles.", "en": "Overnight tourists only (Mendoza tourism board); the local crowd at the parades is not counted.", "pt": "Só turistas hospedados (Ente Mendoza Turismo); não conta o público local dos desfiles." } },
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.mendoza.gob.ar/noticias/este-sera-el-recorrido-de-via-blanca-y-carrusel-2026/", "quote": "Las 18 representantes departamentales desfilarán ante el público en carros alegóricos especialmente diseñados y ornamentados para destacar la identidad de cada rincón de la provincia." },
+        "viajeros": null,
+        "calle": { "measure": "mixta", "confidence": "estimacion", "note": { "es": "La Vía Blanca y el Carrusel son gratis en la calle; el Acto Central en el Teatro Griego lleva entrada.", "en": "The Vía Blanca and Carrusel parades are free in the street; the main show at the Greek Theatre is ticketed.", "pt": "A Vía Blanca e o Carrusel são gratuitos na rua; o Ato Central no Teatro Grego exige ingresso." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Governor_Francisco_Gabrielli_International_Airport", "note": { "es": "MDZ (El Plumerillo) está a unos 8 km del centro de Mendoza, con vuelos a Santiago de Chile.", "en": "MDZ (El Plumerillo) is about 8 km from central Mendoza, with flights to Santiago de Chile.", "pt": "MDZ (El Plumerillo) fica a cerca de 8 km do centro de Mendoza, com voos para Santiago do Chile." } }
+      },
+      "street_tip": { "es": "Para la Vía Blanca y el Carrusel busca lugar temprano sobre San Martín o Las Heras; son gratis y la ciudad entera sale a la calle.", "en": "For the Vía Blanca and Carrusel parades, grab a spot early on San Martín or Las Heras; they are free and the whole city turns out.", "pt": "Para a Vía Blanca e o Carrusel, garanta lugar cedo na San Martín ou na Las Heras; são gratuitos e a cidade inteira sai às ruas." },
+      "etiquette": { "es": "Desde los carros se reparten uvas, frutas y regalos: recíbelos con la mano, sin empujar ni lanzarte a la calzada.", "en": "Grapes, fruit and gifts are handed out from the floats: catch them by hand without pushing or stepping into the roadway.", "pt": "Dos carros se distribuem uvas, frutas e brindes: pegue com a mão, sem empurrar nem invadir a pista." }
+    },
+    {
+      "slug": "oktoberfest-villa-general-belgrano",
+      "names": { "local": "Fiesta Nacional de la Cerveza (Oktoberfest Argentina)", "es": "Fiesta Nacional de la Cerveza (Oktoberfest Argentina)", "en": "National Beer Festival (Oktoberfest Argentina)", "pt": "Festa Nacional da Cerveja (Oktoberfest Argentina)" },
+      "city": "Villa General Belgrano",
+      "subdivision": "AR-X",
+      "timezone": "America/Argentina/Cordoba",
+      "coords": { "lat": -31.9786, "lon": -64.5594 },
+      "nearest_airport": "COR",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "09-28", "end": "10-15" } },
+      "editions": {
+        "2026": {
+          "start": "2026-10-02",
+          "end": "2026-10-12",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://tn.com.ar/musica/2026/09/17/oktoberfest-2026-en-villa-general-belgrano-fechas-grilla-confirmada-y-como-comprar-las-entradas/", "publisher": "TN", "accessed": "2026-11-09", "tier": "B", "quote": "La tradicional celebración serrana de la provincia de Córdoba se desarrollará a lo largo de siete jornadas repartidas en dos fines de semana consecutivos: del 2 al 4 y del 9 al 12 de octubre de 2026." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Dos fines de semana: del 2 al 4 y del 9 al 12 de octubre; entre semana el predio no abre.", "en": "Two weekends: October 2 to 4 and 9 to 12; the grounds are closed midweek.", "pt": "Dois fins de semana: de 2 a 4 e de 9 a 12 de outubro; no meio da semana o recinto não abre." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://tn.com.ar/musica/2026/09/17/oktoberfest-2026-en-villa-general-belgrano-fechas-grilla-confirmada-y-como-comprar-las-entradas/", "quote": "desfiles temáticos por las calles y el esperado espiche, la tradicional apertura del barril que rocía de cerveza a los asistentes frente al escenario" },
+        "viajeros": null,
+        "calle": { "measure": "mixta", "confidence": "estimacion", "note": { "es": "Los desfiles van por las calles del pueblo; recitales y cerveza están en el predio con entrada.", "en": "Parades go through the town's streets; concerts and beer are on the ticketed festival grounds.", "pt": "Os desfiles passam pelas ruas da vila; shows e cerveja ficam no recinto com ingresso." } },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ingeniero_Aeron%C3%A1utico_Ambrosio_L.V._Taravella_International_Airport", "note": { "es": "El aeropuerto de Córdoba (COR) queda a unos 105 km por ruta.", "en": "Córdoba airport (COR) is about 105 km away by road.", "pt": "O aeroporto de Córdoba (COR) fica a cerca de 105 km por estrada." } }
+      },
+      "street_tip": { "es": "Reserva alojamiento en el valle de Calamuchita con meses de anticipación: el pueblo es chico y en los dos fines de semana se llena.", "en": "Book a room in the Calamuchita valley months ahead: the town is small and fills up on both weekends.", "pt": "Reserve hospedagem no vale de Calamuchita com meses de antecedência: a vila é pequena e lota nos dos fins de semana." },
+      "etiquette": { "es": "El pueblo es de tradición centroeuropea y familiar: brinda, canta y baila, pero cuida los jardines y no dejes vasos en la calle.", "en": "It is a family town with Central European roots: toast, sing and dance, but respect the gardens and don't leave cups in the street.", "pt": "É uma vila familiar de raízes centro-europeias: brinde, cante e dance, mas cuide dos jardins e não deixe copos na rua." }
+    },
+    {
+      "slug": "festival-jesus-maria",
+      "names": { "local": "Festival Nacional de Doma y Folklore de Jesús María", "es": "Festival Nacional de Doma y Folklore de Jesús María", "en": "Jesús María National Rodeo and Folklore Festival", "pt": "Festival Nacional de Doma e Folclore de Jesús María" },
+      "city": "Jesús María",
+      "subdivision": "AR-X",
+      "timezone": "America/Argentina/Cordoba",
+      "coords": { "lat": -30.9817, "lon": -64.0943 },
+      "nearest_airport": "COR",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "01-03", "end": "01-25" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-08",
+          "end": "2026-01-18",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.clarin.com/informacion-general/festival-jesus-maria-2026-grilla-entradas-artistas-transmision-online-vivo_0_yW7zP1NzSA.html", "publisher": "Clarín", "accessed": "2026-11-09", "tier": "B", "quote": "La edición número 60 del Festival Nacional de Doma y Folklore de Jesús María se llevará a cabo desde este jueves 8 al domingo 18 de enero de 2026 en el Anfiteatro José Hernandez de la localidad de Jesús María (Córdoba)." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 450000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://www.jesusmaria.tur.ar/novedades/festival/jesus-maria-dio-a-conocer-el-informe-del-operativo-festival-2026-una-edicion-record-para-la-ciudad-y-la-region.html", "quote": "que reunió a más de 450 mil personas a lo largo de diez jornadas" },
+        "fiesta": null,
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.perfil.com/noticias/cordoba/106-mil-millones-como-balance-final-el-impacto-economico-que-dejo-jesus-maria-2026-tras-diez-noches-de-festival.phtml", "quote": "47% proveniente de otras provincias" },
+        "calle": { "measure": "mayoria_boleta", "confidence": "prensa", "source": "https://www.perfil.com/noticias/cordoba/106-mil-millones-como-balance-final-el-impacto-economico-que-dejo-jesus-maria-2026-tras-diez-noches-de-festival.phtml", "note": { "es": "Recitales y jineteada son en el anfiteatro con entrada (230.000 entradas vendidas en 2026).", "en": "Concerts and rodeo take place in the ticketed amphitheater (230,000 tickets sold in 2026).", "pt": "Shows e rodeio acontecem no anfiteatro com ingresso (230.000 ingressos vendidos em 2026)." } },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ingeniero_Aeron%C3%A1utico_Ambrosio_L.V._Taravella_International_Airport", "note": { "es": "El aeropuerto de Córdoba (COR) queda a unos 47 km por ruta, apenas fuera del límite de 40 km.", "en": "Córdoba airport (COR) is about 47 km by road, just beyond the 40 km limit.", "pt": "O aeroporto de Córdoba (COR) fica a cerca de 47 km por estrada, logo além do limite de 40 km." } }
+      },
+      "street_tip": { "es": "Las noches arrancan con la jineteada y siguen con folklore y cuarteto hasta tarde; lleva abrigo liviano y conservadora si el anfiteatro la permite.", "en": "Nights open with the rodeo and run on with folklore and cuarteto until late; bring a light layer and a cooler if the amphitheater allows it.", "pt": "As noites começam com o rodeio e seguem com folclore e quarteto até tarde; leve um agasalho leve e uma caixa térmica se o anfiteatro permitir." },
+      "etiquette": { "es": "La recaudación va a las escuelas de la ciudad: compra en los puestos de las cooperadoras y respeta a los jinetes y a los caballos.", "en": "The proceeds go to the town's schools: buy from the school co-op stalls and treat riders and horses with respect.", "pt": "A renda vai para as escolas da cidade: compre nas barracas das cooperativas escolares e respeite os ginetes e os cavalos." }
+    },
+    {
+      "slug": "carnaval-humahuaca",
+      "names": { "local": "Carnaval de la Quebrada de Humahuaca", "es": "Carnaval de la Quebrada de Humahuaca", "en": "Quebrada de Humahuaca Carnival", "pt": "Carnaval da Quebrada de Humahuaca" },
+      "city": "Humahuaca",
+      "subdivision": "AR-Y",
+      "timezone": "America/Argentina/Jujuy",
+      "coords": { "lat": -23.2054, "lon": -65.3505 },
+      "nearest_airport": "JUJ",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -50, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-14",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desentierro", "name": { "es": "Desentierro del Carnaval", "en": "Unearthing of the Carnival", "pt": "Desenterro do Carnaval" }, "date": "2026-02-14", "confidence": "prensa" },
+            { "id": "martes-de-chaya", "name": { "es": "Martes de Chaya", "en": "Chaya Tuesday", "pt": "Terça-feira de Chaya" }, "date": "2026-02-17", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://eltribunodejujuy.com/informacion-general/2026-1-26-0-0-0-el-carnaval-jujeno-se-disfruta-mas-en-la-quebrada", "publisher": "El Tribuno de Jujuy", "accessed": "2026-11-09", "tier": "B", "quote": "Del 14 al 17 de febrero la fiesta y el color estará en humahuaca." },
+            { "url": "https://eltribunodejujuy.com/informacion-general/2026-1-26-0-0-0-el-carnaval-jujeno-se-disfruta-mas-en-la-quebrada", "publisher": "El Tribuno de Jujuy", "accessed": "2026-11-09", "tier": "B", "quote": "La fiesta comenzará el sábado 14 de febrero con el tradicional Desentierro del Carnaval" },
+            { "url": "https://www.clarin.com/informacion-general/carnaval-jujuy-2026-programacion-completa-entradas-desfiles_0_h07RGZw6wq.html", "publisher": "Clarín", "accessed": "2026-11-09", "tier": "B", "quote": "17 de febrero: Martes de Chaya." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Son los días del Carnaval Grande, del desentierro al Martes de Chaya. Las comparsas despiden el carnaval con el entierro del Domingo de Tentación, una semana después.", "en": "These are the Carnaval Grande days, from the unearthing to Chaya Tuesday. The troupes bury the carnival on Temptation Sunday, a week later.", "pt": "São os dias do Carnaval Grande, do desenterro à Terça de Chaya. As comparsas enterram o carnaval no Domingo de Tentação, uma semana depois." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://eltribunodejujuy.com/municipios/2026-2-16-0-0-0-humahuaca-no-da-tregua-en-carnaval", "quote": "Plazoleta Sargento Gómez llena, explanada del monumento a la Independencia llena, restaurantes llenos, calles del pueblo llenas, bailes populares nocturnos llenos, transporte lleno." },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion", "note": { "es": "Las comparsas recorren las calles y los mojones; algunos bailes y recitales nocturnos cobran entrada.", "en": "Troupes roam the streets and the mojones; some night dances and concerts charge admission.", "pt": "As comparsas percorrem as ruas e os mojones; alguns bailes e shows noturnos cobram entrada." } },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Gobernador_Horacio_Guzm%C3%A1n_International_Airport", "note": { "es": "El aeropuerto de Jujuy (JUJ) queda a unos 160 km de Humahuaca.", "en": "Jujuy airport (JUJ) is about 160 km from Humahuaca.", "pt": "O aeroporto de Jujuy (JUJ) fica a cerca de 160 km de Humahuaca." } }
+      },
+      "street_tip": { "es": "Lleva ropa que se pueda manchar: talco, harina, espuma y papel picado vuelan por todas partes. Humahuaca está a casi 3.000 m, así que ve con calma el primer día.", "en": "Wear clothes you can ruin: talc, flour, foam and confetti fly everywhere. Humahuaca sits at almost 3,000 m, so take the first day easy.", "pt": "Use roupa que possa sujar: talco, farinha, espuma e confete voam por todo lado. Humahuaca fica a quase 3.000 m, então vá com calma no primeiro dia." },
+      "etiquette": { "es": "El desentierro es un ritual de la Pachamama: acompaña con respeto, pide permiso para entrar a un mojón y no fotografíes de cerca la ofrenda.", "en": "The unearthing is a Pachamama ritual: follow along respectfully, ask before entering a mojón and don't photograph the offering up close.", "pt": "O desenterro é um ritual da Pachamama: acompanhe com respeito, peça licença para entrar num mojón e não fotografe a oferenda de perto." }
+    },
+    {
+      "slug": "cosquin-rock",
+      "names": { "local": "Cosquín Rock", "es": "Cosquín Rock", "en": "Cosquín Rock", "pt": "Cosquín Rock" },
+      "city": "Santa María de Punilla",
+      "subdivision": "AR-X",
+      "timezone": "America/Argentina/Cordoba",
+      "coords": { "lat": -31.273, "lon": -64.463 },
+      "nearest_airport": "COR",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "02-01", "end": "02-28" } },
+      "editions": {
+        "2026": {
+          "start": "2026-02-14",
+          "end": "2026-02-15",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.clarin.com/espectaculos/cosquin-rock-2026-line-up-horarios-accesos-festival-14-15-febrero_0_F6hQeLZ48S.html", "publisher": "Clarín", "accessed": "2026-11-09", "tier": "B", "quote": "El Cosquín Rock 2026 tendrá lugar este 14 y 15 de febrero en el Aeródromo Santa María de Punilla, en Córdoba." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": null,
+        "viajeros": null,
+        "calle": { "measure": "mayoria_boleta", "confidence": "estimacion", "note": { "es": "Es un festival en un predio cerrado con entrada.", "en": "It is a fenced festival site with paid entry.", "pt": "É um festival em recinto fechado com ingresso." } },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ingeniero_Aeron%C3%A1utico_Ambrosio_L.V._Taravella_International_Airport", "note": { "es": "El aeropuerto de Córdoba (COR) queda a unos 55 km por ruta.", "en": "Córdoba airport (COR) is about 55 km away by road.", "pt": "O aeroporto de Córdoba (COR) fica a cerca de 55 km por estrada." } }
+      },
+      "street_tip": { "es": "El predio está fuera del pueblo: usa los micros oficiales desde Córdoba o Cosquín y planea la vuelta de madrugada antes de llegar.", "en": "The site is outside town: use the official shuttles from Córdoba or Cosquín and plan your late-night ride back before you arrive.", "pt": "O recinto fica fora da cidade: use os ônibus oficiais de Córdoba ou Cosquín e planeje a volta de madrugada antes de chegar." }
+    }
+  ]
+}

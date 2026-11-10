@@ -1,0 +1,192 @@
+{
+  "country": "VE",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Caracas",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "feria-la-chinita",
+      "names": { "local": "Feria Internacional de La Chinita", "es": "Feria Internacional de La Chinita", "en": "La Chinita International Fair", "pt": "Feira Internacional de La Chinita" },
+      "city": "Maracaibo",
+      "subdivision": "VE-V",
+      "timezone": "America/Caracas",
+      "coords": { "lat": 10.6427, "lon": -71.6125 },
+      "nearest_airport": "MAR",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "11-01", "end": "11-20" } },
+      "editions": {
+        "2026": {
+          "start": "2026-11-06",
+          "end": "2026-11-18",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desfile-inaugural", "name": { "es": "Desfile inaugural de feria", "en": "Opening fair parade", "pt": "Desfile inaugural da feira" }, "date": "2026-11-15", "confidence": "prensa" },
+            { "id": "amanecer-de-feria", "name": { "es": "Feria Popular y Amanecer de Feria en la avenida 5 de Julio", "en": "Popular Fair and all-night Amanecer de Feria on Avenida 5 de Julio", "pt": "Feira Popular e Amanecer de Feria na avenida 5 de Julio" }, "date": "2026-11-16", "end": "2026-11-17", "confidence": "prensa" },
+            { "id": "dia-de-la-chinita", "name": { "es": "Día de la Virgen de Chiquinquirá y concierto de cierre", "en": "Feast of Our Lady of Chiquinquirá and closing concert", "pt": "Dia da Virgem de Chiquinquirá e show de encerramento" }, "date": "2026-11-18", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.eluniversal.com/venezuela/244822/anuncian-la-programacion-de-la-feria-internacional-de-la-chinita", "publisher": "El Universal", "accessed": "2026-11-09", "tier": "B", "quote": "desde este viernes 6 hasta el miércoles 18 de noviembre" },
+            { "url": "https://www.eluniversal.com/venezuela/244822/anuncian-la-programacion-de-la-feria-internacional-de-la-chinita", "publisher": "El Universal", "accessed": "2026-11-09", "tier": "B", "quote": "El domingo 15 de noviembre el Desfile Inaugural de Feria en la Vereda del Lago" },
+            { "url": "https://www.eluniversal.com/venezuela/244822/anuncian-la-programacion-de-la-feria-internacional-de-la-chinita", "publisher": "El Universal", "accessed": "2026-11-09", "tier": "B", "quote": "será el escenario de la Feria Popular y el Amanecer de Feria, los días 16 y 17 de noviembre" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 60, en curso al 9 de noviembre de 2026; el 18 de noviembre es el día de la patrona.", "en": "60th edition, under way as of November 9, 2026; November 18 is the patron saint's day.", "pt": "60ª edição, em andamento em 9 de novembro de 2026; 18 de novembro é o dia da padroeira." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://ultimasnoticias.com.ve/zulia/intenso-y-variado-el-amanecer-de-feria-de-la-chinita-de-maracaibo/", "quote": "Pasadas las 8 de la mañana, tras 12 horas continuas de rumba, el público pedía más." },
+        "viajeros": { "measure": "regional", "confidence": "prensa", "source": "https://ultimasnoticias.com.ve/zulia/intenso-y-variado-el-amanecer-de-feria-de-la-chinita-de-maracaibo/", "quote": "el evento festivo, turístico y comercial que más público moviliza en la región y estados vecinos" },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/La_Chinita_International_Airport", "note": { "es": "MAR está a unos 12 km del centro, con vuelos a Miami, Bogotá, Panamá y Curazao.", "en": "MAR is about 12 km from the centre, with flights to Miami, Bogotá, Panama and Curaçao.", "pt": "O MAR fica a uns 12 km do centro, com voos para Miami, Bogotá, Panamá e Curaçao." } }
+      },
+      "street_tip": { "es": "Los amaneceres de feria son conciertos gratuitos al aire libre que duran toda la noche; lleva agua y calzado cómodo, que en Maracaibo hace calor incluso de madrugada.", "en": "The amaneceres de feria are free open-air concerts that last all night; bring water and comfortable shoes, as Maracaibo stays hot even before dawn.", "pt": "Os amaneceres de feria são shows gratuitos ao ar livre que duram a noite toda; leve água e calçado confortável, porque Maracaibo é quente mesmo de madrugada." },
+      "etiquette": { "es": "La feria nace de la devoción a la Virgen de Chiquinquirá: en la Basílica y en la misa del 18 se guarda respeto aunque afuera suene la gaita.", "en": "The fair grows out of devotion to Our Lady of Chiquinquirá: keep a respectful tone at the Basilica and the Mass on the 18th, even while gaita plays outside.", "pt": "A feira nasce da devoção à Virgem de Chiquinquirá: na Basílica e na missa do dia 18 mantenha o respeito, mesmo com a gaita tocando lá fora." }
+    },
+    {
+      "slug": "carnaval-el-callao",
+      "names": { "local": "Carnaval de El Callao", "es": "Carnaval de El Callao", "en": "El Callao Carnival", "pt": "Carnaval de El Callao" },
+      "city": "El Callao",
+      "subdivision": "VE-F",
+      "timezone": "America/Caracas",
+      "coords": { "lat": 7.3436, "lon": -61.8269 },
+      "nearest_airport": "PZO",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -52, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-12",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.eluniversal.com/venezuela/225362/el-callao-recibira-a-mas-de-40-mil-turistas-en-sus-carnavales-2026", "publisher": "El Universal", "accessed": "2026-11-09", "tier": "B", "quote": "que tendrán lugar entre los días 12 y 17 de febrero" },
+            { "url": "https://vtv.com.ve/el-callao-proyecta-recibir-turistas-carnavales-2026/", "publisher": "Venezolana de Televisión", "accessed": "2026-11-09", "tier": "B", "quote": "que se realizará desde el 12 al 17 de febrero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Del jueves previo al carnaval al martes de carnaval.", "en": "From the Thursday before carnival to Carnival Tuesday.", "pt": "Da quinta-feira anterior ao carnaval até a terça-feira de carnaval." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 41600, "qualifier": "exact", "unit": "visitors", "year": 2026 }, "confidence": "estimacion", "source": "https://soynuevaprensadigital.com/npd/mas-de-40-mil-turistas-disfrutaron-de-los-carnavales-de-el-callao-2026/", "quote": "El municipio El Callao recibió a un total de 41.600 personas durante el asueto de Carnaval de 2026.", "note": { "es": "Balance del alcalde publicado por un diario regional de Guayana.", "en": "Mayor's tally as published by a regional Guayana newspaper.", "pt": "Balanço do prefeito publicado por um jornal regional da Guayana." } },
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/carnival-of-el-callao-a-festive-representation-of-a-memory-and-cultural-identity-01198", "quote": "Running from January to March, the traditional practice features parades of people dressed as characters from history and fantasy, as well as calypso music, dancing and concerts throughout town streets with up to 3,000 people taking part." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Manuel_Carlos_Piar_Guayana_Airport", "note": { "es": "El Callao no tiene aeropuerto comercial; el más cercano es Puerto Ordaz (PZO), a unos 190 km.", "en": "El Callao has no commercial airport; the nearest is Puerto Ordaz (PZO), about 190 km away.", "pt": "El Callao não tem aeroporto comercial; o mais próximo é Puerto Ordaz (PZO), a uns 190 km." } }
+      },
+      "street_tip": { "es": "Las comparsas salen de noche al ritmo del calipso y la gente baila detrás; los hoteles del pueblo son pocos, así que muchas familias alquilan habitaciones: resérvalas antes de viajar.", "en": "The comparsas go out at night to calypso and people dance along behind them; the town has few hotels, so many families rent out rooms: book one before you travel.", "pt": "As comparsas saem à noite ao som do calipso e o povo dança atrás; a cidade tem poucos hotéis, então muitas famílias alugam quartos: reserve antes de viajar." },
+      "etiquette": { "es": "Los mediopintos piden una moneda y tiznan a quien no colabora: lleva billetes pequeños o acepta la mancha con humor.", "en": "The mediopintos ask for a coin and smear soot on anyone who does not chip in: carry small notes or take the smudge with good humour.", "pt": "Os mediopintos pedem uma moeda e sujam de fuligem quem não colabora: leve notas pequenas ou aceite a mancha com bom humor." }
+    },
+    {
+      "slug": "carnaval-carupano",
+      "names": { "local": "Carnaval de Carúpano", "es": "Carnaval de Carúpano", "en": "Carúpano Carnival", "pt": "Carnaval de Carúpano" },
+      "city": "Carúpano",
+      "subdivision": "VE-R",
+      "timezone": "America/Caracas",
+      "coords": { "lat": 10.6683, "lon": -63.2581 },
+      "nearest_airport": "CUP",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -51, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-13",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.mintur.gob.ve/index.php/news/a10c3f87-56e1-4537-bd2f-aa901072a540", "publisher": "Ministerio del Poder Popular para el Turismo (Mintur)", "accessed": "2026-11-09", "tier": "A", "quote": "aniversario del 13 al 17 de febrero de 2026" },
+            { "url": "https://vtv.com.ve/carnaval-carupano-celebrara-anos-tradicion/", "publisher": "Venezolana de Televisión", "accessed": "2026-11-09", "tier": "B", "quote": "con una programación que iniciará desde el viernes 13 hasta el martes 17 de febrero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 61; el primer desfile oficial de carrozas y comparsas fue el domingo 14 en el Carnavalódromo.", "en": "61st edition; the first official float and comparsa parade was on Sunday 14 at the Carnavalódromo.", "pt": "61ª edição; o primeiro desfile oficial de carros e comparsas foi no domingo 14, no Carnavalódromo." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://vtv.com.ve/carnaval-carupano-celebrara-anos-tradicion/", "quote": "Durante estos días de Carnaval, todos disfrutarán de diferentes conciertos de música llanera, retro, vallenato y reggaetón y la noche de brujas." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/General_Jos%C3%A9_Francisco_Berm%C3%BAdez_Airport", "note": { "es": "CUP está en la ciudad y solo tiene vuelos nacionales (Porlamar).", "en": "CUP is in town and has domestic flights only (Porlamar).", "pt": "O CUP fica na cidade e só tem voos nacionais (Porlamar)." } }
+      },
+      "street_tip": { "es": "Los desfiles pasan por el Carnavalódromo y las noches traen conciertos; en 2026 se prohibieron el aerosol de espuma y las botellas de vidrio, así que deja ambos en casa.", "en": "Parades run through the Carnavalódromo and the nights bring concerts; in 2026 foam spray and glass bottles were banned, so leave both at home.", "pt": "Os desfiles passam pelo Carnavalódromo e as noites trazem shows; em 2026 foram proibidos o spray de espuma e as garrafas de vidro, então deixe ambos em casa." },
+      "etiquette": { "es": "Es una fiesta familiar del pueblo carupanero: baila con quien te invite, pero no invadas el paso de carrozas y comparsas.", "en": "It is a family celebration for the people of Carúpano: dance with whoever invites you, but keep out of the way of floats and comparsas.", "pt": "É uma festa familiar do povo de Carúpano: dance com quem te convidar, mas não invada a passagem de carros e comparsas." }
+    },
+    {
+      "slug": "san-juan-curiepe",
+      "names": { "local": "Fiesta de San Juan Bautista de Curiepe", "es": "Fiesta de San Juan en Curiepe", "en": "St John the Baptist Drum Festival in Curiepe", "pt": "Festa de São João em Curiepe" },
+      "city": "Curiepe",
+      "subdivision": "VE-M",
+      "timezone": "America/Caracas",
+      "coords": { "lat": 10.4744, "lon": -66.163 },
+      "nearest_airport": "CCS",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "06-23", "end": "06-25" },
+      "editions": {},
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://www.eluniversal.com/venezuela/236035/si-san-juan-lo-tiene-san-juan-te-lo-da-curiepe-se-rinde-ante-la-fe-y-el-tambor-de-san-juan-bautista", "quote": "aglomerando una gran cantidad de devotos locales y visitantes, quienes bailan agradeciendo favores concedidos" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Sim%C3%B3n_Bol%C3%ADvar_International_Airport_(Venezuela)", "note": { "es": "Curiepe no tiene aeropuerto; el más cercano es Maiquetía (CCS), a más de 100 km.", "en": "Curiepe has no airport; the nearest is Maiquetía (CCS), over 100 km away.", "pt": "Curiepe não tem aeroporto; o mais próximo é Maiquetía (CCS), a mais de 100 km." } }
+      },
+      "street_tip": { "es": "El tambor arranca la noche del 23 y sigue hasta el amanecer; el 24 el santo recorre el pueblo tras la misa y el 25 se despide. Planifica el regreso con tiempo si no vas a dormir en Barlovento.", "en": "The drums start on the night of the 23rd and go on until dawn; on the 24th the saint is carried through town after Mass, and on the 25th he says goodbye. Plan your way back ahead of time if you are not staying overnight in Barlovento.", "pt": "O tambor começa na noite do dia 23 e vai até o amanhecer; no dia 24 o santo percorre o povoado depois da missa e no 25 se despede. Planeje a volta com antecedência se não for dormir em Barlovento." },
+      "etiquette": { "es": "Se baila para el santo: entra a la rueda cuando te abran espacio, no toques los tambores sin permiso y respeta los momentos de la misa y la procesión.", "en": "People dance for the saint: step into the circle when space is made for you, do not touch the drums without asking, and respect the Mass and procession.", "pt": "Dança-se para o santo: entre na roda quando abrirem espaço, não toque os tambores sem permissão e respeite os momentos da missa e da procissão." }
+    },
+    {
+      "slug": "feria-san-sebastian-san-cristobal",
+      "names": { "local": "Feria Internacional de San Sebastián", "es": "Feria Internacional de San Sebastián", "en": "San Sebastián International Fair", "pt": "Feira Internacional de San Sebastián" },
+      "city": "San Cristóbal",
+      "subdivision": "VE-S",
+      "timezone": "America/Caracas",
+      "coords": { "lat": 7.7669, "lon": -72.225 },
+      "nearest_airport": "STD",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "01-01", "end": "01-31" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-04",
+          "end": "2026-01-31",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desfile-de-feria", "name": { "es": "Desfile de feria", "en": "Fair parade", "pt": "Desfile da feira" }, "date": "2026-01-17", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://ultimasnoticias.com.ve/tachira/150-eventos-se-tienen-previstos-para-la-feria-de-san-sebastian-2026/", "publisher": "Últimas Noticias", "accessed": "2026-11-09", "tier": "B", "quote": "inician el 04 de enero hasta el 31 de enero de 2026" },
+            { "url": "https://ultimasnoticias.com.ve/tachira/150-eventos-se-tienen-previstos-para-la-feria-de-san-sebastian-2026/", "publisher": "Últimas Noticias", "accessed": "2026-11-09", "tier": "B", "quote": "17 de enero: Desfile de Feria" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Un mes de actividades; el día del patrono es el 20 de enero y las corridas de toros fueron del 29 al 31.", "en": "A month of events; the patron saint's day is January 20 and the bullfights ran from the 29th to the 31st.", "pt": "Um mês de atividades; o dia do padroeiro é 20 de janeiro e as touradas foram de 29 a 31." }
+        },
+        "2027": {
+          "start": "2027-01-06",
+          "end": "2027-01-31",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://ultimasnoticias.com.ve/tachira/tachira-se-prepara-para-la-feria-internacional-de-san-sebastian-2027/", "publisher": "Últimas Noticias", "accessed": "2026-11-09", "tier": "B", "quote": "se celebrará en San Cristóbal del 6 al 31 de enero de 2027" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 700000, "qualifier": "more_than", "unit": "visitors", "year": 2025 }, "confidence": "prensa", "source": "https://ultimasnoticias.com.ve/tachira/tachira-se-prepara-para-la-feria-internacional-de-san-sebastian-2027/", "quote": "que en 2025 superó las 700.000 personas", "note": { "es": "Cifra de la Gobernación del Táchira para la edición 2025, en todo el mes de feria.", "en": "Táchira state government figure for the 2025 edition, over the whole month of the fair.", "pt": "Número do governo de Táchira para a edição 2025, em todo o mês de feira." } },
+        "fiesta": null,
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mayor_Buenaventura_Vivas_Airport", "note": { "es": "STD, en Santo Domingo del Táchira, queda a unos 40 km por carretera y solo tiene vuelos nacionales.", "en": "STD, in Santo Domingo del Táchira, is about 40 km by road and has domestic flights only.", "pt": "O STD, em Santo Domingo del Táchira, fica a uns 40 km de estrada e só tem voos nacionais." } }
+      },
+      "street_tip": { "es": "Con un mes de programa, elige tu semana: el desfile, la serenata al patrono y los grandes conciertos suelen caer en la segunda mitad de enero.", "en": "With a month-long program, pick your week: the parade, the serenade to the patron saint and the big concerts tend to fall in the second half of January.", "pt": "Com um mês de programação, escolha sua semana: o desfile, a serenata ao padroeiro e os grandes shows costumam cair na segunda metade de janeiro." }
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+  "country": "GT",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Guatemala",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "carnaval-mazatenango",
+      "names": { "local": "Carnaval Mazateco", "es": "Carnaval de Mazatenango", "en": "Mazatenango Carnival", "pt": "Carnaval de Mazatenango" },
+      "city": "Mazatenango",
+      "subdivision": "GT-10",
+      "timezone": "America/Guatemala",
+      "coords": { "lat": 14.5342, "lon": -91.5033 },
+      "nearest_airport": "RER",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -50, "end": -42 },
+      "editions": {
+        "2025": {
+          "start": "2025-03-01",
+          "end": "2025-03-09",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.prensalibre.com/vida/escenario/carnaval-2025-en-guatemala-cuando-inicia-en-mazatenango-y-el-programa-de-las-actividades/", "publisher": "Prensa Libre", "accessed": "2026-11-09", "tier": "B", "quote": "El Carnaval de Mazatenango se celebra del 1 al 9 de marzo este 2025." },
+            { "url": "https://radiotgw.gob.gt/carnaval-mazateco-2025-celebrando-140-anos-de-tradicion-y-alegria/", "publisher": "TGW, Radio Nacional de Guatemala", "accessed": "2026-11-09", "tier": "A", "quote": "El Carnaval Mazateco de 2025, que se lleva a cabo entre el 1 y el 9 de marzo, dio inicio con el tradicional Desfile de Carrozas el sábado 1 de marzo." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        },
+        "2026": {
+          "status": "cancelada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.prensalibre.com/guatemala/comunitario/cancelan-el-carnaval-de-mazatenango-por-falta-de-condiciones-de-seguridad-breaking/", "publisher": "Prensa Libre", "accessed": "2026-11-09", "tier": "B", "quote": "La Municipalidad de Mazatenango, Suchitepéquez, anunció este martes 20 de enero la cancelación del Carnaval Mazateco 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La municipalidad canceló el carnaval de 2026 por la situación de inseguridad en el país.", "en": "The municipality cancelled the 2026 carnival because of the security situation in the country.", "pt": "A prefeitura cancelou o carnaval de 2026 por causa da situação de insegurança no país." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://radiotgw.gob.gt/carnaval-mazateco-2025-celebrando-140-anos-de-tradicion-y-alegria/", "quote": "Durante varios días, la ciudad se llena de música, desfiles, danzas, y eventos culturales, creando un ambiente único de diversión y unión para todas las edades." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://radiotgw.gob.gt/carnaval-mazateco-2025-celebrando-140-anos-de-tradicion-y-alegria/", "quote": "atrayendo a miles de turistas nacionales e internacionales cada año" },
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Retalhuleu_Airport", "note": { "es": "RER, en Retalhuleu, a unos 30 km por carretera, solo tiene vuelos a Ciudad de Guatemala.", "en": "RER in Retalhuleu, about 30 km by road, only has flights to Guatemala City.", "pt": "RER, em Retalhuleu, a cerca de 30 km por estrada, só tem voos para a Cidade da Guatemala." } }
+      },
+      "street_tip": { "es": "Los desfiles de carrozas y comparsas terminan en el Campo de la Feria, donde siguen los juegos y los conciertos hasta la noche; hace mucho calor en la costa sur, así que lleva agua y sombrero.", "en": "The float and comparsa parades end at the Campo de la Feria, where rides and concerts carry on into the night; the southern coast is hot, so bring water and a hat.", "pt": "Os desfiles de carros alegóricos e comparsas terminam no Campo de la Feria, onde brinquedos e shows seguem até a noite; a costa sul é quente, então leve água e chapéu." },
+      "etiquette": { "es": "Antes de viajar confirma que el carnaval se celebra ese año: se ha cancelado varias veces, la última en 2026.", "en": "Check before travelling that the carnival is on that year: it has been cancelled several times, most recently in 2026.", "pt": "Antes de viajar, confirme que o carnaval acontece naquele ano: já foi cancelado várias vezes, a última em 2026." }
+    },
+    {
+      "slug": "feria-jocotenango",
+      "names": { "local": "Feria de Jocotenango", "es": "Feria de Jocotenango", "en": "Jocotenango Fair", "pt": "Feira de Jocotenango" },
+      "city": "Ciudad de Guatemala",
+      "subdivision": "GT-01",
+      "timezone": "America/Guatemala",
+      "coords": { "lat": 14.6425, "lon": -90.5133 },
+      "nearest_airport": "GUA",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "08-05", "end": "08-20" } },
+      "editions": {
+        "2026": {
+          "start": "2026-08-08",
+          "end": "2026-08-16",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.prensalibre.com/guatemala/comunitario/feria-de-jocotenango-2026-listos-para-la-alegria-en-familia-entre-platillos-tipicos-juegos-mecanicos-luces-y-tradicion/", "publisher": "Prensa Libre", "accessed": "2026-11-09", "tier": "B", "quote": "La Feria de Jocotenango 2026 abrirá del sábado 8 al domingo 16 de agosto, de 10 a 22 horas" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": null,
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.prensalibre.com/guatemala/comunitario/feria-de-jocotenango-2026-listos-para-la-alegria-en-familia-entre-platillos-tipicos-juegos-mecanicos-luces-y-tradicion/", "quote": "La Feria de Jocotenango 2026 llenará de color la zona 2 del 8 al 16 de agosto, con entrada gratuita" },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/La_Aurora_International_Airport", "note": { "es": "GUA está dentro de la ciudad, a unos 6 km del centro.", "en": "GUA is inside the city, about 6 km from the centre.", "pt": "GUA fica dentro da cidade, a cerca de 6 km do centro." } }
+      },
+      "street_tip": { "es": "La feria ocupa la avenida Simeón Cañas y el Hipódromo del Norte, en la zona 2; ve por la tarde, cuando se encienden las luces de los juegos, y prueba los dulces típicos de los puestos.", "en": "The fair fills Avenida Simeón Cañas and the Hipódromo del Norte in Zone 2; go in the late afternoon, when the rides light up, and try the traditional sweets at the stalls.", "pt": "A feira ocupa a avenida Simeón Cañas e o Hipódromo del Norte, na zona 2; vá no fim da tarde, quando as luzes dos brinquedos acendem, e prove os doces típicos das barracas." }
+    },
+    {
+      "slug": "xelafer-quetzaltenango",
+      "names": { "local": "Feria Centroamericana de Independencia (Xelafer)", "es": "Xelafer, Feria Centroamericana de Independencia", "en": "Xelafer, Central American Independence Fair", "pt": "Xelafer, Feira Centro-Americana da Independência" },
+      "city": "Quetzaltenango",
+      "subdivision": "GT-09",
+      "timezone": "America/Guatemala",
+      "coords": { "lat": 14.8344, "lon": -91.5181 },
+      "nearest_airport": "AAZ",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "09-05", "end": "09-22" } },
+      "editions": {
+        "2026": {
+          "start": "2026-09-10",
+          "end": "2026-09-20",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.prensalibre.com/vida/escenario/fiestas-de-independencia-2026-en-xela-desfiles-conciertos-y-actividades-de-xelafer-del-13-al-19-de-septiembre/", "publisher": "Prensa Libre", "accessed": "2026-11-09", "tier": "B", "quote": "Algunas actividades comenzaron el 10 de septiembre con el desfile cívico de nivel primario" },
+            { "url": "https://www.soy502.com/articulo/guia-xelafer-2026-desfiles-conciertos-ferias-ciudad-101999", "publisher": "Soy502", "accessed": "2026-11-09", "tier": "B", "quote": "podrás encontrar desde hoy hasta el 20 de septiembre en el Centro de Ferias y Mercadeo de Quetzaltenango (Cefemerq)" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La feria abrió el 10 de septiembre y el recinto ferial cerró el 20; el programa más intenso fue del 13 al 19 de septiembre.", "en": "The fair opened on September 10 and the fairground closed on the 20th; the busiest programme ran from September 13 to 19.", "pt": "A feira abriu em 10 de setembro e o recinto fechou no dia 20; a programação mais intensa foi de 13 a 19 de setembro." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.soy502.com/articulo/guia-xelafer-2026-desfiles-conciertos-ferias-ciudad-101999", "quote": "Las calles de Quetzaltenango comienzan a llenarse de color, música y alegría con las actividades de Xelafer 2026" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.prensalibre.com/vida/escenario/fiestas-de-independencia-2026-en-xela-desfiles-conciertos-y-actividades-de-xelafer-del-13-al-19-de-septiembre/", "quote": "una festividad que reúne actividades históricas, culturales y tradicionales, y atrae a visitantes nacionales y extranjeros" },
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Quetzaltenango_Airport", "note": { "es": "AAZ está en la propia ciudad y solo tiene vuelos a Ciudad de Guatemala.", "en": "AAZ is in the city itself and only has flights to Guatemala City.", "pt": "AAZ fica na própria cidade e só tem voos para a Cidade da Guatemala." } }
+      },
+      "street_tip": { "es": "Los conciertos son de noche en el Centro Histórico, alrededor del Parque Centro América, y los juegos están en el Cefemerq; Xela es fría de noche, lleva abrigo.", "en": "The concerts are at night in the Historic Centre, around Parque Centro América, and the rides are at Cefemerq; Xela gets cold at night, so bring a jacket.", "pt": "Os shows são à noite no Centro Histórico, em volta do Parque Centro América, e os brinquedos ficam no Cefemerq; Xela é fria à noite, leve agasalho." },
+      "etiquette": { "es": "El 14 y el 15 de septiembre son días patrios con desfiles escolares: deja pasar las columnas de estudiantes y las antorchas.", "en": "September 14 and 15 are national days with school parades: let the student columns and torch runners through.", "pt": "Os dias 14 e 15 de setembro são datas pátrias com desfiles escolares: deixe passar as colunas de estudantes e as tochas." }
+    },
+    {
+      "slug": "barriletes-gigantes-sumpango",
+      "names": { "local": "Festival de Barriletes Gigantes de Sumpango", "es": "Festival de Barriletes Gigantes de Sumpango", "en": "Sumpango Giant Kite Festival", "pt": "Festival de Pipas Gigantes de Sumpango" },
+      "city": "Sumpango",
+      "subdivision": "GT-03",
+      "timezone": "America/Guatemala",
+      "coords": { "lat": 14.6464, "lon": -90.7339 },
+      "nearest_airport": "GUA",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "10-31", "end": "11-01" },
+      "editions": {
+        "2026": {
+          "start": "2026-10-31",
+          "end": "2026-11-01",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "lunada-del-barrilete", "name": { "es": "Lunada del Barrilete", "en": "Kite Moonlight Eve", "pt": "Lunada da Pipa" }, "date": "2026-10-31", "confidence": "prensa" },
+            { "id": "exhibicion-barriletes", "name": { "es": "Exhibición y elevación de barriletes gigantes", "en": "Giant kite display and flying", "pt": "Exibição e voo das pipas gigantes" }, "date": "2026-11-01", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.soy502.com/articulo/asi-puedes-disfrutar-barriletes-gigantes-sumpango-102084", "publisher": "Soy502", "accessed": "2026-11-09", "tier": "B", "quote": "Las actividades inician con el montaje de los barriletes el 31 de octubre y una velada cultural llena de música y festejo." },
+            { "url": "https://www.soy502.com/articulo/asi-puedes-disfrutar-barriletes-gigantes-sumpango-102084", "publisher": "Soy502", "accessed": "2026-11-09", "tier": "B", "quote": "A partir del domingo 1 de noviembre, se permitirá el ingreso a las 6:00 horas" },
+            { "url": "https://www.prensalibre.com/vida/escenario/barriletes-gigantes-de-sumpango-sacatepequez-horarios-actividades-y-detalles-del-evento-que-reune-cultura-tradicion-y-legado/", "publisher": "Prensa Libre", "accessed": "2026-11-09", "tier": "B", "quote": "La programación comenzará el sábado 31 de octubre, a las 16 horas" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.soy502.com/articulo/asi-puedes-disfrutar-barriletes-gigantes-sumpango-102084", "quote": "El municipio tendrá alrededor de 120 mil visitantes para contemplar la tradición cultural de los Barriletes Gigantes este 1 de noviembre" },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://www.prensalibre.com/vida/escenario/barriletes-gigantes-el-vuelo-que-une-a-los-guatemaltecos-con-sus-antepasados/", "quote": "El 1 y 2 de noviembre, miles de guatemaltecos y turistas extranjeros admirarán los barriletes gigantes de hasta 22 metros de diámetro" },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/La_Aurora_International_Airport", "note": { "es": "GUA, en Ciudad de Guatemala, queda a unos 40-45 km por la carretera Interamericana; está en el límite de los 40 km.", "en": "GUA in Guatemala City is about 40-45 km away on the Pan-American Highway, right at the 40 km limit.", "pt": "GUA, na Cidade da Guatemala, fica a cerca de 40-45 km pela Rodovia Pan-Americana, no limite dos 40 km." } }
+      },
+      "street_tip": { "es": "Llega muy temprano el 1 de noviembre: el ingreso abre a las 6 de la mañana y por la tarde la carretera Interamericana se llena de filas de vuelta.", "en": "Arrive very early on November 1: the gates open at 6 am, and in the afternoon the Pan-American Highway backs up with traffic heading home.", "pt": "Chegue bem cedo em 1º de novembro: a entrada abre às 6 da manhã e à tarde a Rodovia Pan-Americana fica congestionada na volta." },
+      "etiquette": { "es": "Los barriletes son mensajes a los difuntos en el Día de Todos los Santos: no los toques y mantente fuera de las zonas de elevación.", "en": "The kites are messages to the dead on All Saints' Day: do not touch them and stay out of the launch areas.", "pt": "As pipas são mensagens aos mortos no Dia de Todos os Santos: não toque nelas e fique fora das áreas de lançamento." }
+    },
+    {
+      "slug": "todos-santos-cuchumatan",
+      "names": { "local": "Feria de Todos Santos Cuchumatán y Carrera de Caballos", "es": "Feria de Todos Santos y Carrera de Caballos", "en": "Todos Santos Fair and Horse Race", "pt": "Festa de Todos Santos e Corrida de Cavalos" },
+      "city": "Todos Santos Cuchumatán",
+      "subdivision": "GT-13",
+      "timezone": "America/Guatemala",
+      "coords": { "lat": 15.5086, "lon": -91.6036 },
+      "nearest_airport": "HUG",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "10-15", "end": "11-03" } },
+      "editions": {
+        "2026": {
+          "start": "2026-10-23",
+          "end": "2026-11-02",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "carrera-de-caballos", "name": { "es": "Carrera de caballos (Juego de Gallos)", "en": "Horse race (Juego de Gallos)", "pt": "Corrida de cavalos (Juego de Gallos)" }, "date": "2026-11-01", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.prensalibre.com/guatemala/comunitario/antes-de-que-corran-los-caballos-lo-que-ocurre-durante-un-ano-para-celebrar-el-juego-de-gallos/", "publisher": "Prensa Libre", "accessed": "2026-11-09", "tier": "B", "quote": "El programa municipal de 2026 anunciaba actividades del 23 de octubre al 2 de noviembre" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La feria titular dura del 23 de octubre al 2 de noviembre; la carrera de caballos es el 1 de noviembre.", "en": "The town fair runs from October 23 to November 2; the horse race is on November 1.", "pt": "A festa da cidade vai de 23 de outubro a 2 de novembro; a corrida de cavalos é em 1º de novembro." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.prensalibre.com/guatemala/comunitario/antes-de-que-corran-los-caballos-lo-que-ocurre-durante-un-ano-para-celebrar-el-juego-de-gallos/", "quote": "Jinetes bailan al ritmo de la marimba previo a iniciar la carrera de caballos en honor al Día de Todos los Santos Cuchumatán, Huehuetenango." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.prensalibre.com/guatemala/comunitario/antes-de-que-corran-los-caballos-lo-que-ocurre-durante-un-ano-para-celebrar-el-juego-de-gallos/", "quote": "Esta actividad reúne a turistas nacionales y extranjeros que disfrutan de una de las prácticas más antiguas y llamativas de Huehuetenango." },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Huehuetenango_Airport", "note": { "es": "El aeropuerto más cercano con vuelos es HUG, en Huehuetenango, a más de 40 km por carretera de montaña, solo con vuelos a Ciudad de Guatemala.", "en": "The nearest airport with flights is HUG in Huehuetenango, more than 40 km away by mountain road, with flights to Guatemala City only.", "pt": "O aeroporto mais próximo com voos é HUG, em Huehuetenango, a mais de 40 km por estrada de montanha, só com voos para a Cidade da Guatemala." } }
+      },
+      "street_tip": { "es": "El pueblo es pequeño y está a más de 2.400 metros: reserva alojamiento con semanas de antelación, lleva ropa de abrigo y llega a la pista temprano el 1 de noviembre.", "en": "The town is small and sits above 2,400 metres: book a bed weeks ahead, pack warm clothes and get to the track early on November 1.", "pt": "A cidade é pequena e fica acima de 2.400 metros: reserve hospedagem com semanas de antecedência, leve roupa de frio e chegue cedo à pista em 1º de novembro." },
+      "etiquette": { "es": "La carrera honra a los muertos de la comunidad mam: no invadas la pista, pide permiso antes de fotografiar a los jinetes y respeta a las familias en el cementerio el 2 de noviembre.", "en": "The race honours the dead of the Mam community: stay off the track, ask before photographing the riders and respect families at the cemetery on November 2.", "pt": "A corrida homenageia os mortos da comunidade mam: não invada a pista, peça licença antes de fotografar os cavaleiros e respeite as famílias no cemitério em 2 de novembro." }
+    },
+    {
+      "slug": "santo-tomas-chichicastenango",
+      "names": { "local": "Feria de Santo Tomás", "es": "Fiesta de Santo Tomás de Chichicastenango", "en": "Saint Thomas Festival, Chichicastenango", "pt": "Festa de São Tomé de Chichicastenango" },
+      "city": "Chichicastenango",
+      "subdivision": "GT-14",
+      "timezone": "America/Guatemala",
+      "coords": { "lat": 14.9431, "lon": -91.1111 },
+      "nearest_airport": "GUA",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "12-07", "end": "12-23" } },
+      "editions": {
+        "2026": {
+          "status": "por_anunciar",
+          "confidence": "estimacion",
+          "key_events": [],
+          "sources": [],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Sin fechas oficiales de 2026 todavía; la prensa sitúa la feria entre el 7 y el 23 de diciembre, con días principales el 21 y el 22.", "en": "No official 2026 dates yet; the press places the fair between December 7 and 23, with the 21st and 22nd as its main days.", "pt": "Ainda sem datas oficiais de 2026; a imprensa situa a festa entre 7 e 23 de dezembro, com dias principais em 21 e 22." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.soy502.com/articulo/asi-celebraron-danza-ancestral-palo-volador-101676", "quote": "danzaron este miércoles 20 de diciembre, atados de un tronco de árbol de 30 metros en el ancestral rito del Palo Volador para conmemorar su fiesta patronal" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.soy502.com/articulo/historia-oculta-detras-nombre-chichicastenango-quiche-101999", "quote": "con días principales el 21 y 22, que reúnen a miles de visitantes nacionales y extranjeros" },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/La_Aurora_International_Airport", "note": { "es": "No hay aeropuerto a menos de 40 km; GUA, en Ciudad de Guatemala, está a unos 145 km por carretera.", "en": "No airport within 40 km; GUA in Guatemala City is about 145 km away by road.", "pt": "Não há aeroporto a menos de 40 km; GUA, na Cidade da Guatemala, fica a cerca de 145 km por estrada." } }
+      },
+      "street_tip": { "es": "Lo más vistoso pasa en los días previos al 21 de diciembre, con el Palo Volador, los bailes de máscaras y los cohetes frente a la iglesia de Santo Tomás; el pueblo se llena, así que duerme allí o llega muy temprano.", "en": "The most striking part comes in the days leading up to December 21, with the Palo Volador, masked dances and rockets in front of Santo Tomás church; the town fills up, so stay overnight or arrive very early.", "pt": "O mais vistoso acontece nos dias que antecedem 21 de dezembro, com o Palo Volador, as danças de máscaras e os rojões diante da igreja de Santo Tomás; a cidade lota, então durma lá ou chegue bem cedo." },
+      "etiquette": { "es": "Las escalinatas de la iglesia son lugar de ritual maya k'iche': no subas por ellas para fotografiar y pide permiso antes de retratar a cofrades y danzantes.", "en": "The church steps are a K'iche' Maya ritual space: do not climb them for photos, and ask before photographing cofradía members and dancers.", "pt": "As escadarias da igreja são espaço de ritual maia k'iche': não suba nelas para fotografar e peça licença antes de retratar confrades e dançarinos." }
+    }
+  ]
+}

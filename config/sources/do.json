@@ -1,0 +1,18 @@
+{
+  "country": "DO",
+  "A": ["gob.do", "godominicanrepublic.com", "puntacana.com", "unesco.org"],
+  "B": [
+    "listindiario.com",
+    "diariolibre.com",
+    "elcaribe.com.do",
+    "hoy.com.do",
+    "eldinero.com.do",
+    "n.com.do",
+    "elnuevodiario.com.do",
+    "acento.com.do",
+    "eldia.com.do",
+    "cdn.com.do",
+    "noticiassin.com"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

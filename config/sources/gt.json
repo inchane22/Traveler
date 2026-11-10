@@ -1,0 +1,15 @@
+{
+  "country": "GT",
+  "A": ["gob.gt", "agn.gt", "visitguatemala.com", "muniguate.com", "unesco.org"],
+  "B": [
+    "prensalibre.com",
+    "soy502.com",
+    "republica.gt",
+    "lahora.gt",
+    "publinews.gt",
+    "chapintv.com",
+    "emisorasunidas.com",
+    "nuestrodiario.com"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

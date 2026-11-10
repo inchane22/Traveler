@@ -1,0 +1,276 @@
+{
+  "country": "CL",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Santiago",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "carnaval-andino-arica",
+      "names": { "local": "Carnaval Andino con la Fuerza del Sol", "es": "Carnaval Andino con la Fuerza del Sol", "en": "Andean Carnival with the Strength of the Sun", "pt": "Carnaval Andino com a Força do Sol" },
+      "city": "Arica",
+      "subdivision": "CL-AP",
+      "timezone": "America/Santiago",
+      "coords": { "lat": -18.4783, "lon": -70.3126 },
+      "nearest_airport": "ARI",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "01-15", "end": "02-20" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-30",
+          "end": "2026-02-01",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.muniarica.cl/eventos/publicacion/carnaval-andino-arica-con-la-fuerza-del-sol-2026", "publisher": "Municipalidad de Arica", "accessed": "2026-11-09", "tier": "A", "quote": "30 enero 2026, 10:00 horas" },
+            { "url": "https://www.muniarica.cl/eventos/publicacion/carnaval-andino-arica-con-la-fuerza-del-sol-2026", "publisher": "Municipalidad de Arica", "accessed": "2026-11-09", "tier": "A", "quote": "30, 31 de enero y 01 de febrero 2026" },
+            { "url": "https://www.muniarica.cl/noticias/publicacion/hotel-antay-esta-en-modo-carnaval-turistas-esperan-ansiosos-el-inicio-del-megaevento-multicultural-mas-grande-de-chile", "publisher": "Municipalidad de Arica", "accessed": "2026-11-09", "tier": "A", "quote": "La fiesta programada para 30, 31 de enero y 1 de febrero de 2026, se viene con capacidad hotelera al máximo." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Tres jornadas de desfile de comparsas y bloques musicales por el circuito del centro de Arica.", "en": "Three days of dance troupes and brass bands parading along a route through central Arica.", "pt": "Três dias de desfile de comparsas e blocos musicais por um circuito no centro de Arica." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.tvn.cl/programas/buenos-dias-a-todos/actualidad/tres-dias-de-fiesta-en-arica-en-que-consiste-el-carnaval-andino-video", "quote": "quiere invitar a todos a ser parte del baile, música y cultura del norte del país" },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://www.elmostrador.cl/revista-jengibre/viajes/2026/05/28/arica-vive-auge-turistico-y-se-consolida-como-destino-clave-del-norte/", "quote": "el Carnaval con la Fuerza del Sol, que convoca a turistas nacionales e internacionales" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://www.muniarica.cl/eventos/publicacion/carnaval-andino-arica-con-la-fuerza-del-sol-2026", "note": { "es": "La Municipalidad de Arica publica el carnaval como evento gratuito (2026).", "en": "The Arica municipality lists the carnival as a free event (2026).", "pt": "A Prefeitura de Arica divulga o carnaval como evento gratuito (2026)." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Chacalluta_International_Airport", "note": { "es": "ARI (Chacalluta) está a unos 18 km al norte de Arica, con vuelos a Santiago y a La Paz.", "en": "ARI (Chacalluta) is about 18 km north of Arica, with flights to Santiago and La Paz.", "pt": "ARI (Chacalluta) fica a cerca de 18 km ao norte de Arica, com voos para Santiago e La Paz." } }
+      },
+      "street_tip": { "es": "El desfile recorre el centro durante tres tardes y noches; elige un tramo del circuito con sombra, lleva agua y protector solar, porque el sol del norte pega fuerte.", "en": "The parade runs through downtown for three afternoons and nights; pick a shaded stretch of the route and bring water and sunscreen, because the northern sun is strong.", "pt": "O desfile percorre o centro por três tardes e noites; escolha um trecho do circuito com sombra e leve água e protetor solar, porque o sol do norte é forte." },
+      "etiquette": { "es": "Las comparsas ensayan todo el año y muchas bailan con sentido ritual andino: no cortes el paso de los bloques ni te metas entre los bailarines sin que te inviten.", "en": "The troupes rehearse all year and many dance with Andean ritual meaning: do not cut through the blocks or step in among the dancers unless invited.", "pt": "As comparsas ensaiam o ano todo e muitas dançam com sentido ritual andino: não atravesse os blocos nem entre no meio dos dançarinos sem ser convidado." }
+    },
+    {
+      "slug": "fiesta-la-tirana",
+      "names": { "local": "Fiesta de La Tirana", "es": "Fiesta de La Tirana", "en": "La Tirana Festival", "pt": "Festa de La Tirana" },
+      "city": "La Tirana",
+      "subdivision": "CL-TA",
+      "timezone": "America/Santiago",
+      "coords": { "lat": -20.35, "lon": -69.6667 },
+      "nearest_airport": "IQQ",
+      "type": "danza",
+      "rule": { "type": "announced", "window": { "start": "07-05", "end": "07-25" } },
+      "editions": {
+        "2026": {
+          "start": "2026-07-10",
+          "end": "2026-07-17",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://chile.travel/eventos/la-tirana-2026/", "publisher": "Chile Travel (Sernatur)", "accessed": "2026-11-09", "tier": "A", "quote": "Del 10 al 17 de julio de 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "El día central es el 16 de julio, fiesta de la Virgen del Carmen. Parte de la prensa extiende la fiesta hasta el 20 de julio.", "en": "The main day is July 16, the feast of Our Lady of Mount Carmel. Some press reports extend the festival to July 20.", "pt": "O dia principal é 16 de julho, festa de Nossa Senhora do Carmo. Parte da imprensa estende a festa até 20 de julho." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 250000, "qualifier": "about", "unit": "visitors", "year": 2026 }, "confidence": "prensa", "source": "https://www.elmostrador.cl/revista-jengibre/viajes/2026/07/16/fiesta-de-la-tirana-2026-cuando-el-desierto-se-llena-de-color-y-devocion/", "quote": "volverá a recibir entre 250.000 y 300.000 visitantes", "note": { "es": "Previsión de prensa para 2026: entre 250.000 y 300.000 visitantes; se usa la cifra baja.", "en": "Press estimate for 2026: between 250,000 and 300,000 visitors; the lower figure is used.", "pt": "Previsão da imprensa para 2026: entre 250.000 e 300.000 visitantes; usa-se o número menor." } },
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://chile.travel/eventos/la-tirana-2026/", "quote": "miles de bailarines de diabladas, morenadas y bailes chinos llenan las calles con trajes vibrantes y máscaras artesanales bajo el sol del desierto de Atacama" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.elmostrador.cl/revista-jengibre/viajes/2026/07/16/fiesta-de-la-tirana-2026-cuando-el-desierto-se-llena-de-color-y-devocion/", "quote": "Durante diez días, peregrinos, músicos, bailarines y turistas llegan desde todo Chile para participar de la mayor fiesta religiosa del norte del país" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://chile.travel/eventos/la-tirana-2026/", "note": { "es": "Chile Travel indica entrada liberada (2026).", "en": "Chile Travel lists free admission (2026).", "pt": "O Chile Travel indica entrada gratuita (2026)." } },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Diego_Aracena_International_Airport", "note": { "es": "No hay aeropuerto a menos de 40 km; el más cercano es IQQ (Iquique), a más de 40 km por carretera.", "en": "No airport within 40 km; the nearest is IQQ (Iquique), more than 40 km away by road.", "pt": "Não há aeroporto a menos de 40 km; o mais próximo é IQQ (Iquique), a mais de 40 km por estrada." } }
+      },
+      "street_tip": { "es": "El pueblo tiene poco más de mil habitantes y se desborda: reserva alojamiento en Iquique o Pozo Almonte con mucha anticipación y lleva abrigo, porque la noche en la pampa es helada.", "en": "The village has just over a thousand residents and overflows: book lodging in Iquique or Pozo Almonte well ahead and bring warm clothes, because nights on the pampa are freezing.", "pt": "O povoado tem pouco mais de mil moradores e lota: reserve hospedagem em Iquique ou Pozo Almonte com bastante antecedência e leve agasalho, porque a noite no pampa é gelada." },
+      "etiquette": { "es": "Para los bailes es una promesa a la Virgen del Carmen: mira con respeto, no interrumpas las danzas frente al santuario y pide permiso antes de fotografiar a los danzantes de cerca.", "en": "For the dance groups this is a vow to the Virgin of Carmen: watch respectfully, do not interrupt the dances in front of the shrine, and ask before taking close-up photos of dancers.", "pt": "Para os grupos de dança é uma promessa à Virgem do Carmo: assista com respeito, não interrompa as danças diante do santuário e peça licença antes de fotografar os dançarinos de perto." }
+    },
+    {
+      "slug": "pampilla-coquimbo",
+      "names": { "local": "La Pampilla de Coquimbo", "es": "La Pampilla de Coquimbo", "en": "La Pampilla of Coquimbo", "pt": "La Pampilla de Coquimbo" },
+      "city": "Coquimbo",
+      "subdivision": "CL-CO",
+      "timezone": "America/Santiago",
+      "coords": { "lat": -29.9533, "lon": -71.3436 },
+      "nearest_airport": "LSC",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "09-14", "end": "09-22" } },
+      "editions": {
+        "2026": {
+          "start": "2026-09-18",
+          "end": "2026-09-20",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.adnradio.cl/2026/09/16/este-es-el-unico-canal-de-tv-que-transmite-la-pampilla-horario-y-como-ver-la-tradicional-fiesta-de-la-region-de-coquimbo/", "publisher": "ADN Radio", "accessed": "2026-11-09", "tier": "B", "quote": "Desde el 18 al 20 de septiembre se realizará una nueva edición de la Pampilla de Coquimbo" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición solidaria y más corta en 2026, de tres jornadas, tras los temporales que golpearon la región.", "en": "A shorter, three-day charity edition in 2026, after storms hit the region.", "pt": "Edição solidária e mais curta em 2026, com três dias, depois dos temporais que atingiram a região." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 200000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.cooperativa.cl/noticias/pais/region-de-coquimbo/balance-de-la-pampilla-de-coquimbo-exito-televisivo-cuentas-alegres-y/2026-09-21/222553.html", "quote": "Con un promedio estimado de 200 mil asistentes por jornada", "note": { "es": "Promedio estimado de 200 mil asistentes por jornada (2026); el total de las jornadas es mayor.", "en": "Estimated average of 200,000 attendees per day (2026); the total across days is higher.", "pt": "Média estimada de 200 mil pessoas por dia (2026); o total dos dias é maior." } },
+        "fiesta": null,
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/La_Florida_Airport_(Chile)", "note": { "es": "LSC (La Florida, La Serena) está a unos 15 km de Coquimbo, solo con vuelos nacionales.", "en": "LSC (La Florida, La Serena) is about 15 km from Coquimbo, with domestic flights only.", "pt": "LSC (La Florida, La Serena) fica a cerca de 15 km de Coquimbo, só com voos nacionais." } }
+      },
+      "street_tip": { "es": "La explanada se repleta de noche; llega de día para ubicarte, ten a mano efectivo para la entrada y las ramadas, y cuida el celular entre la multitud.", "en": "The esplanade packs out at night; arrive in daylight to get your bearings, carry cash for the entry and the food stalls, and watch your phone in the crowd.", "pt": "A esplanada lota à noite; chegue de dia para se localizar, leve dinheiro para a entrada e as barracas e cuide do celular na multidão." },
+      "etiquette": { "es": "Es la fiesta dieciochera de las familias coquimbanas: si te sacan a bailar cueca, sigue el paso con el pañuelo aunque no lo domines.", "en": "It is Coquimbo families' Independence Day party: if someone asks you to dance cueca, follow along with the handkerchief even if you have not mastered it.", "pt": "É a festa pátria das famílias de Coquimbo: se alguém te chamar para dançar cueca, acompanhe com o lenço mesmo sem dominar o passo." }
+    },
+    {
+      "slug": "gran-fonda-parque-ohiggins",
+      "names": { "local": "La Gran Fonda de Chile", "es": "La Gran Fonda de Chile en el Parque O'Higgins", "en": "La Gran Fonda de Chile, Parque O'Higgins", "pt": "La Gran Fonda de Chile no Parque O'Higgins" },
+      "city": "Santiago",
+      "subdivision": "CL-RM",
+      "timezone": "America/Santiago",
+      "coords": { "lat": -33.4489, "lon": -70.6693 },
+      "nearest_airport": "SCL",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "09-14", "end": "09-22" } },
+      "editions": {
+        "2026": {
+          "start": "2026-09-17",
+          "end": "2026-09-20",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.biobiochile.cl/noticias/servicios/toma-nota/2026/09/11/la-gran-fonda-de-chile-2026-en-parque-ohiggins-revisa-el-valor-de-entradas-y-la-parrilla-de-artistas.shtml", "publisher": "BioBioChile", "accessed": "2026-11-09", "tier": "B", "quote": "El próximo jueves 17 de septiembre se dará el “vamos” a La Gran Fonda de Chile 2026" },
+            { "url": "https://www.elmostrador.cl/revista-jengibre/panoramas/2026/09/01/fondas-2026-en-chile-fechas-precios-y-preventas-para-celebrar-fiestas-patrias/", "publisher": "El Mostrador", "accessed": "2026-11-09", "tier": "B", "quote": "La Gran Fonda de Chile se realizará los días 17, 18, 19 y 20 de septiembre de 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 130000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://www.munistgo.cl/fonderos-destacan-ventas-y-masiva-asistencia-a-la-gran-fonda-de-chile-este-ano-ha-sido-el-mas-alto/", "quote": "Más de 130 mil personas asistieron durante los cuatro días de celebración a La Gran Fonda de Chile en el Parque O’Higgins" },
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.elmostrador.cl/revista-jengibre/panoramas/2026/09/01/fondas-2026-en-chile-fechas-precios-y-preventas-para-celebrar-fiestas-patrias/", "quote": "con escenario principal, cuecódromo, gastronomía, juegos y actividades familiares" },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_boleta", "confidence": "prensa", "source": "https://www.biobiochile.cl/noticias/servicios/toma-nota/2026/09/11/la-gran-fonda-de-chile-2026-en-parque-ohiggins-revisa-el-valor-de-entradas-y-la-parrilla-de-artistas.shtml", "note": { "es": "Recinto cerrado con entrada pagada: $14.950 la general en 2026.", "en": "Fenced grounds with paid entry: CLP 14,950 general admission in 2026.", "pt": "Recinto fechado com entrada paga: CLP 14.950 a geral em 2026." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Arturo_Merino_Ben%C3%ADtez_International_Airport", "note": { "es": "SCL está a unos 20 km del Parque O'Higgins.", "en": "SCL is about 20 km from Parque O'Higgins.", "pt": "SCL fica a cerca de 20 km do Parque O'Higgins." } }
+      },
+      "street_tip": { "es": "Las tardes son más tranquilas y familiares; para la cueca en el cuecódromo y los shows grandes, ve de noche y compra la entrada en línea para evitar filas.", "en": "Afternoons are calmer and family-oriented; for cueca at the cuecódromo and the big shows, go at night and buy tickets online to skip the lines.", "pt": "As tardes são mais tranquilas e familiares; para a cueca no cuecódromo e os grandes shows, vá à noite e compre o ingresso on-line para evitar filas." }
+    },
+    {
+      "slug": "festival-vina-del-mar",
+      "names": { "local": "Festival Internacional de la Canción de Viña del Mar", "es": "Festival Internacional de la Canción de Viña del Mar", "en": "Viña del Mar International Song Festival", "pt": "Festival Internacional da Canção de Viña del Mar" },
+      "city": "Viña del Mar",
+      "subdivision": "CL-VS",
+      "timezone": "America/Santiago",
+      "coords": { "lat": -33.0245, "lon": -71.5518 },
+      "nearest_airport": "SCL",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "02-15", "end": "03-05" } },
+      "editions": {
+        "2026": {
+          "start": "2026-02-22",
+          "end": "2026-02-27",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.munivina.cl/noticias/vina-2025-entrega-positivo-balance-de-su-reciente-version-y-da-a-conocer-las-fechas-de-la-edicion-2026/", "publisher": "Ilustre Municipalidad de Viña del Mar", "accessed": "2026-11-09", "tier": "A", "quote": "el Festival se llevará a cabo entre el domingo 22 y el viernes 27 de febrero de 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        },
+        "2027": {
+          "start": "2027-02-22",
+          "end": "2027-02-27",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "gala-de-vina", "name": { "es": "Gala de Viña", "en": "Viña Gala", "pt": "Gala de Viña" }, "date": "2027-02-19", "confidence": "oficial" }
+          ],
+          "sources": [
+            { "url": "https://www.munivina.cl/noticias/festival-de-vina-2027-da-a-conocer-las-fechas-de-su-proxima-edicion-y-de-la-gala/", "publisher": "Ilustre Municipalidad de Viña del Mar", "accessed": "2026-11-09", "tier": "A", "quote": "la versión 2027 del festival se desarrollará entre el lunes 22 y el sábado 27 de febrero, mientras que la tradicional Gala de Viña tendrá lugar el viernes 19 de ese mismo mes" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.munivina.cl/noticias/festival-de-vina-2027-da-a-conocer-las-fechas-de-su-proxima-edicion-y-de-la-gala/", "quote": "dando inicio a una semana marcada por la música, el espectáculo y la presencia de destacados artistas nacionales e internacionales" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Arturo_Merino_Ben%C3%ADtez_International_Airport", "note": { "es": "No hay aeropuerto comercial a menos de 40 km; el más cercano es SCL (Santiago), a unos 120 km por carretera.", "en": "No commercial airport within 40 km; the nearest is SCL (Santiago), about 120 km away by road.", "pt": "Não há aeroporto comercial a menos de 40 km; o mais próximo é SCL (Santiago), a cerca de 120 km por estrada." } }
+      },
+      "street_tip": { "es": "Las noches en la Quinta Vergara requieren entrada y se agotan pronto; si no tienes, la semana del festival igual se vive en la costanera y los bares de Viña.", "en": "Nights at the Quinta Vergara amphitheatre need tickets and sell out fast; without one, festival week still buzzes along the seafront and in Viña's bars.", "pt": "As noites na Quinta Vergara exigem ingresso e esgotam rápido; sem ele, a semana do festival ainda se vive na orla e nos bares de Viña." }
+    },
+    {
+      "slug": "lollapalooza-chile",
+      "names": { "local": "Lollapalooza Chile", "es": "Lollapalooza Chile", "en": "Lollapalooza Chile", "pt": "Lollapalooza Chile" },
+      "city": "Santiago",
+      "subdivision": "CL-RM",
+      "timezone": "America/Santiago",
+      "coords": { "lat": -33.4489, "lon": -70.6693 },
+      "nearest_airport": "SCL",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "03-01", "end": "04-10" } },
+      "editions": {
+        "2026": {
+          "start": "2026-03-13",
+          "end": "2026-03-15",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://chile.travel/eventos/lollapalooza-2026/", "publisher": "Chile Travel (Sernatur)", "accessed": "2026-11-09", "tier": "A", "quote": "13 de marzo, 2026 - 15 de marzo, 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        },
+        "2027": {
+          "start": "2027-03-12",
+          "end": "2027-03-14",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://chile.travel/eventos/lollapalooza-2027/", "publisher": "Chile Travel (Sernatur)", "accessed": "2026-11-09", "tier": "A", "quote": "Del 12 al 14 de marzo de 2027" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 80000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.latercera.com/culto/noticia/un-balance-de-lollapalooza-2026-entre-shows-memorables-y-caoticos-accesos/", "quote": "Con 80 mil asistentes en cada una de sus tres jornadas", "note": { "es": "80 mil asistentes por jornada en 2026, tres jornadas.", "en": "80,000 attendees per day in 2026, over three days.", "pt": "80 mil pessoas por dia em 2026, em três dias." } },
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://chile.travel/eventos/lollapalooza-2026/", "quote": "Prepárate para vibrar con los shows estelares de Sabrina Carpenter, Tyler, The Creator, Chappell Roan y el esperado regreso de Los Bunkers." },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_boleta", "confidence": "oficial", "source": "https://chile.travel/eventos/lollapalooza-2027/", "note": { "es": "Solo con entrada: pase diario general desde $164.700 para 2027.", "en": "Ticket only: general day pass from CLP 164,700 for 2027.", "pt": "Só com ingresso: passe diário geral a partir de CLP 164.700 para 2027." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Arturo_Merino_Ben%C3%ADtez_International_Airport", "note": { "es": "SCL está a unos 20 km del Parque O'Higgins.", "en": "SCL is about 20 km from Parque O'Higgins.", "pt": "SCL fica a cerca de 20 km do Parque O'Higgins." } }
+      },
+      "street_tip": { "es": "El Parque O'Higgins tiene estación de metro propia; llega temprano, porque las filas de ingreso a la apertura son largas, y sal en metro, no en auto.", "en": "Parque O'Higgins has its own metro station; arrive early because entry lines at opening are long, and leave by metro rather than by car.", "pt": "O Parque O'Higgins tem estação de metrô própria; chegue cedo, porque as filas na abertura são longas, e saia de metrô, não de carro." }
+    },
+    {
+      "slug": "ano-nuevo-en-el-mar",
+      "names": { "local": "Año Nuevo en el Mar", "es": "Año Nuevo en el Mar (Valparaíso y Viña del Mar)", "en": "New Year at Sea, Valparaíso and Viña del Mar", "pt": "Ano-Novo no Mar (Valparaíso e Viña del Mar)" },
+      "city": "Valparaíso",
+      "subdivision": "CL-VS",
+      "timezone": "America/Santiago",
+      "coords": { "lat": -33.0472, "lon": -71.6127 },
+      "nearest_airport": "SCL",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "12-31", "end": "12-31" },
+      "editions": {
+        "2025": {
+          "start": "2025-12-31",
+          "end": "2025-12-31",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://municipalidaddevalparaiso.cl/todo-listo-en-valparaiso-y-vina-del-mar-para-vivir-el-ano-nuevo-en-el-mar/", "publisher": "Ilustre Municipalidad de Valparaíso", "accessed": "2026-11-09", "tier": "A", "quote": "la Armada para el día 31 de diciembre tiene un amplio operativo en mar y tierra" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Los fuegos artificiales se lanzan desde la bahía a la medianoche entre el 31 de diciembre y el 1 de enero.", "en": "The fireworks are launched over the bay at midnight between December 31 and January 1.", "pt": "Os fogos são lançados na baía à meia-noite entre 31 de dezembro e 1º de janeiro." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://municipalidaddevalparaiso.cl/todo-listo-en-valparaiso-y-vina-del-mar-para-vivir-el-ano-nuevo-en-el-mar/", "quote": "Como cada año, Valparaíso y Viña del Mar se convierten en el anfiteatro natural más importante para disfrutar del Año Nuevo en el mar" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Arturo_Merino_Ben%C3%ADtez_International_Airport", "note": { "es": "No hay aeropuerto comercial a menos de 40 km; el más cercano es SCL (Santiago), a unos 115 km por carretera.", "en": "No commercial airport within 40 km; the nearest is SCL (Santiago), about 115 km away by road.", "pt": "Não há aeroporto comercial a menos de 40 km; o mais próximo é SCL (Santiago), a cerca de 115 km por estrada." } }
+      },
+      "street_tip": { "es": "Los cerros y miradores de Valparaíso se llenan horas antes; sube temprano con abrigo y algo para comer, y planea volver a pie, porque el transporte colapsa tras la medianoche.", "en": "Valparaíso's hills and lookouts fill up hours ahead; go up early with a jacket and some food, and plan to walk back, because transport collapses after midnight.", "pt": "Os morros e mirantes de Valparaíso lotam horas antes; suba cedo com agasalho e algo para comer e planeje voltar a pé, porque o transporte colapsa depois da meia-noite." }
+    }
+  ]
+}

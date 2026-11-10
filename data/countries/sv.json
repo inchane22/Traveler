@@ -1,0 +1,202 @@
+{
+  "country": "SV",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/El_Salvador",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "carnaval-san-miguel",
+      "names": { "local": "Carnaval de San Miguel", "es": "Carnaval de San Miguel", "en": "San Miguel Carnival", "pt": "Carnaval de San Miguel" },
+      "city": "San Miguel",
+      "subdivision": "SV-SM",
+      "timezone": "America/El_Salvador",
+      "coords": { "lat": 13.4814, "lon": -88.1772 },
+      "nearest_airport": "SAL",
+      "type": "carnaval",
+      "rule": { "type": "nth_weekday", "month": 11, "weekday": 6, "n": -1, "duration_days": 1 },
+      "editions": {
+        "2025": {
+          "start": "2025-11-29",
+          "end": "2025-11-29",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://diario.elmundo.sv/nacionales/esperan-superar-el-millon-de-visitantes-en-el-carnaval-de-san-miguel", "publisher": "Diario El Mundo", "accessed": "2026-11-09", "tier": "B", "quote": "El Ministerio de Turismo espera superar el millón de visitantes para el Carnaval de San Miguel que se celebrará el próximo sábado 29 de noviembre" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        },
+        "2026": {
+          "start": "2026-11-28",
+          "end": "2026-11-28",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.elsalvador.com/turismo/cultura-viva/carnaval-san-miguel-2026-programacion-que-visitar/1301476/2026/", "publisher": "El Diario de Hoy (elsalvador.com)", "accessed": "2026-11-09", "tier": "B", "quote": "El gran cierre y el desfile de carrozas están anunciados para el sábado 28 de noviembre" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Las fiestas patronales empiezan el 31 de octubre con carnavalitos en los barrios; la noche del carnaval es el 28 de noviembre.", "en": "The patron-saint festivities start on October 31 with neighbourhood carnavalitos; carnival night is November 28.", "pt": "As festas padroeiras começam em 31 de outubro com carnavalitos nos bairros; a noite do carnaval é 28 de novembro." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 2000000, "qualifier": "about", "unit": "visitors", "year": 2025 }, "confidence": "prensa", "source": "https://diario.elmundo.sv/nacionales/el-carnaval-de-san-miguel-tuvo-participacion-de-2-millones-de-personas-segun-turismo", "quote": "La edición LXVI del Carnaval de San Miguel contó con la participación de 2 millones de personas, informó la ministra de Turismo, Morena Valdez.", "note": { "es": "Cifra del Ministerio de Turismo con datos de Protección Civil (2025).", "en": "Ministry of Tourism figure based on Civil Protection data (2025).", "pt": "Número do Ministério do Turismo com dados da Defesa Civil (2025)." } },
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://www.laprensagrafica.com/elsalvador/VIDEO-Entre-carrozas-y-estrellas-mundiales-San-Miguel-vuelve-a-brillar-en-su-66.-carnaval-20251129-0044.html", "quote": "Tras el paso de las carrozas, decenas de orquestas y agrupaciones nacionales han comenzado a tomar las tarimas instaladas en la avenida Roosevelt y calles aledañas" },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://diario.elmundo.sv/nacionales/el-carnaval-de-san-miguel-tuvo-participacion-de-2-millones-de-personas-segun-turismo", "quote": "Entre los visitantes extranjeros que participaron en la celebración hubo turistas provenientes de Guatemala, Honduras, Nicaragua y República Dominicana." },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/El_Salvador_International_Airport", "note": { "es": "No hay aeropuerto con vuelos regulares a menos de 40 km; SAL está a más de 100 km por carretera.", "en": "No airport with scheduled flights within 40 km; SAL is more than 100 km away by road.", "pt": "Não há aeroporto com voos regulares a menos de 40 km; SAL fica a mais de 100 km por estrada." } }
+      },
+      "street_tip": { "es": "Tras el desfile de carrozas, las orquestas tocan en tarimas a lo largo de la avenida Roosevelt hasta la madrugada; los hoteles de San Miguel se llenan, así que reserva con tiempo o duerme en la playa El Cuco.", "en": "After the float parade, bands play on stages along Avenida Roosevelt until dawn; San Miguel hotels sell out, so book early or stay at El Cuco beach.", "pt": "Depois do desfile de carros alegóricos, as orquestras tocam em palcos ao longo da avenida Roosevelt até a madrugada; os hotéis de San Miguel lotam, então reserve cedo ou durma na praia El Cuco." },
+      "etiquette": { "es": "Es una multitud enorme: lleva solo lo necesario, acuerda un punto de encuentro con tu grupo y respeta los controles de seguridad de los accesos.", "en": "The crowd is huge: carry only what you need, agree on a meeting point with your group and go along with the security checks at the entrances.", "pt": "A multidão é enorme: leve só o necessário, combine um ponto de encontro com o seu grupo e respeite as revistas de segurança nos acessos." }
+    },
+    {
+      "slug": "fiestas-agostinas-san-salvador",
+      "names": { "local": "Fiestas Agostinas", "es": "Fiestas Agostinas de San Salvador", "en": "August Festivals of San Salvador", "pt": "Festas de Agosto de San Salvador" },
+      "city": "San Salvador",
+      "subdivision": "SV-SS",
+      "timezone": "America/El_Salvador",
+      "coords": { "lat": 13.6977, "lon": -89.1915 },
+      "nearest_airport": "ILS",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "08-01", "end": "08-06" },
+      "editions": {
+        "2026": {
+          "start": "2026-08-01",
+          "end": "2026-08-06",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desfile-del-correo", "name": { "es": "Desfile del Correo", "en": "Mail Parade", "pt": "Desfile do Correio" }, "date": "2026-08-01", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.laprensagrafica.com/elsalvador/desfiles-conciertos-y-polvora-esta-es-la-programacion-de-las-fiestas-agostinas-2026-20260727-0096.html", "publisher": "La Prensa Gráfica", "accessed": "2026-11-09", "tier": "B", "quote": "El Desfile del Correo será el sábado 1 de agosto." },
+            { "url": "https://www.laprensagrafica.com/elsalvador/desfiles-conciertos-y-polvora-esta-es-la-programacion-de-las-fiestas-agostinas-2026-20260727-0096.html", "publisher": "La Prensa Gráfica", "accessed": "2026-11-09", "tier": "B", "quote": "Jueves 6 de agosto Las fiestas concluirán el jueves con una jornada de actividades en Sivarland." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.laprensagrafica.com/elsalvador/el-desfile-de-correo-inaugura-las-fiestas-agostinas-con-musica-color-y-tradicion-20260801-0022.html", "quote": "El desfile estuvo lleno de colorido, bailes y música" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.laprensagrafica.com/elsalvador/desfiles-conciertos-y-polvora-esta-es-la-programacion-de-las-fiestas-agostinas-2026-20260727-0096.html", "quote": "salvadoreños y turistas podrán disfrutar de desfiles, conciertos, espectáculos infantiles, juegos mecánicos, concursos y shows pirotécnicos" },
+        "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.laprensagrafica.com/elsalvador/desfiles-conciertos-y-polvora-esta-es-la-programacion-de-las-fiestas-agostinas-2026-20260727-0096.html", "quote": "Conoce las actividades gratuitas que ofrecerán Sivarland y el Centro Histórico de San Salvador." },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ilopango_International_Airport", "note": { "es": "Ilopango (ILS), a unos 10 km del centro, tiene vuelos a Ciudad de Guatemala; el gran aeropuerto internacional, SAL, está a 42 km por autopista.", "en": "Ilopango (ILS), about 10 km from the centre, has flights to Guatemala City; the main international airport, SAL, is 42 km away by motorway.", "pt": "Ilopango (ILS), a cerca de 10 km do centro, tem voos para a Cidade da Guatemala; o principal aeroporto internacional, SAL, fica a 42 km pela rodovia." } }
+      },
+      "street_tip": { "es": "Los desfiles del Correo y del Comercio salen de la plaza Salvador del Mundo; por la noche hay fuegos artificiales y orquestas en Sivarland, junto al Estadio Cuscatlán.", "en": "The Correo and Comercio parades leave from Plaza Salvador del Mundo; at night there are fireworks and bands at Sivarland, next to Estadio Cuscatlán.", "pt": "Os desfiles do Correio e do Comércio saem da praça Salvador del Mundo; à noite há fogos de artifício e orquestras em Sivarland, ao lado do Estádio Cuscatlán." },
+      "etiquette": { "es": "El 5 y el 6 de agosto tienen actos religiosos en honor al Divino Salvador del Mundo: guarda silencio durante la procesión y la misa en la Catedral.", "en": "August 5 and 6 bring religious acts for the Divine Saviour of the World: keep quiet during the procession and the Mass at the Cathedral.", "pt": "Os dias 5 e 6 de agosto têm atos religiosos em honra ao Divino Salvador do Mundo: faça silêncio durante a procissão e a missa na Catedral." }
+    },
+    {
+      "slug": "fiestas-julias-santa-ana",
+      "names": { "local": "Fiestas Julias", "es": "Fiestas Julias de Santa Ana", "en": "July Festivals of Santa Ana", "pt": "Festas de Julho de Santa Ana" },
+      "city": "Santa Ana",
+      "subdivision": "SV-SA",
+      "timezone": "America/El_Salvador",
+      "coords": { "lat": 13.9942, "lon": -89.5597 },
+      "nearest_airport": "SAL",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "07-01", "end": "07-26" } },
+      "editions": {
+        "2026": {
+          "start": "2026-07-10",
+          "end": "2026-07-26",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "carnaval-juliano", "name": { "es": "Carnaval Juliano", "en": "Juliano Carnival", "pt": "Carnaval Juliano" }, "date": "2026-07-25", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.elsalvador.com/turismo/cultura-viva/agenda-fiestas-julias-santa-ana/1282748/2026/", "publisher": "El Diario de Hoy (elsalvador.com)", "accessed": "2026-11-09", "tier": "B", "quote": "Santa Ana Centro presentó la programación oficial de las Fiestas Julias 2026, que se desarrollarán del 10 al 26 de julio" },
+            { "url": "https://www.elsalvador.com/entretenimiento/escena/carnaval-juliano-fiestas-julias-santa-ana/1284491/2026/", "publisher": "El Diario de Hoy (elsalvador.com)", "accessed": "2026-11-09", "tier": "B", "quote": "El Carnaval Juliano 2026 se celebrará el sábado 25 de julio desde las 9:00 de la noche sobre la 25 Calle Poniente de Santa Ana." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.elsalvador.com/turismo/cultura-viva/agenda-fiestas-julias-santa-ana/1282748/2026/", "quote": "Durante más de dos semanas habrá desfiles, conciertos, jaripeos, torneos, convivios, noches bailables y espacios para toda la familia" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/El_Salvador_International_Airport", "note": { "es": "No hay aeropuerto con vuelos regulares a menos de 40 km; SAL está a unos 100 km por carretera.", "en": "No airport with scheduled flights within 40 km; SAL is about 100 km away by road.", "pt": "Não há aeroporto com voos regulares a menos de 40 km; SAL fica a cerca de 100 km por estrada." } }
+      },
+      "street_tip": { "es": "La gran noche es el Carnaval Juliano, con orquestas sobre la 25 Calle Poniente; el resto de días hay desfiles, jaripeos y noches bailables repartidos por la ciudad.", "en": "The big night is the Carnaval Juliano, with bands along 25 Calle Poniente; on the other days there are parades, rodeos and dance nights around the city.", "pt": "A grande noite é o Carnaval Juliano, com orquestras na 25 Calle Poniente; nos outros dias há desfiles, rodeios e noites de dança pela cidade." },
+      "etiquette": { "es": "El 26 de julio es el día de Señora Santa Ana, con misa y procesión: deja paso al cortejo y baja la música cerca de la Catedral.", "en": "July 26 is the feast of Señora Santa Ana, with Mass and a procession: make way for it and keep the music down near the Cathedral.", "pt": "O dia 26 de julho é a festa de Señora Santa Ana, com missa e procissão: abra caminho para o cortejo e baixe a música perto da Catedral." }
+    },
+    {
+      "slug": "bolas-de-fuego-nejapa",
+      "names": { "local": "Bolas de Fuego (La Recuerda)", "es": "Bolas de Fuego de Nejapa", "en": "Nejapa Fireball Festival", "pt": "Bolas de Fogo de Nejapa" },
+      "city": "Nejapa",
+      "subdivision": "SV-SS",
+      "timezone": "America/El_Salvador",
+      "coords": { "lat": 13.8128, "lon": -89.2297 },
+      "nearest_airport": "ILS",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "08-30", "end": "08-31" },
+      "editions": {
+        "2026": {
+          "start": "2026-08-30",
+          "end": "2026-08-31",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "bolas-de-fuego", "name": { "es": "Batalla de bolas de fuego", "en": "Fireball battle", "pt": "Batalha de bolas de fogo" }, "date": "2026-08-31", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.elsalvador.com/turismo/cultura-viva/bolas-fuego-nejapa-agenda-/1290481/2026/", "publisher": "El Diario de Hoy (elsalvador.com)", "accessed": "2026-11-09", "tier": "B", "quote": "Este domingo 30 y lunes 31 de agosto, Nejapa volverá a convertirse en el escenario de una de las celebraciones más intensas de su identidad" },
+            { "url": "https://www.laprensagrafica.com/elsalvador/las-centenarias-bolas-de-fuego-vuelven-a-cruzar-el-cielo-de-nejapa-estos-son-los-horarios-20260829-0017.html", "publisher": "La Prensa Gráfica", "accessed": "2026-11-09", "tier": "B", "quote": "Si deseas vivir la experiencia, los nejapenses te invitan a que los visites este lunes 31 de agosto." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "El 30 de agosto hubo festival del maíz, desfile y coronación; las bolas de fuego se lanzan la noche del 31.", "en": "August 30 had a corn festival, a parade and a coronation; the fireballs fly on the night of the 31st.", "pt": "Em 30 de agosto houve festival do milho, desfile e coroação; as bolas de fogo voam na noite do dia 31." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.laprensagrafica.com/elsalvador/las-centenarias-bolas-de-fuego-vuelven-a-cruzar-el-cielo-de-nejapa-estos-son-los-horarios-20260829-0017.html", "quote": "Cada año, la calle principal del pueblo se convierte en el escenario de un impactante espectáculo." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.laprensagrafica.com/elsalvador/las-centenarias-bolas-de-fuego-vuelven-a-cruzar-el-cielo-de-nejapa-estos-son-los-horarios-20260829-0017.html", "quote": "Como todos los años, la comunidad de Nejapa espera recibir a miles de visitantes nacionales y extranjeros" },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ilopango_International_Airport", "note": { "es": "Ilopango (ILS), a unos 25 km por carretera, tiene vuelos a Ciudad de Guatemala; SAL queda a más de 40 km.", "en": "Ilopango (ILS), about 25 km by road, has flights to Guatemala City; SAL is more than 40 km away.", "pt": "Ilopango (ILS), a cerca de 25 km por estrada, tem voos para a Cidade da Guatemala; SAL fica a mais de 40 km." } }
+      },
+      "street_tip": { "es": "Las bolas empiezan a volar entre las 8:30 y las 9 de la noche en la calle principal; llega con luz de día, usa zapatos cerrados y ropa de algodón, y quédate en las zonas marcadas para el público.", "en": "The fireballs start flying between 8:30 and 9 pm on the main street; arrive in daylight, wear closed shoes and cotton clothes, and stay in the areas marked for spectators.", "pt": "As bolas começam a voar entre 20h30 e 21h na rua principal; chegue ainda de dia, use sapatos fechados e roupa de algodão e fique nas áreas marcadas para o público." },
+      "etiquette": { "es": "Solo juegan los equipos de Nejapa: no te metas en la calle durante la batalla ni recojas bolas encendidas.", "en": "Only the Nejapa teams play: do not step into the street during the battle or pick up burning balls.", "pt": "Só as equipes de Nejapa jogam: não entre na rua durante a batalha nem pegue bolas acesas." }
+    },
+    {
+      "slug": "festival-invierno-perquin",
+      "names": { "local": "Festival de Invierno de Perquín", "es": "Festival de Invierno de Perquín", "en": "Perquín Winter Festival", "pt": "Festival de Inverno de Perquín" },
+      "city": "Perquín",
+      "subdivision": "SV-MO",
+      "timezone": "America/El_Salvador",
+      "coords": { "lat": 13.9567, "lon": -88.1617 },
+      "nearest_airport": "SAL",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "07-28", "end": "08-08" } },
+      "editions": {
+        "2026": {
+          "start": "2026-08-01",
+          "end": "2026-08-04",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.elsalvador.com/turismo/rutas-y-aventuras/festival-invierno-perquin-2026-turismo/1282480/2026/", "publisher": "El Diario de Hoy (elsalvador.com)", "accessed": "2026-11-09", "tier": "B", "quote": "Del 1 al 4 de agosto, el municipio ofrecerá actividades para todas las edades" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.elsalvador.com/turismo/rutas-y-aventuras/festival-invierno-perquin-2026-turismo/1282480/2026/", "quote": "por la noche, el Gran Campirano de Invierno con agrupaciones como Sonora Juvenil, Los Sánchez, Luisito y su Chanchona y Song Oriental" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/El_Salvador_International_Airport", "note": { "es": "No hay aeropuerto con vuelos regulares a menos de 40 km; SAL está a más de 150 km por carretera.", "en": "No airport with scheduled flights within 40 km; SAL is more than 150 km away by road.", "pt": "Não há aeroporto com voos regulares a menos de 40 km; SAL fica a mais de 150 km por estrada." } }
+      },
+      "street_tip": { "es": "Perquín está en la montaña de Morazán y en agosto llueve y refresca: lleva impermeable, y si quieres acampar busca el área de camping del festival.", "en": "Perquín sits in the Morazán mountains and August is rainy and cool: bring a rain jacket, and if you want to camp look for the festival camping area.", "pt": "Perquín fica nas montanhas de Morazán e em agosto chove e esfria: leve capa de chuva e, se quiser acampar, procure a área de camping do festival." },
+      "etiquette": { "es": "Perquín fue escenario de la guerra civil: visita el Museo de la Revolución y los sitios de memoria con respeto.", "en": "Perquín was a civil war front line: visit the Museum of the Revolution and the memorial sites respectfully.", "pt": "Perquín foi palco da guerra civil: visite o Museu da Revolução e os locais de memória com respeito." }
+    }
+  ]
+}

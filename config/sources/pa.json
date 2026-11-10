@@ -1,0 +1,16 @@
+{
+  "country": "PA",
+  "A": ["gob.pa", "visitpanama.com", "unesco.org"],
+  "B": [
+    "prensa.com",
+    "laestrella.com.pa",
+    "critica.com.pa",
+    "tvn-2.com",
+    "telemetro.com",
+    "panamaamerica.com.pa",
+    "ensegundos.com.pa",
+    "ecotvpanama.com",
+    "metrolibre.com"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

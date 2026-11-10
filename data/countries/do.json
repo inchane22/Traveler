@@ -1,0 +1,153 @@
+{
+  "country": "DO",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Santo_Domingo",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "carnaval-vegano-la-vega",
+      "names": { "local": "Carnaval Vegano", "es": "Carnaval de La Vega", "en": "La Vega Carnival", "pt": "Carnaval de La Vega" },
+      "city": "La Vega",
+      "subdivision": "DO-13",
+      "timezone": "America/Santo_Domingo",
+      "coords": { "lat": 19.2221, "lon": -70.5296 },
+      "nearest_airport": "STI",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "02-01", "end": "02-28" } },
+      "editions": {
+        "2026": {
+          "start": "2026-02-01",
+          "end": "2026-02-27",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desfile-de-cierre", "name": { "es": "Desfile de cierre del Día de la Independencia", "en": "Independence Day closing parade", "pt": "Desfile de encerramento do Dia da Independência" }, "date": "2026-02-27", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://listindiario.com/la-republica/ciudad/20260129/listo-carnaval-vegano-mas-230-grupos-decenas-artistas-escena_891797.html", "publisher": "Listín Diario", "accessed": "2026-11-09", "tier": "B", "quote": "El carnaval vegano iniciará a colorear las calles de la ciudad a partir del domingo primero de febrero, donde los diablos cojuelos exhibirán sus disfraces, y las personas podrán disfrutar de decenas de actividades." },
+            { "url": "https://noticiassin.com/mas-de-15-millones-de-personas-visitan-la-vega-durante-el-carnaval-vegano-2032089/", "publisher": "Noticias SIN", "accessed": "2026-11-09", "tier": "B", "quote": "Modesto precisó que este domingo 22 se celebra el último domingo oficial del carnaval, mientras que el 27 de febrero se realizará el desfile de cierre, de carácter más regional, donde los diablos se retiran las caretas como parte de la tradición." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Desfiles los domingos de febrero de 2026 (del 1 al 22) y desfile de cierre el 27 de febrero, Día de la Independencia.", "en": "Parades on the Sundays of February 2026 (1st to 22nd) and a closing parade on February 27, Independence Day.", "pt": "Desfiles aos domingos de fevereiro de 2026 (de 1 a 22) e desfile de encerramento em 27 de fevereiro, Dia da Independência." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 1500000, "qualifier": "more_than", "unit": "visitors", "year": 2026 }, "confidence": "prensa", "source": "https://noticiassin.com/mas-de-15-millones-de-personas-visitan-la-vega-durante-el-carnaval-vegano-2032089/", "quote": "La ciudad de La Vega recibe más de un millón quinientas mil personas durante el mes de febrero con motivo del Carnaval Vegano", "note": { "es": "Cifra dada por un representante del carnaval en televisión en febrero de 2026, para todo el mes; no es un conteo oficial.", "en": "Figure given by a carnival representative on television in February 2026, for the whole month; not an official count.", "pt": "Número dado por um representante do carnaval na televisão em fevereiro de 2026, para o mês inteiro; não é uma contagem oficial." } },
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://noticiassin.com/mas-de-15-millones-de-personas-visitan-la-vega-durante-el-carnaval-vegano-2032089/", "quote": "Explicó que cada fin de semana se desarrollan actividades tanto los sábados en la noche en las distintas cuevas, como los domingos con el desfile protagónico y el tradicional evento del 27 de febrero" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://listindiario.com/la-republica/ciudad/20260129/listo-carnaval-vegano-mas-230-grupos-decenas-artistas-escena_891797.html", "quote": "La ciudad de La Vega está lista para recibir su icónico carnaval, celebración que cada año reúne a miles de visitantes de todo el territorio nacional para ver desfilar a los diablos cojuelos" },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Cibao_International_Airport", "note": { "es": "El aeropuerto del Cibao (STI), en Santiago, está a unos 30 km por la autopista Duarte y tiene vuelos internacionales.", "en": "Cibao Airport (STI), in Santiago, is about 30 km away via the Duarte highway and has international flights.", "pt": "O aeroporto do Cibao (STI), em Santiago, fica a cerca de 30 km pela autopista Duarte e tem voos internacionais." } }
+      },
+      "street_tip": { "es": "Los domingos de febrero desfilan los diablos cojuelos; los sábados por la noche la fiesta sigue en las «cuevas» de cada grupo.", "en": "On February Sundays the diablos cojuelos parade; on Saturday nights the party moves to each group's «cueva».", "pt": "Aos domingos de fevereiro desfilam os diablos cojuelos; aos sábados à noite a festa continua nas «cuevas» de cada grupo." },
+      "etiquette": { "es": "Los diablos golpean con vejigas a quien se cruza en su camino: es parte del juego, así que no te enfades y no los empujes.", "en": "The devils swat passers-by with inflated bladders: it is part of the game, so don't get angry and don't shove them.", "pt": "Os diabos batem com bexigas em quem cruza o caminho: faz parte da brincadeira, então não se irrite e não os empurre." }
+    },
+    {
+      "slug": "carnaval-santiago-de-los-caballeros",
+      "names": { "local": "Carnaval de Santiago", "es": "Carnaval de Santiago de los Caballeros", "en": "Santiago de los Caballeros Carnival", "pt": "Carnaval de Santiago de los Caballeros" },
+      "city": "Santiago de los Caballeros",
+      "subdivision": "DO-25",
+      "timezone": "America/Santo_Domingo",
+      "coords": { "lat": 19.4517, "lon": -70.697 },
+      "nearest_airport": "STI",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "02-01", "end": "03-08" } },
+      "editions": {
+        "2026": {
+          "start": "2026-02-08",
+          "end": "2026-03-01",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://acento.com.do/cultura/alcaldia-de-santiago-entrega-recursos-a-grupos-de-lechones-para-el-carnaval-de-santiago-2026-9606267.html", "publisher": "Acento", "accessed": "2026-11-09", "tier": "B", "quote": "La edición 2026 del Carnaval de Santiago se celebrará del 8 de febrero al 1 de marzo, teniendo como escenario principal el Parque Central de Santiago, consolidado como el epicentro de esta fiesta cultural que atrae a miles de visitantes locales y nacionales." },
+            { "url": "https://acento.com.do/cultura/carnaval-de-santiago-registra-alta-asistencia-en-su-tercer-domingo-de-celebracion-9627809.html", "publisher": "Acento", "accessed": "2026-11-09", "tier": "B", "quote": "El carnaval continuará el próximo domingo 01 de marzo con el cierre de la edición 2026." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Desfiles los domingos de febrero de 2026 desde el día 8 y cierre el domingo 1 de marzo, en el Parque Central.", "en": "Parades on the Sundays of February 2026 from the 8th, closing on Sunday March 1, at Parque Central.", "pt": "Desfiles aos domingos de fevereiro de 2026 a partir do dia 8 e encerramento no domingo 1º de março, no Parque Central." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://acento.com.do/cultura/carnaval-de-santiago-registra-alta-asistencia-en-su-tercer-domingo-de-celebracion-9627809.html", "quote": "Desde tempranas horas se realizó el desfile de comparsas y personajes tradicionales, incluidos los lechones, que recorrieron el área asignada para la actividad." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://acento.com.do/cultura/alcaldia-de-santiago-entrega-recursos-a-grupos-de-lechones-para-el-carnaval-de-santiago-2026-9606267.html", "quote": "consolidado como el epicentro de esta fiesta cultural que atrae a miles de visitantes locales y nacionales" },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Cibao_International_Airport", "note": { "es": "El aeropuerto del Cibao (STI) está a unos 15 km del centro de Santiago y tiene vuelos internacionales.", "en": "Cibao Airport (STI) is about 15 km from central Santiago and has international flights.", "pt": "O aeroporto do Cibao (STI) fica a cerca de 15 km do centro de Santiago e tem voos internacionais." } }
+      },
+      "street_tip": { "es": "Desde 2025 el desfile se hace en el Parque Central; llega temprano por la tarde para ver salir a los lechones.", "en": "Since 2025 the parade has been held at Parque Central; arrive early in the afternoon to see the lechones set off.", "pt": "Desde 2025 o desfile acontece no Parque Central; chegue cedo à tarde para ver a saída dos lechones." },
+      "etiquette": { "es": "Los lechones llevan látigos y vejigas: deja espacio cuando pasan y pregunta antes de hacer fotos de cerca a los niños de las comparsas.", "en": "The lechones carry whips and bladders: give them room as they pass and ask before taking close-up photos of children in the groups.", "pt": "Os lechones levam chicotes e bexigas: dê espaço quando passarem e pergunte antes de fotografar de perto as crianças dos grupos." }
+    },
+    {
+      "slug": "desfile-nacional-carnaval-santo-domingo",
+      "names": { "local": "Desfile Nacional de Carnaval", "es": "Desfile Nacional de Carnaval", "en": "National Carnival Parade", "pt": "Desfile Nacional de Carnaval" },
+      "city": "Santo Domingo",
+      "subdivision": "DO-01",
+      "timezone": "America/Santo_Domingo",
+      "coords": { "lat": 18.4633, "lon": -69.8936 },
+      "nearest_airport": "SDQ",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "02-25", "end": "03-31" } },
+      "editions": {
+        "2026": {
+          "start": "2026-03-15",
+          "end": "2026-03-15",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://cultura.gob.do/noticias/desfile-nacional-de-carnaval-2026-contara-con-amplio-operativo-de-seguridad-en-el-malecon/", "publisher": "Ministerio de Cultura", "accessed": "2026-11-09", "tier": "A", "quote": "El Ministerio de Cultura ha preparado un amplio dispositivo de seguridad para que todas las familias puedan disfrutar con tranquilidad del Desfile Nacional de Carnaval, que se celebrará el próximo domingo, 15 de marzo, en el malecón de Santo Domingo." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://cultura.gob.do/noticias/el-desfile-nacional-de-carnaval-2026-llena-de-color-musica-y-alegria-el-malecon-de-santo-domingo/", "quote": "dando inicio a una tarde en la que miles de personas se congregaron a lo largo del recorrido del desfile para disfrutar de esta gran celebración de la cultura y las tradiciones dominicanas." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Las_Am%C3%A9ricas_International_Airport", "note": { "es": "El aeropuerto de Las Américas (SDQ) está a unos 25 km del malecón de Santo Domingo.", "en": "Las Américas Airport (SDQ) is about 25 km from the Santo Domingo seafront.", "pt": "O aeroporto de Las Américas (SDQ) fica a cerca de 25 km do malecón de Santo Domingo." } }
+      },
+      "street_tip": { "es": "Es un solo domingo por la tarde en el malecón (avenida George Washington), con comparsas de todas las provincias; busca sitio en la acera con tiempo y lleva agua y gorra.", "en": "It is a single Sunday afternoon on the seafront (Avenida George Washington), with groups from every province; claim a spot on the pavement early and bring water and a hat.", "pt": "É uma única tarde de domingo no malecón (avenida George Washington), com grupos de todas as províncias; garanta um lugar na calçada cedo e leve água e boné." },
+      "etiquette": { "es": "No se permiten botellas de vidrio ni latas en el recorrido; respeta las vallas para no cortar el paso de las comparsas.", "en": "Glass bottles and cans are not allowed along the route; stay behind the barriers so you don't block the groups.", "pt": "Garrafas de vidro e latas não são permitidas no percurso; fique atrás das grades para não bloquear os grupos." }
+    },
+    {
+      "slug": "carnaval-punta-cana",
+      "names": { "local": "Carnaval de Punta Cana", "es": "Carnaval de Punta Cana", "en": "Punta Cana Carnival", "pt": "Carnaval de Punta Cana" },
+      "city": "Punta Cana",
+      "subdivision": "DO-11",
+      "timezone": "America/Santo_Domingo",
+      "coords": { "lat": 18.5601, "lon": -68.3725 },
+      "nearest_airport": "PUJ",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "02-01", "end": "03-10" } },
+      "editions": {
+        "2026": {
+          "start": "2026-02-20",
+          "end": "2026-02-21",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "gala", "name": { "es": "Gala de Carnaval", "en": "Carnival Gala", "pt": "Gala de Carnaval" }, "date": "2026-02-20", "confidence": "oficial" },
+            { "id": "gran-desfile", "name": { "es": "Gran desfile", "en": "Grand parade", "pt": "Grande desfile" }, "date": "2026-02-21", "confidence": "oficial" }
+          ],
+          "sources": [
+            { "url": "https://www.puntacana.com/en/about/press/item/punta-cana-carnival-returns-with-two-days-of-celebration-in-its-17th-edition", "publisher": "Grupo Puntacana", "accessed": "2026-11-09", "tier": "A", "quote": "Grupo Puntacana announced the seventeenth edition of the Punta Cana Carnival, to be held on Friday, February 20 and Saturday, February 21, 2026, on Boulevard 1ro. de Noviembre at The Village Puntacana." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.puntacana.com/en/about/press/item/mariasela-alvarez-crowned-reina-momo-of-the-punta-cana-carnival-2026", "quote": "Attendees enjoyed the event from 17 stages and 20 free bleachers in a family-friendly, organized, and safe environment" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://www.puntacana.com/en/about/press/item/mariasela-alvarez-crowned-reina-momo-of-the-punta-cana-carnival-2026", "quote": "the Punta Cana Carnival continues to consolidate itself as a cultural platform that connects community, tradition, and tourism, showcasing the best of Dominican identity to thousands of national and international visitors." },
+        "calle": { "measure": "mayoria_gratis", "confidence": "oficial", "source": "https://www.puntacana.com/en/about/press/item/punta-cana-carnival-returns-with-two-days-of-celebration-in-its-17th-edition", "quote": "The Punta Cana Carnival is a free event open to the general public, and will feature ticketed viewing stands for those who wish to purchase passes through the event’s digital platforms." },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Punta_Cana_International_Airport", "note": { "es": "El desfile es en The Village Puntacana, junto al aeropuerto internacional de Punta Cana (PUJ).", "en": "The parade is at The Village Puntacana, next to Punta Cana International Airport (PUJ).", "pt": "O desfile é no The Village Puntacana, ao lado do aeroporto internacional de Punta Cana (PUJ)." } }
+      },
+      "street_tip": { "es": "La entrada es libre y hay gradas gratis a lo largo del bulevar; las tarimas de pago se compran por internet.", "en": "Entry is free and there are free bleachers along the boulevard; the paid viewing stands are sold online.", "pt": "A entrada é gratuita e há arquibancadas grátis ao longo do bulevar; os camarotes pagos são vendidos pela internet." }
+    }
+  ]
+}

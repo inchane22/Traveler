@@ -1,0 +1,259 @@
+{
+  "country": "UY",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Montevideo",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "carnaval-montevideo",
+      "names": { "local": "Carnaval de Montevideo", "es": "Carnaval de Montevideo", "en": "Montevideo Carnival", "pt": "Carnaval de Montevidéu" },
+      "city": "Montevideo",
+      "subdivision": "UY-MO",
+      "timezone": "America/Montevideo",
+      "coords": { "lat": -34.9055, "lon": -56.1851 },
+      "nearest_airport": "MVD",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "01-15", "end": "03-15" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-22",
+          "end": "2026-03-03",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "desfile-inaugural", "name": { "es": "Desfile Inaugural por 18 de Julio", "en": "Opening parade on Avenida 18 de Julio", "pt": "Desfile inaugural pela avenida 18 de Julio" }, "date": "2026-01-22", "confidence": "oficial" },
+            { "id": "desfile-de-llamadas", "name": { "es": "Desfile de Llamadas", "en": "Llamadas candombe parade", "pt": "Desfile de Llamadas" }, "date": "2026-02-06", "end": "2026-02-07", "confidence": "oficial" },
+            { "id": "final-liguilla", "name": { "es": "Final de la Liguilla y Noche de Fallos", "en": "Contest finals and results night", "pt": "Final da Liguilla e Noite dos Resultados" }, "date": "2026-03-03", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://montevideo.gub.uy/noticias/desfile-inaugural-de-carnaval-2026", "publisher": "Intendencia de Montevideo", "accessed": "2026-11-09", "tier": "A", "quote": "Se realizará el jueves 22 de enero, a partir de la hora 19:30, por la avenida 18 de Julio, desde plaza Independencia hasta plaza Cagancha." },
+            { "url": "https://www.elpais.com.uy/tvshow/teatro-y-carnaval/tablados-para-hoy-3-de-marzo-de-2026-programacion-completa-para-este-martes-y-el-final-de-la-liguilla", "publisher": "El País", "accessed": "2026-11-09", "tier": "B", "quote": "Tablados para hoy 3 de marzo de 2026: programación completa para este martes y el final de la Liguilla" },
+            { "url": "https://www.telenoche.com.uy/espectaculos/el-carnaval-2026-define-sus-campeones-una-noche-fallos-mira-los-detalles-n5396541", "publisher": "Telenoche", "accessed": "2026-11-09", "tier": "B", "quote": "Este martes llega a su fin el Concurso Oficial de Carnaval 2026 con la realización de la última etapa de la Liguilla en el Teatro de Verano." },
+            { "url": "https://montevideo.gub.uy/noticias/desfile-de-llamadas-2026", "publisher": "Intendencia de Montevideo", "accessed": "2026-11-09", "tier": "A", "quote": "El viernes 6 y el sábado 7 de febrero se realiza el tradicional Desfile de Llamadas por la calle Isla de Flores." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Del Desfile Inaugural al final del Concurso Oficial en el Teatro de Verano; en ese tiempo hay tablados en los barrios casi todas las noches.", "en": "From the opening parade to the end of the official contest at the Teatro de Verano; in between, neighborhood stages (tablados) run almost every night.", "pt": "Do desfile inaugural ao fim do Concurso Oficial no Teatro de Verano; nesse período há tablados nos bairros quase todas as noites." }
+        },
+        "2027": {
+          "status": "por_anunciar",
+          "confidence": "oficial",
+          "key_events": [
+            { "id": "desfile-inaugural", "name": { "es": "Desfile Inaugural por 18 de Julio", "en": "Opening parade on Avenida 18 de Julio", "pt": "Desfile inaugural pela avenida 18 de Julio" }, "date": "2027-01-21", "confidence": "oficial" },
+            { "id": "desfile-de-llamadas", "name": { "es": "Desfile de Llamadas", "en": "Llamadas candombe parade", "pt": "Desfile de Llamadas" }, "date": "2027-02-05", "end": "2027-02-06", "confidence": "oficial" }
+          ],
+          "sources": [
+            { "url": "https://montevideo.gub.uy/noticias/el-carnaval-ya-tiene-fechas-0", "publisher": "Intendencia de Montevideo", "accessed": "2026-11-09", "tier": "A", "quote": "El Desfile Inaugural de Carnaval será el jueves 21 de enero y el Desfile de Llamadas se realizará los días 5 y 6 de febrero por la calle Isla de Flores." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La Intendencia fijó el Desfile Inaugural y las Llamadas; el cierre del Concurso Oficial aún no tiene fecha.", "en": "The city set the opening parade and the Llamadas; the end of the official contest has no date yet.", "pt": "A prefeitura definiu o desfile inaugural e as Llamadas; o encerramento do Concurso Oficial ainda não tem data." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.montevideo.com.uy/Tiempo-libre/Desfile-Inaugural-del-Carnaval-sera-este-jueves-donde-es-cortes-y-desvios-y-como-verlo-uc950304", "quote": "A partir de las 19 horas, murgas, parodistas, humoristas, revistas y sociedades de negros y lubolos marcharán por la avenida 18 de Julio." },
+        "viajeros": null,
+        "calle": { "measure": "mixta", "confidence": "prensa", "source": "https://www.montevideo.com.uy/Tiempo-libre/Desfile-Inaugural-del-Carnaval-sera-este-jueves-donde-es-cortes-y-desvios-y-como-verlo-uc950304", "quote": "La mayor parte del público podrá seguir el desfile de forma gratuita desde las veredas de la avenida 18 de Julio.", "note": { "es": "Los desfiles se ven gratis desde la vereda; el Teatro de Verano y muchos tablados cobran entrada.", "en": "Parades are free from the sidewalk; the Teatro de Verano and many tablados charge admission.", "pt": "Os desfiles são gratuitos na calçada; o Teatro de Verano e muitos tablados cobram entrada." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Carrasco_International_Airport", "note": { "es": "MVD (Carrasco) está a unos 20 km del centro.", "en": "MVD (Carrasco) is about 20 km from downtown.", "pt": "MVD (Carrasco) fica a cerca de 20 km do centro." } }
+      },
+      "street_tip": { "es": "Los tablados de barrio son la forma más barata de ver murgas y parodistas; consulta la cartelera del día porque cambian cada noche.", "en": "Neighborhood tablados are the cheapest way to see murgas and parodistas; check the day's listings, since the line-up changes every night.", "pt": "Os tablados de bairro são o jeito mais barato de ver murgas e parodistas; confira a programação do dia, que muda toda noite." },
+      "etiquette": { "es": "La murga se escucha: sus letras son crítica y humor, así que guarda silencio durante la actuación y aplaude al final.", "en": "Murga is for listening: the lyrics are satire and humor, so keep quiet during the act and applaud at the end.", "pt": "A murga é para ouvir: as letras são crítica e humor, então faça silêncio durante a apresentação e aplauda no fim." }
+    },
+    {
+      "slug": "llamadas-montevideo",
+      "names": { "local": "Desfile de Llamadas", "es": "Desfile de Llamadas", "en": "Llamadas Candombe Parade", "pt": "Desfile de Llamadas" },
+      "city": "Montevideo",
+      "subdivision": "UY-MO",
+      "timezone": "America/Montevideo",
+      "coords": { "lat": -34.9113, "lon": -56.192 },
+      "nearest_airport": "MVD",
+      "type": "danza",
+      "rule": { "type": "announced", "window": { "start": "01-30", "end": "02-15" } },
+      "editions": {
+        "2026": {
+          "start": "2026-02-06",
+          "end": "2026-02-07",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://montevideo.gub.uy/noticias/desfile-de-llamadas-2026", "publisher": "Intendencia de Montevideo", "accessed": "2026-11-09", "tier": "A", "quote": "El viernes 6 y el sábado 7 de febrero se realiza el tradicional Desfile de Llamadas por la calle Isla de Flores." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        },
+        "2027": {
+          "start": "2027-02-05",
+          "end": "2027-02-06",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://montevideo.gub.uy/noticias/el-carnaval-ya-tiene-fechas-0", "publisher": "Intendencia de Montevideo", "accessed": "2026-11-09", "tier": "A", "quote": "El Desfile Inaugural de Carnaval será el jueves 21 de enero y el Desfile de Llamadas se realizará los días 5 y 6 de febrero por la calle Isla de Flores." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://www.gub.uy/ministerio-turismo/comunicacion/noticias/desfile-llamadas-70-anos-candombe-identidad-cultura", "quote": "el sonido de los tambores, el baile, el colorido de los vestuarios y la participación del público conforman una experiencia cultural única" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://www.gub.uy/ministerio-turismo/comunicacion/noticias/desfile-llamadas-70-anos-candombe-identidad-cultura", "quote": "que convoca a visitantes de todo el país y del exterior, especialmente de la región" },
+        "calle": { "measure": "mixta", "confidence": "estimacion", "note": { "es": "Se puede ver gratis desde las veredas de Isla de Flores; las gradas a lo largo del recorrido se venden.", "en": "You can watch for free from the sidewalks of Isla de Flores; the stands along the route are ticketed.", "pt": "Dá para assistir de graça das calçadas da Isla de Flores; as arquibancadas ao longo do percurso são pagas." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Carrasco_International_Airport", "note": { "es": "MVD (Carrasco) está a unos 20 km de Barrio Sur.", "en": "MVD (Carrasco) is about 20 km from Barrio Sur.", "pt": "MVD (Carrasco) fica a cerca de 20 km do Barrio Sur." } }
+      },
+      "street_tip": { "es": "El desfile dura hasta la madrugada; si no tienes grada, llega temprano a una esquina de Isla de Flores y quédate cerca de las cuerdas de tambores.", "en": "The parade runs into the early hours; without a stand ticket, get to a corner of Isla de Flores early and stay close to the drum lines.", "pt": "O desfile vai até a madrugada; sem ingresso de arquibancada, chegue cedo a uma esquina da Isla de Flores e fique perto das cordas de tambores." },
+      "etiquette": { "es": "El candombe es patrimonio afrouruguayo: no cortes el paso de las comparsas ni toques los tambores sin invitación.", "en": "Candombe is Afro-Uruguayan heritage: don't cut through the comparsas or touch the drums without an invitation.", "pt": "O candombe é patrimônio afro-uruguaio: não atravesse as comparsas nem toque os tambores sem convite." }
+    },
+    {
+      "slug": "carnaval-artigas",
+      "names": { "local": "Carnaval de Artigas", "es": "Carnaval de Artigas", "en": "Artigas Carnival", "pt": "Carnaval de Artigas" },
+      "city": "Artigas",
+      "subdivision": "UY-AR",
+      "timezone": "America/Montevideo",
+      "coords": { "lat": -30.4, "lon": -56.4667 },
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -50, "end": -48 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-14",
+          "end": "2026-02-16",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.gub.uy/ministerio-turismo/comunicacion/noticias/artigas-se-prepara-para-vivir-carnaval-2026", "publisher": "Ministerio de Turismo", "accessed": "2026-11-09", "tier": "A", "quote": "Se desarrollará del 14 al 16 de febrero por la Avenida Carlos Lecueder." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.gub.uy/ministerio-turismo/comunicacion/noticias/artigas-se-prepara-para-vivir-carnaval-2026", "quote": "Invitamos al público a participar y vivir la experiencia del desfile, que será evaluado por jurados en nueve ítems durante dos noches" },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://www.gub.uy/ministerio-turismo/comunicacion/noticias/artigas-se-prepara-para-vivir-carnaval-2026", "quote": "por la atracción que ejerce sobre visitantes no solo del país, sino también de la región" },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Artigas_Airport", "note": { "es": "El aeropuerto de Artigas no tiene vuelos regulares.", "en": "Artigas airport has no scheduled flights.", "pt": "O aeroporto de Artigas não tem voos regulares." } }
+      },
+      "street_tip": { "es": "Artigas está pegada a Quaraí (Brasil): muchos visitantes cruzan el puente, así que reserva alojamiento a ambos lados con tiempo.", "en": "Artigas sits right next to Quaraí in Brazil: many visitors cross the bridge, so book a room on either side early.", "pt": "Artigas fica colada a Quaraí (Brasil): muitos visitantes cruzam a ponte, então reserve hospedagem de um dos lados com antecedência." },
+      "etiquette": { "es": "Las escuelas de samba compiten ante un jurado: no invadas la avenida durante el paso ni frenes a los integrantes para fotos.", "en": "The samba schools compete before judges: stay off the avenue while they pass and don't stop performers for photos.", "pt": "As escolas de samba competem diante de jurados: não invada a avenida durante a passagem nem pare os integrantes para fotos." }
+    },
+    {
+      "slug": "semana-cerveza-paysandu",
+      "names": { "local": "Semana de la Cerveza", "es": "Semana de la Cerveza de Paysandú", "en": "Paysandú Beer Week", "pt": "Semana da Cerveja de Paysandú" },
+      "city": "Paysandú",
+      "subdivision": "UY-PA",
+      "timezone": "America/Montevideo",
+      "coords": { "lat": -32.3214, "lon": -58.0756 },
+      "type": "fiesta_popular",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -8, "end": 0 },
+      "editions": {
+        "2026": {
+          "start": "2026-03-28",
+          "end": "2026-04-05",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://semanadelacerveza.gub.uy/2026/index.html", "publisher": "Intendencia de Paysandú", "accessed": "2026-11-09", "tier": "A", "quote": "28 de marzo al 5 de abril 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Se hace en Semana de Turismo (Semana Santa): nueve noches en el predio ferial junto al río Uruguay.", "en": "It runs during Tourism Week (Holy Week): nine nights at the fairground by the Uruguay River.", "pt": "Acontece na Semana de Turismo (Semana Santa): nove noites no recinto de feiras junto ao rio Uruguai." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://www.paysandu.gub.uy/2026/04/06/culmino-la-semana-de-la-cerveza-y-queda-hecha-la-invitacion-para-la-60-edicion/", "quote": "Paysandú volvió a ser una fiesta y la Semana de la Cerveza sigue posicionándose como el evento más importante del país, con miles de personas disfrutando diariamente de sus muchas propuestas." },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://semanadelacerveza.gub.uy/2026/index.html", "quote": "Miles de turistas llegan año tras año a la ciudad “Heroica” para recorrer y disfrutar de un predio ferial de más de cuatro hectáreas" },
+        "calle": { "measure": "mixta", "confidence": "estimacion", "note": { "es": "Los recitales del predio ferial tienen entrada; hay actividades gratuitas fuera del predio en la ciudad.", "en": "Concerts on the fairground are ticketed; there are free activities around town outside the grounds.", "pt": "Os shows no recinto têm ingresso; há atividades gratuitas pela cidade fora do recinto." } },
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Paysand%C3%BA_Airport", "note": { "es": "El aeropuerto de Paysandú no tiene vuelos regulares.", "en": "Paysandú airport has no scheduled flights.", "pt": "O aeroporto de Paysandú não tem voos regulares." } }
+      },
+      "street_tip": { "es": "En Semana de Turismo la ciudad se llena de uruguayos y argentinos de Colón y Concepción del Uruguay: reserva alojamiento con meses de anticipación.", "en": "During Tourism Week the city fills with Uruguayans and Argentines from across the river: book a room months ahead.", "pt": "Na Semana de Turismo a cidade lota de uruguaios e argentinos do outro lado do rio: reserve hospedagem com meses de antecedência." },
+      "etiquette": { "es": "Es una fiesta familiar de día y de recitales de noche: hidrátate, no manejes si tomaste y respeta los espacios de la feria artesanal.", "en": "It is a family fair by day and concerts by night: drink water, don't drive after drinking and respect the craft-fair stalls.", "pt": "É uma festa familiar de dia e de shows à noite: beba água, não dirija se bebeu e respeite as barracas da feira de artesanato." }
+    },
+    {
+      "slug": "patria-gaucha-tacuarembo",
+      "names": { "local": "Fiesta de la Patria Gaucha", "es": "Fiesta de la Patria Gaucha", "en": "Gaucho Homeland Festival", "pt": "Festa da Pátria Gaúcha" },
+      "city": "Tacuarembó",
+      "subdivision": "UY-TA",
+      "timezone": "America/Montevideo",
+      "coords": { "lat": -31.7111, "lon": -55.9839 },
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "02-25", "end": "03-20" } },
+      "editions": {
+        "2026": {
+          "start": "2026-03-07",
+          "end": "2026-03-15",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.gub.uy/presidencia/comunicacion/publicaciones/presentacion-39a-edicion-fiesta-patria-gaucha", "publisher": "Presidencia de la República", "accessed": "2026-11-09", "tier": "A", "quote": "la 39.ª edición de la Fiesta de la Patria Gaucha, que se desarrollará del 7 al 15 de marzo en la Laguna de las Lavanderas" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        },
+        "2027": {
+          "start": "2027-02-27",
+          "end": "2027-03-07",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.patriagaucha.com.uy/nota?x=998", "publisher": "Comisión Organizadora de la Fiesta de la Patria Gaucha", "accessed": "2026-11-09", "tier": "A", "quote": "La celebración se desarrollará del 27 de febrero al 7 de marzo de 2027, en Tacuarembó, Capital del Tradicionalismo." },
+            { "url": "https://tacuarembo.gub.uy/?p=37367", "publisher": "Intendencia de Tacuarembó", "accessed": "2026-11-09", "tier": "A", "quote": "la cual se celebrará desde el 27 de febrero al 7 de marzo del 2027" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 40, aniversario de la fiesta.", "en": "40th edition, the festival's anniversary.", "pt": "Edição 40, aniversário da festa." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": null,
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Tacuaremb%C3%B3_Airport", "note": { "es": "El aeropuerto de Tacuarembó no tiene vuelos regulares.", "en": "Tacuarembó airport has no scheduled flights.", "pt": "O aeroporto de Tacuarembó não tem voos regulares." } }
+      },
+      "street_tip": { "es": "Lo mejor está en los fogones de las sociedades criollas alrededor de la Laguna de las Lavanderas: recórrelos de noche, con música y asado.", "en": "The best of it is at the campfires of the gaucho societies around Laguna de las Lavanderas: walk them at night, with music and asado.", "pt": "O melhor está nos fogões das sociedades crioulas em volta da Laguna de las Lavanderas: percorra-os à noite, com música e churrasco." },
+      "etiquette": { "es": "En las jineteadas y el desfile hay caballos por todas partes: no te acerques por detrás ni asustes a los animales con flash.", "en": "There are horses everywhere at the rodeos and the parade: don't approach them from behind or startle them with a flash.", "pt": "Nas gineteadas e no desfile há cavalos por toda parte: não se aproxime por trás nem assuste os animais com flash." }
+    },
+    {
+      "slug": "noche-de-la-nostalgia",
+      "names": { "local": "Noche de la Nostalgia", "es": "Noche de la Nostalgia", "en": "Nostalgia Night", "pt": "Noite da Nostalgia" },
+      "city": "Montevideo",
+      "subdivision": "UY-MO",
+      "timezone": "America/Montevideo",
+      "coords": { "lat": -34.9055, "lon": -56.1851 },
+      "nearest_airport": "MVD",
+      "type": "musica",
+      "rule": { "type": "fixed", "start": "08-24", "end": "08-24" },
+      "editions": {
+        "2026": {
+          "start": "2026-08-24",
+          "end": "2026-08-24",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.elpais.com.uy/tvshow/musica/noche-de-la-nostalgia-2026-mas-de-20-fiestas-para-este-24-de-agosto-artistas-lugares-y-precios-de-entradas", "publisher": "El País", "accessed": "2026-11-09", "tier": "B", "quote": "Noche de la Nostalgia 2026: más de 20 fiestas para este 24 de agosto, artistas, lugares y precios de entradas" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Es la víspera del feriado del 25 de agosto: las fiestas siguen hasta la mañana siguiente, en Montevideo y en todo el país.", "en": "It is the eve of the August 25 holiday: parties run into the next morning, in Montevideo and across the country.", "pt": "É a véspera do feriado de 25 de agosto: as festas seguem até a manhã seguinte, em Montevidéu e em todo o país." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.elpais.com.uy/tvshow/musica/noche-de-la-nostalgia-2026-mas-de-20-fiestas-para-este-24-de-agosto-artistas-lugares-y-precios-de-entradas", "quote": "Lo que emppezó como una fiesta dedicada a los grandes éxitos del pasado hoy moviliza boliches, salones, teatros y escenarios de todo el país cada 24 de agosto." },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_boleta", "confidence": "prensa", "source": "https://www.elpais.com.uy/tvshow/musica/noche-de-la-nostalgia-2026-mas-de-20-fiestas-para-este-24-de-agosto-artistas-lugares-y-precios-de-entradas", "note": { "es": "Las fiestas son en boliches, salones y hoteles con entrada.", "en": "Parties are held in clubs, halls and hotels with paid entry.", "pt": "As festas são em boates, salões e hotéis com ingresso." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Carrasco_International_Airport", "note": { "es": "MVD (Carrasco) está a unos 20 km del centro.", "en": "MVD (Carrasco) is about 20 km from downtown.", "pt": "MVD (Carrasco) fica a cerca de 20 km do centro." } }
+      },
+      "street_tip": { "es": "Las entradas de las fiestas grandes se agotan: cómpralas unas semanas antes y reserva el traslado de vuelta, porque esa noche cuesta conseguir taxi.", "en": "Tickets for the big parties sell out: buy them a few weeks ahead and book your ride home, since taxis are scarce that night.", "pt": "Os ingressos das festas grandes esgotam: compre algumas semanas antes e reserve a volta, porque nessa noite é difícil achar táxi." }
+    }
+  ]
+}
