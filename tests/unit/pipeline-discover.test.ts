@@ -1,6 +1,6 @@
 // A living calendar (2026-11-10): the pipeline builds every coverage country (all of Latin America)
 // without anyone asking, and keeps looking for parties a live country's file does not have yet.
-import { readFileSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { ChangelogEntry, CountryFile, type Festival } from "../../src/schema.ts";
@@ -8,7 +8,9 @@ import { memoryUsageStore } from "../../scripts/lib/budget.ts";
 import { replayTransport } from "../../scripts/lib/client.ts";
 import { discoveryEntries, runDiscover, sameFestival, selectNew } from "../../scripts/lib/discover-run.ts";
 import { loadDomainPolicy } from "../../scripts/lib/domains.ts";
+import { hasDateReader, quoteStatesDate } from "../../scripts/lib/date-parser.ts";
 import { memoryLogger, readJson } from "../../scripts/lib/io.ts";
+import { countryInfo, localLangFor } from "../../scripts/lib/lang.ts";
 import type { LedgerEntry } from "../../scripts/lib/ledger.ts";
 import { mapFestival, type DraftFestival, type MappedFestival } from "../../scripts/lib/onboard-draft.ts";
 import { runPipeline } from "../../scripts/lib/pipeline-run.ts";
@@ -29,6 +31,18 @@ describe("coverage: Latin America is built without anyone asking", () => {
     }
   });
 
+  test("every coverage country has facts and a date reader for the language its press writes in", () => {
+    for (const cc of settings.coverage ?? []) {
+      const info = countryInfo(cc);
+      expect(info, cc).not.toBeNull();
+      expect(hasDateReader(info!.local), `${cc} ${info!.local}`).toBe(true);
+    }
+    // CLDR alone says Guaraní and Haitian Creole, which no date reader knows: every date found there was held.
+    expect(localLangFor("PY")).toBe("es");
+    expect(localLangFor("HT")).toBe("fr");
+    expect(quoteStatesDate("Le carnaval national se tiendra du 14 au 16 février 2027 à Port-au-Prince.", "fr", "2027-02-14", "start")).toBe(true);
+  });
+
   test("a coverage country that is not live and was never asked for is due; queued and retrying ones keep their turn", () => {
     const req = (country: string, status: CountryRequest["status"], last_attempt?: string): CountryRequest => ({ country, requested_at: "2026-10-01", status, attempts: 1, ...(last_attempt ? { last_attempt } : {}) });
     const requests = [req("BO", "retry", "2026-11-09"), req("MX", "queued"), req("HT", "gave_up", "2026-10-01"), req("NI", "gave_up", "2026-06-01")];
@@ -40,6 +54,8 @@ describe("coverage: Latin America is built without anyone asking", () => {
 
   test("the daily plan queues the uncovered countries itself and builds them within the new-country share", async () => {
     const root = tempRepo({ countries: ["co", "pe"], pipeline: { coverage: ["CO", "PE", "AR", "UY"] } });
+    // As before anything was built for them: no domain config either.
+    for (const cc of ["ar", "uy"]) for (const dir of ["sources", "official-domains"]) rmSync(join(root, "config", dir, `${cc}.json`), { force: true });
     const store = memoryUsageStore();
     const result = await runPipeline(
       { root, today: DAY, model: "claude-sonnet-5-5", budgetUsd: 20, maxFestivals: 40, maxFollowups: 0, planOnly: true },
