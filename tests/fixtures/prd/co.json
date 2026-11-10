@@ -35,10 +35,10 @@
       },
       "score": {
         "convocatoria": { "measure": { "attendance": 6000000, "qualifier": "more_than", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.eltiempo.com/colombia/barranquilla/carnaval-de-barranquilla-2026-rompio-records-6-millones-de-asistentes-y-840-000-millones-movidos-en-los-cuatro-dias-de-fiesta-3533428" },
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://colombia.travel/en/blog/travel-magazine/carnival-barranquilla", "quote": "Visitors don’t just stand and watch, they interact with the dancers and jesters, dancing and joking with them and the crowd" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://barranquilla.gov.co/desarrolloeconomico/barranquilla-cerro-un-carnaval-2026-historico-mas-de-6-millones-de-espectadores-hicieron-parte-de-esta-celebracion", "quote": "Barranquilla recibió **más de 820.000 visitantes**, de los cuales el 77% fueron turistas nacionales y el 23% in" },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.valoraanalitik.com/?p=555318", "note": { "es": "380 de más de 500 eventos gratuitos (2026)", "en": "380 of 500+ events were free (2026)", "pt": "380 de mais de 500 eventos gratuitos (2026)" } },
-        "reconocimiento": { "measure": "unesco", "confidence": "estimacion" },
-        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
-        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El Carnaval de la 44 y las verbenas de barrio son gratis y es donde baila la ciudad.", "en": "Carnaval de la 44 and the neighborhood verbenas are free, and that is where the city dances.", "pt": "O Carnaval de la 44 e as verbenas de bairro são gratuitos e é ali que a cidade dança." }
     },
@@ -55,10 +55,10 @@
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 250000, "qualifier": "about", "unit": "tourists", "year": 2026 }, "confidence": "prensa", "source": "https://www.diariodelsur.com.co/?p=468063" },
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://carnavaldepasto.org/historia-del-carnaval-de-negros-y-blancos/", "quote": "se baila en las plazas públicas con programación musical durante todo el día" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://situr.narino.gov.co/eventos/carnaval-de-negros-y-blancos", "quote": "La celebración reúne a propios y visitantes de diferentes regiones del país y extranjeros" },
         "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
-        "reconocimiento": { "measure": "unesco", "confidence": "estimacion" },
-        "conectividad": { "measure": "nacional", "confidence": "estimacion" },
-        "local": { "measure": "intermedia", "confidence": "estimacion" }
+        "conectividad": { "measure": "nacional", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El 5 de enero es el Día de Negritos y el 6 el Desfile Magno; lleva ropa que se pueda manchar.", "en": "January 5 is the Day of the Blacks and January 6 the Grand Parade; wear clothes you don't mind ruining.", "pt": "Em 5 de janeiro é o Dia dos Negritos e em 6 o Desfile Magno; use roupa que possa sujar." }
     },
@@ -89,10 +89,10 @@
       },
       "score": {
         "convocatoria": { "measure": { "attendance": 700000, "qualifier": "more_than", "unit": "attendees", "year": 2025 }, "confidence": "estimacion", "source": "https://www.farandahotels.com/en/blog/descubre-la-feria-de-cali-2026-fechas-alojamiento", "note": { "es": "Fuente comercial, débil.", "en": "Commercial source, weak.", "pt": "Fonte comercial, fraca." } },
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.cali.gov.co/boletines/publicaciones/190725/todo-listo-para-el-salsodromo-a-las-200-pm-se-abriran-las-graderias-para-el-inicio-de-la-feria-de-cali/", "quote": "A las 7:00 p.m. iniciará el show con los artistas de salsa." },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://www.cali.gov.co/boletines/publicaciones/190154/la-feria-de-cali-2025-proyecta-un-impacto-turistico-record-y-consolida-al-barrio-obrero-como-nuevo-imperdible-de-ciudad/", "quote": "Se espera la llegada de 108.600 visitantes, distribuidos así: 17 % provenientes del Valle del Cauca, 50 % de otras ciudades de Colombia y 33 % del ext" },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
-        "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
-        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" }
       },
       "street_tip": { "es": "El Salsódromo del 25 de diciembre se ve gratis desde la calle si llegas temprano.", "en": "The December 25 Salsódromo can be watched free from the street if you arrive early.", "pt": "O Salsódromo de 25 de dezembro pode ser visto de graça da rua se você chegar cedo." }
     },
@@ -109,10 +109,10 @@
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 137672, "qualifier": "exact", "unit": "tourists", "year": 2022 }, "confidence": "prensa", "source": "https://www.pulzo.com/nacion/cuantos-turistas-asistieron-festival-vallenato-55-PP1396134A", "note": { "es": "Edición 55.", "en": "55th edition.", "pt": "55ª edição." } },
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://colombia.travel/en/blog/three-experiences-enjoy-vallenato-festival", "quote": "Dance the night away at a vallenato parranda" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://satena.gov.co/usuario/modulo-prensa/noticia-cincuentaitres/", "quote": "recibe visitantes provenientes de distintas regiones del país" },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
-        "reconocimiento": null,
-        "conectividad": { "measure": "nacional", "confidence": "estimacion" },
-        "local": { "measure": "intermedia", "confidence": "estimacion" }
+        "conectividad": { "measure": "nacional", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Las parrandas en las casas y la plaza Alfonso López son el corazón fuera de la tarima.", "en": "House parrandas and Alfonso López square are the heart of it, away from the main stage.", "pt": "As parrandas nas casas e a praça Alfonso López são o coração da festa fora do palco." }
     },
@@ -124,15 +124,15 @@
       "timezone": "America/Bogota",
       "coords": { "lat": 5.6947, "lon": -76.6611 },
       "nearest_airport": "UIB",
-      "type": "tradicion_religiosa",
+      "type": "fiesta_popular",
       "rule": { "type": "fixed", "start": "09-20", "end": "10-05" },
       "editions": {},
       "score": {
         "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://www.mincultura.gov.co/direcciones/patrimonio-y-memoria/Documents/09-fiestas-de-san-francisco-de-asis-o-san-pacho-en-quibd0-PES.pdf", "quote": "como la comparsa puede ser integrada por funcionarios de una institución o por gentes que," },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://rap-pacifico.gov.co/wp-content/uploads/2022/10/FESTIVIDADES-EN-EL-PACIFICO-COLOMBIANO.pdf", "quote": "también ha atraído la mirada de turistas nacionales e intern" },
         "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
-        "reconocimiento": { "measure": "unesco", "confidence": "estimacion" },
-        "conectividad": { "measure": "nacional", "confidence": "estimacion" },
-        "local": { "measure": "intermedia", "confidence": "estimacion" }
+        "conectividad": { "measure": "nacional", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Cada barrio franciscano sale con su comparsa y chirimía; el desfile de tu barrio anfitrión es abierto.", "en": "Each Franciscan neighborhood parades with its comparsa and chirimía band; the host neighborhood's parade is open to all.", "pt": "Cada bairro franciscano sai com sua comparsa e chirimía; o desfile do bairro anfitrião é aberto." },
       "etiquette": { "es": "Es una fiesta patronal: en misas y procesiones, silencio, ropa discreta y pide permiso antes de fotografiar.", "en": "It is a patron-saint feast: keep quiet and dress modestly at masses and processions, and ask before taking photos.", "pt": "É uma festa de padroeiro: nas missas e procissões, silêncio, roupa discreta e peça permissão antes de fotografar." }
@@ -150,10 +150,10 @@
       "editions": {},
       "score": {
         "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://colombia.travel/en/blog/community-tourism/san-basilio-de-palenque-colombia", "quote": "During the event, there are music and dance performances, craft fairs, and culinary exhibitions, promoting cultural exchange." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.radionacional.co/cultura/ferias-y-fiestas/asi-fue-el-festival-de-tambores-en-san-basilio-de-palenque-2023", "quote": "Alrededor de 4.000 personas de distintas regiones del país llegaron a la tierra de Benkos Biohó" },
         "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
-        "reconocimiento": { "measure": "unesco", "confidence": "estimacion" },
-        "conectividad": { "measure": "ninguno", "confidence": "estimacion" },
-        "local": { "measure": "pueblo", "confidence": "estimacion" }
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Es un pueblo pequeño: los conciertos de tambor en la plaza y las ruedas de baile son abiertos.", "en": "It is a small village: the drum concerts in the square and the dance circles are open to everyone.", "pt": "É um povoado pequeno: os concertos de tambor na praça e as rodas de dança são abertos." },
       "etiquette": { "es": "Palenque es la comunidad, no un escenario: saluda, pide permiso para fotos y compra a la gente local.", "en": "Palenque is a community, not a stage: greet people, ask before photos and buy from locals.", "pt": "Palenque é uma comunidade, não um palco: cumprimente, peça licença para fotos e compre dos moradores." }
@@ -183,10 +183,10 @@
       },
       "score": {
         "convocatoria": { "measure": { "attendance": 30000, "qualifier": "about", "unit": "visitors", "year": 2023 }, "confidence": "oficial", "source": "https://caldas.gov.co/noticias-gobernacion/14305-desde-el-13-de-julio-se-empezara-a-vivir-el-carnaval-de-riosucio-gobernacion-de-caldas-se-vinculara-con-actividades-y-recursos", "note": { "es": "Visitantes esperados en 2023.", "en": "Expected visitors in 2023.", "pt": "Visitantes esperados em 2023." } },
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.eltiempo.com/colombia/otras-ciudades/con-disfraces-polvora-matachines-y-oratoria-da-inicio-el-carnaval-del-diablo-en-riosucio-caldas-cual-es-el-origen-3414827", "quote": "habrá verbenas populares, desfiles, alboradas y conciertos con artistas como Los Unquietos del Vallenato, Adriana Lucía y Chane Meza" },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://caldas.gov.co/index.php/prensa/noticias/2-uncategorised/1170-riosucio", "quote": "su famoso carnaval visitado por turistas de todo el país" },
         "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
-        "reconocimiento": { "measure": "nacional", "confidence": "estimacion" },
-        "conectividad": { "measure": "ninguno", "confidence": "estimacion" },
-        "local": { "measure": "pueblo", "confidence": "estimacion" }
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Solo en años impares. Las cuadrillas recitan en la plaza y el pueblo entero canta con ellas.", "en": "Odd years only. The cuadrillas recite in the square and the whole town sings along.", "pt": "Só em anos ímpares. As cuadrillas declamam na praça e a cidade inteira canta junto." }
     },
@@ -198,15 +198,15 @@
       "timezone": "America/Bogota",
       "coords": { "lat": 10.391, "lon": -75.4794 },
       "nearest_airport": "CTG",
-      "type": "fiesta_nacional",
+      "type": "fiesta_popular",
       "rule": { "type": "fixed", "start": "11-10", "end": "11-16" },
       "editions": {},
       "score": {
         "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://www.cartagena.gov.co/noticias/el-pri-pra-escucho-el-gran-desfile-independencia-cartagena", "quote": "En promedio 40 mil personas se dieron cita para bailar con los ritmos tradicionales como el Son de negro, la cumbia, el fandango, el mapalé" },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://www.cartagena.gov.co/noticias/bogota-alcaldia-cartagena-presento-ante-el-pais-agenda-oficial-fiestas-independencia-fiesta-que-nos-une", "quote": "Se espera la llegada de visitantes, especialmente, de Bogotá, Medellín, Pereira y Cali." },
         "calle": { "measure": "mixta", "confidence": "estimacion" },
-        "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
-        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" }
       },
       "street_tip": { "es": "Los desfiles y bandos del 11 de noviembre se viven en los barrios populares, fuera de la ciudad amurallada.", "en": "The November 11 parades and bandos are lived in the working-class neighborhoods, outside the walled city.", "pt": "Os desfiles e bandos de 11 de novembro acontecem nos bairros populares, fora da cidade murada." }
     },
@@ -218,15 +218,15 @@
       "timezone": "America/Bogota",
       "coords": { "lat": 6.2442, "lon": -75.5812 },
       "nearest_airport": "MDE",
-      "type": "cosecha_temporada",
+      "type": "fiesta_popular",
       "rule": { "type": "announced", "window": { "start": "07-25", "end": "08-15" } },
       "editions": {},
       "score": {
         "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.medellin.gov.co/es/sala-de-prensa/noticias/cada-rincon-de-medellin-volvio-a-florecer-con-una-programacion-80-publica-en-la-feria-de-las-flores/", "quote": "Se destacan los grandes desfiles por las principales vías, donde ciudadanos y visitantes disfrutaron de la Avenida Primavera" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://www.medellin.gov.co/es/eventos/desfile-de-silleteros/", "quote": "acuden locales y turistas de diferentes países del" },
         "calle": null,
-        "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
-        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" }
       }
     },
     {
@@ -242,10 +242,10 @@
       "editions": {},
       "score": {
         "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "oficial", "source": "https://www.cali.gov.co/boletines/publicaciones/188451/la-cultura-que-une-miles-de-personas-vibraron-con-la-musica-del-pacifico-en-la-tercera-noche-de-concurso-del-petronio-alvarez/", "quote": "Personas de todas las edades, muchas de ellas sin conocerse, se han unido en medio de bailes espontáneos, coreografías improvisadas" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.elpais.com.co/cali/balance-positivo-del-petronio-alvarez-2024-llegaron-mas-de-36-mil-turistas-a-cali-2024.html", "quote": "El comité organizador del evento informó por su parte que el 14% de los visitantes son de origen extranjero, mientras que el 86% restante corresponde" },
         "calle": null,
-        "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "estimacion" },
-        "local": { "measure": "gran_ciudad", "confidence": "estimacion" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion" }
       }
     }
   ]

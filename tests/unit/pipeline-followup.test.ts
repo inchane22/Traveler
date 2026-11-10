@@ -166,7 +166,7 @@ describe("missing date facts", () => {
     expect(missingDateFacts(item("carnaval-recife"), [])).toEqual(["start", "end", "status"]);
     expect(missingDateFacts(item("carnaval-recife"), [reviewed("start", "accepted"), reviewed("end", "rejected")])).toEqual(["end", "status"]);
     expect(missingDateFacts(item("carnaval-recife"), [reviewed("start", "flagged"), reviewed("end", "accepted")])).toEqual([]);
-    expect(missingDateFacts(item("cirio-de-nazare"), [])).toEqual(["start", "end", "status"]);
+    expect(missingDateFacts(item("festival-parintins"), [])).toEqual(["start", "end", "status"]);
   });
 
   test("a cancelled edition has no dates to look for: no follow-up is spent on it", () => {

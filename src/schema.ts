@@ -33,7 +33,8 @@ export const Slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 export const HttpsUrl = z.url({ protocol: /^https$/ });
 export const Lang = z.enum(["es", "en", "pt"]);
 
-export const FestivalType = z.enum(["carnaval", "musica", "tradicion_religiosa", "cosecha_temporada", "fiesta_nacional"]);
+/** What kind of party it is (2026-11-09: the calendar lists parties; a solemn act is no type, see `fiesta`). */
+export const FestivalType = z.enum(["carnaval", "musica", "danza", "fiesta_popular"]);
 export const Status = z.enum(["confirmada", "tentativa", "por_anunciar", "aplazada", "cancelada"]);
 export const Confidence = z.enum(["oficial", "prensa", "patron", "estimacion"]);
 export const SourceTier = z.enum(["A", "B", "C"]);
@@ -150,6 +151,14 @@ const measured = <T extends z.ZodTypeAny>(shape: T) =>
     .refine((m) => !["oficial", "prensa"].includes(m.confidence as string) || !!m.source, "an «oficial» or «prensa» figure needs a source")
     .nullable();
 
+/**
+ * What a visitor does there (2026-11-09). «solemne» (a procession, pilgrimage, mass, passion play
+ * or memorial) is not a party: the festival leaves every list (src/score.ts `isParty`).
+ */
+export const FiestaLevel = z.enum(["baile_abierto", "baile_y_show", "show", "solemne"]);
+/** Where the crowd comes from: abroad, the rest of the country, or mostly the place and its region. */
+export const ViajerosLevel = z.enum(["internacional", "nacional", "regional"]);
+
 /** Raw measures; points come from config/scoring.json. `null` = «por medir». */
 export const ScoreInputs = z
   .object({
@@ -163,10 +172,10 @@ export const ScoreInputs = z
         })
         .strict(),
     ),
+    fiesta: measured(FiestaLevel),
+    viajeros: measured(ViajerosLevel),
     calle: measured(z.enum(["mayoria_gratis", "mixta", "mayoria_boleta"])),
-    reconocimiento: measured(z.enum(["unesco", "nacional", "ninguna"])),
     conectividad: measured(z.enum(["internacional", "nacional", "ninguno"])),
-    local: measured(z.enum(["pueblo", "intermedia", "gran_ciudad"])),
   })
   .strict();
 

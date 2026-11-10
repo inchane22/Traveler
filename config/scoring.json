@@ -1,23 +1,31 @@
 {
   "criteria": {
     "convocatoria": {
-      "max": 35,
+      "max": 30,
       "scale": [
-        { "min": 1000000, "points": 35 },
-        { "min": 250000, "points": 26 },
-        { "min": 100000, "points": 18 },
-        { "min": 25000, "points": 10 },
-        { "min": 0, "points": 4 }
+        { "min": 1000000, "points": 30 },
+        { "min": 250000, "points": 22 },
+        { "min": 100000, "points": 15 },
+        { "min": 25000, "points": 8 },
+        { "min": 0, "points": 3 }
       ]
     },
-    "calle": { "max": 25, "levels": { "mayoria_gratis": 25, "mixta": 15, "mayoria_boleta": 5 } },
-    "reconocimiento": { "max": 20, "levels": { "unesco": 20, "nacional": 12, "ninguna": 0 } },
+    "fiesta": {
+      "max": 30,
+      "levels": { "baile_abierto": 30, "baile_y_show": 18, "show": 6 },
+      "rule": "baile_abierto = the heart of it is dancing and partying anyone can join (street parties, blocos, comparsas open to all, verbenas, forr\u00f3 or salsa in the streets, squares and bars). baile_y_show = a real party, but much of it is watching a parade or show, or happens in ticketed venues. show = mostly watched: a parade, contest, concert or staged ceremony seen from the street or the stands, with little partying for visitors. solemne = an act of faith or mourning where the crowd prays, walks in procession, keeps a vigil or attends a mass, a pilgrimage or a passion play: not a party, so the festival is left out of every list. Judge the festival as a whole, not its opening event: a fair with parades plus street parties, concerts and dancing in bars is at least baile_y_show. A re-enactment or ceremony performed for an audience is show, however solemn its tone."
+    },
+    "viajeros": {
+      "max": 20,
+      "levels": { "internacional": 20, "nacional": 12, "regional": 3 },
+      "rule": "internacional = sources report many visitors from abroad; nacional = visitors from across the country; regional = mostly people from the place and nearby towns."
+    },
+    "calle": { "max": 10, "levels": { "mayoria_gratis": 10, "mixta": 6, "mayoria_boleta": 2 } },
     "conectividad": {
       "max": 10,
       "levels": { "internacional": 10, "nacional": 6, "ninguno": 2 },
       "rule": "DH-12: the airport that serves the city or its metropolitan area, at most 40 km by road from the festival coords (Soledad for Barranquilla, Palmira for Cali, Rionegro for Medellin, Chachagui for Pasto). internacional = scheduled international flights today; nacional = only domestic ones; ninguno = no airport within 40 km. Record the airport and the distance in the note."
-    },
-    "local": { "max": 10, "levels": { "pueblo": 10, "intermedia": 6, "gran_ciudad": 3 } }
+    }
   },
   "thresholds": { "tier1": 65, "tier2": 45 },
   "country_top_n": 5

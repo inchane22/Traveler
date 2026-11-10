@@ -194,8 +194,10 @@ describe("reviewChange: fields and values (LLM05)", () => {
     const wrongFigure = reviewChange(change({ field: "score.convocatoria", new: 8_000_000, source_urls: [BAQ], quote: text }), c);
     expect(wrongFigure.flags.join()).toMatch(/la cifra no aparece/);
     expect(reviewChange(change({ field: "score.calle", new: "mixta", source_urls: [BAQ], quote: text }), c).flags.join()).toMatch(/criterio de juicio/);
-    const unesco = reviewChange(change({ field: "score.reconocimiento", new: "nacional", source_urls: [BAQ], quote: text }), c);
-    expect(unesco.flags.join()).toMatch(/no menciona la declaratoria/);
+    expect(reviewChange(change({ field: "score.conectividad", new: "nacional", source_urls: [BAQ], quote: text }), c).flags.join()).toMatch(/criterio de juicio/);
+    // The heritage and town-size criteria left with the party scoring (2026-11-09).
+    expect(reviewChange(change({ field: "score.reconocimiento", new: "nacional", source_urls: [BAQ], quote: text }), c).reasons.join()).toMatch(/criterio desconocido/);
+    expect(reviewChange(change({ field: "score.local", new: "pueblo", source_urls: [BAQ], quote: text }), c).reasons.join()).toMatch(/criterio desconocido/);
   });
 
   test("risk ranks tier-1 dates first and confirmed moves higher", () => {

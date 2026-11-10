@@ -1,6 +1,6 @@
 // Call 1 (research): Messages API + web_search, restricted to official/tier-A domains first (R7),
 // opened with blocked domains only when the first pass yields no citation.
-import type Anthropic from "@anthropic-ai/sdk";
+import Anthropic from "@anthropic-ai/sdk";
 import type { CallContext, CreateParams, Message, MessagesTransport } from "./client.ts";
 
 export interface Citation {
@@ -122,14 +122,47 @@ export function collect(content: readonly Anthropic.ContentBlock[]): Pick<Resear
   return { text: texts.join("").trim(), citedClaims, citations, queries, searchErrors };
 }
 
+/**
+ * The search tool refuses a location hint for some countries (2026-11-09: CO, PE and BO, while BR
+ * and MX pass) with a 400 that names the code. The location only biases results, so the call is
+ * made again without the country; the time zone stays. A refused call costs nothing.
+ */
+export const UNSUPPORTED_COUNTRY = /Country code [A-Z]{2} is not supported/;
+
+export function isUnsupportedCountry(error: unknown): boolean {
+  return error instanceof Anthropic.APIError && error.status === 400 && UNSUPPORTED_COUNTRY.test(error.message);
+}
+
+/** The same params with no country in the search tool's location hint. */
+export function withoutCountry(params: CreateParams): CreateParams {
+  const tools = params.tools?.map((tool) => {
+    if (!("user_location" in tool) || !tool.user_location) return tool;
+    const { country: _country, ...location } = tool.user_location;
+    return { ...tool, user_location: location };
+  });
+  return { ...params, ...(tools ? { tools } : {}) };
+}
+
+async function create(transport: MessagesTransport, params: CreateParams, ctx: CallContext): Promise<{ message: Message; params: CreateParams }> {
+  try {
+    return { message: await transport.create(params, ctx), params };
+  } catch (error) {
+    if (!isUnsupportedCountry(error)) throw error;
+    const retry = withoutCountry(params);
+    return { message: await transport.create(retry, ctx), params: retry };
+  }
+}
+
 export async function researchPass(transport: MessagesTransport, gate: CallGate, req: ResearchRequest, pass: 1 | 2): Promise<ResearchResult> {
   const ctx: CallContext = { key: req.key, kind: "research" };
-  const params = buildResearchParams(req, pass);
+  let params = buildResearchParams(req, pass);
   const content: Anthropic.ContentBlock[] = [];
   let continuations = 0;
   for (;;) {
     gate.beforeCall(ctx);
-    const message = await transport.create(params, ctx);
+    const sent = await create(transport, params, ctx);
+    const message = sent.message;
+    params = sent.params;
     gate.afterCall(ctx, usageOf(message));
     const empty = { text: "", citedClaims: [], citations: [], queries: [], searchErrors: [] };
     if (message.stop_reason === "refusal") {

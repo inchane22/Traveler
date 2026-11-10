@@ -5,7 +5,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { ISO } from "../../src/dates.ts";
 import { CountryFile } from "../../src/schema.ts";
-import type { ScoringConfig } from "../../src/score.ts";
+import { isParty, type ScoringConfig } from "../../src/score.ts";
 import { ISO_COUNTRIES } from "../../src/search.ts";
 import { loadCountries } from "../build-data.ts";
 import type { Archiver } from "./archive.ts";
@@ -21,7 +21,7 @@ import { mdText } from "./markdown.ts";
 import { runOnboard } from "./onboard-run.ts";
 import { makePlan, type Plan, type PipelineSettings, type PlannedBuild } from "./plan.ts";
 import { promoteReady, readiness } from "./publish.ts";
-import { candidates, compareItems, type QueueItem } from "./queue.ts";
+import { candidates, classifyCandidates, compareItems, type QueueItem } from "./queue.ts";
 import { runRefresh, type RefreshOptions } from "./refresh-run.ts";
 import type { RefreshReport } from "./report.ts";
 import { fieldLabel } from "./report.ts";
@@ -219,6 +219,11 @@ async function buildCountry(ctx: RunContext, b: PlannedBuild): Promise<{ log: Bu
     }
   }
 
+  // Classify first, so a solemn act is not researched for dates it will never be listed with.
+  const unclassified = classifyCandidates(readCountry(opts.root, cc)!, config, opts.today).slice(0, settings.build_topups);
+  await refreshBatch(ctx, unclassified, { classify: true, job: "build", reportName: `build-${cc.toLowerCase()}-classify-${opts.today}` });
+  if (overBudget() && ctx.stopped.length) return error("R10: monthly budget reached during the build");
+
   const draft = readCountry(opts.root, cc)!;
   const policy = loadDomainPolicy(opts.root, cc);
   const queue = topUpQueue(draft, config, policy, opts.today, settings.build_topups);
@@ -287,7 +292,7 @@ export function renderSummary(plan: Plan, s: PipelineSummary): string {
       ? `Budget ${plan.month}: US$${(b.spentUpkeep + b.spentBuild).toFixed(2)} spent before this run of US$${b.total.toFixed(2)} (upkeep US$${b.spentUpkeep.toFixed(2)}, new countries US$${b.spentBuild.toFixed(2)}). Last days of the month: both share the US$${b.upkeepLeft.toFixed(2)} left, upkeep first. Today's upkeep share: US$${b.todayUpkeep.toFixed(2)} over ${b.daysLeft} day(s) left.`
       : `Budget ${plan.month}: US$${(b.spentUpkeep + b.spentBuild).toFixed(2)} spent before this run of US$${b.total.toFixed(2)}; upkeep US$${b.spentUpkeep.toFixed(2)} of US$${b.upkeepPool.toFixed(2)}, new countries US$${b.spentBuild.toFixed(2)} of US$${b.buildPool.toFixed(2)}. Today's upkeep share: US$${b.todayUpkeep.toFixed(2)} over ${b.daysLeft} day(s) left.`,
     `Cost per job used: ${Object.entries(plan.costs).map(([k, v]) => `${k} US$${v.toFixed(2)}`).join(", ")}.`,
-    `Planned: ${plan.sweep.length} news sweep(s), ${plan.verify.length} verification(s), ${plan.builds.length} build(s)${plan.deferred.length ? `; ${plan.deferred.length} due festival(s) wait for another day` : ""}.`,
+    `Planned: ${plan.sweep.length} news sweep(s), ${plan.classify.length} classification(s), ${plan.verify.length} verification(s), ${plan.builds.length} build(s)${plan.deferred.length ? `; ${plan.deferred.length} due festival(s) wait for another day` : ""}.`,
     plan.waiting.length ? `Waiting: ${plan.waiting.map((w) => `${w.country} (${w.reason === "budget" ? `budget, from ${w.until}` : "next run"})`).join(", ")}.` : "",
     `Projection: about US$${plan.projection.perCountry.toFixed(2)} a month to keep one country fresh at full cadence; the upkeep share covers ${plan.projection.countriesSupported ?? "any number of"} countries that way.${plan.projection.stretch > 1 ? ` Checks more than 45 days out run ${plan.projection.stretch}× less often to fit the budget.` : ""}`,
   ];
@@ -345,15 +350,19 @@ export async function runPipeline(opts: PipelineOptions, deps: PipelineDeps): Pr
   const ctx: RunContext = { opts, deps, settings, config, reports: [], stopped: [], exitCodes: [] };
   const builds: BuildLog[] = [];
   if (!opts.planOnly) {
-    // 4. News sweeps, 5. builds, 6. verification.
+    // 4. News sweeps, classification, 5. builds, 6. verification.
     await refreshBatch(ctx, plan.sweep, { sweepWithin: 45, reportName: `sweep-${opts.today}` });
+    await refreshBatch(ctx, plan.classify, { classify: true, job: "classify", reportName: `classify-${opts.today}` });
     for (const b of plan.builds) {
       const { log, event } = await buildCountry(ctx, b);
       builds.push(log);
       apply(b.country, event);
       if (log.outcome === "error" && /budget/i.test(log.detail ?? "")) break;
     }
-    await refreshBatch(ctx, plan.verify, { job: "verify", maxFollowups: opts.maxFollowups, reportName: `verify-${opts.today}`, ...(opts.links ? { links: opts.links } : {}) });
+    // A festival the classification just found to be a solemn act is no longer listed: no dates to check.
+    const solemn = new Set(loadCountries(join(opts.root, "data", "countries")).flatMap((c) => c.festivals.filter((f) => !isParty(f.score)).map((f) => `${c.country}/${f.slug}`)));
+    const verify = plan.verify.filter((i) => !solemn.has(`${i.country}/${i.slug}`));
+    await refreshBatch(ctx, verify, { job: "verify", maxFollowups: opts.maxFollowups, reportName: `verify-${opts.today}`, ...(opts.links ? { links: opts.links } : {}) });
     published.push(...publishReady(opts.root, opts.today, deps.log));
     for (const cc of published) if (requests.some((r) => r.country === cc)) apply(cc, { type: "published", today: opts.today });
   }
@@ -397,7 +406,8 @@ export async function runPipeline(opts: PipelineOptions, deps: PipelineDeps): Pr
 
   const dir = join(opts.root, "proposals");
   const name = `pipeline-${opts.today}`;
-  writeJson(join(dir, `${name}.json`), { ...summary, plan: { ...plan, sweep: plan.sweep.map((i) => `${i.country}/${i.slug}`), verify: plan.verify.map((i) => `${i.country}/${i.slug}`) } });
+  const keys = (items: readonly QueueItem[]) => items.map((i) => `${i.country}/${i.slug}`);
+  writeJson(join(dir, `${name}.json`), { ...summary, plan: { ...plan, sweep: keys(plan.sweep), classify: keys(plan.classify), verify: keys(plan.verify) } });
   writeText(join(dir, `${name}.md`), renderSummary(plan, summary));
   writeText(join(dir, "commit-message.txt"), commitMessage(summary));
   writeText(join(dir, "holds.md"), renderHolds(holds, opts.today));

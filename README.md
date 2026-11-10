@@ -1,6 +1,6 @@
 # Traveler
 
-Calendario anual de las fiestas con más gente y más calle, por país. Sitio estático (Vite y TypeScript sin framework) publicado en GitHub Pages, en español, inglés y portugués.
+Calendario anual de fiestas y carnavales para ir a bailar y celebrar, por país, primero los que tienen más gente y a los que más se viaja desde otras ciudades o países. Las procesiones y otros actos solemnes no entran. Sitio estático (Vite y TypeScript sin framework) publicado en GitHub Pages, en español, inglés y portugués.
 
 Cualquier país se puede construir a pedido: desde su página, «Construir <país>» abre un issue y el pipeline investiga sus fiestas, verifica cada fecha contra fuentes oficiales o la prensa nacional y lo publica cuando tiene al menos 3 fechas con fuente. Cada día el mismo pipeline revisa las fiestas que tocan según su cercanía y el presupuesto del mes, aplica los cambios que pasan los controles en código y los sube a `main`; lo dudoso queda retenido. El sitio se publica después de que CI pasa.
 
@@ -47,6 +47,8 @@ op run --env-file=.env.op -- pnpm pipeline -- --request=JP        # construye Ja
 op run --env-file=.env.op -- pnpm refresh -- --dry-run
 op run --env-file=.env.op -- pnpm refresh -- --dry-run --only=carnaval-barranquilla
 op run --env-file=.env.op -- pnpm onboard -- --country=PE --dry-run
+op run --env-file=.env.op -- pnpm refresh -- --classify            # ¿es fiesta?, ¿viene gente de fuera? (las que no tienen clasificación)
+op run --env-file=.env.op -- pnpm refresh -- --classify --only=feria-de-cali   # vuelve a preguntar por una ya clasificada
 ```
 
 `--dry-run` escribe `proposals/AAAA-MM-DD.json` y `proposals/AAAA-MM-DD.md` (ignorados por git) y no toca `data/`. Toda llamada real, en ensayo o no, se anota en `data/state/ledger.jsonl`: gasta igual. Las variables están en [.env.example](.env.example); nunca crees un `.env` o `.env.local` con valores.

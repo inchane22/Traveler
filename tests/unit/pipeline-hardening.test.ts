@@ -145,12 +145,14 @@ describe("R5: sensitive terms per type force a review (prd-F08)", () => {
   test("whole words, any case or accent, only for the types that list them", async () => {
     const { loadSensitiveTerms, sensitiveHits } = await import("../../scripts/lib/sensitive.ts");
     const terms = loadSensitiveTerms(".");
-    const religious = { ...fest("PE", "candelaria", { type: "fixed", start: "02-01", end: "02-15" }), type: "tradicion_religiosa" as const, street_tip: { es: "Una gran PARRANDA en la calle", en: "Respect the procession" } };
-    expect(sensitiveHits(religious, terms)).toEqual([{ slug: "candelaria", field: "street_tip.es", term: "parranda" }]);
-    const carnival = { ...religious, type: "carnaval" as const };
+    // The calendar lists parties (2026-11-09): «party» is fine; a drinking spree where devotion is
+    // part of the dance (Candelaria) is what a person reads.
+    const dance = { ...fest("PE", "candelaria", { type: "fixed", start: "02-01", end: "02-15" }), type: "danza" as const, street_tip: { es: "Una gran BORRACHERA en la calle", en: "A huge street party" } };
+    expect(sensitiveHits(dance, terms)).toEqual([{ slug: "candelaria", field: "street_tip.es", term: "borrachera" }]);
+    const carnival = { ...dance, type: "carnaval" as const };
     expect(sensitiveHits(carnival, terms)).toEqual([]);
-    expect(sensitiveHits({ ...religious, street_tip: { es: "Parrandas no, sino misa" } }, terms).map((h) => h.term)).toEqual(["parranda"]);
-    expect(sensitiveHits({ ...religious, street_tip: { es: "Los farrapos del cortejo" } }, terms)).toEqual([]);
+    expect(sensitiveHits({ ...dance, street_tip: { es: "Borracheras no, sino danza" } }, terms).map((h) => h.term)).toEqual(["borrachera"]);
+    expect(sensitiveHits({ ...dance, street_tip: { es: "Los borrachos del cortejo" } }, terms)).toEqual([]);
   });
 
   test("no published or draft text trips the list today", async () => {

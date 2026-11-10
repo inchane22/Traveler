@@ -11,6 +11,7 @@
     "build": 0.3,
     "verify": 0.15,
     "followup": 0.12,
-    "sweep": 0.08
+    "sweep": 0.08,
+    "classify": 0.12
   }
 }

@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
+import { buildEntries } from "../../src/festivals.ts";
 import { CountryFile } from "../../src/schema.ts";
 import { dataProblems, loadCountries } from "../../scripts/build-data.ts";
 import { main as onboardMain } from "../../scripts/onboard.ts";
@@ -10,7 +11,7 @@ import { emptyPolicy, loadDomainPolicy, withGovernmentFallback } from "../../scr
 import { memoryLogger } from "../../scripts/lib/io.ts";
 import { mapFestival, OnboardingDraft, probableWindow, slugify, toRule, verifyEvidence, type DraftFestival, type MappedFestival } from "../../scripts/lib/onboard-draft.ts";
 import { onboardFlags, runOnboard, type OnboardOptions } from "../../scripts/lib/onboard-run.ts";
-import { cite, FIXTURES, githubOutput, json, message, readJsonFile, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
+import { cite, config, FIXTURES, githubOutput, json, message, readJsonFile, tempRepo, TODAY } from "../fixtures/pipeline/helpers.ts";
 
 const PE_FIXTURE = join(FIXTURES, "onboard", "pe.json");
 const recorded = loadFixtureSet(PE_FIXTURE);
@@ -37,16 +38,21 @@ describe("onboarding PE with recorded responses (H5 acceptance)", () => {
     const bySlug = Object.fromEntries(file.festivals.map((f) => [f.slug, f]));
     expect(Object.keys(bySlug).sort()).toEqual(["candelaria-puno", "carnaval-cajamarca", "inti-raymi", "senor-de-los-milagros"]);
 
-    // Nothing in these two had a validated citation: all «por medir», no edition, rule only «announced».
+    // Nothing in these two had a validated date or figure: «por medir», no edition, rule only «announced».
     for (const slug of ["senor-de-los-milagros", "carnaval-cajamarca"]) {
       const f = bySlug[slug]!;
-      expect(Object.values(f.score).every((v) => v === null), slug).toBe(true);
+      expect([f.score.convocatoria, f.score.viajeros, f.score.calle, f.score.conectividad].every((v) => v === null), slug).toBe(true);
       expect(f.editions).toEqual({});
       expect(f.rule.type).toBe("announced");
     }
-    // Candelaria: UNESCO and the dates are cited; attendance (uncited URL) and connectivity (paraphrase) are not.
+    // The planted «six million» on the blog is no figure; the procession is a solemn act, kept with its
+    // source and left out of every list (2026-11-09).
+    expect(bySlug["carnaval-cajamarca"]!.score.fiesta).toBeNull();
+    expect(bySlug["senor-de-los-milagros"]!.score.fiesta).toMatchObject({ measure: "solemne", source: "https://www.andina.pe/agencia/noticia-senor-de-los-milagros-procesion" });
+    expect(buildEntries(file, config, TODAY).map((e) => e.festival.slug)).not.toContain("senor-de-los-milagros");
+    // Candelaria: the dancing and the dates are cited; attendance (uncited URL) and connectivity (paraphrase) are not.
     const candelaria = bySlug["candelaria-puno"]!;
-    expect(candelaria.score).toMatchObject({ convocatoria: null, conectividad: null, calle: null, reconocimiento: { measure: "unesco", confidence: "oficial" } });
+    expect(candelaria.score).toMatchObject({ convocatoria: null, conectividad: null, calle: null, viajeros: null, fiesta: { measure: "baile_y_show", confidence: "oficial", quote: expect.stringContaining("bailan por las calles") as unknown } });
     expect(candelaria.editions["2027"]).toMatchObject({ start: "2027-02-01", end: "2027-02-14", status: "tentativa", confidence: "oficial", last_verified: TODAY });
     expect(candelaria.rule).toEqual({ type: "announced", window: { start: "01-25", end: "02-20" } });
     // Inti Raymi: the fixed rule and a press figure with its year are cited.
@@ -189,7 +195,7 @@ describe("draft mapping", () => {
   test("R2/R11 flags: few sourced festivals, partial A coverage, media-heavy candidates, one city on top", () => {
     const m = (city: string, source: DraftFestival["candidate_source"], tier: "A" | "B" | "C" | null, dated: boolean): MappedFestival =>
       ({
-        festival: { city, editions: dated ? { "2027": { sources: tier ? [{ tier }] : [] } } : {} },
+        festival: { city, editions: dated ? { "2027": { sources: tier ? [{ tier }] : [] } } : {}, score: { fiesta: null } },
         sources: tier ? [{ tier }] : [],
         candidateSource: source,
         datedEdition: dated,
@@ -200,6 +206,10 @@ describe("draft mapping", () => {
     expect(flags.messages.join("\n")).toMatch(/R2: solo 1 fiesta[\s\S]*cobertura parcial: 0%[\s\S]*R11: solo 0%[\s\S]*R11: alerta: las 3 mejores están en Lima/);
     const good = [m("Lima", "unesco", "A", true), m("Cusco", "cultura_turismo", "A", true), m("Puno", "feriados", "A", true)];
     expect(onboardFlags(good, good).messages).toEqual([]);
+    // A solemn act is not one of the parties R2 counts (2026-11-09).
+    const solemn = { ...good[2]!, festival: { ...good[2]!.festival, score: { fiesta: { measure: "solemne" } } } } as unknown as MappedFestival;
+    const withSolemn = [good[0]!, good[1]!, solemn];
+    expect(onboardFlags(withSolemn, withSolemn)).toMatchObject({ sourced: 2 });
   });
 });
 

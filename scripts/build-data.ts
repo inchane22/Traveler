@@ -7,7 +7,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync
 import { join } from "node:path";
 import { addMonths, todayIn, type ISO } from "../src/dates.ts";
 import { ChangelogEntry, CountryFile, MIN_SOURCED_FESTIVALS, type CountryFile as Country, type Edition } from "../src/schema.ts";
-import { CRITERIA, scoreFestival, type ScoringConfig } from "../src/score.ts";
+import { CRITERIA, isParty, scoreFestival, type ScoringConfig } from "../src/score.ts";
 import { quoteStatesDate } from "./lib/date-parser.ts";
 import { hasConfig, isOfficial, loadDomainPolicy, tierOf, type DomainPolicy } from "./lib/domains.ts";
 import { isMainModule } from "./lib/is-main.ts";
@@ -76,10 +76,13 @@ export function isABacked(edition: Edition, country: string, policy?: DomainPoli
   });
 }
 
-/** Festivals with an edition that has start, end and a source config/sources ranks A or B. */
+/**
+ * Parties with an edition that has start, end and a source config/sources ranks A or B. A solemn
+ * act the site does not list cannot make a country ready to go live.
+ */
 export function sourcedFestivals(country: Country, policy: DomainPolicy): number {
-  return country.festivals.filter((f) =>
-    Object.values(f.editions).some((e) => !!e.start && !!e.end && e.sources.some((s) => tierOf(s.url, policy) !== "C")),
+  return country.festivals.filter(
+    (f) => isParty(f.score) && Object.values(f.editions).some((e) => !!e.start && !!e.end && e.sources.some((s) => tierOf(s.url, policy) !== "C")),
   ).length;
 }
 
@@ -140,16 +143,20 @@ export function publicChangelog(entries: readonly ChangelogEntry[], shown: Reado
 export function buildIndex(countries: readonly Country[], config: ScoringConfig, includeDrafts: boolean, policies?: ReadonlyMap<string, DomainPolicy>, requests: readonly CountryRequest[] = []): PublicIndex {
   const shown = countries.filter((c) => c.status === "publicado" || includeDrafts);
   const slugs: Record<string, string> = {};
+  const owner = new Map<string, string>();
   for (const c of shown) {
     for (const f of c.festivals) {
-      if (slugs[f.slug]) throw new Error(`slug ${f.slug} used by ${slugs[f.slug]} and ${c.country}`);
-      slugs[f.slug] = c.country;
+      if (owner.has(f.slug)) throw new Error(`slug ${f.slug} used by ${owner.get(f.slug)} and ${c.country}`);
+      owner.set(f.slug, c.country);
+      // A solemn act has no page on the site, so no link resolves to it.
+      if (isParty(f.score)) slugs[f.slug] = c.country;
     }
   }
   return {
     generated_at: shown.map((c) => c.generated_at).sort().at(-1) ?? "1970-01-01",
     countries: shown.map((c) => {
-      const editions = c.festivals.flatMap((f) => Object.values(f.editions));
+      const parties = c.festivals.filter((f) => isParty(f.score));
+      const editions = parties.flatMap((f) => Object.values(f.editions));
       const verified = editions.map((e) => e.last_verified).filter((d): d is string => !!d).sort();
       const dated = editions.filter((e) => e.start);
       const withA = dated.filter((e) => isABacked(e, c.country, policies?.get(c.country)));
@@ -158,7 +165,7 @@ export function buildIndex(countries: readonly Country[], config: ScoringConfig,
         status: c.status,
         region: c.region,
         timezone: c.timezone,
-        festivals: c.festivals.length,
+        festivals: parties.length,
         last_verified: verified.at(-1) ?? null,
         share_a: dated.length ? Math.round((withA.length / dated.length) * 100) / 100 : 0,
       };

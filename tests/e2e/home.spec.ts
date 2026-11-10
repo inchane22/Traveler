@@ -64,7 +64,7 @@ test.describe("Inicio", () => {
     const rows = page.locator(".tl-rows > li");
     expect(await rows.count()).toBeGreaterThanOrEqual(5);
     const first = rows.first().getByRole("link");
-    await expect(first).toHaveAccessibleName(/Cartagena.*Fiesta nacional.*10–16 nov 2026.*Por confirmar/);
+    await expect(first).toHaveAccessibleName(/Cartagena.*Fiesta popular.*10–16 nov 2026.*Por confirmar/);
     await expect(page.locator(".tl-axis")).toHaveAttribute("aria-hidden", "true");
   });
 

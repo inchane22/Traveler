@@ -1,0 +1,1 @@
+A first search limited to official and government sites did not show these facts. Search again more widely: recognized national or regional press of {{country_name}} and tourism reports (visitor counts, hotel occupancy, where the visitors came from). The same rules apply: only what a source states, each with the exact sentence that shows it.

@@ -4,7 +4,7 @@ Oct 26, 2026 · @Alexis Vega
 
 ## Resumen
 
-Construir un sitio estático que muestre, para los próximos 12 meses y en cualquier país, solo las fiestas con mayor convocatoria y fiesta en la calle, y que se mantenga al día con un job semanal que usa la API de Claude para proponer cambios con fuente.
+Construir un sitio estático que muestre, para los próximos 12 meses y en cualquier país, las fiestas y carnavales para ir a bailar y celebrar, primero los que tienen más gente y a los que más se viaja desde otras ciudades o países, y que se mantenga al día con un job diario que usa la API de Claude para proponer cambios con fuente.
 
 **Decisiones clave:**
 
@@ -21,6 +21,8 @@ Construir un sitio estático que muestre, para los próximos 12 meses y en cualq
 - Pipeline diario (`pnpm pipeline`, `pipeline.yml`) que construye países a pedido y mantiene frescos los publicados dentro del presupuesto mensual.
 - Calendario: descarga .ics y suscripción por país que se actualiza sola.
 
+**Decisión del 2026-11-09 (fiestas para bailar, clasificadas por la IA):** el propósito es ir a bailar y celebrar, sobre todo en fiestas a las que llega gente de otras ciudades o países; una procesión, una peregrinación, una misa, una pasión escenificada o una vigilia no es una fiesta, por grande que sea. Una IA lee las fuentes de cada fiesta y decide qué hace la gente ahí (`fiesta`: se baila en la calle, fiesta y espectáculo, sobre todo para mirar, o acto solemne) y de dónde viene (`viajeros`: de otros países, de todo el país o de la zona), siempre con una cita literal que lo muestra. Un acto solemne sale de todas las listas y no gasta verificaciones. El puntaje premia el baile y los viajeros en lugar del patrimonio UNESCO y del tamaño del pueblo, y los tipos dejan de ser «tradición religiosa», «cosecha o temporada» y «fiesta nacional» para ser clases de fiesta: carnaval, música, danza y fiesta popular. La primera clasificación de los 33 festivales sacó del sitio el Señor de los Milagros, el Círio de Nazaré y, en los borradores de México, la Romería de Zapopan, la Pasión de Iztapalapa y el Día de Muertos. Detalle en «Criterios de priorización» y «Actualización con IA».
+
 **Decisión del 2026-11-09 (construir el mundo a pedido):** el sitio ya no se limita a un piloto. Cualquier país de la lista se puede pedir desde su página («Construir <país>», que abre un issue con el formulario `build-country`); solo los issues del dueño del repo gastan. El pipeline redacta la política de fuentes del país, hace el onboarding, completa fechas y lo publica en cuanto tiene 3 fiestas con fecha y fuente A o B. Los cambios que pasan los controles se aplican sin revisión humana; los que mueven una fecha confirmada o suspenden una fiesta sin dos sitios independientes, y las corridas que cambian más de la mitad de las fechas de un país, quedan retenidos en `data/state/holds.json` y en un issue «Needs a look». La frecuencia de verificación depende de lo cerca que está cada fiesta y del presupuesto: 30% del mes para países nuevos, el resto repartido en los días que quedan. Detalle en «Actualización con IA» y en `docs/architecture.md`.
 
 **Cómo usar este PRD:** exportarlo como Markdown, guardarlo como `PRD.md` en la raíz del repo y pedirle a Claude Code que ejecute los hitos de «Plan de entrega» en orden, cerrando cada uno con sus pruebas en verde.
@@ -29,11 +31,11 @@ Construir un sitio estático que muestre, para los próximos 12 meses y en cualq
 
 Las fechas de las grandes fiestas cambian cada año, siguen calendarios distintos según el país (gregoriano, lunar, atado a la Pascua) y pueden suspenderse por hechos como el sismo del 10 ago 2026 en Colombia. La información está repartida en sitios oficiales, en el idioma de cada país.
 
-**Usuarios:** viajeros que planifican por temporadas y quieren estar donde hay más gente y más fiesta en la calle. Usuario piloto: 2 viajeros desde Lima.
+**Usuarios:** viajeros que planifican por temporadas para ir a bailar y celebrar en fiestas y carnavales, sobre todo en los que se llenan de gente de otras ciudades o países. Las procesiones, peregrinaciones y otros actos solemnes no les sirven. Usuario piloto: 2 viajeros desde Lima.
 
 **Trabajos por hacer:**
 
-1. Saber qué fiestas grandes vienen en los próximos 12 meses, en el mundo o en los países que me interesan.
+1. Saber qué fiestas para bailar vienen en los próximos 12 meses, en el mundo o en los países que me interesan.
 2. Ver qué fiestas caen dentro de mis fechas de viaje.
 3. Distinguir qué fecha es oficial, cuál se deduce de años anteriores y cuál falta.
 4. Llevar las fechas a mi calendario y que se actualicen solas.
@@ -65,15 +67,17 @@ El MVP cubre cualquier país a nivel de datos y lanza con 5 países piloto; los 
 
 Una fiesta entra a la vista global si suma 65 puntos o más sobre 100; dentro de cada país siempre se muestran sus 5 mejores, aunque no lleguen a 65.
 
-Puntaje = Convocatoria + Fiesta en la calle + Reconocimiento + Conectividad + Gente local. Los pesos viven en `config/scoring.json` para ajustarlos sin tocar código. La escala es absoluta en todos los países, así una fiesta de Lima y una de Múnich se comparan con la misma regla.
+Solo entran fiestas (2026-11-09): una fiesta que la IA clasifica como acto solemne (`fiesta: solemne`) no aparece en ninguna vista, por grande que sea. Puntaje = Convocatoria + Baile y fiesta + Gente de fuera + Gratis y abierta + Conectividad. Los pesos viven en `config/scoring.json` para ajustarlos sin tocar código, junto con la definición de cada nivel que lee la IA. La escala es absoluta en todos los países, así una fiesta de Lima y una de Múnich se comparan con la misma regla.
 
 | Criterio | Máx. | Cómo se mide | Escala |
 | --- | --- | --- | --- |
-| Convocatoria | 35 | Asistentes o visitantes del último balance oficial | 1 millón o más = 35; 250 mil a 1 millón = 26; 100 a 250 mil = 18; 25 a 100 mil = 10; menos = 4 |
-| Fiesta en la calle | 25 | Parte de eventos gratuitos y abiertos, juego colectivo | Mayoría gratis y participativa = 25; mixta = 15; mayoría con boleta = 5 |
-| Reconocimiento | 20 | Lista de Patrimonio Cultural Inmaterial de la UNESCO o declaratoria nacional | UNESCO = 20; patrimonio nacional = 12; ninguna = 0 |
-| Conectividad | 10 | Aeropuerto en la ciudad | Con vuelos internacionales = 10; solo nacionales = 6; ninguno = 2 |
-| Gente local | 10 | Tamaño del lugar | Pueblo = 10; ciudad intermedia = 6; gran ciudad = 3 |
+| Convocatoria | 30 | Asistentes o visitantes del último balance oficial | 1 millón o más = 30; 250 mil a 1 millón = 22; 100 a 250 mil = 15; 25 a 100 mil = 8; menos = 3 |
+| Baile y fiesta | 30 | Qué hace la gente ahí, según una cita de la fuente (lo decide la IA) | Se baila en la calle y cualquiera se suma = 30; fiesta, pero buena parte es para mirar desfiles o shows = 18; sobre todo para mirar = 6; acto solemne = fuera de las listas |
+| Gente de fuera | 20 | De dónde viene el público: cifras de turistas, ocupación hotelera, visitantes de otros países (lo decide la IA) | Mucha gente de otros países = 20; de todo el país = 12; sobre todo de la zona = 3 |
+| Gratis y abierta | 10 | Parte de eventos gratuitos y abiertos | Mayoría gratis = 10; mixta = 6; mayoría con boleta = 2 |
+| Conectividad | 10 | Aeropuerto que sirve al lugar | Con vuelos internacionales = 10; solo nacionales = 6; ninguno = 2 |
+
+Hasta el 2026-11-09 el puntaje sumaba Reconocimiento (UNESCO o patrimonio nacional, 20) y Gente local (pueblo 10), y la Fiesta en la calle valía 25. Premiaban el patrimonio y el tamaño del pueblo, no el baile ni los viajeros, y metían procesiones en la lista: se quitaron.
 
 **Qué se muestra:**
 
@@ -82,22 +86,22 @@ Puntaje = Convocatoria + Fiesta en la calle + Reconocimiento + Conectividad + Ge
 - **Nivel 2,** de 45 a 64, con un interruptor en ambas vistas; menos de 45 no se muestra.
 - **Sin dato:** el criterio vale 0, se marca «por medir» y el puntaje se muestra como rango.
 
-**Piloto Colombia, con los datos verificados hoy:**
+**Piloto Colombia, con las cifras del piloto y la primera clasificación de la IA (2026-11-09):**
 
-| Fiesta | Convocatoria | Calle | Reconoc. | Conect. | Local | Puntaje hoy | Nivel |
+| Fiesta | Convocatoria | Baile y fiesta | Gente de fuera | Gratis | Conect. | Puntaje | Nivel |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Carnaval de Barranquilla | 35 (más de 6 millones de asistentes, 2026) | 25 (380 de 500+ eventos gratis) | 20 (UNESCO) | 10 | 3 | 93 | 1 |
-| Carnaval de Negros y Blancos, Pasto | 26 (\~250 mil turistas, 2026) | 25 | 20 (UNESCO) | 6 | 6 | 83 | 1 |
-| Feria de Cali | 26 (más de 700 mil, fuente comercial débil) | 15 | por verificar | 10 | 3 | 54 a 74 | Provisional |
-| Festival de la Leyenda Vallenata | 18 (137.672 turistas, edición 55) | 15 | por verificar | 6 | 6 | 45 a 65 | Provisional |
-| Fiestas de San Pacho, Quibdó | por medir | 25 | 20 (UNESCO) | 6 | 6 | 57 a 92 | Provisional |
-| Festival de Tambores, Palenque | por medir | 25 | 20 (UNESCO) | 2 | 10 | 57 a 92 | Provisional |
-| Carnaval de Riosucio (años impares) | 10 (\~30 mil visitantes esperados, 2023) | 25 | 12 (prensa) | 2 | 10 | 59 | 2 |
-| Fiestas de Independencia, Cartagena | por medir | 15 | por verificar | 10 | 3 | 28 a 83 | Provisional |
-| Feria de las Flores, Medellín | por medir | por verificar | por verificar | 10 | 3 | 13 a 93 | Provisional |
-| Festival Petronio Álvarez, Cali | por medir | por verificar | por verificar | 10 | 3 | 13 a 93 | Provisional |
+| Carnaval de Barranquilla | 30 (más de 6 millones de asistentes, 2026) | 30 (se baila en la calle) | 20 (23% internacionales) | 10 | 10 | 100 | 1 |
+| Carnaval de Negros y Blancos, Pasto | 22 (\~250 mil turistas, 2026) | 30 (se baila en las plazas) | 20 (extranjeros) | 10 | 6 | 88 | 1 |
+| Festival de la Leyenda Vallenata | 15 (137.672 turistas, edición 55) | 30 (parrandas) | 12 (de todo el país) | 6 | 6 | 69 | 1 |
+| Fiestas de San Pacho, Quibdó | por medir | 30 (comparsas abiertas) | 20 | 10 | 6 | 66 a 96 | 1 |
+| Feria de Cali | 22 (más de 700 mil, fuente comercial débil) | 6 (el show del Salsódromo) | 20 (23% internacionales) | 6 | 10 | 64 | 2 |
+| Festival Petronio Álvarez, Cali | por medir | 30 (bailes espontáneos) | 12 | por medir | 10 | 52 a 92 | Provisional |
+| Carnaval de Riosucio (años impares) | 8 (\~30 mil visitantes esperados, 2023) | 18 (verbenas y desfiles) | 12 | 10 | 2 | 50 | 2 |
+| Fiestas de Independencia, Cartagena | por medir | 18 | 12 | 6 | 10 | 46 a 76 | Provisional |
+| Feria de las Flores, Medellín | por medir | 6 (los desfiles) | 20 | por medir | 10 | 36 a 76 | Provisional |
+| Festival de Tambores, Palenque | por medir | 6 (presentaciones) | 12 | 10 | 2 | 30 a 60 | Provisional |
 
-**Candidatas para el primer onboarding** (sin verificar; el pipeline confirma fechas, asistencia y declaratorias antes de que aparezcan):
+**Candidatas para el primer onboarding** (sin verificar; el pipeline confirma fechas, asistencia y su clasificación antes de que aparezcan; desde el 2026-11-09 la IA sacó las que son actos solemnes):
 
 | País | Candidatas |
 | --- | --- |
@@ -107,7 +111,7 @@ Puntaje = Convocatoria + Fiesta en la calle + Reconocimiento + Conectividad + Ge
 | México | Día de Muertos; Guelaguetza en Oaxaca |
 | Fuera del piloto | Las Fallas y Sanfermines (España); Oktoberfest (Alemania); Notting Hill Carnival (Reino Unido); Carnaval de Trinidad y Tobago; Holi (India); Songkran (Tailandia) |
 
-Con estos pesos, más gente pesa más que conocer locales: Riosucio queda en Nivel 2 aunque sea la mejor para conversar, pero igual aparece en la vista de Colombia por estar entre sus 5 mejores.
+Con estos pesos, bailar en la calle y la gente de fuera pesan la mitad del puntaje: el Vallenato y San Pacho suben a Nivel 1, y la Feria de Cali, que la IA clasificó por el show de su apertura, queda en Nivel 2 pero aparece en la vista de Colombia por estar entre sus 5 mejores. Una clasificación discutible se corrige con «Reportar un error» o en el archivo del país; la IA no vuelve a cambiarla sola si eso saca o mete una fiesta del sitio.
 
 ## Reglas de fechas y datos semilla
 
@@ -198,7 +202,9 @@ Si la validación falla o un cambio queda retenido, el sitio sigue mostrando el 
 1. **Investigación.** Messages API con el modelo de `ANTHROPIC_MODEL` (por defecto `claude-sonnet-5-5`) y la herramienta `web_search_20250305` con `max_uses: 5` y `user_location` con el `country` y la `timezone` de la fiesta. El prompt busca en el idioma local y en inglés, prioriza organizadores, gobiernos y prensa del país, y obliga a responder «no encontrado» en vez de deducir. Si llega `stop_reason: "pause_turn"`, se reenvía el mensaje tal cual para continuar. La primera pasada se limita a fuentes A (R7); si cita páginas pero no da el inicio o el fin de una edición sin confirmar que empieza en menos de 120 días, una búsqueda de seguimiento abierta (solo con la lista de bloqueo) pide solo esos datos, con prensa nacional o regional y dos medios para las fechas. Sus propuestas pasan la misma validación contra sus propias citas y nunca reemplazan lo que dio la primera pasada. Solo en la corrida semanal, con tope `MAX_FOLLOWUPS_PER_RUN` (por defecto 6) y nunca desde el 80% del presupuesto.
 2. **Extracción.** Segunda llamada sin herramientas, con salidas estructuradas (`output_config.format`, `type: "json_schema"`), que convierte el texto y las citas de la llamada 1 en un objeto `Proposal`. Separarlas mantiene las citas de la búsqueda y un JSON garantizado por esquema.
 
-**Construir un país (onboarding):** si el país no tiene `config/sources/<cc>.json`, una llamada sin búsqueda redacta su política de fuentes (dominios oficiales, prensa nacional y bloqueados; el código siempre suma los dominios de gobierno y la UNESCO, y sin respuesta usa solo esos). Luego una llamada de investigación pide las 10 fiestas con más convocatoria del país, con asistencia, declaratorias, regla de fecha y fuentes; el script calcula el puntaje y crea `data/countries/<cc>.json` en estado «borrador». Después verifica hasta 5 fiestas sin fecha con fuente, de la más cercana a la más lejana, y el país se publica solo cuando tiene al menos 3 fiestas con fecha y fuente A o B. Si no llega, lo reintenta a los 30 días, hasta 3 veces.
+**Construir un país (onboarding):** si el país no tiene `config/sources/<cc>.json`, una llamada sin búsqueda redacta su política de fuentes (dominios oficiales, prensa nacional y bloqueados; el código siempre suma los dominios de gobierno y la UNESCO, y sin respuesta usa solo esos). Luego una llamada de investigación pide las 10 fiestas del país para ir a bailar con más gente y más viajeros, primero del calendario oficial de turismo o cultura y de los feriados, sin procesiones ni otros actos solemnes, con asistencia, qué hace la gente ahí, de dónde viene, regla de fecha y fuentes (hasta el 2026-11-09 empezaba por la lista de la UNESCO y pedía declaratorias, y así entraban procesiones); el script calcula el puntaje y crea `data/countries/<cc>.json` en estado «borrador». Después verifica hasta 5 fiestas sin fecha con fuente, de la más cercana a la más lejana, y el país se publica solo cuando tiene al menos 3 fiestas con fecha y fuente A o B. Si no llega, lo reintenta a los 30 días, hasta 3 veces.
+
+**Clasificación (desde el 2026-11-09):** cada fiesta sin clasificar pasa una vez por dos llamadas como las de la verificación: una investigación con búsqueda web (3 búsquedas, primero en sitios oficiales) que pide qué hace la gente ahí y de dónde viene, con las definiciones de niveles de `config/scoring.json`, y una extracción que solo puede proponer `score.fiesta` y `score.viajeros`. Si la primera pasada no responde una de las dos, una segunda búsqueda abierta (prensa e informes de turismo) pide solo esa. Cada valor exige una cita literal de una fuente citada, como cualquier dato. La primera clasificación se aplica sola; cambiar una ya guardada de fiesta a acto solemne, o al revés, queda retenido para una persona. El planificador la pone en la banda `classify`, justo después de los barridos de la última semana; al construir un país se clasifica antes de buscar fechas, y una fiesta que resulta solemne no se verifica. A mano: `pnpm refresh -- --classify [--country=CO] [--only=<slug>]`.
 
 **Validación en código antes de aplicar (zod):**
 
@@ -263,7 +269,7 @@ La experiencia se acepta con datos, no con opiniones: 5 usuarios completan 5 tar
 
 **Lenguaje visual:**
 
-- El color codifica el tipo de fiesta: carnaval, música, tradición religiosa, cosecha o temporada y fiesta nacional; máximo 5 tonos.
+- El color codifica el tipo de fiesta: carnaval, música, danza y fiesta popular (hasta el 2026-11-09: tradición religiosa, cosecha o temporada y fiesta nacional); máximo 5 tonos.
 - Lo no confirmado lleva trama diagonal. La confianza se lee por forma: punto lleno oficial, anillo prensa, anillo discontinuo patrón, anillo punteado estimación.
 - Una familia muy legible para datos y otra de display para títulos, con escala tipográfica fija.
 
@@ -308,7 +314,8 @@ Cada país vive en su propio archivo `data/countries/<cc>.json`, y `data/index.j
 
 - `country`: código ISO 3166-1 alfa-2 (`CO`, `PE`, `BR`); `subdivision`: ISO 3166-2 (`CO-ATL`)
 - `timezone`: zona IANA (`America/Bogota`)
-- `type`: `carnaval`, `musica`, `tradicion_religiosa`, `cosecha_temporada`, `fiesta_nacional`
+- `type`: `carnaval`, `musica`, `danza`, `fiesta_popular`
+- `score.fiesta`: `baile_abierto`, `baile_y_show`, `show`, `solemne` (fuera de las listas); `score.viajeros`: `internacional`, `nacional`, `regional`
 - `status`: `confirmada`, `tentativa`, `por_anunciar`, `aplazada`, `cancelada`
 - `confidence`: `oficial`, `prensa`, `patron`, `estimacion`
 - `rule.type`: `fixed`, `easter_offset`, `nth_weekday`, `relative_to`, `lunisolar_table`, `announced`, con `parity` opcional
@@ -357,11 +364,11 @@ Cada país vive en su propio archivo `data/countries/<cc>.json`, y `data/index.j
         }
       },
       "score": {
-        "convocatoria": { "points": 35, "value": "más de 6 millones de asistentes (2026)" },
-        "calle": { "points": 25, "value": "380 de más de 500 eventos gratuitos (2026)" },
-        "reconocimiento": { "points": 20, "value": "UNESCO" },
-        "conectividad": { "points": 10 },
-        "local": { "points": 3 }
+        "convocatoria": { "points": 30, "value": "más de 6 millones de asistentes (2026)" },
+        "fiesta": { "points": 30, "value": "se baila en la calle, cualquiera se suma" },
+        "viajeros": { "points": 20, "value": "23% de los visitantes son internacionales" },
+        "calle": { "points": 10, "value": "380 de más de 500 eventos gratuitos (2026)" },
+        "conectividad": { "points": 10 }
       },
       "street_tip": { "es": "Carnaval de la 44 y verbenas de barrio" },
       "tier": 1
@@ -498,10 +505,11 @@ R1 se queda en 6 por los controles en código y la auditoría mensual. R12 se re
 | **R6** La seguridad del viajero cambia según país y nacionalidad | 3 × 4 = 12 | Ajustes pide el país de origen y la ficha enlaza su advertencia oficial, como travel.state.gov, gov.uk/foreign-travel-advice, travel.gc.ca o smartraveller.gov.au; si ese país no publica una, se enlaza su cancillería | Chequeo semanal de enlaces rotos | Aviso con fecha en la ficha cuando la fuente elegida cambie de nivel, si lo publica en formato legible por máquina; nunca se ocultan fiestas | Enlaces de advertencia rotos: alerta con 1 o más | 2 × 2 = 4; H3 |
 | **R7** Una página web intenta dar instrucciones a la IA (LLM01, LLM05, LLM06) | 4 × 3 = 12 | La IA no tiene herramientas con efectos: solo búsqueda web, sin acceso al repo ni a secretos; primera búsqueda con `allowed_domains` limitado a fuentes A y abierta solo si no hay resultado o, con tope por corrida, si no dio las fechas de una edición sin confirmar; la extracción solo ve las citas; salida por esquema | Detector de frases de instrucción en las citas («ignora», «ignore previous», «system prompt»); rechazo de campos no pedidos | Revisión humana y revert | Cambios marcados por el detector: alerta con 1 o más | 2 × 2 = 4; H4 |
 | **R9** Un hecho extraordinario suspende una fiesta, como el sismo que suspendió el Petronio en ago 2026 | 3 × 4 = 12 | No se puede prevenir | Barrido de noticias dos veces por semana para fiestas a 45 días o menos y diario en su última semana, con «cancelado», «aplazado» o «suspendido» en el idioma local | Estado «aplazada» o «cancelada» con fuente; el .ics publica `STATUS:CANCELLED` y sube `SEQUENCE`; aviso en la ficha | Horas entre el anuncio oficial y el cambio publicado: meta 72 o menos | 2 × 3 = 6; H6 |
-| **R11** Sesgo hacia lo que tiene más cobertura en medios | 4 × 3 = 12 | Candidatas primero de fuentes no mediáticas: lista de Patrimonio Inmaterial de la UNESCO, calendario oficial de cultura o turismo y feriados del país | Alerta si las 5 mejores de un país están en la misma ciudad | «Sugerir una fiesta» en la app; peso «Gente local» ajustable; revisión trimestral del ranking | Candidatas de fuentes no mediáticas por onboarding: alerta bajo 50% | 2 × 2 = 4; H5 |
+| **R11** Sesgo hacia lo que tiene más cobertura en medios | 4 × 3 = 12 | Candidatas primero de fuentes no mediáticas: calendario oficial de turismo o cultura y feriados del país (hasta el 2026-11-09 también la lista de la UNESCO, que traía procesiones) | Alerta si las 5 mejores de un país están en la misma ciudad | «Sugerir una fiesta» en la app; peso «Gente local» ajustable; revisión trimestral del ranking | Candidatas de fuentes no mediáticas por onboarding: alerta bajo 50% | 2 × 2 = 4; H5 |
 | **R8** Se filtra la API key (LLM02, LLM03) | 2 × 5 = 10 | Key en un workspace dedicado de la Claude Console con límite de gasto mensual y de tasa (el workspace Default no los admite); secreto de GitHub Actions; acciones de terceros fijadas por SHA; Dependabot | Secret scanning y push protection de GitHub, que reconocen las keys de Anthropic; aviso de gasto en la Console | Runbook de rotación en 15 minutos: revocar, crear, actualizar el secreto y reejecutar | Gasto diario sobre 3 veces el promedio de 7 días: alerta | 1 × 3 = 3; H0 |
-| **R5** Fiestas religiosas o identitarias presentadas como simple parranda | 3 × 3 = 9 | Guía de estilo por tipo en `locales/`; campo `etiquette` con normas de respeto (vestimenta, fotos, momentos no abiertos a visitantes); texto propio aprobado por una persona | Términos sensibles por tipo que fuerzan revisión; reportes de usuarios | «Reportar contenido» y corrección en 48 h | Reportes sin atender por más de 48 h: alerta con 1 o más | 1 × 2 = 2; H3 |
+| **R5** Fiestas con raíz religiosa o identitaria presentadas como simple borrachera (desde el 2026-11-09 la lista es de fiestas, así que «fiesta» o «rumba» no son el problema) | 3 × 3 = 9 | Guía de estilo por tipo en `locales/`; campo `etiquette` con normas de respeto (vestimenta, fotos, momentos no abiertos a visitantes); texto propio aprobado por una persona | Términos sensibles para `danza` y `fiesta_popular` en `config/sensitive-terms.json` que fuerzan revisión; reportes de usuarios | «Reportar contenido» y corrección en 48 h | Reportes sin atender por más de 48 h: alerta con 1 o más | 1 × 2 = 2; H3 |
 | **R10** El costo sube con cada país nuevo (LLM10) | 3 × 3 = 9 | Límite de gasto del workspace; `max_uses`; cadencia de la cola (confirmadas solo al vencer su verificación, lejanas sin confirmar una vez al mes) y tope de búsquedas de seguimiento por corrida; caché del prompt de sistema; onboarding por Message Batches. El filtrado dinámico de la búsqueda queda apagado porque borra las citas (corrida del 2026-11-08) | `usage.json` por corrida; avisos al 50% y al 80% del tope | Al 80% solo se verifican fiestas de Nivel 1 a 60 días o menos; al 100% el job se detiene | Gasto del mes: alerta al 80% | 1 × 2 = 2; H6 |
+| **R14** La IA clasifica mal una fiesta: oculta una fiesta como acto solemne o lista una procesión (nuevo, 2026-11-09) | 3 × 3 = 9 | Definiciones de cada nivel en `config/scoring.json`, las mismas para todos los países; cita literal de una fuente citada para cada valor; mirar la fiesta entera y no solo su apertura | Cada clasificación queda en el registro de cambios con su cita; sacar una fiesta ya clasificada, o devolverla, queda retenido para una persona | «Reportar un error» en la ficha; corrección a mano en el archivo del país | Fiestas sacadas por error según reportes: alerta con 1 o más | 2 × 2 = 4; H6 |
 | **R13** Las fuentes desaparecen o cambian (nuevo) | 4 × 2 = 8 | Cada fuente citada se archiva al verificarla con Save Page Now del Internet Archive y se guarda `archive_url` | Chequeo semanal de enlaces | Sin original ni copia archivada, la confianza baja un nivel | Fuentes de Nivel 1 sin copia archivada: alerta con 1 o más | 1 × 2 = 2; H4 |
 
 **Reglas del registro:**

@@ -6,7 +6,7 @@ import { open } from "./helpers.ts";
 test.use({ serviceWorkers: "block" });
 
 // Enum codes as stored. Unit codes (tourists, visitors) are left out: they are plain English words.
-const RAW_CODES = new Set(["confirmada", "tentativa", "por_anunciar", "aplazada", "cancelada", "oficial", "prensa", "patron", "estimacion", "mayoria_gratis", "mixta", "mayoria_boleta", "unesco", "nacional", "ninguna", "internacional", "ninguno", "pueblo", "intermedia", "gran_ciudad", "about", "exact", "more_than"]);
+const RAW_CODES = new Set(["confirmada", "tentativa", "por_anunciar", "aplazada", "cancelada", "oficial", "prensa", "patron", "estimacion", "mayoria_gratis", "mixta", "mayoria_boleta", "unesco", "nacional", "ninguna", "internacional", "ninguno", "pueblo", "intermedia", "gran_ciudad", "baile_abierto", "baile_y_show", "show", "solemne", "regional", "about", "exact", "more_than"]);
 const FIELD_IDS = new Set(["start", "end", "status", "confidence", "note"]);
 
 for (const lang of ["es", "en", "pt"] as const) {

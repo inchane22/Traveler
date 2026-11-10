@@ -41,7 +41,7 @@ describe("month-days and zones the engine can use (code-F5, prd-F18)", () => {
 });
 
 describe("score figures carry their source (ux-F04, prd-F05, DH-05)", () => {
-  const inputs = (calle: unknown) => ({ convocatoria: null, calle, reconocimiento: null, conectividad: null, local: null });
+  const inputs = (calle: unknown) => ({ convocatoria: null, fiesta: null, viajeros: null, calle, conectividad: null });
   test("«oficial» and «prensa» need a source; an unsourced figure can only be an estimate", () => {
     expect(ScoreInputs.safeParse(inputs({ measure: "mayoria_gratis", confidence: "prensa" })).success).toBe(false);
     expect(ScoreInputs.safeParse(inputs({ measure: "mayoria_gratis", confidence: "oficial" })).success).toBe(false);
@@ -143,11 +143,11 @@ describe("build-data checks that need config/ (prd-F02, prd-F12, DH-03, DH-05)",
     const base = dated("a", "https://www.eltiempo.com/a");
     const lying: CountryFile = { ...nation("CO", [base]), status: "borrador" };
     lying.festivals[0]!.editions["2027"]!.sources[0]!.tier = "A";
-    lying.festivals[0]!.score.local = { measure: "gran_ciudad", confidence: "oficial", source: "https://www.eltiempo.com/pob" };
+    lying.festivals[0]!.score.viajeros = { measure: "internacional", confidence: "oficial", source: "https://www.eltiempo.com/turistas" };
     lying.festivals[0]!.score.conectividad = { measure: "internacional", confidence: "prensa", source: "https://es.wikipedia.org/wiki/X" };
     const problems = dataProblems([lying], policies, "2026-10-26").join("\n");
     expect(problems).toMatch(/declares tier A, config\/sources gives B/);
-    expect(problems).toMatch(/score.local: «oficial» needs a source on config\/official-domains/);
+    expect(problems).toMatch(/score.viajeros: «oficial» needs a source on config\/official-domains/);
     expect(problems).toMatch(/score.conectividad: «prensa» needs an A or B source/);
   });
 

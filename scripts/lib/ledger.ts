@@ -7,10 +7,11 @@ import { z } from "zod";
 import { ISODate } from "../../src/schema.ts";
 
 /**
- * What a call was for. `onboard` and `policy` start a new country, `build` tops up its dates
- * before it goes live; the other three keep published countries fresh.
+ * What a call was for. `onboard` and `policy` start a new country, `build` classifies and tops up
+ * its dates before it goes live; the others keep published countries fresh (`classify` decides
+ * once whether a festival is a party and where its crowd comes from).
  */
-export const Job = z.enum(["onboard", "policy", "build", "verify", "followup", "sweep"]);
+export const Job = z.enum(["onboard", "policy", "build", "verify", "followup", "sweep", "classify"]);
 export type Job = z.infer<typeof Job>;
 
 /** Jobs paid from the share of the budget set aside for new countries. */

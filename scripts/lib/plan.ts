@@ -12,7 +12,7 @@ import type { CountryFile } from "../../src/schema.ts";
 import type { ScoringConfig } from "../../src/score.ts";
 import { STATUS_TRAITS } from "../../src/status.ts";
 import { averageJobCost, lastDays, spendByPool, type Job, type LedgerEntry } from "./ledger.ts";
-import type { QueueItem } from "./queue.ts";
+import { needsClassifying, type QueueItem } from "./queue.ts";
 import { requestsDue, type CountryRequest } from "./requests.ts";
 
 export interface PipelineSettings {
@@ -29,10 +29,16 @@ export interface PipelineSettings {
   default_job_usd: Record<Job, number>;
 }
 
-export type Band = "sweep-7" | "verify-45" | "sweep-45" | "verify-120" | "verify-180" | "verify-far";
+export type Band = "sweep-7" | "classify" | "verify-45" | "sweep-45" | "verify-120" | "verify-180" | "verify-far";
 
-/** Priority order; builds sit between `sweep-45` and `verify-120` (their own money). */
-export const BANDS: readonly Band[] = ["sweep-7", "verify-45", "sweep-45", "verify-120", "verify-180", "verify-far"];
+/**
+ * Priority order; builds sit between `sweep-45` and `verify-120` (their own money). Classifying
+ * comes right after the last-week sweeps: it decides whether a festival is listed at all.
+ */
+export const BANDS: readonly Band[] = ["sweep-7", "classify", "verify-45", "sweep-45", "verify-120", "verify-180", "verify-far"];
+
+/** Days before an unclassified festival is asked about again after a classification that found nothing. */
+export const CLASSIFY_RETRY_DAYS = 30;
 
 /** Most the planner stretches the far-away cadence when the upkeep money is short. */
 export const MAX_STRETCH = 4;
@@ -104,6 +110,8 @@ export interface Plan {
   budget: PlanBudget;
   costs: Record<Job, number>;
   sweep: QueueItem[];
+  /** Festivals of live countries still unclassified (is it a party, where its crowd comes from). */
+  classify: QueueItem[];
   verify: QueueItem[];
   builds: PlannedBuild[];
   waiting: Array<{ country: string; reason: "budget" | "per_run_limit"; estimate: number; until: ISO }>;
@@ -190,13 +198,14 @@ export function budgetFor(input: Pick<PlanInput, "today" | "budgetUsd" | "settin
 interface Due {
   item: QueueItem;
   band: Band;
-  kind: "verify" | "sweep";
+  kind: "verify" | "sweep" | "classify";
 }
 
 /** Festivals of published countries that are due today, with their band. */
 export function dueToday(countries: readonly CountryFile[], config: ScoringConfig, ledger: readonly LedgerEntry[], today: ISO, stretch = 1): Due[] {
   const checked = lastDays(ledger, new Set<Job>(["verify", "followup", "build"]));
   const swept = lastDays(ledger, new Set<Job>(["sweep"]));
+  const classified = lastDays(ledger, new Set<Job>(["classify"]));
   const since = (day: string | null | undefined): number => (day ? diffDays(day, today) : Number.POSITIVE_INFINITY);
   const out: Due[] = [];
   for (const country of countries) {
@@ -219,6 +228,9 @@ export function dueToday(countries: readonly CountryFile[], config: ScoringConfi
         lastVerified,
         reasons: [],
       };
+      if (needsClassifying(entry.festival) && since(classified.get(key)) >= CLASSIFY_RETRY_DAYS) {
+        out.push({ item: { ...item, reasons: ["unclassified"] }, band: "classify", kind: "classify" });
+      }
       const settled = STATUS_TRAITS[status].settled;
       if (since(lastCheck) >= verifyInterval(daysToStart, settled, entry.score.tier, stretch)) {
         out.push({ item: { ...item, reasons: settled ? ["stale"] : daysToStart < 180 ? ["soon", "unconfirmed"] : ["unconfirmed"] }, band: verifyBand(daysToStart), kind: "verify" });
@@ -279,8 +291,9 @@ export function projection(countries: readonly CountryFile[], config: ScoringCon
   return { monthlyUpkeep: round2(full), perCountry: round2(perCountry), countriesSupported: perCountry > 0 ? Math.floor(upkeepPool / perCountry) : null, stretch };
 }
 
+/** A build: its source policy, the onboarding, then up to `build_topups` classifications and date top-ups. */
 export function buildEstimate(costs: Record<Job, number>, settings: PipelineSettings, hasFile: boolean, needsPolicy: boolean): number {
-  return round2((needsPolicy ? costs.policy : 0) + (hasFile ? 0 : costs.onboard) + settings.build_topups * costs.build);
+  return round2((needsPolicy ? costs.policy : 0) + (hasFile ? 0 : costs.onboard) + settings.build_topups * (costs.build + costs.classify));
 }
 
 export function makePlan(input: PlanInput): Plan {
@@ -295,19 +308,21 @@ export function makePlan(input: PlanInput): Plan {
   let todayLeft = budget.todayUpkeep;
   let monthLeft = budget.upkeepLeft;
   const sweep: QueueItem[] = [];
+  const classify: QueueItem[] = [];
   const verify: QueueItem[] = [];
   const deferred: Plan["deferred"] = [];
+  const queues = { sweep, classify, verify };
   for (const due of dueToday(input.countries, input.config, input.ledger, today, proj.stretch)) {
-    const cost = due.kind === "sweep" ? costs.sweep : verifyCost(costs);
+    const cost = due.kind === "sweep" ? costs.sweep : due.kind === "classify" ? costs.classify : verifyCost(costs);
     const urgent = due.band === "sweep-7";
-    const fits = cost <= monthLeft && (urgent || cost <= todayLeft) && (due.kind === "sweep" || verify.length < input.maxFestivals);
+    const fits = cost <= monthLeft && (urgent || cost <= todayLeft) && (due.kind === "sweep" || queues[due.kind].length < input.maxFestivals);
     if (!fits) {
       deferred.push({ country: due.item.country, slug: due.item.slug, band: due.band });
       continue;
     }
     monthLeft -= cost;
     todayLeft -= cost;
-    (due.kind === "sweep" ? sweep : verify).push(due.item);
+    queues[due.kind].push(due.item);
   }
 
   // Builds: oldest request first, from the new-country share (in the last days, from what upkeep left).
@@ -339,6 +354,7 @@ export function makePlan(input: PlanInput): Plan {
     budget,
     costs,
     sweep,
+    classify,
     verify,
     builds,
     waiting,

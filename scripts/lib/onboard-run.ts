@@ -5,7 +5,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { addMonths } from "../../src/dates.ts";
 import { CountryFile, MIN_SOURCED_FESTIVALS, type CountryFile as Country } from "../../src/schema.ts";
-import { scoreFestival, type ScoringConfig } from "../../src/score.ts";
+import { isParty, scoreFestival, type ScoringConfig } from "../../src/score.ts";
 import { archiveAll, noopArchiver, type Archiver } from "./archive.ts";
 import { BudgetExceededError, createBudgetGuard, type UsageStore } from "./budget.ts";
 import { classifyApiError, type MessagesTransport } from "./client.ts";
@@ -76,9 +76,11 @@ export interface OnboardReport {
   not_found: string[];
 }
 
-/** R2 + R11 flags over the mapped festivals (ranked best first). */
-export function onboardFlags(mapped: readonly MappedFestival[], ranked: readonly MappedFestival[]): OnboardFlags {
+/** R2 + R11 flags over the mapped festivals (ranked best first). A solemn act counts toward neither. */
+export function onboardFlags(all: readonly MappedFestival[], allRanked: readonly MappedFestival[]): OnboardFlags {
   const messages: string[] = [];
+  const mapped = all.filter((m) => isParty(m.festival.score));
+  const ranked = allRanked.filter((m) => isParty(m.festival.score));
   const sourced = mapped.filter((m) => m.sources.some((s) => s.tier === "A" || s.tier === "B")).length;
   const dated = mapped.filter((m) => m.datedEdition);
   const withA = dated.filter((m) => Object.values(m.festival.editions).some((e) => e.sources.some((s) => s.tier === "A")));
