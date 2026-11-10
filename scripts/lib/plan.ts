@@ -28,6 +28,8 @@ export interface PipelineSettings {
   build_topups: number;
   max_build_attempts: number;
   retry_days: number;
+  /** Share of the monthly budget set aside for finding new festivals in live countries. */
+  discover_share?: number;
   /** Countries the pipeline builds without being asked (all of Latin America). */
   coverage?: string[];
   /** Days before a coverage country that was given up on is asked for again. */
@@ -105,16 +107,26 @@ export interface PlannedBuild {
 
 export interface PlanBudget {
   total: number;
-  /** Monthly pools; in the last days (`released`) both are the whole budget, shared. */
+  /** Monthly pools; in the last days (`released`) each is the whole budget, shared. */
   upkeepPool: number;
   buildPool: number;
+  /** Finding new festivals in live countries (`discover_share`). */
+  discoverPool: number;
   spentUpkeep: number;
   spentBuild: number;
+  spentDiscover: number;
   upkeepLeft: number;
   buildLeft: number;
+  discoverLeft: number;
   daysLeft: number;
   /** What upkeep may spend today. */
   todayUpkeep: number;
+  /**
+   * What discovery is owed by today: its pool spread evenly over the month minus what it spent.
+   * A discovery may start while this is above zero, so one costing more than a day's slice still
+   * runs, and the next waits until the pace catches up.
+   */
+  todayDiscover: number;
   released: boolean;
 }
 
@@ -135,9 +147,11 @@ export interface Plan {
   deferred: Array<{ country: string; slug?: string; band: Band }>;
   /**
    * Full-cadence upkeep for the live countries, and the stretch applied beyond 45 days so it fits
-   * the upkeep share (1 = full cadence, MAX_STRETCH = the most it slows down).
+   * the upkeep share (1 = full cadence, MAX_STRETCH = the most it slows down). `discoverCycleDays`:
+   * how often each live country is searched for new festivals with the discovery share (never
+   * more often than `discover_every_days`; null without a share).
    */
-  projection: { monthlyUpkeep: number; perCountry: number; countriesSupported: number | null; stretch: number };
+  projection: { monthlyUpkeep: number; perCountry: number; countriesSupported: number | null; stretch: number; discoverCycleDays?: number | null };
 }
 
 export interface PlanInput {
@@ -174,39 +188,54 @@ function daysInMonth(today: ISO): number {
 export function budgetFor(input: Pick<PlanInput, "today" | "budgetUsd" | "settings" | "ledger">): PlanBudget {
   const month = input.today.slice(0, 7);
   const spent = spendByPool(input.ledger, month);
-  const daysLeft = daysInMonth(input.today) - Number(input.today.slice(8, 10)) + 1;
-  const share = Math.min(Math.max(input.settings.new_country_share, 0), 1);
+  const monthDays = daysInMonth(input.today);
+  const daysLeft = monthDays - Number(input.today.slice(8, 10)) + 1;
+  const clamp = (n: number | undefined): number => Math.min(Math.max(n ?? 0, 0), 1);
+  const share = clamp(input.settings.new_country_share);
+  const discoverShare = Math.min(clamp(input.settings.discover_share), 1 - share);
   // Whatever is left of the month; a pool that overran its share eats into it (the guard caps the month).
-  const overall = Math.max(0, input.budgetUsd - spent.upkeep - spent.build);
+  const overall = Math.max(0, input.budgetUsd - spent.upkeep - spent.build - spent.discover);
   const released = daysLeft <= input.settings.release_build_pool_days;
+  const discoverPool = input.budgetUsd * discoverShare;
+  // Even pace through the month: by today's end the pool may have spent (day of month / days) of itself.
+  const paced = (pool: number): number => pool * ((monthDays - daysLeft + 1) / monthDays);
   if (released) {
-    // Last days: upkeep and new countries share what is left; upkeep is planned first (makePlan).
+    // Last days: every pool shares what is left; upkeep is planned first (makePlan).
     return {
       total: input.budgetUsd,
       upkeepPool: input.budgetUsd,
       buildPool: input.budgetUsd,
+      discoverPool: input.budgetUsd,
       spentUpkeep: spent.upkeep,
       spentBuild: spent.build,
+      spentDiscover: spent.discover,
       upkeepLeft: round2(overall),
       buildLeft: round2(overall),
+      discoverLeft: round2(overall),
       daysLeft,
       todayUpkeep: round2(overall / daysLeft),
+      todayDiscover: round2(Math.min(overall, Math.max(0, paced(discoverPool) - spent.discover))),
       released,
     };
   }
   const buildPool = input.budgetUsd * share;
-  const upkeepPool = input.budgetUsd - buildPool;
+  const upkeepPool = input.budgetUsd - buildPool - discoverPool;
   const upkeepLeft = Math.min(Math.max(0, upkeepPool - spent.upkeep), overall);
+  const discoverLeft = Math.min(Math.max(0, discoverPool - spent.discover), overall);
   return {
     total: input.budgetUsd,
     upkeepPool: round2(upkeepPool),
     buildPool: round2(buildPool),
+    discoverPool: round2(discoverPool),
     spentUpkeep: spent.upkeep,
     spentBuild: spent.build,
+    spentDiscover: spent.discover,
     upkeepLeft: round2(upkeepLeft),
     buildLeft: round2(Math.min(Math.max(0, buildPool - spent.build), overall)),
+    discoverLeft: round2(discoverLeft),
     daysLeft,
     todayUpkeep: round2(upkeepLeft / daysLeft),
+    todayDiscover: round2(Math.min(discoverLeft, Math.max(0, paced(discoverPool) - spent.discover))),
     released,
   };
 }
@@ -301,12 +330,11 @@ function checksPerMonth(daysToStart: number, settled: boolean, tier: unknown, st
 /** A verification costs its own job plus, now and then, a follow-up search for missing dates. */
 export const verifyCost = (costs: Record<Job, number>): number => costs.verify + costs.followup * 0.3;
 
-/** Full-cadence upkeep a month: every check and sweep, plus a discovery per country every `discoverEvery` days. */
-export function monthlyUpkeep(countries: readonly CountryFile[], config: ScoringConfig, costs: Record<Job, number>, today: ISO, stretch: number, discoverEvery?: number): number {
+/** Full-cadence upkeep a month: every check and sweep (discovery has its own share). */
+export function monthlyUpkeep(countries: readonly CountryFile[], config: ScoringConfig, costs: Record<Job, number>, today: ISO, stretch: number): number {
   let monthly = 0;
   for (const country of countries) {
     if (country.status !== "publicado") continue;
-    if (discoverEvery) monthly += (30 / discoverEvery) * costs.discover;
     for (const entry of buildEntries(country, config, today)) {
       const occ = entry.occurrence;
       const daysToStart = occ ? diffDays(today, effectiveStart(occ)) : Number.POSITIVE_INFINITY;
@@ -318,13 +346,21 @@ export function monthlyUpkeep(countries: readonly CountryFile[], config: Scoring
 }
 
 /** Full-cadence cost, and the smallest stretch (in quarter steps) that fits the upkeep share. */
-export function projection(countries: readonly CountryFile[], config: ScoringConfig, costs: Record<Job, number>, today: ISO, upkeepPool: number, discoverEvery?: number): Plan["projection"] {
+export function projection(countries: readonly CountryFile[], config: ScoringConfig, costs: Record<Job, number>, today: ISO, upkeepPool: number, discover?: { pool: number; everyDays: number }): Plan["projection"] {
   const live = countries.filter((c) => c.status === "publicado").length;
-  const full = monthlyUpkeep(countries, config, costs, today, 1, discoverEvery);
+  const full = monthlyUpkeep(countries, config, costs, today, 1);
   let stretch = 1;
-  while (stretch < MAX_STRETCH && monthlyUpkeep(countries, config, costs, today, stretch, discoverEvery) > upkeepPool) stretch += 0.25;
+  while (stretch < MAX_STRETCH && monthlyUpkeep(countries, config, costs, today, stretch) > upkeepPool) stretch += 0.25;
   const perCountry = live ? full / live : 0;
-  return { monthlyUpkeep: round2(full), perCountry: round2(perCountry), countriesSupported: perCountry > 0 ? Math.floor(upkeepPool / perCountry) : null, stretch };
+  // A month's discovery share pays for pool / cost searches; spread over the live countries.
+  const discoverCycleDays = !discover ? undefined : discover.pool > 0 && live ? Math.max(discover.everyDays, Math.ceil((30 * live * costs.discover) / discover.pool)) : null;
+  return {
+    monthlyUpkeep: round2(full),
+    perCountry: round2(perCountry),
+    countriesSupported: perCountry > 0 ? Math.floor(upkeepPool / perCountry) : null,
+    stretch,
+    ...(discoverCycleDays !== undefined ? { discoverCycleDays } : {}),
+  };
 }
 
 /**
@@ -343,9 +379,11 @@ export function makePlan(input: PlanInput): Plan {
   const nextMonth = addMonths(`${month}-01`, 1);
 
   // Upkeep: highest band first; the last-week sweeps go even past today's share while money is left.
-  const proj = projection(input.countries, input.config, costs, today, budget.upkeepPool, settings.discover_every_days);
+  const proj = projection(input.countries, input.config, costs, today, budget.upkeepPool, { pool: budget.released ? input.budgetUsd * (settings.discover_share ?? 0) : budget.discoverPool, everyDays: settings.discover_every_days });
   let todayLeft = budget.todayUpkeep;
   let monthLeft = budget.upkeepLeft;
+  let discoverOwed = budget.todayDiscover;
+  let discoverLeft = budget.discoverLeft;
   const sweep: QueueItem[] = [];
   const classify: QueueItem[] = [];
   const verify: QueueItem[] = [];
@@ -358,13 +396,17 @@ export function makePlan(input: PlanInput): Plan {
   const work: Work[] = [...dueToday(input.countries, input.config, input.ledger, today, proj.stretch), ...discoveries].sort((a, b) => BANDS.indexOf(a.band) - BANDS.indexOf(b.band));
   for (const due of work) {
     if (due.kind === "discover") {
-      const fits = costs.discover <= monthLeft && costs.discover <= todayLeft && discover.length < settings.max_discover_per_run;
+      // Its own share, paced through the month: one may start while the pace owes anything, even
+      // when it costs more than a day's slice; the next waits until the pace catches up.
+      const fits = discoverOwed > 0 && costs.discover <= discoverLeft && (!budget.released || costs.discover <= monthLeft) && discover.length < settings.max_discover_per_run;
       if (!fits) {
         deferred.push({ country: due.country, band: due.band });
         continue;
       }
-      monthLeft -= costs.discover;
-      todayLeft -= costs.discover;
+      discoverOwed -= costs.discover;
+      discoverLeft -= costs.discover;
+      // In the last days every pool draws on the same money left.
+      if (budget.released) monthLeft -= costs.discover;
       discover.push(due.country);
       continue;
     }

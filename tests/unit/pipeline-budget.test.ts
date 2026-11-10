@@ -108,9 +108,11 @@ describe("what the ledger tells the planner", () => {
     expect(averageJobCost(entries, "followup")).toEqual({ jobs: 0, usd: 0 });
   });
 
-  test("spend splits into the new-country pool and upkeep", () => {
-    expect(spendByPool(entries, "2026-11")).toEqual({ build: 1.8, upkeep: 0.44 });
-    expect(spendByPool(entries, "2026-10")).toEqual({ build: 0, upkeep: 2.21 });
+  test("spend splits into the new-country pool, the new-festival pool and upkeep", () => {
+    expect(spendByPool(entries, "2026-11")).toEqual({ build: 1.8, upkeep: 0.44, discover: 0 });
+    expect(spendByPool(entries, "2026-10")).toEqual({ build: 0, upkeep: 2.21, discover: 0 });
+    const discovery = { day: "2026-11-05", job: "discover" as const, key: "discover/AR", call: "research" as const, model: "m", searches: 8, input_tokens: 1, output_tokens: 1, usd: 0.66 };
+    expect(spendByPool([...entries, discovery], "2026-11")).toEqual({ build: 1.8, upkeep: 0.44, discover: 0.66 });
   });
 
   test("last day a festival was checked, per kind of job", () => {

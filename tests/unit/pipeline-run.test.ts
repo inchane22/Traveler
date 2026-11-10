@@ -57,7 +57,7 @@ describe("pipeline: plan only", () => {
     const md = readFileSync(join(root, "proposals", `pipeline-${TODAY}.md`), "utf8");
     expect(md).toContain(`## Pipeline ${TODAY} (plan only)`);
     // 2026-10-26 is in the month's last week: upkeep and new countries share what is left.
-    expect(md).toMatch(/Budget 2026-10: US\$0\.00 spent before this run of US\$20\.00 \(upkeep US\$0\.00, new countries US\$0\.00\)\. Last days of the month: both share the US\$20\.00 left, upkeep first\./);
+    expect(md).toMatch(/Budget 2026-10: US\$0\.00 spent before this run of US\$20\.00 \(upkeep US\$0\.00, new countries US\$0\.00, new festivals US\$0\.00\)\. Last days of the month: all share the US\$20\.00 left, upkeep first\./);
     expect(result.plan.builds.map((b) => b.country)).toEqual(["JP"]);
   });
 });

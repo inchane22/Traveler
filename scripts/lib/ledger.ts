@@ -17,6 +17,8 @@ export type Job = z.infer<typeof Job>;
 
 /** Jobs paid from the share of the budget set aside for new countries. */
 export const BUILD_JOBS: ReadonlySet<Job> = new Set(["onboard", "policy", "build"]);
+/** Jobs paid from the share set aside for finding new festivals in live countries. */
+export const DISCOVER_JOBS: ReadonlySet<Job> = new Set(["discover"]);
 
 export const LedgerEntry = z
   .object({
@@ -101,16 +103,18 @@ export function monthsOf(entries: readonly LedgerEntry[]): UsageMonth[] {
   return [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month));
 }
 
-/** What a month's entries spent on new countries and on keeping the others fresh. */
-export function spendByPool(entries: readonly LedgerEntry[], month: string): { build: number; upkeep: number } {
+/** What a month's entries spent on new countries, on new festivals and on keeping the rest fresh. */
+export function spendByPool(entries: readonly LedgerEntry[], month: string): { build: number; upkeep: number; discover: number } {
   let build = 0;
   let upkeep = 0;
+  let discover = 0;
   for (const e of entries) {
     if (!e.day.startsWith(month)) continue;
     if (BUILD_JOBS.has(e.job)) build += e.usd;
+    else if (DISCOVER_JOBS.has(e.job)) discover += e.usd;
     else upkeep += e.usd;
   }
-  return { build: round(build), upkeep: round(upkeep) };
+  return { build: round(build), upkeep: round(upkeep), discover: round(discover) };
 }
 
 /**

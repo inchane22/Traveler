@@ -14,7 +14,7 @@ import { countryInfo, localLangFor } from "../../scripts/lib/lang.ts";
 import type { LedgerEntry } from "../../scripts/lib/ledger.ts";
 import { mapFestival, type DraftFestival, type MappedFestival } from "../../scripts/lib/onboard-draft.ts";
 import { runPipeline } from "../../scripts/lib/pipeline-run.ts";
-import { discoverDue, makePlan, monthlyUpkeep, type PipelineSettings } from "../../scripts/lib/plan.ts";
+import { discoverDue, discoverKey as discoverKeyFor, makePlan, monthlyUpkeep, type PipelineSettings } from "../../scripts/lib/plan.ts";
 import { coverageDue, type CountryRequest } from "../../scripts/lib/requests.ts";
 import { noopArchiver } from "../../scripts/lib/archive.ts";
 import { cite, config, country, json, message, readJsonFile, REPO, search, tempRepo, text, usage } from "../fixtures/pipeline/helpers.ts";
@@ -83,21 +83,41 @@ describe("discovery cadence (plan.ts)", () => {
     expect(discoverDue(countries, ledger, DAY, 60)).toEqual(["DD", "AA"]);
   });
 
-  test("discoveries sit after the near checks, within today's share and the per-run limit", () => {
+  const planFor = (today: string, budgetUsd: number, countries: CountryFile[], ledger: LedgerEntry[] = []) =>
+    makePlan({ today, budgetUsd, settings, countries, config, requests: [], ledger, configured: new Set(), maxFestivals: 40 });
+
+  test("discoveries come from their own share, up to the per-run limit", () => {
     const countries = [live("AA", 5), live("BB", 2), live("DD", 3)];
-    const plan = makePlan({ today: DAY, budgetUsd: 100, settings, countries, config, requests: [], ledger: [], configured: new Set(), maxFestivals: 40 });
+    const plan = planFor(DAY, 100, countries);
     expect(plan.discover).toEqual(["BB", "DD"]);
     expect(plan.deferred).toContainEqual({ country: "AA", band: "discover" });
-    // No money left today: none runs, all wait.
-    const broke = makePlan({ today: DAY, budgetUsd: 100, settings, countries, config, requests: [], ledger: [line({ job: "verify", key: "AA/x", usd: 69.9, day: "2026-11-01" })], configured: new Set(), maxFestivals: 40 });
-    expect(broke.discover).toEqual([]);
+    // Upkeep spent to the last cent does not stop them: the money is set aside.
+    const upkeepGone = planFor(DAY, 100, countries, [line({ job: "verify", key: "AA/x", usd: 64.9, day: "2026-11-01" })]);
+    expect(upkeepGone.discover).toEqual(["BB", "DD"]);
+    // The discovery share spent: none runs, all wait.
+    const spent = planFor(DAY, 100, countries, [line({ key: "discover/ZZ", usd: 15, day: "2026-11-01" })]);
+    expect(spent.discover).toEqual([]);
   });
 
-  test("the monthly projection pays for a discovery per country every discover_every_days", () => {
-    const countries = [country("CO")];
-    const without = monthlyUpkeep(countries, config, settings.default_job_usd, DAY, 1);
-    const withDiscovery = monthlyUpkeep(countries, config, settings.default_job_usd, DAY, 1, 60);
-    expect(withDiscovery - without).toBeCloseTo((30 / 60) * settings.default_job_usd.discover, 6);
+  test("at US$20 a discovery costs more than a day of upkeep, and still runs, paced through the month", () => {
+    const many = ["AR", "BO", "CL", "CR", "CU", "DO", "EC", "GT", "HN", "HT", "MX", "NI", "PA", "PY", "SV", "UY", "VE", "BR", "CO", "PE", "PR"].map((cc) => live(cc, 5));
+    const first = planFor("2026-12-01", 20, many);
+    expect(first.budget.todayUpkeep).toBeLessThan(first.costs.discover);
+    expect(first.discover).toHaveLength(1);
+    // One discovery (US$0.70) on the 1st: the US$3 share's pace (US$0.10 a day) has not caught up on
+    // the 5th, so nothing runs; by the 8th it has, so the next one runs.
+    const ran = [line({ key: discoverKeyFor(first.discover[0]!), day: "2026-12-01", usd: 0.7 })];
+    expect(planFor("2026-12-05", 20, many, ran).discover).toEqual([]);
+    expect(planFor("2026-12-08", 20, many, ran).discover).toHaveLength(1);
+    // About four a month: each of the 21 countries is searched roughly every five months.
+    expect(first.projection.discoverCycleDays).toBe(Math.ceil((30 * 21 * first.costs.discover) / 3));
+  });
+
+  test("a bigger budget searches every country every discover_every_days", () => {
+    const plan = planFor("2026-12-01", 200, [country("CO")]);
+    expect(plan.projection.discoverCycleDays).toBe(settings.discover_every_days);
+    // Discovery is not part of the upkeep projection any more: it has its own money.
+    expect(plan.projection.monthlyUpkeep).toBeCloseTo(monthlyUpkeep([country("CO")], config, plan.costs, "2026-12-01", 1), 1);
   });
 });
 

@@ -1,5 +1,6 @@
 {
-  "new_country_share": 0.3,
+  "new_country_share": 0.2,
+  "discover_share": 0.15,
   "release_build_pool_days": 7,
   "max_builds_per_run": 2,
   "build_topups": 5,

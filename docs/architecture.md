@@ -206,9 +206,9 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   edition or date rule, an A or B source, not `hidden` by score, a free slug (else `<slug>-<city>`)
   and no new build-data problem. At most `discover_max_new` (3) join per run, best score first,
   each with a changelog entry `field: "festival"` (old `null`, new its Spanish name, its source
-  URLs). Planner band `discover` sits after `sweep-45`, at most `max_discover_per_run` (2) a day,
-  oldest look first (onboarding counts as one), then the country with fewest festivals; the
-  projection counts it. Skipped at 80% of the month (R10), like follow-ups. A retry build of a
+  URLs). Planner band `discover` sits after `sweep-45`, paid from the discovery pool (paced, see
+  Planner), at most `max_discover_per_run` (2) a day, oldest look first (onboarding counts as one),
+  then the country with fewest festivals. Skipped at 80% of the month (R10), like follow-ups. A retry build of a
   draft (`hasFile`) runs a discovery (job `build`) before its classification and top-ups, so a
   draft whose first festivals were solemn or undatable can still reach R2. Report:
   `proposals/discover-<cc>-<date>.json|md`; the pipeline summary lists `discovered` and the
@@ -226,9 +226,13 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   `build_topups` unclassified festivals are classified, and up to `build_topups` parties without a
   sourced date, nearest first (`topUpQueue`), are verified, all with job `build`; `readiness`
   decides `publicado`. Short of R2 → the request retries in `retry_days`.
-- Planner (`makePlan`, pure): pools from `config/pipeline.json` (`new_country_share` for builds,
-  the rest for upkeep spread over the days left; in the last `release_build_pool_days` both share
-  what is left, upkeep first). Cadence: `verifyInterval(daysToStart, settled, tier, stretch)` and
+- Planner (`makePlan`, pure): pools from `config/pipeline.json` (`new_country_share` 20% for
+  builds, `discover_share` 15% for discoveries, the rest for upkeep spread over the days left; in
+  the last `release_build_pool_days` all share what is left, upkeep first). The discovery pool is
+  paced: by the end of day d of an n-day month it may have spent d/n of itself (`todayDiscover`),
+  and a discovery starts while the pace owes anything, so one costing more than a day's slice
+  still runs (at US$20 a discovery costs more than a whole day of upkeep).
+  `projection.discoverCycleDays` says how often each live country gets searched. Cadence: `verifyInterval(daysToStart, settled, tier, stretch)` and
   `sweepInterval`; the last check per festival comes from the ledger (`lastDays`), so a check that
   found nothing is not repeated. Bands in priority order: `sweep-7`, `classify` (a live festival
   with `fiesta` or `viajeros` still null, at most every `CLASSIFY_RETRY_DAYS` = 30 days),
@@ -240,8 +244,8 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   returned: `{day, job, key, call, model, searches, input_tokens, output_tokens, usd}`; jobs
   `onboard`, `policy`, `build` (new-country pool) and `verify`, `followup`, `sweep`, `classify` (upkeep).
   `call: "carryover"` brings in a total from before the ledger. Fixture runs keep it in memory.
-  Job `discover` (upkeep) looks for new festivals in a live country; inside a retry build the
-  same call is recorded as `build`.
+  Job `discover` (its own pool, `spendByPool(...).discover`) looks for new festivals in a live
+  country; inside a retry build the same call is recorded as `build`.
 
 - `--classify` (2026-11-09): every unclassified festival (drafts included), or `--only` one even if
   classified. Prompts `classify-system.md` (with the level rules from config/scoring.json),
