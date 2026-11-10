@@ -135,6 +135,47 @@ export function dataProblems(countries: readonly Country[], policies: ReadonlyMa
   return problems;
 }
 
+/** public/data/world.json: what the first screen needs, in one file. */
+export interface WorldBundle {
+  generated_at: string;
+  countries: Country[];
+}
+
+/**
+ * The world and region views at tier 1 (the first screen most visitors see) need only the tier-1
+ * festivals, not every file of every country with one: 21 live countries meant 7 full files
+ * before the hero could paint. Each country with a tier-1 festival keeps those festivals, plus any
+ * festival their date rules or key events hang on (`relative_to`), so every date resolves exactly
+ * as from the full file; tier-1 festivals rank above the rest, so their ranks are the same too.
+ */
+export function worldBundle(index: Pick<PublicIndex, "generated_at" | "tier1">, countries: readonly Country[]): WorldBundle {
+  const wanted = new Map<string, Set<string>>();
+  for (const id of index.tier1) {
+    const [cc = "", slug = ""] = id.split("/");
+    wanted.set(cc, (wanted.get(cc) ?? new Set()).add(slug));
+  }
+  const out: Country[] = [];
+  for (const c of countries) {
+    const keep = wanted.get(c.country);
+    if (!keep) continue;
+    const bySlug = new Map(c.festivals.map((f) => [f.slug, f]));
+    const queue = [...keep];
+    while (queue.length) {
+      const f = bySlug.get(queue.pop()!);
+      if (!f) continue;
+      const rules = [f.rule, ...Object.values(f.editions).flatMap((e) => e.key_events.flatMap((k) => (k.rule ? [k.rule] : [])))];
+      for (const r of rules) {
+        if (r.type === "relative_to" && !keep.has(r.ref)) {
+          keep.add(r.ref);
+          queue.push(r.ref);
+        }
+      }
+    }
+    out.push({ ...c, festivals: c.festivals.filter((f) => keep.has(f.slug)) });
+  }
+  return { generated_at: index.generated_at, countries: out };
+}
+
 /** Changelog entries the site may show: only countries it serves (a draft's changes stay private). */
 export function publicChangelog(entries: readonly ChangelogEntry[], shown: ReadonlySet<string>): ChangelogEntry[] {
   return entries.filter((e) => shown.has(e.country));
@@ -203,7 +244,9 @@ if (isMain) {
 
   rmSync("public/data", { recursive: true, force: true });
   mkdirSync("public/data/countries", { recursive: true });
-  writeFileSync("public/data/index.json", JSON.stringify(buildIndex(countries, config, includeDrafts, policies, requests)));
+  const publicIndex = buildIndex(countries, config, includeDrafts, policies, requests);
+  writeFileSync("public/data/index.json", JSON.stringify(publicIndex));
+  writeFileSync("public/data/world.json", JSON.stringify(worldBundle(publicIndex, countries.filter((c) => c.status === "publicado" || includeDrafts))));
   const shown = new Set<string>();
   for (const c of countries) {
     if (c.status === "publicado" || includeDrafts) {

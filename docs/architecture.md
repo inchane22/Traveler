@@ -31,6 +31,12 @@ app and Node scripts import them. Relative imports keep the `.ts` extension (Nod
   so a country page can say where its build stands; an older index without it reads as `[]`.
 - `public/data/countries/<cc>.json`: the validated `CountryFile`, lowercase file name. The client
   computes scores with `config/scoring.json` (bundled via Vite JSON import).
+- `public/data/world.json` (2026-11-10): `{ generated_at, countries: CountryFile[] }` with only each
+  country's tier-1 festivals plus the ones their `relative_to` rules and key events hang on
+  (`worldBundle`). The world and region views at tier 1 read it in one request (`loadScope`, with a
+  separate entry cache so a country page never sees a trimmed list); with the Tier 2 switch, a
+  country, or the file missing, they load the country files. The build preloads exactly
+  `index.json` and `world.json` (vite.config.ts `dataPreloads`).
 - `public/data/changelog.json`: array of `ChangelogEntry`.
 - `public/calendars/<cc>.ics`, `<cc>.en.ics`, `<cc>.pt.ics`: per-country subscription feeds.
 - Drafts (`status: "borrador"`) are included only when `INCLUDE_DRAFTS=1` (`pnpm dev` sets it).
