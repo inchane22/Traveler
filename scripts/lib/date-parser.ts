@@ -198,34 +198,53 @@ interface Atom {
   next: number;
 }
 
-/** Day list then month: «6 al 9 de febrero de 2027», «6, 7 y 8 de febrero», «6-9 February 2027». */
+/**
+ * The rest of a day list from `j`: days joined by a range word («6 al 9», «9 y 10») or only by a
+ * comma, which is filler («22, 23 y 24»: the comma-joined days come out adjacent). Comma-joined
+ * days count only when a range word closes the list after them, unless `open` (a month that
+ * follows the list confirms it: «22, 23 de enero»). Without that, «March 5, 10 bands» would be a
+ * range.
+ */
+function dayRun(toks: Token[], first: number, j: number, open: boolean): { days: number[]; next: number } {
+  const days = [first];
+  let pending: number[] = [];
+  let closed = j;
+  for (;;) {
+    const tok = toks[j];
+    if (tok?.t === "range" && isDay(toks[j + 1])) {
+      days.push(...pending, (toks[j + 1] as { v: number }).v);
+      pending = [];
+      j += 2;
+      closed = j;
+    } else if (isDay(tok)) {
+      pending.push(tok.v);
+      j += 1;
+    } else break;
+  }
+  if (pending.length && open) return { days: [...days, ...pending], next: j };
+  return { days, next: closed };
+}
+
+/** Day list then month: «6 al 9 de febrero de 2027», «6, 7 y 8 de febrero», «22, 23 y 24 de enero», «6-9 February 2027». */
 function dayFirst(toks: Token[], i: number): Atom | null {
   if (!isDay(toks[i])) return null;
-  const days = [toks[i].v];
-  let j = i + 1;
-  while (toks[j]?.t === "range" && isDay(toks[j + 1])) {
-    days.push((toks[j + 1] as { v: number }).v);
-    j += 2;
-  }
+  const run = dayRun(toks, toks[i].v, i + 1, true);
+  let j = run.next;
   const month = toks[j];
   if (month?.t !== "month") return null;
   j += 1;
   const year = isYear(toks[j]) ? toks[j++] : undefined;
-  return { days, m: month.v, y: year ? (year as { v: number }).v : null, next: j };
+  return { days: run.days, m: month.v, y: year ? (year as { v: number }).v : null, next: j };
 }
 
-/** Month then day list: «February 6-9, 2027», «febrero 6 al 9 de 2027». */
+/** Month then day list: «February 6-9, 2027», «January 22, 23 and 24, 2027», «febrero 6 al 9 de 2027». */
 function monthFirst(toks: Token[], i: number): Atom | null {
   const month = toks[i];
   if (month?.t !== "month" || !isDay(toks[i + 1])) return null;
-  const days = [(toks[i + 1] as { v: number }).v];
-  let j = i + 2;
-  while (toks[j]?.t === "range" && isDay(toks[j + 1])) {
-    days.push((toks[j + 1] as { v: number }).v);
-    j += 2;
-  }
+  const run = dayRun(toks, (toks[i + 1] as { v: number }).v, i + 2, false);
+  let j = run.next;
   const year = isYear(toks[j]) ? toks[j++] : undefined;
-  return { days, m: month.v, y: year ? (year as { v: number }).v : null, next: j };
+  return { days: run.days, m: month.v, y: year ? (year as { v: number }).v : null, next: j };
 }
 
 function atomAt(toks: Token[], i: number): Atom | null {
