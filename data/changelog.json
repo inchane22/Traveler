@@ -835,5 +835,599 @@
     "old": null,
     "new": "tentativa",
     "source_urls": ["https://losmundosdemexico.com/parachicos-fiesta-grande-chiapa-de-corzo/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "lavagem-do-bonfim",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://saltur.salvador.ba.gov.br/lavagem-do-bonfim-sera-animada-por-49-grupos-musicais-blocos-e-agremiacoes/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "MX",
+    "slug": "fiesta-grande-chiapa-de-corzo",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://oem.com.mx/la-prensa/metropoli/fiesta-grande-de-chiapa-de-corzo-2026-maxima-expresion-cultural-reconocida-por-la-unesco-26474528"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "lavagem-do-bonfim",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.gov.br/turismo/pt-br/assuntos/noticias/lavagem-do-bonfim-une-turismoc-cultura-e-fe-em-salvador"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "carnaval-olinda",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://www.olinda.pe.gov.br/pitombeira-dos-quatro-cantos-arrasta-multidao-e-reverencia-o-cinema-brasileiro-no-carnaval-de-olinda/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "carnaval-olinda",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.olinda.pe.gov.br/noticias/apos-votacao-historica-olinda-conhece-os-homenageados-do-carnaval-2023"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "carnaval-salvador",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://agenciadenoticias.salvador.ba.gov.br/index.php/pt-br/releases-2/carnaval"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "carnaval-salvador",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.salvadordabahia.com/salvador-hoje/salvador-caminha-para-realizar-o-maior-carnaval-de-todos-os-tempos-em-2026/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "carnaval-rio-de-janeiro",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://prefeitura.rio/desenvolvimento-economico/carnaval-2026-deve-movimentar-r-59-bilhoes-na-economia-carioca/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "carnaval-rio-de-janeiro",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://prefeitura.rio/desenvolvimento-economico/carnaval-2026-deve-movimentar-r-59-bilhoes-na-economia-carioca/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "carnaval-recife",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://www2.recife.pe.gov.br/noticias/14/02/2018/recife-faz-o-maior-carnaval-de-rua-da-historia"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "carnaval-recife",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www2.recife.pe.gov.br/noticias/14/02/2025/recife-faz-contagem-regressiva-para-o-melhor-carnaval-de-rua-do-pais"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "MX",
+    "slug": "pasion-iztapalapa",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.excelsior.com.mx/ciudad-de-mexico/turistas-extranjeros-sorprenden-por-viacrucis-iztapalapa-cdmx"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "sao-joao-caruaru",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://caruaru.pe.gov.br/maratona-de-shows-prossegue-em-alta-no-patio-do-forro/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "sao-joao-caruaru",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.paginadepolicia.com.br/noticia/95171/caruaru-e-reconhecida-como-ldestino-turisticor-no-novo-mapa-do-turismo-brasileiro/amp"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "sao-joao-campina-grande",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://campinagrande.pb.gov.br/noite-de-feriado-atrai-milhares-de-visitantes-para-curtir-o-maior-sao-joao-do-mundo-mesmo-debaixo-de-chuva/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "sao-joao-campina-grande",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://campinagrande.pb.gov.br/o-maior-sao-joao-do-mundo-prefeitura-de-campina-grande-e-arte-producoes-confirmam-publico-de-mais-de-34-milhoes-de-pessoas-edicao-2026/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "bumba-meu-boi-sao-luis",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://www.saoluis.ma.gov.br/portal/noticias/0/3/3650/arraial-da-cidade-fortalece-turismo-e-cultura-ao-reunir-tradicao-maranhense-e-shows-nacionais"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "bumba-meu-boi-sao-luis",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.saoluis.ma.gov.br/portal/noticias/0/3/1683/publico-lota-segunda-noite-do-arraial-da-cidade-na-praca-maria-aragao"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "festival-parintins",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://cultura.am.gov.br/espacos-culturais/centros-culturais/centro-cultural-de-parintins-bumbodromo/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "MX",
+    "slug": "guelaguetza",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://guelaguetza.oaxaca.gob.mx/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BR",
+    "slug": "cirio-de-nazare",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://urbnews.com.br/2026/09/15/cirio-2026-belem-deve-receber-105-mil-turistas-e-movimentar-r-207-milhoes/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "MX",
+    "slug": "romeria-zapopan",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.zapopan.gob.mx/wp-content/uploads/2011/06/Espanol-PErfil.pdf"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "MX",
+    "slug": "dia-de-muertos-cdmx",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.gob.mx/sectur/articulos/mexico-celebra-sus-tradiciones-e-invita-a-descubrir-sus-destinos-en-dia-de-muertos"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://www.cali.gov.co/boletines/publicaciones/188451/la-cultura-que-une-miles-de-personas-vibraron-con-la-musica-del-pacifico-en-la-tercera-noche-de-concurso-del-petronio-alvarez/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "petronio-alvarez",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.elpais.com.co/cali/balance-positivo-del-petronio-alvarez-2024-llegaron-mas-de-36-mil-turistas-a-cali-2024.html"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://www.cartagena.gov.co/noticias/el-pri-pra-escucho-el-gran-desfile-independencia-cartagena"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "independencia-cartagena",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.cartagena.gov.co/noticias/bogota-alcaldia-cartagena-presento-ante-el-pais-agenda-oficial-fiestas-independencia-fiesta-que-nos-une"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.cali.gov.co/boletines/publicaciones/190709/feria-de-cali-dejaria-46-millones-de-dolares-en-la-economia-local/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "carnaval-riosucio",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://www.eltiempo.com/colombia/otras-ciudades/con-disfraces-polvora-matachines-y-oratoria-da-inicio-el-carnaval-del-diablo-en-riosucio-caldas-cual-es-el-origen-3414827"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "carnaval-riosucio",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://caldas.gov.co/index.php/prensa/noticias/2-uncategorised/1170-riosucio"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://carnavaldepasto.org/historia-del-carnaval-de-negros-y-blancos/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "negros-y-blancos",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://situr.narino.gov.co/eventos/carnaval-de-negros-y-blancos"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BO",
+    "slug": "carnaval-oruro",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.turismo.produccion.gob.bo/?p=10571"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://colombia.travel/en/blog/travel-magazine/carnival-barranquilla"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "carnaval-barranquilla",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://barranquilla.gov.co/desarrolloeconomico/barranquilla-cerro-un-carnaval-2026-historico-mas-de-6-millones-de-espectadores-hicieron-parte-de-esta-celebracion"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://satena.gov.co/usuario/modulo-prensa/noticia-cincuentaitres/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BO",
+    "slug": "gran-poder",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://eldeber.com.bo/pais/devocion-rico-folclore-bolivia-lucen-fiesta-patrimonial-gran-poder_1785617113"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BO",
+    "slug": "gran-poder",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://produccion.gob.bo/nota_prensa/bolivia-se-prepara-para-la-festividad-jesus-del-gran-poder-2025-celebracion-cultural-y-turistica-en-el-corazon-de-la-paz/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.medellin.gov.co/es/eventos/desfile-de-silleteros/"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BO",
+    "slug": "urkupina",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://bibliotecadigital.bcb.gob.bo/xmlui/bitstream/handle/123456789/4912/Los%20Tiempos%2012-08-2024.pdf?sequence=1&isAllowed=y"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "BO",
+    "slug": "chutillos-potosi",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.unesco.org/creativity/en/policy-monitoring-platform/protection-and-promotion-cultural-diversity-chutillos-festivity-san-bartolome-and-san-ignacio-de"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "san-pacho",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://www.mincultura.gov.co/direcciones/patrimonio-y-memoria/Documents/09-fiestas-de-san-francisco-de-asis-o-san-pacho-en-quibd0-PES.pdf"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "san-pacho",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://rap-pacifico.gov.co/wp-content/uploads/2022/10/FESTIVIDADES-EN-EL-PACIFICO-COLOMBIANO.pdf"]
+  },
+  {
+    "date": "2026-11-09",
+    "country": "CO",
+    "slug": "festival-tambores-palenque",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.radionacional.co/cultura/ferias-y-fiestas/asi-fue-el-festival-de-tambores-en-san-basilio-de-palenque-2023"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "CO",
+    "slug": "feria-de-cali",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://www.cali.gov.co/boletines/publicaciones/190725/todo-listo-para-el-salsodromo-a-las-200-pm-se-abriran-las-graderias-para-el-inicio-de-la-feria-de-cali/"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "MX",
+    "slug": "fiesta-grande-chiapa-de-corzo",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://www.patrimoniomundialmexico.inah.gob.mx/publico/listado_elementos_detalle.php?idLista=OA%3D%3D"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "PE",
+    "slug": "candelaria-puno",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://turismo.munipuno.gob.pe/festividad-de-la-virgen-de-la-candelaria/"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "PE",
+    "slug": "candelaria-puno",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.radionacional.gob.pe/noticias/cultural/festividad-de-la-virgen-de-la-candelaria-genero-un-impacto-economico-mayor-a-s117-millones"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "PE",
+    "slug": "carnaval-cajamarca",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://andina.pe/agencia/noticia-carnaval-cajamarca-alegria-desbordante-durante-desfile-patrullas-y-comparsas-929823.aspx"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "PE",
+    "slug": "carnaval-cajamarca",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://www.gob.pe/institucion/mincetur/noticias/1362733-mincetur-carnaval-de-cajamarca-2026-genero-un-impacto-economico-de-s-75-millones-y-atrajo-a-cerca-de-80-mil-turistas"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "BO",
+    "slug": "carnaval-oruro",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://sas-space.sas.ac.uk/6078/1/08%20Chapter%203.pdf"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "MX",
+    "slug": "pasion-iztapalapa",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "solemne",
+    "source_urls": ["https://lugares.inah.gob.mx/en/node/6409"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "CO",
+    "slug": "festival-vallenato",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_abierto",
+    "source_urls": ["https://colombia.travel/en/blog/three-experiences-enjoy-vallenato-festival"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "PE",
+    "slug": "inti-raymi",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://www.gob.pe/institucion/mincetur/noticias/1369092-presentan-fiestas-del-cusco-e-inti-raymi-2026-que-impulsara-turismo-nacional-e-internacional"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "PE",
+    "slug": "inti-raymi",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "internacional",
+    "source_urls": ["https://www.gob.pe/institucion/mincetur/noticias/790720-festividades-por-el-inti-raymi-generaron-un-impacto-economico-de-s-33-millones"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "BR",
+    "slug": "festival-parintins",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://parintins.am.gov.br/noticia/primeira-noite-do-festival-de-parintins-celebra-a-cultura-amazonica-e-emociona-publico-no-bumbodromo"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "MX",
+    "slug": "guelaguetza",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://www.oaxaca.gob.mx/comunicacion/artesanias-mezcal-conciertos-bailes-y-danzas-daran-realce-a-la-guelaguetza-2023/"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "CO",
+    "slug": "feria-de-las-flores",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://www.medellin.gov.co/es/sala-de-prensa/noticias/cada-rincon-de-medellin-volvio-a-florecer-con-una-programacion-80-publica-en-la-feria-de-las-flores/"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "BO",
+    "slug": "urkupina",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "baile_y_show",
+    "source_urls": ["https://bibliotecadigital.bcb.gob.bo/xmlui/bitstream/handle/123456789/4912/Los%20Tiempos%2012-08-2024.pdf?sequence=1&isAllowed=y"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "BO",
+    "slug": "chutillos-potosi",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://www.unesco.org/creativity/en/policy-monitoring-platform/protection-and-promotion-cultural-diversity-chutillos-festivity-san-bartolome-and-san-ignacio-de"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "PE",
+    "slug": "senor-de-los-milagros",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "solemne",
+    "source_urls": ["https://www.peru.travel/events/lord-of-miracles"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "PE",
+    "slug": "senor-de-los-milagros",
+    "field": "score.viajeros",
+    "old": null,
+    "new": "nacional",
+    "source_urls": ["https://alicia.concytec.gob.pe/vufind/Record/ULAS_8f9dbd04d9853e0ba09096ce2b8809ae"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "CO",
+    "slug": "festival-tambores-palenque",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "show",
+    "source_urls": ["https://colombia.travel/en/blog/community-tourism/san-basilio-de-palenque-colombia"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "BR",
+    "slug": "cirio-de-nazare",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "solemne",
+    "source_urls": ["https://www.ciriodenazare.com.br/cirio/procissoes"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "MX",
+    "slug": "romeria-zapopan",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "solemne",
+    "source_urls": ["https://www.zapopan.gob.mx/v3/ciudad/fiestas-y-tradiciones"]
+  },
+  {
+    "date": "2026-11-10",
+    "country": "MX",
+    "slug": "dia-de-muertos-cdmx",
+    "field": "score.fiesta",
+    "old": null,
+    "new": "solemne",
+    "source_urls": ["https://mexicocity.cdmx.gob.mx/tag/muertos/?lang=en"]
   }
 ]
