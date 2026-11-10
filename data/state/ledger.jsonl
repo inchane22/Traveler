@@ -141,3 +141,7 @@
 {"day":"2026-11-10","job":"classify","key":"MX/romeria-zapopan","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":2445,"output_tokens":1341,"usd":0.015764}
 {"day":"2026-11-10","job":"classify","key":"MX/dia-de-muertos-cdmx","call":"research","model":"claude-sonnet-5-5","searches":3,"input_tokens":40329,"output_tokens":1208,"usd":0.125872}
 {"day":"2026-11-10","job":"classify","key":"MX/dia-de-muertos-cdmx","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":3053,"output_tokens":1551,"usd":0.01908}
+{"day":"2026-11-10","job":"sweep","key":"CO/feria-de-cali","call":"research","model":"claude-sonnet-5-5","searches":5,"input_tokens":107730,"output_tokens":2323,"usd":0.226982}
+{"day":"2026-11-10","job":"sweep","key":"CO/feria-de-cali","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":3420,"output_tokens":1255,"usd":0.0202}
+{"day":"2026-11-10","job":"discover","key":"discover/DO","call":"research","model":"claude-sonnet-5-5","searches":8,"input_tokens":156160,"output_tokens":7125,"usd":0.393323}
+{"day":"2026-11-10","job":"discover","key":"discover/PE","call":"research","model":"claude-sonnet-5-5","searches":8,"input_tokens":183871,"output_tokens":9886,"usd":0.452073}

@@ -86,9 +86,10 @@
           "key_events": [],
           "sources": [
             { "url": "https://www.cali.gov.co/publicaciones/193104/cali-la-ciudad-de-los-grandes-eventos-se-prepara-para-vivir-un-segundo-semestre-historico/", "publisher": "Alcaldía de Santiago de Cali", "accessed": "2026-10-26", "tier": "A", "quote": "25 al 30 de diciembre" },
-            { "url": "https://www.lafm.com.co/actualidad/feria-de-cali-si-se-realizara-pese-al-terremoto-alcalde-alejandro-eder-confirmo-el-evento-408792", "publisher": "La FM", "accessed": "2026-10-26", "tier": "B", "quote": "confirmó este lunes que la Feria de Cali se realizará en diciembre de 2026, pese a la emergencia" }
+            { "url": "https://www.lafm.com.co/actualidad/feria-de-cali-si-se-realizara-pese-al-terremoto-alcalde-alejandro-eder-confirmo-el-evento-408792", "publisher": "La FM", "accessed": "2026-10-26", "tier": "B", "quote": "confirmó este lunes que la Feria de Cali se realizará en diciembre de 2026, pese a la emergencia" },
+            { "url": "https://www.cali.gov.co/boletines/publicaciones/193104/cali-la-ciudad-de-los-grandes-eventos-se-prepara-para-vivir-un-segundo-semestre-historico/", "publisher": "cali.gov.co", "accessed": "2026-11-10", "tier": "A", "quote": "25 al 30 de diciembre — Feria de Cali: gran escenario de fiesta, salsa y cultura que cierra la Agenda Viva 2026 como pilar estratégico de la economía" }
           ],
-          "last_verified": "2026-10-26",
+          "last_verified": "2026-11-10",
           "sequence": 0,
           "note": { "es": "Fechas de la agenda oficial de la Alcaldía, publicada el 24 de junio, antes del sismo del 10 de agosto; tras el sismo, el alcalde confirmó la Feria para diciembre. Programa diario pendiente.", "en": "Dates from City Hall's official agenda, published on June 24, before the August 10 earthquake; after the earthquake, the mayor confirmed the Feria for December. Daily program pending.", "pt": "Datas da agenda oficial da Prefeitura, publicada em 24 de junho, antes do terremoto de 10 de agosto; depois do terremoto, o prefeito confirmou a Feira para dezembro. Programação diária pendente." }
         }
