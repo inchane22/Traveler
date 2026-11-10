@@ -203,7 +203,7 @@ interface Atom {
  * comma, which is filler («22, 23 y 24»: the comma-joined days come out adjacent). Comma-joined
  * days count only when a range word closes the list after them, unless `open` (a month that
  * follows the list confirms it: «22, 23 de enero»). Without that, «March 5, 10 bands» would be a
- * range.
+ * range. They must also climb: in «durante 10 días, del 9 al 18 de octubre» the 10 is a count.
  */
 function dayRun(toks: Token[], first: number, j: number, open: boolean): { days: number[]; next: number } {
   const days = [first];
@@ -216,7 +216,7 @@ function dayRun(toks: Token[], first: number, j: number, open: boolean): { days:
       pending = [];
       j += 2;
       closed = j;
-    } else if (isDay(tok)) {
+    } else if (isDay(tok) && tok.v > (pending.at(-1) ?? days.at(-1)!)) {
       pending.push(tok.v);
       j += 1;
     } else break;

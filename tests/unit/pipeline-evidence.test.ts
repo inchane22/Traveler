@@ -182,6 +182,11 @@ describe("date parser (R3)", () => {
     expect(quoteStatesDate("On March 5, 10 bands will play", "en", "2027-03-10", "end")).toBe(false);
     expect(quoteStatesDate("On March 5, 10 bands will play", "en", "2027-03-05", "end")).toBe(true);
     expect(quoteStatesDate("el 14 de febrero, 15 comparsas desfilan", "es", "2027-02-15", "end")).toBe(false);
+    // A count before the range is not its first day (Carnaval de Limón 2026).
+    const limon = "se tomarán el cantón central de Limón durante 10 días, del 9 al 18 de octubre, con una agenda cargada";
+    expect(quoteStatesDate(limon, "es", "2026-10-09", "start")).toBe(true);
+    expect(quoteStatesDate(limon, "es", "2026-10-18", "end")).toBe(true);
+    expect(quoteStatesDate(limon, "es", "2026-10-10", "start")).toBe(false);
   });
 
   test("the language matters: an English quote read as Spanish states nothing", () => {
