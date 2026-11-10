@@ -69,10 +69,13 @@ export function replayTransport(fixtures: ReadonlyMap<string, FixtureSet> | Reco
   };
 }
 
-/** Fixture file for a key: `<dir>/<cc>/<slug>.json` or `<dir>/onboard/<cc>.json` (lowercase). */
+/** Countries' own calls: `onboard/<CC>`, `discover/<CC>`; their fixtures sit in `<dir>/<job>/<cc>.json`. */
+const COUNTRY_CALLS = new Set(["onboard", "discover"]);
+
+/** Fixture file for a key: `<dir>/<cc>/<slug>.json`, `<dir>/onboard/<cc>.json` or `<dir>/discover/<cc>.json` (lowercase). */
 export function fixturePath(dir: string, key: string): string {
   const [head = "", tail = ""] = key.split("/");
-  return head === "onboard" ? join(dir, "onboard", `${tail.toLowerCase()}.json`) : join(dir, head.toLowerCase(), `${tail}.json`);
+  return COUNTRY_CALLS.has(head) ? join(dir, head, `${tail.toLowerCase()}.json`) : join(dir, head.toLowerCase(), `${tail}.json`);
 }
 
 /** Recorded file shape. `_note` documents the fixture and is ignored. */

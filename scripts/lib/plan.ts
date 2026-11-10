@@ -6,6 +6,9 @@
 // nothing still counts and is not repeated tomorrow. The money: a share of the month is set aside
 // for new countries; upkeep gets the rest, spread evenly over the days left, highest priority
 // first. Whatever does not fit today is simply still due tomorrow.
+//
+// The calendar also grows by itself: every `discover_every_days` each live country gets a
+// discovery (discover-run.ts) that looks for parties its file does not have yet.
 import { addMonths, diffDays, effectiveStart, type ISO } from "../../src/dates.ts";
 import { buildEntries, isPendingPostponement } from "../../src/festivals.ts";
 import type { CountryFile } from "../../src/schema.ts";
@@ -25,17 +28,28 @@ export interface PipelineSettings {
   build_topups: number;
   max_build_attempts: number;
   retry_days: number;
+  /** Countries the pipeline builds without being asked (all of Latin America). */
+  coverage?: string[];
+  /** Days before a coverage country that was given up on is asked for again. */
+  coverage_retry_days?: number;
+  /** Days between two discoveries of new festivals in one live country. */
+  discover_every_days: number;
+  /** Most festivals one discovery adds. */
+  discover_max_new: number;
+  /** Most discoveries in one run. */
+  max_discover_per_run: number;
   /** What a job costs until the ledger has real numbers. */
   default_job_usd: Record<Job, number>;
 }
 
-export type Band = "sweep-7" | "classify" | "verify-45" | "sweep-45" | "verify-120" | "verify-180" | "verify-far";
+export type Band = "sweep-7" | "classify" | "verify-45" | "sweep-45" | "discover" | "verify-120" | "verify-180" | "verify-far";
 
 /**
- * Priority order; builds sit between `sweep-45` and `verify-120` (their own money). Classifying
- * comes right after the last-week sweeps: it decides whether a festival is listed at all.
+ * Priority order; builds sit between `discover` and `verify-120` (their own money). Classifying
+ * comes right after the last-week sweeps: it decides whether a festival is listed at all. Finding
+ * new festivals comes before re-checking dates that are months away.
  */
-export const BANDS: readonly Band[] = ["sweep-7", "classify", "verify-45", "sweep-45", "verify-120", "verify-180", "verify-far"];
+export const BANDS: readonly Band[] = ["sweep-7", "classify", "verify-45", "sweep-45", "discover", "verify-120", "verify-180", "verify-far"];
 
 /** Days before an unclassified festival is asked about again after a classification that found nothing. */
 export const CLASSIFY_RETRY_DAYS = 30;
@@ -113,10 +127,12 @@ export interface Plan {
   /** Festivals of live countries still unclassified (is it a party, where its crowd comes from). */
   classify: QueueItem[];
   verify: QueueItem[];
+  /** Live countries whose discovery of new festivals is due and fits today. */
+  discover: string[];
   builds: PlannedBuild[];
   waiting: Array<{ country: string; reason: "budget" | "per_run_limit"; estimate: number; until: ISO }>;
-  /** Due today but over today's share; still due tomorrow. */
-  deferred: Array<{ country: string; slug: string; band: Band }>;
+  /** Due today but over today's share; still due tomorrow. A discovery has no slug. */
+  deferred: Array<{ country: string; slug?: string; band: Band }>;
   /**
    * Full-cadence upkeep for the live countries, and the stretch applied beyond 45 days so it fits
    * the upkeep share (1 = full cadence, MAX_STRETCH = the most it slows down).
@@ -255,6 +271,24 @@ export function dueToday(countries: readonly CountryFile[], config: ScoringConfi
   );
 }
 
+/** Ledger key of a country's discovery. */
+export const discoverKey = (cc: string): string => `discover/${cc.toUpperCase()}`;
+
+/**
+ * Live countries whose discovery is due: never looked for new festivals (onboarding counts as a
+ * look), or not for `everyDays`. Longest wait first, then the country with fewest festivals.
+ */
+export function discoverDue(countries: readonly CountryFile[], ledger: readonly LedgerEntry[], today: ISO, everyDays: number): string[] {
+  const looked = lastDays(ledger, new Set<Job>(["discover", "build", "onboard"]));
+  const lastLook = (cc: string): string | null => [looked.get(discoverKey(cc)), looked.get(`onboard/${cc}`)].filter((d): d is string => !!d).sort().at(-1) ?? null;
+  return countries
+    .filter((c) => c.status === "publicado")
+    .map((c) => ({ cc: c.country, last: lastLook(c.country), size: c.festivals.length }))
+    .filter((c) => !c.last || diffDays(c.last, today) >= everyDays)
+    .sort((a, b) => (a.last ?? "").localeCompare(b.last ?? "") || a.size - b.size || a.cc.localeCompare(b.cc))
+    .map((c) => c.cc);
+}
+
 /** Checks a festival gets in 30 days at a given stretch, sweeps included. */
 function checksPerMonth(daysToStart: number, settled: boolean, tier: unknown, stretch: number): { verify: number; sweep: number } {
   const verify = 30 / verifyInterval(daysToStart, settled, tier, stretch);
@@ -267,10 +301,12 @@ function checksPerMonth(daysToStart: number, settled: boolean, tier: unknown, st
 /** A verification costs its own job plus, now and then, a follow-up search for missing dates. */
 export const verifyCost = (costs: Record<Job, number>): number => costs.verify + costs.followup * 0.3;
 
-export function monthlyUpkeep(countries: readonly CountryFile[], config: ScoringConfig, costs: Record<Job, number>, today: ISO, stretch: number): number {
+/** Full-cadence upkeep a month: every check and sweep, plus a discovery per country every `discoverEvery` days. */
+export function monthlyUpkeep(countries: readonly CountryFile[], config: ScoringConfig, costs: Record<Job, number>, today: ISO, stretch: number, discoverEvery?: number): number {
   let monthly = 0;
   for (const country of countries) {
     if (country.status !== "publicado") continue;
+    if (discoverEvery) monthly += (30 / discoverEvery) * costs.discover;
     for (const entry of buildEntries(country, config, today)) {
       const occ = entry.occurrence;
       const daysToStart = occ ? diffDays(today, effectiveStart(occ)) : Number.POSITIVE_INFINITY;
@@ -282,18 +318,21 @@ export function monthlyUpkeep(countries: readonly CountryFile[], config: Scoring
 }
 
 /** Full-cadence cost, and the smallest stretch (in quarter steps) that fits the upkeep share. */
-export function projection(countries: readonly CountryFile[], config: ScoringConfig, costs: Record<Job, number>, today: ISO, upkeepPool: number): Plan["projection"] {
+export function projection(countries: readonly CountryFile[], config: ScoringConfig, costs: Record<Job, number>, today: ISO, upkeepPool: number, discoverEvery?: number): Plan["projection"] {
   const live = countries.filter((c) => c.status === "publicado").length;
-  const full = monthlyUpkeep(countries, config, costs, today, 1);
+  const full = monthlyUpkeep(countries, config, costs, today, 1, discoverEvery);
   let stretch = 1;
-  while (stretch < MAX_STRETCH && monthlyUpkeep(countries, config, costs, today, stretch) > upkeepPool) stretch += 0.25;
+  while (stretch < MAX_STRETCH && monthlyUpkeep(countries, config, costs, today, stretch, discoverEvery) > upkeepPool) stretch += 0.25;
   const perCountry = live ? full / live : 0;
   return { monthlyUpkeep: round2(full), perCountry: round2(perCountry), countriesSupported: perCountry > 0 ? Math.floor(upkeepPool / perCountry) : null, stretch };
 }
 
-/** A build: its source policy, the onboarding, then up to `build_topups` classifications and date top-ups. */
+/**
+ * A build: its source policy, the onboarding (or, for a draft that fell short before, a discovery
+ * of festivals it does not have yet), then up to `build_topups` classifications and date top-ups.
+ */
 export function buildEstimate(costs: Record<Job, number>, settings: PipelineSettings, hasFile: boolean, needsPolicy: boolean): number {
-  return round2((needsPolicy ? costs.policy : 0) + (hasFile ? 0 : costs.onboard) + settings.build_topups * (costs.build + costs.classify));
+  return round2((needsPolicy ? costs.policy : 0) + (hasFile ? costs.discover : costs.onboard) + settings.build_topups * (costs.build + costs.classify));
 }
 
 export function makePlan(input: PlanInput): Plan {
@@ -304,15 +343,31 @@ export function makePlan(input: PlanInput): Plan {
   const nextMonth = addMonths(`${month}-01`, 1);
 
   // Upkeep: highest band first; the last-week sweeps go even past today's share while money is left.
-  const proj = projection(input.countries, input.config, costs, today, budget.upkeepPool);
+  const proj = projection(input.countries, input.config, costs, today, budget.upkeepPool, settings.discover_every_days);
   let todayLeft = budget.todayUpkeep;
   let monthLeft = budget.upkeepLeft;
   const sweep: QueueItem[] = [];
   const classify: QueueItem[] = [];
   const verify: QueueItem[] = [];
+  const discover: string[] = [];
   const deferred: Plan["deferred"] = [];
   const queues = { sweep, classify, verify };
-  for (const due of dueToday(input.countries, input.config, input.ledger, today, proj.stretch)) {
+  type Work = Due | { band: "discover"; kind: "discover"; country: string };
+  const discoveries: Work[] = discoverDue(input.countries, input.ledger, today, settings.discover_every_days).map((country) => ({ band: "discover", kind: "discover", country }));
+  // Stable sort: each band keeps its own order (dueToday's, then discoverDue's).
+  const work: Work[] = [...dueToday(input.countries, input.config, input.ledger, today, proj.stretch), ...discoveries].sort((a, b) => BANDS.indexOf(a.band) - BANDS.indexOf(b.band));
+  for (const due of work) {
+    if (due.kind === "discover") {
+      const fits = costs.discover <= monthLeft && costs.discover <= todayLeft && discover.length < settings.max_discover_per_run;
+      if (!fits) {
+        deferred.push({ country: due.country, band: due.band });
+        continue;
+      }
+      monthLeft -= costs.discover;
+      todayLeft -= costs.discover;
+      discover.push(due.country);
+      continue;
+    }
     const cost = due.kind === "sweep" ? costs.sweep : due.kind === "classify" ? costs.classify : verifyCost(costs);
     const urgent = due.band === "sweep-7";
     const fits = cost <= monthLeft && (urgent || cost <= todayLeft) && (due.kind === "sweep" || queues[due.kind].length < input.maxFestivals);
@@ -356,6 +411,7 @@ export function makePlan(input: PlanInput): Plan {
     sweep,
     classify,
     verify,
+    discover,
     builds,
     waiting,
     deferred,

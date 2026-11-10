@@ -54,7 +54,7 @@ describe("locale files", () => {
       ...["1", "2", "provisional", "hidden"].map((t) => `tier.${t}`),
       ...["solid", "hatched", "window"].map((m) => `timeline.pattern.${m}`),
       // Changelog fields and parts in words (Sobre los datos), never the raw field ids.
-      ...["start", "end", "status", "confidence", "note"].map((f) => `log.field.${f}`),
+      ...["start", "end", "status", "confidence", "note", "festival"].map((f) => `log.field.${f}`),
       ...["confidence", "source", "note", "qualifier", "unit", "year"].map((p) => `log.part.${p}`),
       ...["exact", "about", "more_than"].map((q) => `log.qualifier.${q}`),
       // Static offline page emitted by vite.config.ts.

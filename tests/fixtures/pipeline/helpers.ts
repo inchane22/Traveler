@@ -53,11 +53,24 @@ function removeAfterTest(dir: string): void {
   }
 }
 
-/** Copy of config/ and data/ in a temp dir, removed after the test. `countries` limits which country files are copied. */
-export function tempRepo(opts: { countries?: readonly string[] } = {}): string {
+/**
+ * config/pipeline.json as the pipeline suites see it unless a test says otherwise: no coverage
+ * countries and no discovery, so a test about requests or checks is not also building Latin America
+ * or looking for new festivals. Tests of those set them through `tempRepo({ pipeline })`.
+ */
+export const QUIET_PIPELINE = { coverage: [] as string[], max_discover_per_run: 0 };
+
+/**
+ * Copy of config/ and data/ in a temp dir, removed after the test. `countries` limits which country
+ * files are copied; `pipeline` overrides config/pipeline.json on top of QUIET_PIPELINE.
+ */
+export function tempRepo(opts: { countries?: readonly string[]; pipeline?: Record<string, unknown> } = {}): string {
   const root = mkdtempSync(join(tmpdir(), "traveler-pipeline-"));
   removeAfterTest(root);
   cpSync(join(REPO, "config"), join(root, "config"), { recursive: true });
+  const settingsPath = join(root, "config", "pipeline.json");
+  const settings = JSON.parse(readFileSync(settingsPath, "utf8")) as Record<string, unknown>;
+  writeFileSync(settingsPath, `${JSON.stringify({ ...settings, ...QUIET_PIPELINE, ...opts.pipeline }, null, 2)}\n`);
   mkdirSync(join(root, "data", "countries"), { recursive: true });
   for (const cc of opts.countries ?? ["bo", "co", "pe"]) {
     cpSync(join(SITE_DATA, "countries", `${cc}.json`), join(root, "data", "countries", `${cc}.json`));

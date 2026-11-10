@@ -9,9 +9,10 @@ import { ISODate } from "../../src/schema.ts";
 /**
  * What a call was for. `onboard` and `policy` start a new country, `build` classifies and tops up
  * its dates before it goes live; the others keep published countries fresh (`classify` decides
- * once whether a festival is a party and where its crowd comes from).
+ * once whether a festival is a party and where its crowd comes from, `discover` looks for parties
+ * a live country's file does not have yet).
  */
-export const Job = z.enum(["onboard", "policy", "build", "verify", "followup", "sweep", "classify"]);
+export const Job = z.enum(["onboard", "policy", "build", "verify", "followup", "sweep", "classify", "discover"]);
 export type Job = z.infer<typeof Job>;
 
 /** Jobs paid from the share of the budget set aside for new countries. */
@@ -21,7 +22,7 @@ export const LedgerEntry = z
   .object({
     day: ISODate,
     job: Job,
-    /** `CO/carnaval-barranquilla` for a festival, `onboard/PE` or `policy/PE` for a country. */
+    /** `CO/carnaval-barranquilla` for a festival, `onboard/PE`, `policy/PE` or `discover/PE` for a country. */
     key: z.string().min(1),
     /** `carryover` is a total brought in from before the ledger existed. */
     call: z.enum(["research", "extract", "carryover"]),

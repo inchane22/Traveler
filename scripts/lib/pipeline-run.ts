@@ -1,5 +1,6 @@
-// The daily pipeline (pipeline.yml): intake → publish ready drafts → plan → news sweeps → builds →
-// verification → holds → state files and a summary. Accepted changes are applied by the checks
+// The daily pipeline (pipeline.yml): intake (plus the coverage countries nobody had to ask for) →
+// publish ready drafts → plan → news sweeps → classification → discovery of new festivals → builds
+// → verification → holds → state files and a summary. Accepted changes are applied by the checks
 // alone; pipeline.yml commits the result straight to main and the site deploys once CI is green.
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -13,9 +14,10 @@ import { BudgetExceededError, createBudgetGuard, levelOf, type UsageStore } from
 import type { MessagesTransport } from "./client.ts";
 import { loadDomainPolicy, tierOf, type DomainPolicy } from "./domains.ts";
 import { mergeHolds, readHolds, renderHolds, writeHolds } from "./holds.ts";
+import { runDiscover, type DiscoveredFestival } from "./discover-run.ts";
 import { appendGithubOutput, readJson, writeJson, writeText, type Logger } from "./io.ts";
 import { countryInfo } from "./lang.ts";
-import { monthsOf, type LedgerEntry } from "./ledger.ts";
+import { monthsOf, type Job, type LedgerEntry } from "./ledger.ts";
 import type { LinkVerdict } from "./links.ts";
 import { mdText } from "./markdown.ts";
 import { runOnboard } from "./onboard-run.ts";
@@ -25,7 +27,7 @@ import { candidates, classifyCandidates, compareItems, type QueueItem } from "./
 import { runRefresh, type RefreshOptions } from "./refresh-run.ts";
 import type { RefreshReport } from "./report.ts";
 import { fieldLabel } from "./report.ts";
-import { nextRequest, readRequests, upsertRequest, writeRequests, type CountryRequest, type RequestEvent } from "./requests.ts";
+import { coverageDue, nextRequest, readRequests, upsertRequest, writeRequests, type CountryRequest, type RequestEvent } from "./requests.ts";
 import { draftSourcePolicy, hasPolicyFiles } from "./source-policy.ts";
 import type { ReviewedChange } from "./validate.ts";
 
@@ -76,8 +78,12 @@ export interface PipelineSummary {
   date: ISO;
   plan_only: boolean;
   intake: { country: string; accepted: boolean; reason?: string } | null;
+  /** Coverage countries the pipeline queued by itself this run. */
+  covered: string[];
   published: string[];
   builds: BuildLog[];
+  /** Festivals new on the calendar this run (discovery, and retry builds looking for more). */
+  discovered: DiscoveredFestival[];
   applied: ReviewedChange[];
   confirmations: number;
   flagged: ReviewedChange[];
@@ -159,8 +165,25 @@ interface RunContext {
   settings: PipelineSettings;
   config: ScoringConfig;
   reports: RefreshReport[];
+  discovered: DiscoveredFestival[];
   stopped: string[];
   exitCodes: number[];
+}
+
+/** One discovery of new festivals in a country; what it added goes to the run summary. */
+async function discoverBatch(ctx: RunContext, cc: string, job: Job): Promise<void> {
+  const { opts, deps, settings } = ctx;
+  const result = await runDiscover(
+    { root: opts.root, country: cc, today: opts.today, model: opts.model, budgetUsd: opts.budgetUsd, maxNew: settings.discover_max_new, job },
+    { transport: deps.transport, usage: deps.usage, log: deps.log, archiver: deps.archiver },
+  );
+  if (result.report) ctx.discovered.push(...result.report.added);
+  // A discovery that found nothing usable is not a failed run: the next one tries again. Only the
+  // budget stop counts, like any batch's.
+  if (result.stopped) {
+    ctx.stopped.push(result.stopped);
+    ctx.exitCodes.push(1);
+  }
 }
 
 async function refreshBatch(ctx: RunContext, queue: readonly QueueItem[], extra: Partial<RefreshOptions> & { reportName: string }): Promise<void> {
@@ -207,7 +230,12 @@ async function buildCountry(ctx: RunContext, b: PlannedBuild): Promise<{ log: Bu
     }
   }
 
-  if (!readCountry(opts.root, cc)) {
+  if (b.hasFile && readCountry(opts.root, cc)) {
+    // A retry: re-checking the same festivals fell short before, so first look for parties the
+    // draft does not have yet (MX's first draft was mostly solemn acts).
+    await discoverBatch(ctx, cc, "build");
+    if (overBudget() && ctx.stopped.length) return error("R10: monthly budget reached during the build");
+  } else if (!readCountry(opts.root, cc)) {
     const onboarded = await runOnboard(
       { root: opts.root, country: cc, dryRun: false, today: opts.today, model: opts.model, budgetUsd: opts.budgetUsd },
       { transport: deps.transport, usage: deps.usage, log: deps.log, archiver: deps.archiver },
@@ -271,9 +299,17 @@ function changeLine(c: ReviewedChange): string {
 
 /** First line under 72 characters; the body lists every change and source (git log is the audit trail). */
 export function commitMessage(s: PipelineSummary): string {
-  const bits = [`${s.applied.length} applied`, ...(s.flagged.length ? [`${s.flagged.length} held`] : []), ...s.builds.filter((b) => b.outcome === "live").map((b) => `${b.country} live`), ...s.published.map((c) => `${c} live`)];
+  const discovered = s.discovered ?? [];
+  const bits = [
+    `${s.applied.length} applied`,
+    ...(discovered.length ? [`${discovered.length} new`] : []),
+    ...(s.flagged.length ? [`${s.flagged.length} held`] : []),
+    ...s.builds.filter((b) => b.outcome === "live").map((b) => `${b.country} live`),
+    ...s.published.map((c) => `${c} live`),
+  ];
   const head = `chore(data): pipeline ${s.date} · ${bits.join(" · ")}`.slice(0, 100);
   const body: string[] = [];
+  if (discovered.length) body.push("New on the calendar (discovery; each with a cited party level and a dated or ruled A/B source):", ...discovered.map((f) => `- ${f.country} ${f.slug}: ${f.name}, ${f.city}${f.sources[0] ? ` (${f.sources[0]})` : ""}`));
   if (s.applied.length) body.push("Applied by the checks (no human review):", ...s.applied.map(changeLine));
   if (s.confirmations) body.push(`Confirmed: ${s.confirmations} field(s) re-verified.`);
   if (s.flagged.length) body.push("Held (data/state/holds.json):", ...s.flagged.map(changeLine));
@@ -292,14 +328,16 @@ export function renderSummary(plan: Plan, s: PipelineSummary): string {
       ? `Budget ${plan.month}: US$${(b.spentUpkeep + b.spentBuild).toFixed(2)} spent before this run of US$${b.total.toFixed(2)} (upkeep US$${b.spentUpkeep.toFixed(2)}, new countries US$${b.spentBuild.toFixed(2)}). Last days of the month: both share the US$${b.upkeepLeft.toFixed(2)} left, upkeep first. Today's upkeep share: US$${b.todayUpkeep.toFixed(2)} over ${b.daysLeft} day(s) left.`
       : `Budget ${plan.month}: US$${(b.spentUpkeep + b.spentBuild).toFixed(2)} spent before this run of US$${b.total.toFixed(2)}; upkeep US$${b.spentUpkeep.toFixed(2)} of US$${b.upkeepPool.toFixed(2)}, new countries US$${b.spentBuild.toFixed(2)} of US$${b.buildPool.toFixed(2)}. Today's upkeep share: US$${b.todayUpkeep.toFixed(2)} over ${b.daysLeft} day(s) left.`,
     `Cost per job used: ${Object.entries(plan.costs).map(([k, v]) => `${k} US$${v.toFixed(2)}`).join(", ")}.`,
-    `Planned: ${plan.sweep.length} news sweep(s), ${plan.classify.length} classification(s), ${plan.verify.length} verification(s), ${plan.builds.length} build(s)${plan.deferred.length ? `; ${plan.deferred.length} due festival(s) wait for another day` : ""}.`,
+    `Planned: ${plan.sweep.length} news sweep(s), ${plan.classify.length} classification(s), ${plan.discover.length} discover${plan.discover.length === 1 ? "y" : "ies"} of new festivals${plan.discover.length ? ` (${plan.discover.join(", ")})` : ""}, ${plan.verify.length} verification(s), ${plan.builds.length} build(s)${plan.deferred.length ? `; ${plan.deferred.length} due check(s) wait for another day` : ""}.`,
     plan.waiting.length ? `Waiting: ${plan.waiting.map((w) => `${w.country} (${w.reason === "budget" ? `budget, from ${w.until}` : "next run"})`).join(", ")}.` : "",
     `Projection: about US$${plan.projection.perCountry.toFixed(2)} a month to keep one country fresh at full cadence; the upkeep share covers ${plan.projection.countriesSupported ?? "any number of"} countries that way.${plan.projection.stretch > 1 ? ` Checks more than 45 days out run ${plan.projection.stretch}× less often to fit the budget.` : ""}`,
   ];
+  if (s.covered.length) lines.push(`Coverage: ${s.covered.join(", ")} queued by the pipeline itself (config/pipeline.json «coverage»).`);
   if (!s.plan_only) {
     if (s.intake) lines.push(`Request: ${s.intake.country} ${s.intake.accepted ? "accepted" : `refused (${mdText(s.intake.reason, 120)})`}.`);
     if (s.published.length) lines.push(`Published on their own: ${s.published.join(", ")}.`);
     for (const build of s.builds) lines.push(`Build ${build.country}: ${build.outcome}, ${build.sourced}/${build.needed} sourced${build.detail ? ` (${mdText(build.detail, 200)})` : ""}.`);
+    lines.push(s.discovered.length ? `New on the calendar: ${s.discovered.map((f) => `${f.country} ${mdText(f.name, 60)} (${mdText(f.city, 40)})`).join(", ")}.` : `New on the calendar: none this run.`);
     lines.push(`Changes: ${s.applied.length} applied, ${s.confirmations} confirmed, ${s.flagged.length} held, ${s.rejected} rejected${s.unexpected ? `, ${s.unexpected} festival(s) failed with an unexpected error` : ""}.`);
     if (s.stopped.length) lines.push(`Stopped: ${mdText(s.stopped[0], 200)}`);
     lines.push(`Spend this run: US$${(s.spend.after - s.spend.before).toFixed(2)}; month total US$${s.spend.after.toFixed(2)}.`);
@@ -341,18 +379,28 @@ export async function runPipeline(opts: PipelineOptions, deps: PipelineDeps): Pr
   const live = new Set(loadCountries(join(opts.root, "data", "countries")).filter((c) => c.status === "publicado").map((c) => c.country));
   for (const r of requests) if (live.has(r.country) && r.status !== "live") apply(r.country, { type: "published", today: opts.today });
 
+  // Coverage: every country of config «coverage» that is not live is asked for by the pipeline
+  // itself, so nobody has to file an issue for it; it then waits its turn like any request.
+  const covered = coverageDue(requests, settings.coverage ?? [], live, opts.today, settings.coverage_retry_days ?? 90).filter((cc) => !intakeProblem(cc));
+  for (const cc of covered) apply(cc, { type: "request", today: opts.today });
+  if (covered.length) deps.log.info(`coverage: queued ${covered.join(", ")}`);
+
   // 3. Plan.
   const countries = loadCountries(join(opts.root, "data", "countries"));
   const configured = new Set([...countries.map((c) => c.country), ...requests.map((r) => r.country)].filter((cc) => hasPolicyFiles(opts.root, cc)));
   const plan = makePlan({ today: opts.today, budgetUsd: opts.budgetUsd, settings, countries, config, requests, ledger: deps.ledger(), configured, maxFestivals: opts.maxFestivals });
-  for (const d of plan.deferred) deps.log.info(`plan: ${d.country}/${d.slug} (${d.band}) waits for another day`);
+  for (const d of plan.deferred) deps.log.info(`plan: ${d.slug ? `${d.country}/${d.slug}` : `${d.country} discovery`} (${d.band}) waits for another day`);
 
-  const ctx: RunContext = { opts, deps, settings, config, reports: [], stopped: [], exitCodes: [] };
+  const ctx: RunContext = { opts, deps, settings, config, reports: [], discovered: [], stopped: [], exitCodes: [] };
   const builds: BuildLog[] = [];
   if (!opts.planOnly) {
-    // 4. News sweeps, classification, 5. builds, 6. verification.
+    // 4. News sweeps, classification, discovery of new festivals, 5. builds, 6. verification.
     await refreshBatch(ctx, plan.sweep, { sweepWithin: 45, reportName: `sweep-${opts.today}` });
     await refreshBatch(ctx, plan.classify, { classify: true, job: "classify", reportName: `classify-${opts.today}` });
+    for (const cc of plan.discover) {
+      if (ctx.stopped.length) break;
+      await discoverBatch(ctx, cc, "discover");
+    }
     for (const b of plan.builds) {
       const { log, event } = await buildCountry(ctx, b);
       builds.push(log);
@@ -391,8 +439,10 @@ export async function runPipeline(opts: PipelineOptions, deps: PipelineDeps): Pr
     date: opts.today,
     plan_only: opts.planOnly,
     intake,
+    covered,
     published: [...new Set(published)],
     builds,
+    discovered: ctx.discovered,
     applied,
     confirmations: confirmations.length,
     flagged,
@@ -407,7 +457,7 @@ export async function runPipeline(opts: PipelineOptions, deps: PipelineDeps): Pr
   const dir = join(opts.root, "proposals");
   const name = `pipeline-${opts.today}`;
   const keys = (items: readonly QueueItem[]) => items.map((i) => `${i.country}/${i.slug}`);
-  writeJson(join(dir, `${name}.json`), { ...summary, plan: { ...plan, sweep: keys(plan.sweep), classify: keys(plan.classify), verify: keys(plan.verify) } });
+  writeJson(join(dir, `${name}.json`), { ...summary, plan: { ...plan, sweep: keys(plan.sweep), classify: keys(plan.classify), verify: keys(plan.verify), discover: plan.discover } });
   writeText(join(dir, `${name}.md`), renderSummary(plan, summary));
   writeText(join(dir, "commit-message.txt"), commitMessage(summary));
   writeText(join(dir, "holds.md"), renderHolds(holds, opts.today));
@@ -417,13 +467,14 @@ export async function runPipeline(opts: PipelineOptions, deps: PipelineDeps): Pr
   // BE-04: an unexpected error in one festival does not stop the others, but the run goes red.
   const exitCode = ctx.exitCodes.some((c) => c !== 0) || summary.unexpected > 0 ? 1 : 0;
   appendGithubOutput(opts.githubOutput, {
-    changes: applied.length + confirmations.length,
+    changes: applied.length + confirmations.length + ctx.discovered.length,
+    discovered: ctx.discovered.length,
     held: flagged.length,
     unexpected: summary.unexpected,
     builds: builds.length,
     stopped: ctx.stopped.length ? "true" : "false",
   });
-  deps.log.info(`pipeline ${opts.today}: ${applied.length} applied, ${flagged.length} held, ${builds.length} build(s), ${summary.published.length} published; month spend US$${summary.spend.after.toFixed(2)} of US$${opts.budgetUsd}`);
+  deps.log.info(`pipeline ${opts.today}: ${applied.length} applied, ${flagged.length} held, ${ctx.discovered.length} new festival(s), ${builds.length} build(s), ${summary.published.length} published; month spend US$${summary.spend.after.toFixed(2)} of US$${opts.budgetUsd}`);
   return { exitCode, plan, summary, files };
 }
 

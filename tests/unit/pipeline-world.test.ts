@@ -59,7 +59,8 @@ describe("budget pools (R10)", () => {
     expect(jobCosts(three, settings.default_job_usd).verify).toBe(0.3);
     // Policy, onboarding, then up to 5 classifications and 5 date top-ups.
     expect(buildEstimate(settings.default_job_usd, settings, false, true)).toBeCloseTo(0.03 + 1.2 + 5 * (0.3 + 0.12), 6);
-    expect(buildEstimate(settings.default_job_usd, settings, true, false)).toBeCloseTo(5 * (0.3 + 0.12), 6);
+    // A draft that fell short before: a discovery of festivals it lacks instead of the onboarding.
+    expect(buildEstimate(settings.default_job_usd, settings, true, false)).toBeCloseTo(0.7 + 5 * (0.3 + 0.12), 6);
   });
 });
 
@@ -108,7 +109,7 @@ describe("makePlan", () => {
 
   test("upkeep stays inside today's share; the rest waits for another day", () => {
     const plan = makePlan(input());
-    const spent = plan.verify.length * (plan.costs.verify + plan.costs.followup * 0.3) + plan.sweep.length * plan.costs.sweep;
+    const spent = plan.verify.length * (plan.costs.verify + plan.costs.followup * 0.3) + plan.sweep.length * plan.costs.sweep + plan.discover.length * plan.costs.discover;
     expect(spent).toBeLessThanOrEqual(plan.budget.todayUpkeep + 1e-9);
     expect(plan.verify.length + plan.sweep.length + plan.deferred.length).toBeGreaterThan(plan.verify.length);
     expect(plan.verify.every((i) => i.country === "CO" || i.country === "BR")).toBe(true);
@@ -116,7 +117,8 @@ describe("makePlan", () => {
 
   test("builds: oldest request first, within the new-country share and the per-run limit; live ones are skipped", () => {
     const req = (cc: string, at: string): CountryRequest => ({ country: cc, requested_at: at, status: "queued", attempts: 0 });
-    const plan = makePlan(input({ requests: [req("JP", "2026-11-03"), req("BO", "2026-11-01"), req("CO", "2026-10-01"), req("FR", "2026-11-04")] }));
+    // US$30: a new-country share of US$9 holds BO's retry (with its discovery) and JP's first build.
+    const plan = makePlan(input({ budgetUsd: 30, requests: [req("JP", "2026-11-03"), req("BO", "2026-11-01"), req("CO", "2026-10-01"), req("FR", "2026-11-04")] }));
     expect(plan.builds.map((b) => [b.country, b.hasFile, b.needsPolicy])).toEqual([["BO", true, false], ["JP", false, true]]);
     expect(plan.waiting).toEqual([{ country: "FR", reason: "per_run_limit", estimate: buildEstimate(plan.costs, settings, false, true), until: "2026-11-09" }]);
     const broke = makePlan(input({ requests: [req("JP", "2026-11-03")], ledger: [line({ job: "onboard", key: "onboard/XX", usd: 5.5 })] }));

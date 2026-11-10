@@ -9,10 +9,12 @@
 //   any ── published (an existing draft passed on its own) ──▶ live
 //
 // An error mid-build (budget, API) is not an attempt: the request stays as it was, with a note.
+// Coverage countries (config/pipeline.json «coverage», all of Latin America) are asked for by the
+// pipeline itself (`coverageDue`): never requested, or given up `coverage_retry_days` ago.
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { z } from "zod";
-import { addDays, type ISO } from "../../src/dates.ts";
+import { addDays, diffDays, type ISO } from "../../src/dates.ts";
 import { CountryCode, ISODate } from "../../src/schema.ts";
 import { writeJson } from "./io.ts";
 
@@ -87,6 +89,24 @@ export function requestsDue(requests: readonly CountryRequest[], today: ISO): Co
   const queued = requests.filter((r) => r.status === "queued").sort(byAge);
   const due = requests.filter((r) => r.status === "retry" && (!r.retry_after || r.retry_after <= today)).sort(byAge);
   return [...queued, ...due];
+}
+
+/**
+ * Coverage countries the pipeline asks for by itself today, in coverage order: not live, and
+ * either never requested or given up at least `retryDays` ago (a coverage country is never
+ * dropped for good; sources appear as festivals get closer). Queued and retrying ones already
+ * have their turn.
+ */
+export function coverageDue(requests: readonly CountryRequest[], coverage: readonly string[], live: ReadonlySet<string>, today: ISO, retryDays: number): string[] {
+  const out: string[] = [];
+  for (const raw of coverage) {
+    const cc = raw.toUpperCase();
+    if (live.has(cc) || out.includes(cc)) continue;
+    const req = requests.find((r) => r.country === cc);
+    if (!req) out.push(cc);
+    else if (req.status === "gave_up" && (!req.last_attempt || diffDays(req.last_attempt, today) >= retryDays)) out.push(cc);
+  }
+  return out;
 }
 
 export function upsertRequest(requests: readonly CountryRequest[], next: CountryRequest): CountryRequest[] {

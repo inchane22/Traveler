@@ -9,7 +9,22 @@
         "PE": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.per.html",
         "BR": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.bra.html",
         "BO": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.bol.html",
-        "MX": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.mex.html"
+        "MX": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.mex.html",
+        "AR": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.arg.html",
+        "CL": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.chl.html",
+        "UY": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.ury.html",
+        "PY": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.pry.html",
+        "EC": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.ecu.html",
+        "VE": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.ven.html",
+        "CU": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.cub.html",
+        "DO": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.dom.html",
+        "HT": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.hti.html",
+        "CR": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.cri.html",
+        "PA": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.pan.html",
+        "GT": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.gtm.html",
+        "SV": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.slv.html",
+        "HN": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.hnd.html",
+        "NI": "https://travel.state.gov/content/tsg_aem/us/en/home/international-travel/travel-advisories/destination.nic.html"
       },
       "fallback": null
     },
@@ -21,7 +36,22 @@
         "PE": "https://www.gov.uk/foreign-travel-advice/peru",
         "BR": "https://www.gov.uk/foreign-travel-advice/brazil",
         "BO": "https://www.gov.uk/foreign-travel-advice/bolivia",
-        "MX": "https://www.gov.uk/foreign-travel-advice/mexico"
+        "MX": "https://www.gov.uk/foreign-travel-advice/mexico",
+        "AR": "https://www.gov.uk/foreign-travel-advice/argentina",
+        "CL": "https://www.gov.uk/foreign-travel-advice/chile",
+        "UY": "https://www.gov.uk/foreign-travel-advice/uruguay",
+        "PY": "https://www.gov.uk/foreign-travel-advice/paraguay",
+        "EC": "https://www.gov.uk/foreign-travel-advice/ecuador",
+        "VE": "https://www.gov.uk/foreign-travel-advice/venezuela",
+        "CU": "https://www.gov.uk/foreign-travel-advice/cuba",
+        "DO": "https://www.gov.uk/foreign-travel-advice/dominican-republic",
+        "HT": "https://www.gov.uk/foreign-travel-advice/haiti",
+        "CR": "https://www.gov.uk/foreign-travel-advice/costa-rica",
+        "PA": "https://www.gov.uk/foreign-travel-advice/panama",
+        "GT": "https://www.gov.uk/foreign-travel-advice/guatemala",
+        "SV": "https://www.gov.uk/foreign-travel-advice/el-salvador",
+        "HN": "https://www.gov.uk/foreign-travel-advice/honduras",
+        "NI": "https://www.gov.uk/foreign-travel-advice/nicaragua"
       },
       "fallback": "https://www.gov.uk/foreign-travel-advice"
     },
@@ -33,7 +63,22 @@
         "PE": "https://travel.gc.ca/destinations/peru",
         "BR": "https://travel.gc.ca/destinations/brazil",
         "BO": "https://travel.gc.ca/destinations/bolivia",
-        "MX": "https://travel.gc.ca/destinations/mexico"
+        "MX": "https://travel.gc.ca/destinations/mexico",
+        "AR": "https://travel.gc.ca/destinations/argentina",
+        "CL": "https://travel.gc.ca/destinations/chile",
+        "UY": "https://travel.gc.ca/destinations/uruguay",
+        "PY": "https://travel.gc.ca/destinations/paraguay",
+        "EC": "https://travel.gc.ca/destinations/ecuador",
+        "VE": "https://travel.gc.ca/destinations/venezuela",
+        "CU": "https://travel.gc.ca/destinations/cuba",
+        "DO": "https://travel.gc.ca/destinations/dominican-republic",
+        "HT": "https://travel.gc.ca/destinations/haiti",
+        "CR": "https://travel.gc.ca/destinations/costa-rica",
+        "PA": "https://travel.gc.ca/destinations/panama",
+        "GT": "https://travel.gc.ca/destinations/guatemala",
+        "SV": "https://travel.gc.ca/destinations/el-salvador",
+        "HN": "https://travel.gc.ca/destinations/honduras",
+        "NI": "https://travel.gc.ca/destinations/nicaragua"
       },
       "fallback": "https://travel.gc.ca/travelling/advisories"
     },
@@ -194,6 +239,7 @@
   ],
   "verified_notes": {
     "US": "2026-10-28: links read from the State Department travel advisory data API (cadataapi.state.gov/api/TravelAdvisories), field Link per country. The pages themselves answer 403 to scripts (Cloudflare).",
-    "PE": "2026-10-28: gob.pe/162 fetched, title «Viajar fuera del Perú - Orientación - Ministerio de Relaciones Exteriores». Peru publishes no per-destination advisories for CO, BR, BO or MX, so the fallback is the general orientation page."
+    "PE": "2026-10-28: gob.pe/162 fetched, title «Viajar fuera del Perú - Orientación - Ministerio de Relaciones Exteriores». Peru publishes no per-destination advisories for CO, BR, BO or MX, so the fallback is the general orientation page.",
+    "LATAM": "2026-11-10: US links for AR CL UY PY EC VE CU DO HT CR PA GT SV HN NI read from the State Department travel advisory data API (cadataapi.state.gov/api/TravelAdvisories, field Link); the GB (gov.uk/foreign-travel-advice) and CA (travel.gc.ca/destinations) pages for the same 15 answered HTTP 200. Puerto Rico has no entry: it is not foreign travel for US citizens, and other origins fall back to their general page."
   }
 }
