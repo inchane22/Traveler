@@ -13,7 +13,7 @@
       "timezone": "America/Mexico_City",
       "coords": { "lat": 19.433, "lon": -99.133 },
       "nearest_airport": "MEX",
-      "type": "tradicion_religiosa",
+      "type": "fiesta_popular",
       "rule": { "type": "fixed", "start": "10-31", "end": "11-02" },
       "editions": {
         "2026": {
@@ -36,10 +36,10 @@
       },
       "score": {
         "convocatoria": { "measure": { "attendance": 1450000, "qualifier": "more_than", "unit": "attendees", "year": 2025 }, "confidence": "prensa", "source": "https://www.excelsior.com.mx/comunidad/gran-desfile-dia-de-muertos-reune-14-millones-asistentes/1749196", "note": { "es": "Solo el Gran Desfile.", "en": "Grand Parade only.", "pt": "Só o Grande Desfile." } },
+        "fiesta": { "measure": "solemne", "confidence": "oficial", "source": "https://mexicocity.cdmx.gob.mx/tag/muertos/?lang=en", "quote": "Observations and vigils are held at cemeteries large and small all across the metropolitan area." },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://alcaldiabenitojuarez.gob.mx/2026/prensa/panteon-de-xoco-recibe-a-mas-de-80-mil-visitantes-durante-las-celebraciones-de-dia-de-muertos-en-benito-juarez/", "quote": "familias y visitantes nacionales e internacionales se dieron" },
         "calle": { "measure": "mayoria_gratis", "confidence": "prensa", "source": "https://www.publimetro.com.mx/noticias/2026/10/21/dia-de-muertos-2026-en-cdmx-fechas-horarios-del-desfile-catrina-gigante-y-actividades-gratis/", "note": { "es": "Desfiles y ofrendas en espacio público, sin boleto.", "en": "Parades and offerings in public space, no ticket.", "pt": "Desfiles e oferendas em espaço público, sem ingresso." } },
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/indigenous-festivity-dedicated-to-the-dead-00054", "note": { "es": "Fiestas indígenas dedicadas a los muertos (2008); la inscripción es nacional, no de la capital.", "en": "Indigenous festivity dedicated to the dead (2008); the inscription is national, not specific to the capital.", "pt": "Festas indígenas dedicadas aos mortos (2008); a inscrição é nacional, não da capital." } },
-        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mexico_City_International_Airport" },
-        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mexico_City" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mexico_City_International_Airport" }
       },
       "street_tip": { "es": "El Gran Desfile por Reforma hasta el Zócalo es gratis; para ver la tradición en un panteón, ve a Mixquic la noche del 2 de noviembre.", "en": "The Grand Parade along Reforma to the Zócalo is free; to see the tradition in a cemetery, go to Mixquic on the night of November 2.", "pt": "O Grande Desfile pela Reforma até o Zócalo é gratuito; para ver a tradição num cemitério, vá a Mixquic na noite de 2 de novembro." },
       "etiquette": { "es": "En panteones y ofrendas familiares estás en el duelo de alguien: pide permiso antes de fotografiar y no toques las ofrendas.", "en": "At cemeteries and family altars you are in someone's mourning: ask before taking photos and don't touch the offerings.", "pt": "Nos cemitérios e altares das famílias você está no luto de alguém: peça permissão antes de fotografar e não toque nas oferendas." }
@@ -52,15 +52,15 @@
       "timezone": "America/Mexico_City",
       "coords": { "lat": 17.0606, "lon": -96.7253 },
       "nearest_airport": "OAX",
-      "type": "cosecha_temporada",
+      "type": "danza",
       "rule": { "type": "announced", "window": { "start": "07-17", "end": "08-01" } },
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 148000, "qualifier": "more_than", "unit": "visitors", "year": 2026 }, "confidence": "prensa", "source": "https://www.razon.com.mx/estados/2026/07/27/oaxaca-cierra-con-broche-de-oro-la-guelaguetza-2026-preven-derrama-superior-a-los-1477-mdp/", "note": { "es": "Visitantes en julio; el medio no cita la fuente oficial.", "en": "Visitors in July; the outlet does not name the official source.", "pt": "Visitantes em julho; o veículo não cita a fonte oficial." } },
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.oaxaca.gob.mx/comunicacion/artesanias-mezcal-conciertos-bailes-y-danzas-daran-realce-a-la-guelaguetza-2023/", "quote": "todos los días tendrán presentaciones de grupos, bandas y organizaciones musicales diversas, Dj’s, orquestas, marimbas, danzantes y" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://www.oaxaca.gob.mx/comunicacion/guelaguetza-2023-recupero-su-esencia-popular-mas-de-40-mil-asistieron-al-auditorio-del-cerro-del-fortin/", "quote": "En estas fiestas visitaron Oaxaca turistas de Estados Unidos, Suiza, España, Colombia, Italia y Francia." },
         "calle": { "measure": "mixta", "confidence": "prensa", "source": "https://www.cronica.com.mx/estados/2026/05/21/gobierno-de-oaxaca-presenta-la-guelaguetza-2026-con-mas-de-140-actividades/", "note": { "es": "Palcos A y B con boleto; C y D gratuitos (2026).", "en": "Sections A and B ticketed; C and D free (2026).", "pt": "Setores A e B pagos; C e D gratuitos (2026)." } },
-        "reconocimiento": null,
-        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Oaxaca_City" },
-        "local": { "measure": "intermedia", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Oaxaca_City" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Oaxaca_City" }
       },
       "street_tip": { "es": "Los palcos C y D del auditorio son gratuitos, así que llega muy temprano; en los días previos las delegaciones desfilan por el centro.", "en": "Sections C and D of the auditorium are free, so arrive very early; in the days before, the delegations parade through downtown.", "pt": "Os setores C e D do auditório são gratuitos, então chegue bem cedo; nos dias anteriores as delegações desfilam pelo centro." },
       "etiquette": { "es": "Cada delegación presenta la danza y la vestimenta de su pueblo: no las llames disfraces y pide permiso para fotos fuera del escenario.", "en": "Each delegation brings the dance and dress of its own community: don't call them costumes and ask before photos off stage.", "pt": "Cada delegação apresenta a dança e a roupa do seu povo: não chame de fantasia e peça licença para fotos fora do palco." }
@@ -73,15 +73,15 @@
       "timezone": "America/Mexico_City",
       "coords": { "lat": 20.7203, "lon": -103.3919 },
       "nearest_airport": "GDL",
-      "type": "tradicion_religiosa",
+      "type": "fiesta_popular",
       "rule": { "type": "fixed", "start": "10-12", "end": "10-12" },
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 1000000, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.publimetro.com.mx/jalisco/2026/10/12/la-fe-pudo-mas-y-un-millon-acompano-a-la-virgen-de-zapopan-pese-a-alerta-por-simon/", "note": { "es": "Estimación de la Arquidiócesis de Guadalajara; hubo alerta de lluvia por el huracán Simon.", "en": "Estimate by the Archdiocese of Guadalajara; there was a rain alert from Hurricane Simon.", "pt": "Estimativa da Arquidiocese de Guadalajara; houve alerta de chuva pelo furacão Simon." } },
+        "fiesta": { "measure": "solemne", "confidence": "oficial", "source": "https://www.zapopan.gob.mx/v3/ciudad/fiestas-y-tradiciones", "quote": "Se celebra cada 13 de octubre en el primer cuadro de la Cabecera Municipal, donde miles de danzantes del Área Metropolitana de Guadalajara" },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://www.zapopan.gob.mx/v3/noticias/zapopan-prepara-el-plan-operativo-integral-para-recibir-la-romeria-292", "quote": "se prevé la participación de 40 mil 609 danzantes, provenientes de distintos cuarteles y de entidades como Jalisco, Estado de" },
         "calle": null,
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/la-romeria-the-pilgrimage-ritual-cycle-of-la-llevada-the-carrying-of-the-virgin-of-zapopan-01400", "note": { "es": "Inscrita en 2018.", "en": "Inscribed in 2018.", "pt": "Inscrita em 2018." } },
-        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Guadalajara_International_Airport", "note": { "es": "Aeropuerto de la zona metropolitana, en Tlajomulco.", "en": "Metro-area airport, in Tlajomulco.", "pt": "Aeroporto da região metropolitana, em Tlajomulco." } },
-        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Zapopan" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Guadalajara_International_Airport", "note": { "es": "Aeropuerto de la zona metropolitana, en Tlajomulco.", "en": "Metro-area airport, in Tlajomulco.", "pt": "Aeroporto da região metropolitana, em Tlajomulco." } }
       },
       "street_tip": { "es": "La Virgen recorre 9,2 km de la Catedral de Guadalajara a la Basílica de Zapopan; colócate a mitad de la ruta para ver pasar las danzas.", "en": "The Virgin travels 9.2 km from Guadalajara Cathedral to the Zapopan Basilica; stand midway along the route to watch the dance groups pass.", "pt": "A Virgem percorre 9,2 km da Catedral de Guadalajara à Basílica de Zapopan; fique no meio do trajeto para ver as danças passarem." },
       "etiquette": { "es": "Es una peregrinación de fe: deja pasar a los danzantes y a quien camina por promesa, y viste con discreción dentro de la Basílica.", "en": "It is a pilgrimage of faith: make way for dancers and people walking to keep a vow, and dress modestly inside the Basilica.", "pt": "É uma peregrinação de fé: dê passagem aos dançarinos e a quem caminha por promessa, e vista-se com discrição na Basílica." }
@@ -94,15 +94,15 @@
       "timezone": "America/Mexico_City",
       "coords": { "lat": 16.7069, "lon": -93.0139 },
       "nearest_airport": "TGZ",
-      "type": "tradicion_religiosa",
+      "type": "danza",
       "rule": { "type": "fixed", "start": "01-04", "end": "01-23" },
       "editions": {},
       "score": {
         "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "oficial", "source": "https://www.patrimoniomundialmexico.inah.gob.mx/publico/listado_elementos_detalle.php?idLista=OA%3D%3D", "quote": "Los Parachicos (término con el que se designa a la vez a los danzantes y al tipo de baile que ejecutan de la mañana a la noche)" },
+        "viajeros": { "measure": "internacional", "confidence": "estimacion", "source": "https://www.aztecachiapas.com/turismo-chiapas/chiapa-de-corzo-espera-un-aumento-turistico-de-hasta-el-80-para-diciembre-y-la-fiesta-grande/", "quote": "El optimismo se fundamenta en que ya se registran **reservaciones** tanto de turismo nacional, especialmente del centro del país, como de visitantes i" },
         "calle": null,
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/parachicos-in-the-traditional-january-feast-of-chiapa-de-corzo-00399", "note": { "es": "Parachicos, inscritos en 2010.", "en": "Parachicos, inscribed in 2010.", "pt": "Parachicos, inscritos em 2010." } },
-        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/%C3%81ngel_Albino_Corzo_International_Airport", "note": { "es": "TGZ está en el municipio; su única ruta internacional (Houston) se reanuda el 28 de octubre de 2026.", "en": "TGZ is in the municipality; its only international route (Houston) resumes on October 28, 2026.", "pt": "TGZ fica no município; sua única rota internacional (Houston) volta em 28 de outubro de 2026." } },
-        "local": { "measure": "pueblo", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Chiapa_de_Corzo,_Chiapas" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/%C3%81ngel_Albino_Corzo_International_Airport", "note": { "es": "TGZ está en el municipio; su única ruta internacional (Houston) se reanuda el 28 de octubre de 2026.", "en": "TGZ is in the municipality; its only international route (Houston) resumes on October 28, 2026.", "pt": "TGZ fica no município; sua única rota internacional (Houston) volta em 28 de outubro de 2026." } }
       },
       "street_tip": { "es": "Las procesiones con parachicos van de la mañana a la noche por todo el pueblo; duerme en Chiapa en vez de ir y volver desde Tuxtla.", "en": "Processions with parachicos run from morning to night all over town; sleep in Chiapa instead of a day trip from Tuxtla.", "pt": "As procissões com parachicos vão da manhã à noite por toda a cidade; durma em Chiapa em vez de ir e voltar de Tuxtla." },
       "etiquette": { "es": "Para la comunidad, bailar de parachico es una ofrenda a los santos: respeta las procesiones y pide permiso antes de fotografiar a los danzantes.", "en": "For the community, dancing as a parachico is an offering to the saints: respect the processions and ask before photographing dancers.", "pt": "Para a comunidade, dançar de parachico é uma oferenda aos santos: respeite as procissões e peça licença antes de fotografar os dançarinos." }
@@ -115,15 +115,15 @@
       "timezone": "America/Mexico_City",
       "coords": { "lat": 19.3583, "lon": -99.0931 },
       "nearest_airport": "MEX",
-      "type": "tradicion_religiosa",
+      "type": "fiesta_popular",
       "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -7, "end": -2 },
       "editions": {},
       "score": {
         "convocatoria": { "measure": { "attendance": 2797500, "qualifier": "exact", "unit": "attendees", "year": 2026 }, "confidence": "oficial", "source": "https://www.iztapalapa.cdmx.gob.mx/principal/boletines/boletines/Abril2026/030426BOL565.pdf", "note": { "es": "Del Domingo de Ramos al Viernes Santo, edición 183.", "en": "Palm Sunday to Good Friday, 183rd edition.", "pt": "Do Domingo de Ramos à Sexta-feira Santa, 183ª edição." } },
+        "fiesta": { "measure": "solemne", "confidence": "oficial", "source": "https://lugares.inah.gob.mx/en/node/6409", "quote": "The Way of the Cross on Good Friday, accompanied by thousands of Nazarenes carrying crosses and performing corporal penances" },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://www.excelsior.com.mx/ciudad-de-mexico/turistas-extranjeros-sorprenden-por-viacrucis-iztapalapa-cdmx", "quote": "congregó en su 183 edición, a turistas extranjeros, provenientes de países como Alemania y Corea del Sur" },
         "calle": null,
-        "reconocimiento": { "measure": "unesco", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/representation-of-the-passion-death-and-resurrection-of-christ-in-iztapalapa-02237", "note": { "es": "Inscrita en 2025.", "en": "Inscribed in 2025.", "pt": "Inscrita em 2025." } },
-        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mexico_City_International_Airport" },
-        "local": { "measure": "gran_ciudad", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Iztapalapa" }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mexico_City_International_Airport" }
       },
       "street_tip": { "es": "El Viernes Santo el viacrucis sube al Cerro de la Estrella; llega temprano en Metro y lleva agua, sombrero y poco más.", "en": "On Good Friday the Way of the Cross climbs Cerro de la Estrella; arrive early by Metro and bring water, a hat and little else.", "pt": "Na Sexta-feira Santa a via-sacra sobe o Cerro de la Estrella; chegue cedo de metrô e leve água, chapéu e pouca coisa." },
       "etiquette": { "es": "Es una promesa comunitaria de casi dos siglos: no cruces el paso de los nazarenos y guarda silencio durante la crucifixión.", "en": "It is a community vow almost two centuries old: don't cross the nazarenos' path and keep quiet during the crucifixion.", "pt": "É uma promessa comunitária de quase dois séculos: não atravesse o caminho dos nazarenos e faça silêncio durante a crucificação." }

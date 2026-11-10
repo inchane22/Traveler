@@ -1,6 +1,6 @@
 // One verification or news sweep (H4, R9) by hand; pipeline.ts runs them on a schedule. Usage:
 //   pnpm refresh -- [--dry-run] [--only=<slug>] [--country=<cc>] [--today=YYYY-MM-DD] [--fixtures=<dir>]
-//                   [--sweep=news [--within=<days>]]
+//                   [--sweep=news [--within=<days>]] [--classify]
 // Env beyond the API ones: LINKS_REPORT_PATH (proposals/links-<date>.json from check-links, R13)
 // and MAX_FOLLOWUPS_PER_RUN (wider follow-up searches for missing dates; 6 by default, 0 = off).
 // Every call is appended to data/state/ledger.jsonl (R10), dry runs included: they spend too.
@@ -44,6 +44,7 @@ export async function main(argv: readonly string[], env: NodeJS.ProcessEnv, root
       budgetUsd: args.budgetUsd,
       ...(args.githubOutput ? { githubOutput: args.githubOutput } : {}),
       ...(args.sweepWithin !== undefined ? { sweepWithin: args.sweepWithin } : {}),
+      ...(args.classify ? { classify: true } : {}),
       ...(links ? { links } : {}),
     },
     {

@@ -25,6 +25,8 @@ export interface RefreshArgs extends CommonOptions {
   sweepWithin?: number;
   /** Wider follow-up searches for missing dates (weekly run only); 0 turns them off. */
   maxFollowups: number;
+  /** `--classify`: is each festival a party, and where its crowd comes from (unclassified ones). */
+  classify: boolean;
 }
 
 export interface OnboardArgs extends CommonOptions {
@@ -47,7 +49,7 @@ export class UsageError extends Error {
   }
 }
 
-const KNOWN = new Set(["dry-run", "only", "country", "today", "fixtures", "proposals", "verbose", "sweep", "within", "plan", "request", "issue"]);
+const KNOWN = new Set(["dry-run", "only", "country", "today", "fixtures", "proposals", "verbose", "sweep", "within", "plan", "request", "issue", "classify"]);
 
 export function parseFlags(argv: readonly string[]): Map<string, string | true> {
   const flags = new Map<string, string | true>();
@@ -107,6 +109,9 @@ export function refreshArgs(argv: readonly string[], env: NodeJS.ProcessEnv, now
   if (only && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(only)) throw new UsageError(`--only must be a festival slug, got ${only}`);
   if (country && !/^[A-Z]{2}$/.test(country)) throw new UsageError(`--country must be an ISO 3166-1 alpha-2 code, got ${country}`);
   const sweepWithin = sweepDays(flags);
+  const classify = flags.get("classify") === true;
+  if (flags.has("classify") && !classify) throw new UsageError("--classify takes no value");
+  if (classify && sweepWithin !== undefined) throw new UsageError("--classify and --sweep=news are separate runs");
   return {
     ...common(flags, env, now),
     ...(only ? { only } : {}),
@@ -115,6 +120,7 @@ export function refreshArgs(argv: readonly string[], env: NodeJS.ProcessEnv, now
     maxFestivals: positiveInt(env.MAX_FESTIVALS_PER_RUN, DEFAULT_MAX, "MAX_FESTIVALS_PER_RUN"),
     perCountry: DEFAULT_PER_COUNTRY,
     maxFollowups: nonNegativeInt(env.MAX_FOLLOWUPS_PER_RUN, DEFAULT_MAX_FOLLOWUPS, "MAX_FOLLOWUPS_PER_RUN"),
+    classify,
   };
 }
 

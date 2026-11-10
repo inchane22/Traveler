@@ -66,6 +66,8 @@ export interface RefreshReport {
   not_found: Array<{ country: string; slug: string; fields: string[] }>;
   /** R9 news sweep: the day window (`--sweep=news --within`); absent on the weekly run. */
   sweep_within?: number;
+  /** A classification run (`score.fiesta`, `score.viajeros`) rather than a verification. */
+  classify?: true;
   /** R13: editions whose sources are all gone, one confidence level down (from LINKS_REPORT_PATH). */
   link_downgrades?: LinkDowngrade[];
   /** R2: draft countries this run researched, with their sourced festivals before and after it. */
@@ -123,7 +125,13 @@ function followupText(f: FollowupLog): string {
 
 export function renderRefreshMarkdown(r: RefreshReport): string {
   const parts: string[] = [];
-  parts.push(r.sweep_within !== undefined ? `## Barrido de noticias ${r.date} (fiestas a ${r.sweep_within} días o menos)` : `## Verificación ${r.date}`);
+  parts.push(
+    r.sweep_within !== undefined
+      ? `## Barrido de noticias ${r.date} (fiestas a ${r.sweep_within} días o menos)`
+      : r.classify
+        ? `## Clasificación ${r.date} (¿es una fiesta?, ¿viene gente de fuera?)`
+        : `## Verificación ${r.date}`,
+  );
   parts.push(
     `Cambios propuestos por la IA y validados en código (fuente citada, cita literal, ventana de la regla, dominios). ` +
       `Los aceptados se aplican solos; los marcados quedan retenidos. Modelo: \`${mdText(r.model, 40)}\`${r.dry_run ? " · ensayo (--dry-run)" : ""}.`,

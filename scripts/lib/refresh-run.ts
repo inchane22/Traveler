@@ -13,10 +13,10 @@ import { allowedAtLevel, BudgetExceededError, createBudgetGuard, type BudgetGuar
 import { classifyApiError, type MessagesTransport } from "./client.ts";
 import { firstPassDomains, loadDomainPolicy, type DomainPolicy } from "./domains.ts";
 import { extract } from "./extract.ts";
-import { extractionContext, researchUserPrompt, type FollowupFact } from "./festival-context.ts";
+import { CLASSIFY_FACTS, classifySystemPrompt, classifyUserPrompt, extractionContext, researchUserPrompt, type FollowupFact } from "./festival-context.ts";
 import { appendGithubOutput, loadPrompt, readJson, readJsonOr, writeJson, writeText, type Logger } from "./io.ts";
 import { applyLostSources, type LinkDowngrade, type LinkVerdict } from "./links.ts";
-import { buildQueue, NEAR_DAYS, type QueueItem } from "./queue.ts";
+import { buildClassifyQueue, buildQueue, NEAR_DAYS, type QueueItem } from "./queue.ts";
 import { buildRefreshReport, renderRefreshMarkdown, type DraftProgress, type FestivalLog, type FestivalOutcome, type FollowupLog, type RefreshReport } from "./report.ts";
 import { research, researchPass, type CallGate, type ResearchRequest, type ResearchResult } from "./research.ts";
 import { dataChangeCount, selectForApply, type Selection } from "./select.ts";
@@ -37,8 +37,13 @@ export interface RefreshOptions {
   sweepWithin?: number;
   /** Festivals planned elsewhere (plan.ts); replaces the queue this run would build itself. */
   queue?: readonly QueueItem[];
-  /** `build` while a new country is being dated before it goes live; `verify` otherwise. */
-  job?: "verify" | "build";
+  /** `build` while a new country is being dated before it goes live; `verify` (or `classify`) otherwise. */
+  job?: "verify" | "build" | "classify";
+  /**
+   * Classify instead of verify (2026-11-09): is each festival a party (`score.fiesta`) and where its
+   * crowd comes from (`score.viajeros`); nothing else is proposed and there are no follow-ups.
+   */
+  classify?: boolean;
   /** File name under proposals/ (without extension); the date by default. */
   reportName?: string;
   /** R13: verdicts from a fresh check-links report; without it no source downgrade is made. */
@@ -62,6 +67,10 @@ export interface RefreshResult {
 }
 
 export const MAX_USES = 5;
+/** Searches per classification: what people do there and where they come from is widely written about. */
+export const CLASSIFY_MAX_USES = 3;
+/** The only fields a classification may propose. */
+export const CLASSIFY_FIELDS: ReadonlySet<string> = new Set(CLASSIFY_FACTS);
 const FOLLOWUP_FACTS: readonly FollowupFact[] = ["start", "end", "status"];
 
 interface FestivalRun {
@@ -88,14 +97,50 @@ export function missingDateFacts(item: QueueItem, changes: readonly ReviewedChan
   return FOLLOWUP_FACTS.filter((f) => !answered.has(f));
 }
 
+/** What a run asks the two calls: verification (dates, status, figures) or classification. */
+interface Mode {
+  system: string;
+  user: (item: QueueItem, country: CountryFile, followup?: readonly string[]) => string;
+  maxUses: number;
+  extractSystem: string;
+  /** Fields this mode may propose; anything else is rejected. Null = every field validate.ts knows. */
+  fields: ReadonlySet<string> | null;
+}
+
+function modeFor(opts: RefreshOptions, config: ScoringConfig): Mode {
+  if (opts.classify) {
+    const rules = { fiesta: ruleText(config.criteria.fiesta), viajeros: ruleText(config.criteria.viajeros) };
+    return { system: classifySystemPrompt(rules), user: classifyUserPrompt, maxUses: CLASSIFY_MAX_USES, extractSystem: loadPrompt("classify-extract-system.md"), fields: CLASSIFY_FIELDS };
+  }
+  return { system: loadPrompt("research-system.md"), user: (item, country, followup) => researchUserPrompt(item, country, followup as readonly FollowupFact[] | undefined), maxUses: MAX_USES, extractSystem: loadPrompt("extract-system.md"), fields: null };
+}
+
+/** The `rule` text config/scoring.json keeps next to a criterion's levels. */
+function ruleText(criterion: { rule?: string }): string {
+  if (!criterion.rule?.trim()) throw new Error("config/scoring.json: a classified criterion needs its «rule» text");
+  return criterion.rule;
+}
+
+/** Classification facts the first pass left without an answer that survived validation. */
+export function missingClassifyFacts(changes: readonly ReviewedChange[]): string[] {
+  const answered = new Set(changes.filter((c) => c.verdict !== "rejected").map((c) => c.field));
+  return CLASSIFY_FACTS.filter((f) => !answered.has(f));
+}
+
+/** A change outside the mode's fields is rejected, whatever validate.ts made of it. */
+export function keepModeFields(changes: readonly ReviewedChange[], fields: ReadonlySet<string> | null): ReviewedChange[] {
+  if (!fields) return [...changes];
+  return changes.map((c) => (fields.has(c.field) ? c : { ...c, verdict: "rejected" as const, reasons: [...c.reasons, `fuera de lo que se pidió: ${c.field}`] }));
+}
+
 type Reviewed = { ok: true; changes: ReviewedChange[]; notFound: string[] } | { ok: false; outcome: FestivalOutcome; detail: string; warning: string; notFound: string[] };
 
-async function extractAndReview(item: QueueItem, country: CountryFile, policy: DomainPolicy, citations: ResearchResult["citations"], opts: RefreshOptions, deps: RefreshDeps, gate: CallGate): Promise<Reviewed> {
+async function extractAndReview(item: QueueItem, country: CountryFile, policy: DomainPolicy, citations: ResearchResult["citations"], opts: RefreshOptions, deps: RefreshDeps, gate: CallGate, mode: Mode): Promise<Reviewed> {
   const key = `${item.country}/${item.slug}`;
   const extracted = await extract(deps.transport, gate, {
     key,
     model: opts.model,
-    system: loadPrompt("extract-system.md"),
+    system: mode.extractSystem,
     context: extractionContext(item),
     citations,
     schema: Proposal,
@@ -118,7 +163,7 @@ async function extractAndReview(item: QueueItem, country: CountryFile, policy: D
     const detail = review.errors.join("; ");
     return { ok: false, outcome: "invalid_proposal", detail, warning: `proposal rejected: ${detail}`, notFound: review.notFound };
   }
-  return { ok: true, changes: review.changes, notFound: review.notFound };
+  return { ok: true, changes: keepModeFields(review.changes, mode.fields), notFound: review.notFound };
 }
 
 function baseLog(item: QueueItem): FestivalLog {
@@ -133,17 +178,17 @@ function baseLog(item: QueueItem): FestivalLog {
   };
 }
 
-async function verifyFestival(item: QueueItem, country: CountryFile, policy: DomainPolicy, opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard, followups: FollowupBudget): Promise<FestivalRun> {
+async function verifyFestival(item: QueueItem, country: CountryFile, policy: DomainPolicy, opts: RefreshOptions, deps: RefreshDeps, guard: BudgetGuard, followups: FollowupBudget, mode: Mode): Promise<FestivalRun> {
   const log = baseLog(item);
   const key = `${item.country}/${item.slug}`;
-  const request = (followup?: readonly FollowupFact[]): ResearchRequest => ({
+  const request = (followup?: readonly string[]): ResearchRequest => ({
     key,
     model: opts.model,
-    system: loadPrompt("research-system.md"),
-    user: researchUserPrompt(item, country, followup),
+    system: mode.system,
+    user: mode.user(item, country, followup),
     country: item.country,
     timezone: item.festival.timezone,
-    maxUses: MAX_USES,
+    maxUses: mode.maxUses,
     allowedDomains: firstPassDomains(policy),
     blockedDomains: policy.blocked,
   });
@@ -154,17 +199,18 @@ async function verifyFestival(item: QueueItem, country: CountryFile, policy: Dom
     deps.log.info(`${key}: research ${result.outcome} (${detail})`);
     return { log: { ...searched, outcome: result.outcome, detail }, changes: [], notFound: [] };
   }
-  const first = await extractAndReview(item, country, policy, result.citations, opts, deps, guard);
+  const first = await extractAndReview(item, country, policy, result.citations, opts, deps, guard, mode);
   if (!first.ok) {
     deps.log.warn(`${key}: ${first.warning}`);
     return { log: { ...searched, outcome: first.outcome, detail: first.detail }, changes: [], notFound: first.notFound };
   }
   const run: FestivalRun = { log: { ...searched, outcome: "ok" }, changes: first.changes, notFound: first.notFound };
-  // Only after a first pass restricted to official sites (an open pass already searched widely), and
-  // only under 120 days out: further away nobody has published the dates yet (2026-11-08 run).
-  const missing = result.pass === 1 && item.daysToStart < NEAR_DAYS ? missingDateFacts(item, first.changes) : [];
+  // Only after a first pass restricted to official sites (an open pass already searched widely). Dates
+  // only under 120 days out: further away nobody has published them yet (2026-11-08 run). Where the
+  // crowd comes from is rarely on an official site, so a classification may always look wider.
+  const missing = result.pass !== 1 ? [] : opts.classify ? missingClassifyFacts(first.changes) : item.daysToStart < NEAR_DAYS ? missingDateFacts(item, first.changes) : [];
   if (!missing.length || !followups.take()) return run;
-  return followUp(item, country, policy, request(missing), missing, run, opts, deps, guard.as(opts.job === "build" ? "build" : "followup"));
+  return followUp(item, country, policy, request(missing), missing, run, opts, deps, guard.as(opts.job === "build" ? "build" : opts.classify ? "classify" : "followup"), mode);
 }
 
 /**
@@ -173,7 +219,7 @@ async function verifyFestival(item: QueueItem, country: CountryFile, policy: Dom
  * kept, so the first pass always wins. An API failure or the budget here keeps the first pass's
  * results; rejected credentials and bugs fail the festival like a first-pass error (BE-04).
  */
-async function followUp(item: QueueItem, country: CountryFile, policy: DomainPolicy, req: ResearchRequest, missing: readonly FollowupFact[], run: FestivalRun, opts: RefreshOptions, deps: RefreshDeps, gate: CallGate): Promise<FestivalRun> {
+async function followUp(item: QueueItem, country: CountryFile, policy: DomainPolicy, req: ResearchRequest, missing: readonly string[], run: FestivalRun, opts: RefreshOptions, deps: RefreshDeps, gate: CallGate, mode: Mode): Promise<FestivalRun> {
   const fields = [...missing];
   const withLog = (followup: FollowupLog): FestivalRun => ({ ...run, log: { ...run.log, followup } });
   try {
@@ -182,7 +228,7 @@ async function followUp(item: QueueItem, country: CountryFile, policy: DomainPol
       deps.log.info(`${req.key}: follow-up search ${wide.outcome} for ${fields.join(", ")}`);
       return withLog({ fields, outcome: wide.outcome, citations: wide.citations.length });
     }
-    const second = await extractAndReview(item, country, policy, wide.citations, opts, deps, gate);
+    const second = await extractAndReview(item, country, policy, wide.citations, opts, deps, gate, mode);
     if (!second.ok) {
       deps.log.warn(`${req.key}: follow-up ${second.warning}`);
       return withLog({ fields, outcome: second.outcome, citations: wide.citations.length, detail: second.detail });
@@ -235,24 +281,28 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
   const r13 = lostSources(stored, opts.links, readChangelog(join(opts.root, "data", "changelog.json")), opts.today);
   const countries = r13.countries;
   for (const d of r13.downgrades) deps.log.warn(`R13: ${d.country}/${d.slug} ${d.year}: every source is gone (404/410, no archive copy); confidence ${d.old} -> ${d.new}`);
-  const sweep = opts.sweepWithin;
+  const sweep = opts.classify ? undefined : opts.sweepWithin;
   const queue = opts.queue
     ? opts.queue.map((q) => refreshed(q, countries))
-    : buildQueue(countries, config, opts.today, { max: opts.maxFestivals, perCountry: opts.perCountry, only: opts.only, country: opts.country, ...(sweep !== undefined ? { sweepWithin: sweep } : {}) });
+    : opts.classify
+      ? buildClassifyQueue(countries, config, opts.today, { max: opts.maxFestivals, only: opts.only, country: opts.country })
+      : buildQueue(countries, config, opts.today, { max: opts.maxFestivals, perCountry: opts.perCountry, only: opts.only, country: opts.country, ...(sweep !== undefined ? { sweepWithin: sweep } : {}) });
   const month = opts.today.slice(0, 7);
-  const job = sweep !== undefined ? "sweep" : (opts.job ?? "verify");
+  const job = sweep !== undefined ? "sweep" : (opts.job ?? (opts.classify ? "classify" : "verify"));
+  const mode = modeFor(opts, config);
   const guard = createBudgetGuard({ month, today: opts.today, budgetUsd: opts.budgetUsd, model: opts.model, store: deps.usage, log: deps.log, job });
   const policies = new Map(countries.map((c) => [c.country, loadDomainPolicy(opts.root, c.country)]));
-  const mode = sweep !== undefined ? ` (news sweep, ${sweep} days)` : "";
-  deps.log.info(`refresh ${opts.today}: ${queue.length} festival(s) queued${mode}${opts.dryRun ? " (dry run)" : ""}`);
+  const kind = sweep !== undefined ? ` (news sweep, ${sweep} days)` : opts.classify ? " (classification)" : "";
+  deps.log.info(`refresh ${opts.today}: ${queue.length} festival(s) queued${kind}${opts.dryRun ? " (dry run)" : ""}`);
 
   const logs: FestivalLog[] = [];
   const changes: ReviewedChange[] = [];
   const notFound: RefreshReport["not_found"] = [];
   let stopped: string | null = null;
   let fatal = false;
-  // News sweeps look for cancellations only; dates are the weekly run's job.
-  let followupsLeft = sweep === undefined ? (opts.maxFollowups ?? 0) : 0;
+  // News sweeps look for cancellations only; dates are the weekly run's job. A classification may
+  // look wider once per festival (where visitors come from is rarely on official sites).
+  let followupsLeft = sweep !== undefined ? 0 : opts.classify ? queue.length : (opts.maxFollowups ?? 0);
   const followups: FollowupBudget = {
     take() {
       const level = guard.level();
@@ -279,7 +329,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
     }
     const country = countries.find((c) => c.country === item.country)!;
     try {
-      const run = await verifyFestival(item, country, policies.get(item.country)!, opts, deps, guard, followups);
+      const run = await verifyFestival(item, country, policies.get(item.country)!, opts, deps, guard, followups, mode);
       logs.push(run.log);
       changes.push(...run.changes);
       if (run.notFound.length) notFound.push({ country: item.country, slug: item.slug, fields: run.notFound });
@@ -322,6 +372,7 @@ export async function runRefresh(opts: RefreshOptions, deps: RefreshDeps): Promi
       festivals: logs,
       not_found: notFound,
       ...(sweep !== undefined ? { sweep_within: sweep } : {}),
+      ...(opts.classify ? { classify: true } : {}),
       ...(r13.downgrades.length ? { link_downgrades: r13.downgrades } : {}),
       ...(drafts.length ? { drafts } : {}),
     },

@@ -98,14 +98,15 @@ describe("nothing the trial apply lets through is rejected later by build-data (
   });
   const figure = (urls: string[], confidence: "oficial" | "prensa") => ({ field: "score.convocatoria", old: 250000, new: 900000, source_urls: urls, quote: "En 2026 llegaron 900.000 turistas", quote_language: "es", confidence, note: "" });
 
-  test("a press confirmation of the UNESCO listing keeps the official source, quote and note", () => {
+  test("a press confirmation of the party classification keeps the official source and quote", () => {
     const co = stored("CO");
-    const unesco = co.festivals.find((f) => f.slug === "carnaval-barranquilla")!.score.reconocimiento!;
-    const press = "https://www.eltiempo.com/cultura/carnaval-patrimonio-unesco";
-    const confirm = accepted({ slug: "carnaval-barranquilla", field: "score.reconocimiento", old: "unesco", new: "unesco", kind: "confirmation", quote: "patrimonio de la UNESCO", quote_url: press, confidence: "prensa", sources: [cited(press)] });
+    const party = co.festivals.find((f) => f.slug === "carnaval-barranquilla")!.score.fiesta!;
+    expect(party.confidence).toBe("oficial");
+    const press = "https://www.eltiempo.com/cultura/carnaval-se-baila-en-la-calle";
+    const confirm = accepted({ slug: "carnaval-barranquilla", field: "score.fiesta", old: "baile_abierto", new: "baile_abierto", kind: "confirmation", quote: "se baila en la calle", quote_url: press, confidence: "prensa", sources: [cited(press)] });
     const { selection, next } = weeklyApply(co, [confirm]);
     expect(selection.confirmations).toHaveLength(1);
-    expect(next.festivals.find((f) => f.slug === "carnaval-barranquilla")!.score.reconocimiento).toEqual(unesco);
+    expect(next.festivals.find((f) => f.slug === "carnaval-barranquilla")!.score.fiesta).toEqual(party);
     expect(dataProblems([next], policies, TODAY)).toEqual([]);
   });
 

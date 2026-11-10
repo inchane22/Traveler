@@ -9,8 +9,8 @@ shapes; this file fixes the interfaces between modules that are built in paralle
 | --- | --- | --- |
 | `src/schema.ts` | core | zod schemas. Do not loosen; extend only with a test. |
 | `src/dates.ts` | core | civil-date rule engine. `occurrenceFor`, `resolveRule`, `formatDateRange`, `todayIn`. |
-| `src/score.ts` | core | `scoreFestival(inputs, config)` → `{low, high, tier, criteria}`. |
-| `src/festivals.ts` | core | `buildEntries`, `isVisible(entry, scope, tier2)`, `upcoming`, `applyFilters`. |
+| `src/score.ts` | core | `scoreFestival(inputs, config)` → `{low, high, tier, excluded, criteria}`; `isParty(inputs)`. |
+| `src/festivals.ts` | core | `buildEntries` (parties only), `isVisible(entry, scope, tier2)`, `upcoming`, `applyFilters`. |
 | `src/status.ts` | core | Edition status lifecycle: `STATUS_TRAITS` (what each status means). See «State machines». |
 | `src/geo.ts`, `src/resource.ts` | ui | Pure state machines for «Cerca de mí» (`nextGeo`) and screen loads (`resource`), unit-tested. |
 | `src/ics.ts` | calendar | RFC 5545 output, used by the browser and by `scripts/build-calendars.ts`. |
@@ -40,6 +40,17 @@ Freshness of a country = `last_verified` in the index (latest edition verificati
 older than 30 days (RF-13).
 
 ## Engine and data rules (review fixes, 2026-10-28)
+
+- Parties only (2026-11-09): `score.fiesta` says what visitors do there (`baile_abierto`,
+  `baile_y_show`, `show`) or that it is a solemn act (`solemne`: procession, pilgrimage, mass,
+  passion play, vigil). `isParty` is false only for `solemne`; an unclassified festival is still a
+  party. `buildEntries` leaves non-parties out, so no view, top 5, upcoming list or pipeline queue
+  sees them (their rule still resolves `relative_to` through `ruleCtx`). build-data leaves them out
+  of the R2 count (`sourcedFestivals`), the index's festival count and `slugs` (no ficha), and
+  `tier1`. `score.viajeros` says where the crowd comes from. Both are set by the classifier; the
+  level definitions live in `config/scoring.json` (`criteria.fiesta.rule`, `criteria.viajeros.rule`)
+  and go into its system prompt. Types are kinds of party: `carnaval`, `musica`, `danza`,
+  `fiesta_popular`.
 
 - `FestivalEntry.ruleCtx` (optional): `buildEntries` attaches the whole country's `RuleContext`, and
   `applyFilters` uses it, so a `relative_to` rule resolves the same in Home, Explorar and the Ficha
@@ -84,6 +95,7 @@ function or table with a unit test: change behaviour there, not with a new statu
 | Country request | (none) → `queued` → `live`; `queued` → `retry` (30 days) → `gave_up` (3rd short build); `retry`/`gave_up` → `queued` on a new request | `nextRequest(req, cc, event, rules)` (scripts/lib/requests.ts); an error mid-build is not an attempt | `requestsDue` (the planner), `indexRequests` (the site) |
 | Link verdict (R13) | `ok`, `broken`, `unknown` | `checkLink` (links.ts); a downgrade happens once, keyed by its changelog entry | `applyLostSources` |
 | Country | `borrador` → `publicado` | by the pipeline only, when `readiness` (scripts/lib/publish.ts) passes: build-data's own checks for a «publicado» country, `MIN_SOURCED_FESTIVALS` dated A/B festivals included | drafts are built only with `INCLUDE_DRAFTS=1` |
+| Classification (2026-11-09) | `score.fiesta` / `score.viajeros`: `null` → a level | the classifier (refresh `--classify`, the `classify` band, builds); a first classification applies, a `score.fiesta` change into or out of `solemne` over a stored value is flagged (validate.ts) | `isParty` (src/score.ts), `needsClassifying` (queue.ts) |
 | Change approval | validate.ts verdict → `holdRisky` (autoapprove.ts) → applied / held / rejected | accepted changes apply; flagged, a moved confirmed date or a cancellation without two independent sites, and a run moving over half a country's dates are held | `data/state/holds.json` (`mergeHolds`), the «Needs a look» issue |
 
 Implicit on purpose (small, local, covered by e2e): app.ts navigation bookkeeping (`navKind` one-shot
@@ -166,7 +178,7 @@ Locale keys the calendar code reads (ui adds them to every `locales/*.json`):
 ```
 pnpm pipeline -- [--plan] [--request=<cc> [--issue=<n>]] [--today=YYYY-MM-DD] [--fixtures=<dir>]
 pnpm refresh -- [--dry-run] [--only=<slug>] [--country=<cc>] [--today=YYYY-MM-DD] [--fixtures=<dir>]
-                [--sweep=news [--within=<days>]]
+                [--sweep=news [--within=<days>] | --classify]
 pnpm onboard -- --country=<cc> [--dry-run] [--today=YYYY-MM-DD] [--fixtures=<dir>]
 node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 only on 404/410
 ```
@@ -174,7 +186,8 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
 - `pipeline` (pipeline.yml runs it daily and on «build-country» issues): intake of the request
   (`--request`, or ISSUE_NUMBER / ISSUE_TITLE / ISSUE_BODY from an issue event, parsed by
   `countryFromIssue`; refused unless it is one of the site's 238 codes) → drafts that pass R2 go
-  live (`publishReady`) → `makePlan` → news sweeps → builds → verification → holds → state files.
+  live (`publishReady`) → `makePlan` → news sweeps → classification → builds → verification (minus
+  what the classification just found solemn) → holds → state files.
   `--plan` (or `--dry-run`) makes no API call and writes only the summary. Outputs in `proposals/`:
   `pipeline-<date>.json|md` (plan and summary), `commit-message.txt`, `holds.md` (body of the
   «Needs a look» issue), `issue-updates.json` (`[{issue, comment, close}]` for the workflow), plus
@@ -185,22 +198,35 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   (`draftSourcePolicy`: official, press, blocked; code keeps bare hostnames, always adds
   `defaultGovernmentDomains` and UNESCO, never lists social networks or resellers as press, and a
   failed call writes the government-only fallback). No country file → `runOnboard`. Then up to
-  `build_topups` festivals without a sourced date, nearest first (`topUpQueue`), are verified with
-  job `build`; `readiness` decides `publicado`. Short of R2 → the request retries in `retry_days`.
+  `build_topups` unclassified festivals are classified, and up to `build_topups` parties without a
+  sourced date, nearest first (`topUpQueue`), are verified, all with job `build`; `readiness`
+  decides `publicado`. Short of R2 → the request retries in `retry_days`.
 - Planner (`makePlan`, pure): pools from `config/pipeline.json` (`new_country_share` for builds,
   the rest for upkeep spread over the days left; in the last `release_build_pool_days` both share
   what is left, upkeep first). Cadence: `verifyInterval(daysToStart, settled, tier, stretch)` and
   `sweepInterval`; the last check per festival comes from the ledger (`lastDays`), so a check that
-  found nothing is not repeated. Bands in priority order: `sweep-7`, `verify-45`, `sweep-45`,
-  builds, `verify-120`, `verify-180`, `verify-far`; what does not fit today's share is deferred
+  found nothing is not repeated. Bands in priority order: `sweep-7`, `classify` (a live festival
+  with `fiesta` or `viajeros` still null, at most every `CLASSIFY_RETRY_DAYS` = 30 days),
+  `verify-45`, `sweep-45`, builds, `verify-120`, `verify-180`, `verify-far`; what does not fit today's share is deferred
   (still due tomorrow). `projection` gives the full-cadence cost per country and the stretch (1 to
   `MAX_STRETCH` = 4) applied beyond 45 days so upkeep fits. Job costs: the ledger's average once
   three jobs of a kind exist, else `default_job_usd`.
 - Ledger (`data/state/ledger.jsonl`, `scripts/lib/ledger.ts`): one strict JSON line per call that
   returned: `{day, job, key, call, model, searches, input_tokens, output_tokens, usd}`; jobs
-  `onboard`, `policy`, `build` (new-country pool) and `verify`, `followup`, `sweep` (upkeep).
+  `onboard`, `policy`, `build` (new-country pool) and `verify`, `followup`, `sweep`, `classify` (upkeep).
   `call: "carryover"` brings in a total from before the ledger. Fixture runs keep it in memory.
 
+- `--classify` (2026-11-09): every unclassified festival (drafts included), or `--only` one even if
+  classified. Prompts `classify-system.md` (with the level rules from config/scoring.json),
+  `classify-user.md` and `classify-extract-system.md`; 3 searches, pass 1 on official and A
+  domains. The extraction may only propose `score.fiesta` and `score.viajeros`; anything else is
+  rejected (`keepModeFields`). A fact pass 1 left unanswered (`missingClassifyFacts`) gets one open
+  follow-up (`classify-followup.md`, block list only) under the same R10 levels as date
+  follow-ups; the first pass wins on what it answered. Report heading «Clasificación».
+- Search location (2026-11-09): the web search tool refuses `user_location.country` for some
+  countries (CO, PE and BO so far, a 400 «Country code XX is not supported»). `researchPass`
+  makes the call again without the country, keeping the time zone (`withoutCountry`); a refused
+  call costs nothing. Before this, every research call for those countries failed.
 - `--sweep=news` (R9): only festivals whose next edition starts within `--within` days (1 to 45,
   default 45), ongoing ones included, queue reason `news`. The research prompt asks for news with
   «cancelado», «aplazado», «suspendido» in the local language plus the English and Portuguese

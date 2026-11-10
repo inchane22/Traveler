@@ -2,15 +2,18 @@
 import type { ScoreInputs } from "./schema.ts";
 
 export type CriterionKey = keyof ScoreInputs;
-export const CRITERIA: readonly CriterionKey[] = ["convocatoria", "calle", "reconocimiento", "conectividad", "local"];
+export const CRITERIA: readonly CriterionKey[] = ["convocatoria", "fiesta", "viajeros", "calle", "conectividad"];
+/** Criteria measured as a level (every one but the attendance figure). */
+export type LevelCriterion = Exclude<CriterionKey, "convocatoria">;
 
 export interface ScoringConfig {
   criteria: {
     convocatoria: { max: number; scale: Array<{ min: number; points: number }> };
+    /** `rule`: the level definitions the classifier works from (scripts/prompts/classify-system.md). */
+    fiesta: { max: number; levels: Record<string, number>; rule?: string };
+    viajeros: { max: number; levels: Record<string, number>; rule?: string };
     calle: { max: number; levels: Record<string, number> };
-    reconocimiento: { max: number; levels: Record<string, number> };
     conectividad: { max: number; levels: Record<string, number> };
-    local: { max: number; levels: Record<string, number> };
   };
   thresholds: { tier1: number; tier2: number };
   country_top_n: number;
@@ -30,7 +33,18 @@ export interface ScoreResult {
   high: number;
   measured: boolean;
   tier: Tier;
+  /** Not a party (a solemn act): left out of every list, whatever the points. */
+  excluded: boolean;
   criteria: CriterionScore[];
+}
+
+/**
+ * The calendar lists parties (2026-11-09). A festival a source describes as a solemn act
+ * (procession, pilgrimage, mass, passion play, memorial) is not one; an unclassified one still is
+ * until the classifier says otherwise.
+ */
+export function isParty(inputs: ScoreInputs): boolean {
+  return inputs.fiesta?.measure !== "solemne";
 }
 
 function pointsFor(key: CriterionKey, inputs: ScoreInputs, config: ScoringConfig): number | null {
@@ -57,5 +71,6 @@ export function scoreFestival(inputs: ScoreInputs, config: ScoringConfig): Score
   const criteria = CRITERIA.map((key) => ({ key, points: pointsFor(key, inputs, config), max: config.criteria[key].max }));
   const low = criteria.reduce((sum, c) => sum + (c.points ?? 0), 0);
   const high = criteria.reduce((sum, c) => sum + (c.points ?? c.max), 0);
-  return { low, high, measured: criteria.every((c) => c.points !== null), tier: classify(low, high, config.thresholds), criteria };
+  const excluded = !isParty(inputs);
+  return { low, high, measured: criteria.every((c) => c.points !== null), tier: excluded ? "hidden" : classify(low, high, config.thresholds), excluded, criteria };
 }

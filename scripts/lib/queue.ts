@@ -5,7 +5,7 @@ import type { CountryFile, Festival, Status } from "../../src/schema.ts";
 import type { ScoringConfig, Tier } from "../../src/score.ts";
 import { STATUS_TRAITS } from "../../src/status.ts";
 
-export type QueueReason = "soon" | "unconfirmed" | "stale" | "manual" | "news";
+export type QueueReason = "soon" | "unconfirmed" | "stale" | "manual" | "news" | "unclassified";
 
 export interface QueueItem {
   country: string;
@@ -106,6 +106,46 @@ export function candidates(country: CountryFile, config: ScoringConfig, today: I
       },
     ];
   });
+}
+
+/** Not classified yet (2026-11-09): whether it is a party, or where its crowd comes from, is «por medir». */
+export function needsClassifying(festival: Festival): boolean {
+  return festival.score.fiesta === null || festival.score.viajeros === null;
+}
+
+/**
+ * What the classifier looks at in one country: every festival still unclassified, nearest first;
+ * `force` (from --only) asks again about one that is. A solemn act is already off every list.
+ */
+export function classifyCandidates(country: CountryFile, config: ScoringConfig, today: ISO, force?: string): QueueItem[] {
+  return buildEntries(country, config, today)
+    .filter((entry) => entry.festival.slug === force || needsClassifying(entry.festival))
+    .map((entry) => {
+      const occ = entry.occurrence;
+      return {
+        country: country.country,
+        slug: entry.festival.slug,
+        festival: entry.festival,
+        tier: entry.score.tier,
+        year: occ?.year ?? Number(today.slice(0, 4)) + 1,
+        occurrence: occ,
+        daysToStart: occ ? diffDays(today, effectiveStart(occ)) : Number.POSITIVE_INFINITY,
+        lastVerified: occ?.edition?.last_verified ?? null,
+        reasons: needsClassifying(entry.festival) ? ["unclassified" as const] : ["manual" as const],
+      };
+    })
+    .sort(compareItems);
+}
+
+/** `pnpm refresh -- --classify`: every country (drafts too), or the one asked for, up to `max`. */
+export function buildClassifyQueue(countries: readonly CountryFile[], config: ScoringConfig, today: ISO, opts: Pick<QueueOptions, "max" | "only" | "country">): QueueItem[] {
+  const wanted = opts.country?.toUpperCase();
+  return countries
+    .filter((c) => !wanted || c.country === wanted)
+    .flatMap((c) => classifyCandidates(c, config, today, opts.only))
+    .filter((item) => !opts.only || item.slug === opts.only)
+    .sort(compareItems)
+    .slice(0, opts.max);
 }
 
 /**

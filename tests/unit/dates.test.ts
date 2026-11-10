@@ -25,7 +25,7 @@ const festival = (over: Partial<Festival>): Festival => ({
   type: "carnaval",
   rule: { type: "fixed", start: "01-01", end: "01-02" },
   editions: {},
-  score: { convocatoria: null, calle: null, reconocimiento: null, conectividad: null, local: null },
+  score: { convocatoria: null, fiesta: null, viajeros: null, calle: null, conectividad: null },
   ...over,
 });
 

@@ -59,10 +59,14 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
     expect(find(r.applied, "negros-y-blancos", "start")).toMatchObject({ new: "2027-01-02", confidence: "oficial", verdict: "accepted" });
     // No source among the citations: rejected.
     expect(find(r.rejected, "feria-de-cali", "end")!.reasons.join()).toMatch(/sin fuente/);
-    // Outside the rule window: flagged «revisar», never applied.
-    expect(find(r.flagged, "festival-vallenato", "start")!.flags.join()).toMatch(/^revisar: fuera de la ventana/);
-    // Injection phrase in the cited text: flagged.
-    expect(find(r.flagged, "san-pacho", "status")!.flags.join()).toMatch(/inyección/);
+    // Outside the rule window: never applied. The Vallenato is tier 1 under the party scoring, so it
+    // is blocked outright (R1); below tier 1 it would be flagged «revisar».
+    expect(find(r.rejected, "festival-vallenato", "start")!.reasons.join()).toMatch(/fuera de la ventana de la regla .*: bloqueado en Nivel 1/);
+    // Injection phrase in the cited text: flagged, and never applied. San Pacho is tier 1 under the
+    // party scoring, so the blog's «cancelada» is also rejected for want of an A source.
+    const injected = find(r.rejected, "san-pacho", "status")!;
+    expect(injected.flags.join()).toMatch(/inyección/);
+    expect(injected.reasons.join()).toMatch(/Nivel 1 exige una fuente A/);
     // Press-only domain claiming «oficial»: downgraded.
     expect(find(r.applied, "independencia-cartagena", "start")).toMatchObject({ proposed_confidence: "oficial", confidence: "prensa" });
     // pause_turn resumed, then the official site confirmed the stored dates.
@@ -77,13 +81,17 @@ describe("refresh with recorded responses (H4 acceptance)", () => {
 
     expect(result.files.map((f) => f.slice(root.length + 1)).sort()).toEqual(["proposals/2026-10-26.json", "proposals/2026-10-26.md"]);
     expect(readFileSync(join(root, "data", "countries", "co.json"), "utf8")).toBe(before);
-    expect(githubOutput(out)).toEqual({ changes: String(r.applied.length + r.confirmations.length), flagged: "4", unexpected: "0", verified: String(r.festivals.filter((f) => !["api_error", "error", "no_fixture", "skipped_budget", "not_run"].includes(f.outcome)).length) });
+    // Vallenato and San Pacho are tier 1 under the party scoring: what the PRD-era run held for a
+    // person is now blocked outright, so nothing is left to hold.
+    expect(r.flagged).toEqual([]);
+    expect(r.rejected.map((c) => `${c.slug} ${c.field}`).sort()).toEqual(["feria-de-cali end", "festival-vallenato end", "festival-vallenato start", "san-pacho start", "san-pacho status"]);
+    expect(githubOutput(out)).toEqual({ changes: String(r.applied.length + r.confirmations.length), flagged: "0", unexpected: "0", verified: String(r.festivals.filter((f) => !["api_error", "error", "no_fixture", "skipped_budget", "not_run"].includes(f.outcome)).length) });
 
     const md = readFileSync(join(root, "proposals", "2026-10-26.md"), "utf8");
     expect(md).toContain(`### Cambios aplicados (${r.applied.length})`);
     expect(md).toContain("**Nivel 1**");
-    expect(md).toContain("### Retenidos, no aplicados (4)");
-    expect(md).toContain("Rechazados por la validación (1)");
+    expect(md).not.toContain("### Retenidos");
+    expect(md).toContain("Rechazados por la validación (5)");
     expect(md).not.toMatch(/<script|@\w/);
   });
 
@@ -225,9 +233,9 @@ describe("queue", () => {
     const br = country("BR");
     const scheduled = buildQueue([br], config, "2026-11-09", { max: 40, perCountry: 10 }).map((i) => i.slug);
     const manual = buildQueue([br], config, "2026-11-09", { max: 40, perCountry: 10, country: "BR" }).map((i) => i.slug);
-    expect(scheduled).not.toContain("cirio-de-nazare");
-    expect(manual).toContain("cirio-de-nazare");
-    expect(buildQueue([br], config, "2026-12-07", { max: 40, perCountry: 10 }).map((i) => i.slug)).toContain("cirio-de-nazare");
+    expect(scheduled).not.toContain("festival-parintins");
+    expect(manual).toContain("festival-parintins");
+    expect(buildQueue([br], config, "2026-12-07", { max: 40, perCountry: 10 }).map((i) => i.slug)).toContain("festival-parintins");
   });
 
   // src/status.ts: a cancellation is settled like a confirmation, and has nothing left to sweep for.
@@ -313,6 +321,7 @@ describe("CLI (docs/architecture.md «Pipeline CLI»)", () => {
       maxFestivals: 12,
       perCountry: 10,
       maxFollowups: 6,
+      classify: false,
     });
     expect(refreshArgs([], { MAX_FOLLOWUPS_PER_RUN: "0" }, now).maxFollowups).toBe(0);
     expect(() => refreshArgs([], { MAX_FOLLOWUPS_PER_RUN: "-1" }, now)).toThrow(/0 or a positive integer/);

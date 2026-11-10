@@ -6,14 +6,11 @@
 .type--musica {
   --c: var(--type-musica);
 }
-.type--tradicion_religiosa {
-  --c: var(--type-tradicion_religiosa);
+.type--danza {
+  --c: var(--type-danza);
 }
-.type--cosecha_temporada {
-  --c: var(--type-cosecha_temporada);
-}
-.type--fiesta_nacional {
-  --c: var(--type-fiesta_nacional);
+.type--fiesta_popular {
+  --c: var(--type-fiesta_popular);
 }
 
 .swatch {

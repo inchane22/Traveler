@@ -21,9 +21,8 @@
   /* Festival types (marks only, never text) */
   --type-carnaval: #d6189f;
   --type-musica: #3a3fe0;
-  --type-tradicion_religiosa: #a97404;
-  --type-cosecha_temporada: #0b9c69;
-  --type-fiesta_nacional: #b80f2a;
+  --type-danza: #a97404;
+  --type-fiesta_popular: #0b9c69;
 
   /* Type */
   --font-display: "Anybody Variable", "Anybody Fallback", "Anybody Fallback Roboto", "Arial Narrow", sans-serif-condensed, system-ui, sans-serif;
@@ -82,9 +81,8 @@
 
     --type-carnaval: #e83fbe;
     --type-musica: #7f6bff;
-    --type-tradicion_religiosa: #bf8418;
-    --type-cosecha_temporada: #17ae80;
-    --type-fiesta_nacional: #d42d47;
+    --type-danza: #bf8418;
+    --type-fiesta_popular: #17ae80;
   }
 }
 
@@ -103,9 +101,8 @@
 
   --type-carnaval: #e83fbe;
   --type-musica: #7f6bff;
-  --type-tradicion_religiosa: #bf8418;
-  --type-cosecha_temporada: #17ae80;
-  --type-fiesta_nacional: #d42d47;
+  --type-danza: #bf8418;
+  --type-fiesta_popular: #17ae80;
 }
 
 @media (min-width: 48rem) {

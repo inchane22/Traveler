@@ -15,7 +15,8 @@ export function fest(cc: string, slug: string, rule: unknown, editions: Record<s
     type: "carnaval",
     rule,
     editions,
-    score: { convocatoria: null, calle: null, reconocimiento: null, conectividad: null, local: null },
+    // Classified (2026-11-09) like every live festival, so plans hold no classification for it.
+    score: { convocatoria: null, fiesta: { measure: "baile_abierto", confidence: "estimacion" }, viajeros: { measure: "nacional", confidence: "estimacion" }, calle: null, conectividad: null },
   });
 }
 

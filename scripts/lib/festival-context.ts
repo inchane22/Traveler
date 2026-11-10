@@ -3,13 +3,51 @@
 import { resolveRule } from "../../src/dates.ts";
 import { ctxFor } from "../../src/festivals.ts";
 import type { CountryFile } from "../../src/schema.ts";
+import { CRITERIA } from "../../src/score.ts";
 import { fence } from "./extract.ts";
 import { loadPrompt } from "./io.ts";
 import { countryInfo, localLangFor, needsNewsSweep, newsTerms } from "./lang.ts";
 import type { QueueItem } from "./queue.ts";
 import { currentValue } from "./validate.ts";
 
-const CRITERIA = ["convocatoria", "calle", "reconocimiento", "conectividad", "local"] as const;
+/** The level definitions the classifier works from, as config/scoring.json states them. */
+export interface ClassifyRules {
+  fiesta: string;
+  viajeros: string;
+}
+
+/** System prompt of the classifier (2026-11-09): is it a party, and do people travel for it. */
+export function classifySystemPrompt(rules: ClassifyRules): string {
+  return loadPrompt("classify-system.md", { fiesta_rule: rules.fiesta, viajeros_rule: rules.viajeros });
+}
+
+/** The fields a classification answers, in the order they are asked. */
+export const CLASSIFY_FACTS = ["score.fiesta", "score.viajeros"] as const;
+
+const CLASSIFY_LINES: Record<string, string> = {
+  "score.fiesta": "- fiesta: what visitors do there (baile_abierto, baile_y_show, show or solemne)",
+  "score.viajeros": "- viajeros: where the crowd comes from (internacional, nacional or regional)",
+};
+
+/**
+ * The classifier's research turn: identity only, fenced like any text that came from a draft.
+ * With `followup`, the wider second search for the facts a first pass on official sites left out.
+ */
+export function classifyUserPrompt(item: QueueItem, country: CountryFile, followup?: readonly string[]): string {
+  const countryName = countryInfo(country.country)?.names.en ?? country.country;
+  const facts = (followup?.length ? followup : CLASSIFY_FACTS).map((f) => CLASSIFY_LINES[f]).filter((l): l is string => !!l);
+  return loadPrompt("classify-user.md", {
+    name_local: fence(item.festival.names.local),
+    name_es: fence(item.festival.names.es),
+    name_en: fence(item.festival.names.en),
+    city: fence(item.festival.city),
+    country_name: countryName,
+    country: country.country,
+    lang: localLangFor(country.country),
+    facts: facts.join("\n"),
+    followup: followup?.length ? loadPrompt("classify-followup.md", { country_name: countryName }) : "",
+  });
+}
 
 function currentLines(item: QueueItem, country: CountryFile): string {
   const e = item.festival.editions[String(item.year)];
@@ -60,7 +98,6 @@ export function researchUserPrompt(item: QueueItem, country: CountryFile, follow
         FACT_LINES.status,
         `- key events with their dates: ${keyEvents}`,
         "- attendance of the last completed edition, with its year and who measured it",
-        "- UNESCO Intangible Cultural Heritage inscription or national heritage declaration",
       ];
   // Stored names came from an onboarding draft: fenced like any web text (SEC-07).
   return loadPrompt("research-user.md", {

@@ -21,7 +21,7 @@
         "lon": -70.02361
       },
       "nearest_airport": "JUL",
-      "type": "tradicion_religiosa",
+      "type": "danza",
       "rule": {
         "type": "announced",
         "window": {
@@ -134,12 +134,19 @@
             "pt": "Estudo do Mincetur 2026: 140 mil espectadores e 198 mil dançarinos e músicos; 92.960 eram turistas."
           }
         },
-        "calle": null,
-        "reconocimiento": {
-          "measure": "unesco",
+        "fiesta": {
+          "measure": "show",
           "confidence": "oficial",
-          "source": "https://ich.unesco.org/en/RL/festivity-of-virgen-de-la-candelaria-of-puno-00956"
+          "source": "https://turismo.munipuno.gob.pe/festividad-de-la-virgen-de-la-candelaria/",
+          "quote": "Puedes seguir los desfiles por las calles de Puno o disfrutarlos desde una tribuna especial."
         },
+        "viajeros": {
+          "measure": "nacional",
+          "confidence": "prensa",
+          "source": "https://www.radionacional.gob.pe/noticias/cultural/festividad-de-la-virgen-de-la-candelaria-genero-un-impacto-economico-mayor-a-s117-millones",
+          "quote": "del total de visitantes, 89 320 fueron turistas nacionales y 3640 extranjeros"
+        },
+        "calle": null,
         "conectividad": {
           "measure": "ninguno",
           "confidence": "estimacion",
@@ -149,11 +156,6 @@
             "en": "Puno has no airport; the nearest is JUL in Juliaca, with flights to Lima only.",
             "pt": "Puno não tem aeroporto; o mais próximo é JUL, em Juliaca, com voos só para Lima."
           }
-        },
-        "local": {
-          "measure": "intermedia",
-          "confidence": "estimacion",
-          "source": "https://en.wikipedia.org/wiki/Puno"
         }
       },
       "street_tip": {
@@ -183,7 +185,7 @@
         "lon": -71.9786
       },
       "nearest_airport": "CUZ",
-      "type": "cosecha_temporada",
+      "type": "fiesta_popular",
       "rule": {
         "type": "fixed",
         "start": "06-24",
@@ -211,6 +213,18 @@
       },
       "score": {
         "convocatoria": null,
+        "fiesta": {
+          "measure": "show",
+          "confidence": "oficial",
+          "source": "https://www.gob.pe/institucion/mincetur/noticias/1369092-presentan-fiestas-del-cusco-e-inti-raymi-2026-que-impulsara-turismo-nacional-e-internacional",
+          "quote": "El evento central es el Inti Raymi, escenificación inca en honor al dios Sol, que se realiza el 24 de junio en el Qorikancha"
+        },
+        "viajeros": {
+          "measure": "internacional",
+          "confidence": "oficial",
+          "source": "https://www.gob.pe/institucion/mincetur/noticias/790720-festividades-por-el-inti-raymi-generaron-un-impacto-economico-de-s-33-millones",
+          "quote": "El 44% fueron residentes locales, el 31,5% turistas extranjeros y un 24,5% turistas nacionales."
+        },
         "calle": {
           "measure": "mixta",
           "confidence": "prensa",
@@ -221,25 +235,10 @@
             "pt": "A Plaza Mayor é gratuita; Qorikancha e Saqsaywaman exigem ingresso pago (2025)."
           }
         },
-        "reconocimiento": {
-          "measure": "nacional",
-          "confidence": "prensa",
-          "source": "https://elperuano.pe/noticia/298765-inti-raymi-2026-miles-de-visitantes-llegaron-a-cusco-para-participar-en-la-gran-fiesta-del-sol",
-          "note": {
-            "es": "Patrimonio Cultural de la Nación desde 2001.",
-            "en": "National Cultural Heritage of Peru since 2001.",
-            "pt": "Patrimônio Cultural da Nação desde 2001."
-          }
-        },
         "conectividad": {
           "measure": "internacional",
           "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Alejandro_Velasco_Astete_International_Airport"
-        },
-        "local": {
-          "measure": "intermedia",
-          "confidence": "estimacion",
-          "source": "https://en.wikipedia.org/wiki/Cusco"
         }
       },
       "street_tip": {
@@ -312,17 +311,23 @@
             "pt": "Estudo do Mincetur 2026: cerca de 116 mil participantes entre moradores e turistas; 79.691 turistas."
           }
         },
+        "fiesta": {
+          "measure": "baile_y_show",
+          "confidence": "prensa",
+          "source": "https://andina.pe/agencia/noticia-carnaval-cajamarca-alegria-desbordante-durante-desfile-patrullas-y-comparsas-929823.aspx",
+          "quote": "Coloridos y vistosos atuendos exhibieron ayer los barrios de la ciudad de Cajamarca en el tradicional concurso de patrullas y comparsas en el desfile"
+        },
+        "viajeros": {
+          "measure": "nacional",
+          "confidence": "oficial",
+          "source": "https://www.gob.pe/institucion/mincetur/noticias/1362733-mincetur-carnaval-de-cajamarca-2026-genero-un-impacto-economico-de-s-75-millones-y-atrajo-a-cerca-de-80-mil-turistas",
+          "quote": "se registró la llegada de más de 78 mil turistas nacionales y 1470 extranjeros"
+        },
         "calle": null,
-        "reconocimiento": null,
         "conectividad": {
           "measure": "nacional",
           "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Mayor_General_FAP_Armando_Revoredo_Iglesias_Airport"
-        },
-        "local": {
-          "measure": "intermedia",
-          "confidence": "estimacion",
-          "source": "https://en.wikipedia.org/wiki/Cajamarca"
         }
       },
       "street_tip": {
@@ -347,7 +352,7 @@
         "lon": -77.0375
       },
       "nearest_airport": "LIM",
-      "type": "tradicion_religiosa",
+      "type": "fiesta_popular",
       "rule": {
         "type": "announced",
         "window": {
@@ -440,26 +445,23 @@
       },
       "score": {
         "convocatoria": null,
-        "calle": null,
-        "reconocimiento": {
-          "measure": "nacional",
+        "fiesta": {
+          "measure": "solemne",
           "confidence": "oficial",
-          "source": "https://comunicaciones.congreso.gob.pe/?p=475488",
-          "note": {
-            "es": "Patrimonio Cultural de la Nación desde 2005; el Parlamento Andino lo declaró patrimonio regional en 2026.",
-            "en": "National Cultural Heritage since 2005; the Andean Parliament declared it regional heritage in 2026.",
-            "pt": "Patrimônio Cultural da Nação desde 2005; o Parlamento Andino o declarou patrimônio regional em 2026."
-          }
+          "source": "https://www.peru.travel/events/lord-of-miracles",
+          "quote": "This is a dramatic ritual of faith, hope, tradition and -of course- good food."
         },
+        "viajeros": {
+          "measure": "nacional",
+          "confidence": "estimacion",
+          "source": "https://alicia.concytec.gob.pe/vufind/Record/ULAS_8f9dbd04d9853e0ba09096ce2b8809ae",
+          "quote": "Se ha analizado el arribo de los turistas extranjeros a Lima alrededor de 5000 y de turismo interno cerca de 20000 visitantes"
+        },
+        "calle": null,
         "conectividad": {
           "measure": "internacional",
           "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Jorge_Ch%C3%A1vez_International_Airport"
-        },
-        "local": {
-          "measure": "gran_ciudad",
-          "confidence": "estimacion",
-          "source": "https://en.wikipedia.org/wiki/Lima"
         }
       },
       "street_tip": {

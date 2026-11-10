@@ -233,7 +233,7 @@ test.describe("Explorar", () => {
   // ux-F08 «Vacíos que orientan»: every suggestion is counted like the chips and none leads to
   // another empty state.
   test("an empty result offers only ways out that give results, each with its count", async ({ page }) => {
-    const hash = "#/explorar?pais=co&mes=2027-03&tipo=tradicion_religiosa";
+    const hash = "#/explorar?pais=co&mes=2027-03&tipo=danza";
     await open(page, hash);
     const n = await page.locator(".empty__actions button").count();
     expect(n).toBeGreaterThan(0);
@@ -252,7 +252,7 @@ test.describe("Explorar", () => {
 
   // R11: a traveller who misses a festival can suggest it, with the country already filled in.
   test("R11: «Sugerir una fiesta» opens the suggestion form from an empty result and Sobre los datos", async ({ page }) => {
-    await open(page, "#/explorar?pais=co&mes=2027-03&tipo=tradicion_religiosa");
+    await open(page, "#/explorar?pais=co&mes=2027-03&tipo=danza");
     const link = page.locator(".empty").getByRole("link", { name: /Sugerir una fiesta/ });
     await expect(link).toHaveAttribute("target", "_blank");
     const url = new URL((await link.getAttribute("href")) ?? "");

@@ -57,8 +57,9 @@ describe("budget pools (R10)", () => {
     const three = [1, 2, 3].map((d) => line({ day: `2026-11-0${d}`, key: `AA/f${d}`, usd: 0.3 }));
     expect(jobCosts(three.slice(0, 2), settings.default_job_usd).verify).toBe(settings.default_job_usd.verify);
     expect(jobCosts(three, settings.default_job_usd).verify).toBe(0.3);
-    expect(buildEstimate(settings.default_job_usd, settings, false, true)).toBeCloseTo(0.03 + 1.2 + 5 * 0.3, 6);
-    expect(buildEstimate(settings.default_job_usd, settings, true, false)).toBeCloseTo(1.5, 6);
+    // Policy, onboarding, then up to 5 classifications and 5 date top-ups.
+    expect(buildEstimate(settings.default_job_usd, settings, false, true)).toBeCloseTo(0.03 + 1.2 + 5 * (0.3 + 0.12), 6);
+    expect(buildEstimate(settings.default_job_usd, settings, true, false)).toBeCloseTo(5 * (0.3 + 0.12), 6);
   });
 });
 

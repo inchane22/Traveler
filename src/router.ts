@@ -4,7 +4,7 @@
 import { parseISODate, type ISO } from "./dates.ts";
 import type { FestivalType } from "./schema.ts";
 
-export const FESTIVAL_TYPES: readonly FestivalType[] = ["carnaval", "musica", "tradicion_religiosa", "cosecha_temporada", "fiesta_nacional"];
+export const FESTIVAL_TYPES: readonly FestivalType[] = ["carnaval", "musica", "danza", "fiesta_popular"];
 export const REGIONS = ["sudamerica", "centroamerica_caribe", "norteamerica", "europa", "asia", "africa", "oceania"] as const;
 export type RegionId = (typeof REGIONS)[number];
 

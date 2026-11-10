@@ -1,7 +1,7 @@
 // Code-side validation of every proposed change before it can reach a PR (PRD «Validación en código»
 // plus the R1, R2, R3, R7 controls of the risk register, which win where they differ). Pure.
 import { addDays, resolveRule, type DateWindow, type RuleContext } from "../../src/dates.ts";
-import { Confidence, ISODate, Proposal, Status, type Festival } from "../../src/schema.ts";
+import { Confidence, FiestaLevel, ISODate, Proposal, Status, ViajerosLevel, type Festival } from "../../src/schema.ts";
 import type { Tier } from "../../src/score.ts";
 import { hasDateReader, quoteStatesDate, type DateRole } from "./date-parser.ts";
 import type { DomainPolicy } from "./domains.ts";
@@ -55,11 +55,13 @@ export interface ReviewContext {
 
 export const WINDOW_MARGIN_DAYS = 30;
 const SCORE_LEVELS: Record<string, readonly string[]> = {
+  fiesta: FiestaLevel.options,
+  viajeros: ViajerosLevel.options,
   calle: ["mayoria_gratis", "mixta", "mayoria_boleta"],
-  reconocimiento: ["unesco", "nacional", "ninguna"],
   conectividad: ["internacional", "nacional", "ninguno"],
-  local: ["pueblo", "intermedia", "gran_ciudad"],
 };
+/** Judgement criteria a person decides; «fiesta» and «viajeros» are the classifier's call (2026-11-09). */
+const HUMAN_CRITERIA = new Set(["score.calle", "score.conectividad"]);
 const DATE_FIELDS = new Set(["start", "end"]);
 
 export const isDateField = (field: string): boolean => DATE_FIELDS.has(field) || field.startsWith("key_events.");
@@ -219,10 +221,11 @@ export function reviewChange(change: Proposed, ctx: ReviewContext): ReviewedChan
     // A figure with no year cannot be «el último balance», confirmed or not (SEC-01).
     if (!quoteYears(change.quote).length) flags.push("revisar: la cifra no dice de qué año es");
   }
-  if (["score.calle", "score.conectividad", "score.local"].includes(change.field) && kind === "change") flags.push("revisar: criterio de juicio, lo decide una persona");
-  if (change.field === "score.reconocimiento" && kind === "change") {
-    const needs = value === "unesco" ? /unesco|inmaterial|intangible|imaterial/i : /patrimonio|heritage|declarad|declarat/i;
-    if (value !== "ninguna" && !needs.test(change.quote)) flags.push("revisar: la cita no menciona la declaratoria");
+  if (HUMAN_CRITERIA.has(change.field) && kind === "change") flags.push("revisar: criterio de juicio, lo decide una persona");
+  // A first classification applies on its own; taking a listed party off the site, or putting a
+  // solemn act back on it, overrides an earlier classification, so a person confirms it.
+  if (change.field === "score.fiesta" && kind === "change" && old !== null && (old === "solemne") !== (value === "solemne")) {
+    flags.push(value === "solemne" ? "revisar: deja de ser fiesta y sale del sitio; una persona lo confirma" : "revisar: un acto solemne vuelve al sitio como fiesta; una persona lo confirma");
   }
 
   // Caps are measured on the source apply will store, so they agree with build-data's checks

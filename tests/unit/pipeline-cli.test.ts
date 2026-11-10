@@ -22,7 +22,8 @@ describe("pipeline CLIs (offline)", () => {
     expect(r.code, r.stderr).toBe(0);
     expect(r.stdout).toMatch(new RegExp(`wrote .*/proposals/${TODAY}\\.md`));
     const values = githubOutput(out);
-    expect(values).toMatchObject({ flagged: "4", unexpected: "0" });
+    // Under the party scoring the scenarios' risky changes hit tier-1 festivals and are blocked, not held.
+    expect(values).toMatchObject({ flagged: "0", unexpected: "0" });
     expect(values.branch).toBeUndefined();
     expect(existsSync(join(root, "data", "state", "ledger.jsonl"))).toBe(false);
   });

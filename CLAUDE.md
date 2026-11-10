@@ -16,6 +16,9 @@ a milestone closes only when its tests are green.
 - The pipeline applies accepted changes without human review (2026-11-09); anything doubtful is
   held, never applied. Keep it that way: a new kind of risky change goes in `holdRisky`
   (scripts/lib/autoapprove.ts), and a country reaches «publicado» only through `readiness`.
+- The calendar lists parties (2026-11-09): whether a festival is one is `score.fiesta`, set by the
+  classifier with a source, never its `type`. Ask `isParty` (src/score.ts); `buildEntries` already
+  leaves solemn acts out of every view and queue.
 - Lifecycles have one home (docs/architecture.md «State machines»). For behaviour (does an edition
   take place, is it settled, do calendars keep it) ask `STATUS_TRAITS` in `src/status.ts`; compare a
   status string only for its own wording or style. Move «Cerca de mí» only through `nextGeo` and

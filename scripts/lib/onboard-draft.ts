@@ -3,7 +3,7 @@
 // every date, figure and declaration needs a validated citation or becomes «por medir» / «por anunciar».
 import { z } from "zod";
 import { addDays, resolveRule, type ISO } from "../../src/dates.ts";
-import { Confidence, FestivalType, Identity, Rule, Status, type Edition, type Festival, type ScoreInputs } from "../../src/schema.ts";
+import { Confidence, FestivalType, FiestaLevel, Identity, Rule, Status, ViajerosLevel, type Edition, type Festival, type ScoreInputs } from "../../src/schema.ts";
 import { hasDateReader, quoteStatesDate } from "./date-parser.ts";
 import type { DomainPolicy } from "./domains.ts";
 import { checkSources, citedTextsFor, quoteIsVerbatim, quoteNumbers, type CitedSource } from "./evidence.ts";
@@ -61,10 +61,12 @@ export const DraftFestival = z
         })
         .strict(),
     ),
+    /** What visitors do there (2026-11-09); «solemne» keeps it off the site. */
+    party: nullable(z.object({ level: FiestaLevel, evidence: Evidence }).strict()),
+    /** Where the crowd comes from. */
+    travelers: nullable(z.object({ level: ViajerosLevel, evidence: Evidence }).strict()),
     street: Level(["mayoria_gratis", "mixta", "mayoria_boleta"] as const),
-    recognition: Level(["unesco", "nacional", "ninguna"] as const),
     connectivity: Level(["internacional", "nacional", "ninguno"] as const),
-    local_size: Level(["pueblo", "intermedia", "gran_ciudad"] as const),
   })
   .strict();
 
@@ -176,7 +178,7 @@ export function verifiedEdition(f: DraftFestival, ctx: VerifyContext, today: ISO
 function level<K extends keyof ScoreInputs>(value: { level: string; evidence: EvidenceT } | null, ctx: VerifyContext): ScoreInputs[K] {
   const v = verifyEvidence(value?.evidence, ctx);
   if (!value || !v) return null;
-  return { measure: value.level, confidence: v.confidence, source: v.source.url } as ScoreInputs[K];
+  return { measure: value.level, confidence: v.confidence, source: v.source.url, quote: v.quote } as ScoreInputs[K];
 }
 
 /** Score inputs: a criterion without a validated citation is null («por medir»). */
@@ -186,14 +188,12 @@ export function verifiedScore(f: DraftFestival, ctx: VerifyContext): { score: Sc
   const attendanceOk = !!a && !!av && quoteNumbers(av.quote).includes(a.value) && av.quote.includes(String(a.year));
   const score: ScoreInputs = {
     convocatoria: attendanceOk ? { measure: { attendance: a.value, qualifier: a.qualifier, unit: a.unit, year: a.year }, confidence: av.confidence, source: av.source.url } : null,
+    fiesta: level<"fiesta">(f.party, ctx),
+    viajeros: level<"viajeros">(f.travelers, ctx),
     calle: level<"calle">(f.street, ctx),
-    reconocimiento: f.recognition && verifyEvidence(f.recognition.evidence, ctx) && (f.recognition.level !== "unesco" || /unesco|inmaterial|intangible|imaterial/i.test(f.recognition.evidence.quote))
-      ? level<"reconocimiento">(f.recognition, ctx)
-      : null,
     conectividad: level<"conectividad">(f.connectivity, ctx),
-    local: level<"local">(f.local_size, ctx),
   };
-  const sources = [a?.evidence, f.street?.evidence, f.recognition?.evidence, f.connectivity?.evidence, f.local_size?.evidence]
+  const sources = [a?.evidence, f.party?.evidence, f.travelers?.evidence, f.street?.evidence, f.connectivity?.evidence]
     .map((e) => verifyEvidence(e, ctx)?.source)
     .filter((s): s is CitedSource => !!s);
   return { score, sources };

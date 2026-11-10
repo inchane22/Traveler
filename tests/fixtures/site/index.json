@@ -6,7 +6,7 @@
       "status": "publicado",
       "region": "sudamerica",
       "timezone": "America/Sao_Paulo",
-      "festivals": 10,
+      "festivals": 9,
       "last_verified": "2026-11-08",
       "share_a": 0.33
     },
@@ -24,14 +24,15 @@
       "status": "publicado",
       "region": "sudamerica",
       "timezone": "America/Lima",
-      "festivals": 4,
+      "festivals": 3,
       "last_verified": "2026-10-26",
       "share_a": 0
     }
   ],
   "tier1": [
+    "BR/carnaval-rio-de-janeiro",
+    "BR/carnaval-salvador",
     "BR/carnaval-recife",
-    "BR/cirio-de-nazare",
     "BR/carnaval-olinda",
     "BR/lavagem-do-bonfim",
     "BR/sao-joao-campina-grande",
@@ -39,13 +40,16 @@
     "BR/sao-joao-caruaru",
     "CO/carnaval-barranquilla",
     "CO/negros-y-blancos",
-    "CO/feria-de-las-flores"
+    "CO/feria-de-cali",
+    "CO/festival-vallenato",
+    "CO/san-pacho",
+    "CO/feria-de-las-flores",
+    "CO/petronio-alvarez"
   ],
   "slugs": {
     "carnaval-rio-de-janeiro": "BR",
     "carnaval-salvador": "BR",
     "carnaval-recife": "BR",
-    "cirio-de-nazare": "BR",
     "festival-parintins": "BR",
     "carnaval-olinda": "BR",
     "lavagem-do-bonfim": "BR",
@@ -64,8 +68,7 @@
     "petronio-alvarez": "CO",
     "candelaria-puno": "PE",
     "inti-raymi": "PE",
-    "carnaval-cajamarca": "PE",
-    "senor-de-los-milagros": "PE"
+    "carnaval-cajamarca": "PE"
   },
   "requests": [
     {

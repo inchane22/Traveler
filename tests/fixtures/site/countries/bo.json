@@ -90,12 +90,19 @@
       },
       "score": {
         "convocatoria": null,
-        "calle": null,
-        "reconocimiento": {
-          "measure": "unesco",
-          "confidence": "oficial",
-          "source": "https://ich.unesco.org/en/RL/carnival-of-oruro-00003"
+        "fiesta": {
+          "measure": "baile_y_show",
+          "confidence": "estimacion",
+          "source": "https://sas-space.sas.ac.uk/6078/1/08%20Chapter%203.pdf",
+          "quote": "taking part in water fights or dancing, often all at the same time."
         },
+        "viajeros": {
+          "measure": "internacional",
+          "confidence": "oficial",
+          "source": "https://www.turismo.produccion.gob.bo/?p=10571",
+          "quote": "el carnaval de Oruro registró la participación de 28.000 turistas extranjeros"
+        },
+        "calle": null,
         "conectividad": {
           "measure": "nacional",
           "confidence": "estimacion",
@@ -105,11 +112,6 @@
             "en": "ORU only has flights to Cochabamba; the nearest international airport is El Alto (LPB).",
             "pt": "ORU só tem voos para Cochabamba; o aeroporto internacional mais próximo é El Alto (LPB)."
           }
-        },
-        "local": {
-          "measure": "intermedia",
-          "confidence": "estimacion",
-          "source": "https://en.wikipedia.org/wiki/Oruro"
         }
       },
       "street_tip": {
@@ -139,7 +141,7 @@
         "lon": -68.13333
       },
       "nearest_airport": "LPB",
-      "type": "tradicion_religiosa",
+      "type": "danza",
       "rule": {
         "type": "easter_offset",
         "calendar": "gregorian",
@@ -194,12 +196,19 @@
             "pt": "Pesquisa de 2025 com o Vice-Ministério de Turismo e o INE, citada por um agregador; o Los Tiempos relatou ao menos 230 mil espectadores em 2024."
           }
         },
-        "calle": null,
-        "reconocimiento": {
-          "measure": "unesco",
-          "confidence": "oficial",
-          "source": "https://ich.unesco.org/en/RL/the-festival-of-the-santisima-trinidad-del-senor-jesus-del-gran-poder-in-the-city-of-la-paz-01389"
+        "fiesta": {
+          "measure": "baile_y_show",
+          "confidence": "prensa",
+          "source": "https://eldeber.com.bo/pais/devocion-rico-folclore-bolivia-lucen-fiesta-patrimonial-gran-poder_1785617113",
+          "quote": "quienes recorren bailando diversas danzas folclóricas bolivianas"
         },
+        "viajeros": {
+          "measure": "internacional",
+          "confidence": "oficial",
+          "source": "https://produccion.gob.bo/nota_prensa/bolivia-se-prepara-para-la-festividad-jesus-del-gran-poder-2025-celebracion-cultural-y-turistica-en-el-corazon-de-la-paz/",
+          "quote": "Se prevé la asistencia de miles de visitantes, tanto nacionales como internacionales"
+        },
+        "calle": null,
         "conectividad": {
           "measure": "internacional",
           "confidence": "estimacion",
@@ -209,11 +218,6 @@
             "en": "LPB is in El Alto, about 13 km from central La Paz.",
             "pt": "LPB fica em El Alto, a cerca de 13 km do centro de La Paz."
           }
-        },
-        "local": {
-          "measure": "gran_ciudad",
-          "confidence": "estimacion",
-          "source": "https://en.wikipedia.org/wiki/La_Paz"
         }
       },
       "street_tip": {
@@ -243,7 +247,7 @@
         "lon": -66.283
       },
       "nearest_airport": "CBB",
-      "type": "tradicion_religiosa",
+      "type": "danza",
       "rule": {
         "type": "fixed",
         "start": "08-14",
@@ -319,17 +323,19 @@
       },
       "score": {
         "convocatoria": null,
-        "calle": null,
-        "reconocimiento": {
-          "measure": "nacional",
-          "confidence": "estimacion",
-          "source": "https://bolivia.justia.com/nacionales/leyes/ley-2536-2003-2005/gdoc",
-          "note": {
-            "es": "Ley 2536 de 2003, leída en una copia de Justia y no en la Gaceta Oficial.",
-            "en": "Law 2536 of 2003, read from a Justia copy, not the Official Gazette.",
-            "pt": "Lei 2536 de 2003, lida numa cópia do Justia e não na Gazeta Oficial."
-          }
+        "fiesta": {
+          "measure": "baile_y_show",
+          "confidence": "prensa",
+          "source": "https://bibliotecadigital.bcb.gob.bo/xmlui/bitstream/handle/123456789/4912/Los%20Tiempos%2012-08-2024.pdf?sequence=1&isAllowed=y",
+          "quote": "convierten su peregrinación en un baile en honor a la"
         },
+        "viajeros": {
+          "measure": "nacional",
+          "confidence": "oficial",
+          "source": "https://conocebolivia.turismoyculturas.gob.bo/municipio-totora/",
+          "quote": "Cochabamba registró 131,004 turistas en 2022 (119,990 nacionales, 11,014 extranjeros)"
+        },
+        "calle": null,
         "conectividad": {
           "measure": "ninguno",
           "confidence": "estimacion",
@@ -338,11 +344,6 @@
             "en": "Quillacollo has no airport; CBB is in Cochabamba, about 13 km away.",
             "pt": "Quillacollo não tem aeroporto; CBB fica em Cochabamba, a cerca de 13 km."
           }
-        },
-        "local": {
-          "measure": "intermedia",
-          "confidence": "estimacion",
-          "source": "https://en.wikipedia.org/wiki/Quillacollo"
         }
       },
       "street_tip": {
@@ -372,7 +373,7 @@
         "lon": -65.75333
       },
       "nearest_airport": "POI",
-      "type": "tradicion_religiosa",
+      "type": "danza",
       "rule": {
         "type": "announced",
         "window": {
@@ -435,21 +436,23 @@
             "pt": "Conta só dançarinos; não há número publicado de público."
           }
         },
-        "calle": null,
-        "reconocimiento": {
-          "measure": "unesco",
-          "confidence": "oficial",
-          "source": "https://ich.unesco.org/en/RL/ch-utillos-the-festival-of-san-bartolome-and-san-ignacio-de-loyola-the-meeting-of-cultures-in-potosi-01958"
+        "fiesta": {
+          "measure": "show",
+          "confidence": "estimacion",
+          "source": "https://www.unesco.org/creativity/en/policy-monitoring-platform/protection-and-promotion-cultural-diversity-chutillos-festivity-san-bartolome-and-san-ignacio-de",
+          "quote": "The celebration is characterized by a cultural parade that links several streets, where dancers parade demonstrating dances"
         },
+        "viajeros": {
+          "measure": "internacional",
+          "confidence": "estimacion",
+          "source": "https://www.unesco.org/creativity/en/policy-monitoring-platform/protection-and-promotion-cultural-diversity-chutillos-festivity-san-bartolome-and-san-ignacio-de",
+          "quote": "The festival attracts thousands of national and international tourists"
+        },
+        "calle": null,
         "conectividad": {
           "measure": "nacional",
           "confidence": "estimacion",
           "source": "https://en.wikipedia.org/wiki/Captain_Nicolas_Rojas_Airport"
-        },
-        "local": {
-          "measure": "intermedia",
-          "confidence": "estimacion",
-          "source": "https://en.wikipedia.org/wiki/Potos%C3%AD"
         }
       },
       "street_tip": {

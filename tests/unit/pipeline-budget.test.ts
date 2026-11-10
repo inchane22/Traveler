@@ -167,7 +167,9 @@ describe("budget inside a refresh run (R10)", () => {
     const at85 = () => memoryUsageStore([{ month: "2026-11", searches: 0, input_tokens: 0, output_tokens: 0, usd: 17 }]);
     const far = fixtureDirTransport(REFRESH_FIXTURES);
     await runRefresh(refreshOptions(root, { today: "2026-11-01" }), { transport: far, archiver: noopArchiver, usage: at85(), log: memoryLogger() });
-    expect(far.calls.map((c) => c.ctx.key)).toEqual([]);
+    // Only the Petronio qualifies: tier 1 with its postponed 2026 edition still pending. Negros y
+    // Blancos (tier 1) starts 62 days out; the rest are below tier 1 or further away.
+    expect([...new Set(far.calls.map((c) => c.ctx.key))]).toEqual(["CO/petronio-alvarez"]);
     const near = fixtureDirTransport(REFRESH_FIXTURES);
     const r = await runRefresh(refreshOptions(root, { today: "2026-11-05", only: "negros-y-blancos" }), { transport: near, archiver: noopArchiver, usage: at85(), log: memoryLogger() });
     expect(new Set(near.calls.map((c) => c.ctx.key))).toEqual(new Set(["CO/negros-y-blancos"]));

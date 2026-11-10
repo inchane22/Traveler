@@ -3,7 +3,7 @@
 import { h } from "../h.ts";
 import { countryName } from "../ics.ts";
 import type { ChangelogEntry, Festival } from "../schema.ts";
-import { CRITERIA } from "../score.ts";
+import { CRITERIA, type LevelCriterion } from "../score.ts";
 import { actionButton, asyncView, emptyState, externalLink, festivalName, sectionHeading, suggestAction } from "./components.ts";
 import type { Ctx } from "./context.ts";
 import { compactNumber, fullNumber, percent, relativeDays, shortDate } from "./format.ts";
@@ -15,7 +15,7 @@ import { subscribeLinks } from "./subscribe.ts";
 
 function scoringSection(ctx: Ctx): HTMLElement {
   const c = scoring.criteria;
-  const levelRows = (key: "calle" | "reconocimiento" | "conectividad" | "local"): HTMLElement[] =>
+  const levelRows = (key: LevelCriterion): HTMLElement[] =>
     Object.entries(c[key].levels)
       .sort((a, b) => b[1] - a[1])
       .map(([level, pts]) => h("li", null, h("span", null, ctx.t(`measure.${key}.${level}`)), h("span", { class: "num" }, String(pts))));
@@ -55,6 +55,7 @@ function scoringSection(ctx: Ctx): HTMLElement {
       h("li", null, h("strong", null, ctx.t("tier.provisional")), " ", ctx.t("about.provisional")),
       h("li", null, ctx.t("about.topN", { count: scoring.country_top_n })),
       h("li", null, ctx.t("about.unmeasured")),
+      h("li", null, ctx.t("about.notParty")),
     ),
   );
 }

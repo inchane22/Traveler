@@ -84,9 +84,14 @@ export function occurrencesBetween(festival: Festival, from: ISO, to: ISO, ctx: 
   return out;
 }
 
+/**
+ * Ranked entries of a country's parties. A festival classified as a solemn act is not one: it is
+ * left out here, so no view lists it and the pipeline spends nothing on it (its rule still
+ * resolves `relative_to` references through `ruleCtx`).
+ */
 export function buildEntries(country: CountryFile, config: ScoringConfig, today: ISO): FestivalEntry[] {
   const ctx = ctxFor(country);
-  const scored = country.festivals.map((festival) => ({ festival, score: scoreFestival(festival.score, config) }));
+  const scored = country.festivals.map((festival) => ({ festival, score: scoreFestival(festival.score, config) })).filter((s) => !s.score.excluded);
   const ranked = [...scored].sort(
     (a, b) => b.score.low - a.score.low || b.score.high - a.score.high || a.festival.slug.localeCompare(b.festival.slug),
   );
