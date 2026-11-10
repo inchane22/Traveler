@@ -57,7 +57,7 @@ describe("pipeline: plan only", () => {
     const md = readFileSync(join(root, "proposals", `pipeline-${TODAY}.md`), "utf8");
     expect(md).toContain(`## Pipeline ${TODAY} (plan only)`);
     // 2026-10-26 is in the month's last week: upkeep and new countries share what is left.
-    expect(md).toMatch(/Budget 2026-10: US\$0\.00 spent before this run of US\$20\.00 \(upkeep US\$0\.00, new countries US\$0\.00\)\. Last days of the month: both share the US\$20\.00 left, upkeep first\./);
+    expect(md).toMatch(/Budget 2026-10: US\$0\.00 spent before this run of US\$20\.00 \(upkeep US\$0\.00, new countries US\$0\.00, new festivals US\$0\.00\)\. Last days of the month: all share the US\$20\.00 left, upkeep first\./);
     expect(result.plan.builds.map((b) => b.country)).toEqual(["JP"]);
   });
 });
@@ -149,14 +149,16 @@ describe("pipeline: upkeep of live countries", () => {
     expect(result.summary.spend.after).toBeGreaterThanOrEqual(result.summary.spend.before);
   });
 
-  test("the commit message lists every applied change with its source and the month's spend", () => {
-    const msg = commitMessage({
-      kind: "pipeline",
+  test("the commit message lists every applied change and new festival with its source and the month's spend", () => {
+    const summary = {
+      kind: "pipeline" as const,
       date: TODAY,
       plan_only: false,
       intake: null,
+      covered: [],
       published: [],
-      builds: [{ country: "JP", outcome: "live", sourced: 4, needed: 3 }],
+      builds: [{ country: "JP", outcome: "live" as const, sourced: 4, needed: 3 }],
+      discovered: [],
       applied: [{ country: "CO", slug: "feria-de-cali", year: 2026, field: "start", old: null, new: "2026-12-25", sources: [{ url: "https://www.cali.gov.co/feria" }] } as never],
       confirmations: 2,
       flagged: [],
@@ -166,10 +168,14 @@ describe("pipeline: upkeep of live countries", () => {
       spend: { month: "2026-10", before: 1, after: 1.5, budget: 20 },
       holds: 0,
       issues: [],
-    });
+    };
+    const msg = commitMessage(summary);
     expect(msg.split("\n")[0]).toBe("chore(data): pipeline 2026-10-26 · 1 applied · JP live");
     expect(msg).toContain("- CO feria-de-cali 2026 inicio: — → 2026-12-25 (https://www.cali.gov.co/feria)");
     expect(msg).toContain("Spend 2026-10: US$1.50 of US$20.00 (this run US$0.50).");
+    const grown = commitMessage({ ...summary, discovered: [{ country: "AR", slug: "fiesta-x", name: "Fiesta X", city: "Salta", dated: true, sources: ["https://www.salta.gob.ar/x"] }] });
+    expect(grown.split("\n")[0]).toBe("chore(data): pipeline 2026-10-26 · 1 applied · 1 new · JP live");
+    expect(grown).toContain("- AR fiesta-x: Fiesta X, Salta (https://www.salta.gob.ar/x)");
   });
 });
 

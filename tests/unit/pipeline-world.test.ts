@@ -41,10 +41,12 @@ describe("cadence: closer and unsettled is checked more; money short stretches o
 });
 
 describe("budget pools (R10)", () => {
-  test("30% for new countries, 70% for upkeep spread over the days left", () => {
+  test("20% for new countries, 15% for new festivals, 65% for upkeep spread over the days left", () => {
     const b = budgetFor({ today: "2026-11-09", budgetUsd: 20, settings, ledger: [line({ usd: 2 }), line({ job: "onboard", key: "onboard/JP", usd: 1.5 })] });
-    expect(b).toMatchObject({ upkeepPool: 14, buildPool: 6, spentUpkeep: 2, spentBuild: 1.5, upkeepLeft: 12, buildLeft: 4.5, daysLeft: 22, released: false });
-    expect(b.todayUpkeep).toBeCloseTo(12 / 22, 2);
+    expect(b).toMatchObject({ upkeepPool: 13, buildPool: 4, discoverPool: 3, spentUpkeep: 2, spentBuild: 1.5, spentDiscover: 0, upkeepLeft: 11, buildLeft: 2.5, discoverLeft: 3, daysLeft: 22, released: false });
+    expect(b.todayUpkeep).toBeCloseTo(11 / 22, 2);
+    // Discovery is paced: by the end of the 9th of 30 days it may have spent 9/30 of its US$3.
+    expect(b.todayDiscover).toBeCloseTo(0.9, 2);
   });
 
   test("in the month's last week upkeep and new countries share what is left, upkeep planned first", () => {
@@ -59,7 +61,8 @@ describe("budget pools (R10)", () => {
     expect(jobCosts(three, settings.default_job_usd).verify).toBe(0.3);
     // Policy, onboarding, then up to 5 classifications and 5 date top-ups.
     expect(buildEstimate(settings.default_job_usd, settings, false, true)).toBeCloseTo(0.03 + 1.2 + 5 * (0.3 + 0.12), 6);
-    expect(buildEstimate(settings.default_job_usd, settings, true, false)).toBeCloseTo(5 * (0.3 + 0.12), 6);
+    // A draft that fell short before: a discovery of festivals it lacks instead of the onboarding.
+    expect(buildEstimate(settings.default_job_usd, settings, true, false)).toBeCloseTo(0.7 + 5 * (0.3 + 0.12), 6);
   });
 });
 
@@ -108,6 +111,7 @@ describe("makePlan", () => {
 
   test("upkeep stays inside today's share; the rest waits for another day", () => {
     const plan = makePlan(input());
+    // Discoveries are paid from their own share, not from today's upkeep.
     const spent = plan.verify.length * (plan.costs.verify + plan.costs.followup * 0.3) + plan.sweep.length * plan.costs.sweep;
     expect(spent).toBeLessThanOrEqual(plan.budget.todayUpkeep + 1e-9);
     expect(plan.verify.length + plan.sweep.length + plan.deferred.length).toBeGreaterThan(plan.verify.length);
@@ -116,7 +120,8 @@ describe("makePlan", () => {
 
   test("builds: oldest request first, within the new-country share and the per-run limit; live ones are skipped", () => {
     const req = (cc: string, at: string): CountryRequest => ({ country: cc, requested_at: at, status: "queued", attempts: 0 });
-    const plan = makePlan(input({ requests: [req("JP", "2026-11-03"), req("BO", "2026-11-01"), req("CO", "2026-10-01"), req("FR", "2026-11-04")] }));
+    // US$40: a new-country share of US$8 holds BO's retry (with its discovery) and JP's first build.
+    const plan = makePlan(input({ budgetUsd: 40, requests: [req("JP", "2026-11-03"), req("BO", "2026-11-01"), req("CO", "2026-10-01"), req("FR", "2026-11-04")] }));
     expect(plan.builds.map((b) => [b.country, b.hasFile, b.needsPolicy])).toEqual([["BO", true, false], ["JP", false, true]]);
     expect(plan.waiting).toEqual([{ country: "FR", reason: "per_run_limit", estimate: buildEstimate(plan.costs, settings, false, true), until: "2026-11-09" }]);
     const broke = makePlan(input({ requests: [req("JP", "2026-11-03")], ledger: [line({ job: "onboard", key: "onboard/XX", usd: 5.5 })] }));

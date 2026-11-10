@@ -1,0 +1,36 @@
+{
+  "country": "CL",
+  "A": [
+    "gob.cl",
+    "chile.travel",
+    "sernatur.cl",
+    "muniarica.cl",
+    "munivina.cl",
+    "munistgo.cl",
+    "municipalidaddevalparaiso.cl",
+    "aricafuerzadelsol.cl",
+    "lollapaloozacl.com",
+    "unesco.org"
+  ],
+  "B": [
+    "emol.com",
+    "elmercurio.com",
+    "latercera.com",
+    "biobiochile.cl",
+    "cooperativa.cl",
+    "24horas.cl",
+    "tvn.cl",
+    "t13.cl",
+    "cnnchile.com",
+    "meganoticias.cl",
+    "chilevision.cl",
+    "adnradio.cl",
+    "elmostrador.cl",
+    "lacuarta.com",
+    "lun.com",
+    "df.cl",
+    "soychile.cl",
+    "estrellaarica.cl"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

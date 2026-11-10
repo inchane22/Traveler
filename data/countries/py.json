@@ -1,0 +1,175 @@
+{
+  "country": "PY",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Asuncion",
+  "region": "sudamerica",
+  "festivals": [
+    {
+      "slug": "carnaval-encarnaceno",
+      "names": { "local": "Carnaval Encarnaceno", "es": "Carnaval Encarnaceno", "en": "Encarnación Carnival", "pt": "Carnaval de Encarnación" },
+      "city": "Encarnación",
+      "subdivision": "PY-7",
+      "timezone": "America/Asuncion",
+      "coords": { "lat": -27.3306, "lon": -55.8667 },
+      "nearest_airport": "ENO",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "01-10", "end": "02-28" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-17",
+          "end": "2026-02-14",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.abc.com.py/espectaculos/2026/01/17/carnaval-encarnaceno-2026-arranco-la-noche-inaugural-de-la-edicion-100/", "publisher": "ABC Color", "accessed": "2026-11-09", "tier": "B", "quote": "comenzó este sábado 17 de enero, cuando se abrieron los telones del teatro a cielo abierto más imponente del país" },
+            { "url": "https://www.abc.com.py/espectaculos/2026/01/17/carnaval-encarnaceno-2026-arranco-la-noche-inaugural-de-la-edicion-100/", "publisher": "ABC Color", "accessed": "2026-11-09", "tier": "B", "quote": "Las próximas fechas para el Carnaval serán los sábados 24 y 31 de enero, y 7 y 14 de febrero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 100: cinco noches de corso en el sambódromo, solo los sábados 17, 24 y 31 de enero y 7 y 14 de febrero.", "en": "100th edition: five parade nights at the sambadrome, only on Saturdays January 17, 24 and 31 and February 7 and 14.", "pt": "Edição 100: cinco noites de desfile no sambódromo, só aos sábados 17, 24 e 31 de janeiro e 7 e 14 de fevereiro." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 72770, "qualifier": "exact", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.abc.com.py/espectaculos/2026/10/19/carnaval-encarnaceno-presentaron-fechas-novedades-y-las-alegorias-para-2027/", "quote": "La edición 2026 tuvo una concurrencia de 72.770 espectadores" },
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.abc.com.py/nacionales/2026/01/18/historico-inicio-de-la-edicion-100-del-carnaval-encarnaceno-ante-miles-de-expectadores/", "quote": "los artistas hicieron cantar y bailar al público con sus temas más conocidos, extendiendo la fiesta hasta la madrugada" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://eby.gov.py/yacyreta-impulsa-record-de-turistas-extranjeros-en-el-carnaval-de-encarnacion-2025/", "quote": "logrando un aumento histórico en el flujo de turistas extranjeros, mayoritariamente argentinos", "note": { "es": "Dato de la edición 2025.", "en": "Figure from the 2025 edition.", "pt": "Dado da edição de 2025." } },
+        "calle": { "measure": "mayoria_boleta", "confidence": "prensa", "source": "https://www.abc.com.py/viajes/2026/02/05/este-sabado-celebraran-penultima-noche-del-carnaval-encarnaceno/", "note": { "es": "El corso es en el sambódromo con entrada pagada, desde G. 20.000 en 2026.", "en": "The parade is held in the sambadrome with paid entry, from PYG 20,000 in 2026.", "pt": "O desfile é no sambódromo com entrada paga, a partir de PYG 20.000 em 2026." } },
+        "conectividad": null
+      },
+      "street_tip": { "es": "El desfile empieza de noche y termina de madrugada; compra la entrada con tiempo y lleva lanzanieve o espuma, que en las gradas se juega tanto como se mira.", "en": "The parade starts at night and ends in the small hours; buy tickets early and bring spray foam, because in the stands people play as much as they watch.", "pt": "O desfile começa à noite e termina de madrugada; compre o ingresso com antecedência e leve espuma, porque nas arquibancadas se brinca tanto quanto se assiste." },
+      "etiquette": { "es": "No arrojes espuma a las comparsas en la pista ni a quien no quiere jugar, y respeta las vallas del recorrido.", "en": "Do not spray foam at the troupes on the track or at people who do not want to play, and stay behind the route barriers.", "pt": "Não jogue espuma nas comparsas na pista nem em quem não quer brincar, e respeite as grades do percurso." }
+    },
+    {
+      "slug": "expo-mariano-roque-alonso",
+      "names": { "local": "Expo Paraguay ARP", "es": "Expo de Mariano Roque Alonso", "en": "Expo Paraguay fair, Mariano Roque Alonso", "pt": "Expo Paraguai de Mariano Roque Alonso" },
+      "city": "Mariano Roque Alonso",
+      "subdivision": "PY-11",
+      "timezone": "America/Asuncion",
+      "coords": { "lat": -25.2079, "lon": -57.5322 },
+      "nearest_airport": "ASU",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "07-01", "end": "07-31" } },
+      "editions": {
+        "2026": {
+          "start": "2026-07-11",
+          "end": "2026-07-26",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.ultimahora.com/se-inaugura-hoy-la-expo-paraguay-2026", "publisher": "Última Hora", "accessed": "2026-11-09", "tier": "B", "quote": "La feria, que abrió sus puertas el pasado 11 de julio se extiende hasta el 26 de julio." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": null,
+        "viajeros": null,
+        "calle": { "measure": "mayoria_boleta", "confidence": "prensa", "source": "https://www.ultimahora.com/se-inaugura-hoy-la-expo-paraguay-2026", "note": { "es": "Predio cerrado con acceso general de G. 25.000 en 2026.", "en": "Fenced grounds with general admission of PYG 25,000 in 2026.", "pt": "Recinto fechado com entrada geral de PYG 25.000 em 2026." } },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Silvio_Pettirossi_International_Airport", "note": { "es": "ASU (Silvio Pettirossi, Luque) está a unos 10 km del predio de la Expo.", "en": "ASU (Silvio Pettirossi, Luque) is about 10 km from the Expo grounds.", "pt": "ASU (Silvio Pettirossi, Luque) fica a cerca de 10 km do recinto da Expo." } }
+      },
+      "street_tip": { "es": "Los fines de semana el predio se llena de familias; ve un día de semana por la tarde si quieres recorrer pabellones y comida sin multitudes.", "en": "On weekends the grounds fill with families; go on a weekday afternoon if you want to browse the pavilions and food stalls without crowds.", "pt": "Nos fins de semana o recinto lota de famílias; vá num dia de semana à tarde para percorrer os pavilhões e a comida sem multidão." }
+    },
+    {
+      "slug": "asuncionico",
+      "names": { "local": "Asunciónico", "es": "Asunciónico", "en": "Asunciónico", "pt": "Asunciónico" },
+      "city": "Luque",
+      "subdivision": "PY-11",
+      "timezone": "America/Asuncion",
+      "coords": { "lat": -25.27, "lon": -57.4872 },
+      "nearest_airport": "ASU",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "03-01", "end": "04-30" } },
+      "editions": {
+        "2026": {
+          "start": "2026-03-17",
+          "end": "2026-03-19",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.ultimahora.com/asuncionico-2026-el-gran-engranaje-detras-del-festival-que-moviliza-a-mas-de-mil-personas", "publisher": "Última Hora", "accessed": "2026-11-09", "tier": "B", "quote": "donde se desarrollará el festival del 17 al 19 de marzo" },
+            { "url": "https://www.abc.com.py/espectaculos/musica/2026/03/16/asuncionico-2026-guia-practica-con-accesos-estacionamiento-precios-y-sistema-cashless/", "publisher": "ABC Color", "accessed": "2026-11-09", "tier": "B", "quote": "El festival Asunciónico 2026 comenzará este 17 de marzo en el Parque Olímpico del Comité Olímpico Paraguayo." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Se celebra en el Parque Olímpico, junto al parque Ñu Guasu, en Luque (Gran Asunción).", "en": "Held at the Olympic Park next to Ñu Guasu park in Luque, Greater Asunción.", "pt": "Acontece no Parque Olímpico, ao lado do parque Ñu Guasu, em Luque (Grande Assunção)." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": null,
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Silvio_Pettirossi_International_Airport", "note": { "es": "ASU está en Luque, a pocos kilómetros del Parque Olímpico.", "en": "ASU is in Luque, a few kilometres from the Olympic Park.", "pt": "ASU fica em Luque, a poucos quilômetros do Parque Olímpico." } }
+      },
+      "street_tip": { "es": "Si llegas en plataforma o estacionas en Ñu Guasu, el ingreso es por la pasarela peatonal sobre la autopista; carga saldo en el sistema sin efectivo antes de entrar.", "en": "If you arrive by ride-hailing or park at Ñu Guasu, the entrance is via the footbridge over the motorway; top up the cashless system before you go in.", "pt": "Se chegar por aplicativo ou estacionar no Ñu Guasu, a entrada é pela passarela sobre a rodovia; carregue saldo no sistema sem dinheiro antes de entrar." }
+    },
+    {
+      "slug": "choppfest-independencia",
+      "names": { "local": "Choppfest", "es": "Choppfest de Colonia Independencia", "en": "Colonia Independencia Choppfest beer festival", "pt": "Choppfest de Colonia Independencia" },
+      "city": "Colonia Independencia",
+      "subdivision": "PY-4",
+      "timezone": "America/Asuncion",
+      "coords": { "lat": -25.72, "lon": -56.25 },
+      "nearest_airport": "ASU",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "10-25", "end": "11-15" } },
+      "editions": {
+        "2026": {
+          "start": "2026-11-06",
+          "end": "2026-11-07",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.abc.com.py/espectaculos/musica/2026/11/05/choppfest-2026-independencia-se-prepara-para-dos-noches-de-cerveza-musica-y-tradicion-alemana/", "publisher": "ABC Color", "accessed": "2026-11-09", "tier": "B", "quote": "La tradicional fiesta cervecera de Independencia celebrará su 47ª edición este viernes 6 y sábado 7 de noviembre en el predio del Club Deportivo Alemán." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Dos noches: la Fiesta Tradicional del viernes y la Fiesta Grande del sábado, con dos escenarios.", "en": "Two nights: the Traditional Party on Friday and the Big Party on Saturday, with two stages.", "pt": "Duas noites: a Festa Tradicional na sexta e a Festa Grande no sábado, com dois palcos." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.abc.com.py/espectaculos/musica/2026/11/05/choppfest-2026-independencia-se-prepara-para-dos-noches-de-cerveza-musica-y-tradicion-alemana/", "quote": "La incorporación de artistas nacionales e internacionales, espacios bailables y una oferta gastronómica más amplia contribuyó a consolidar su convocatoria." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.abc.com.py/espectaculos/musica/2026/11/05/choppfest-2026-independencia-se-prepara-para-dos-noches-de-cerveza-musica-y-tradicion-alemana/", "quote": "fue creciendo hasta convertirse en un festival abierto a toda la comunidad, con visitantes procedentes de distintos puntos del país" },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Silvio_Pettirossi_International_Airport", "note": { "es": "No hay aeropuerto con vuelos regulares a menos de 40 km; el más cercano es ASU (Asunción), a unos 190 km por carretera.", "en": "No airport with scheduled flights within 40 km; the nearest is ASU (Asunción), about 190 km away by road.", "pt": "Não há aeroporto com voos regulares a menos de 40 km; o mais próximo é ASU (Assunção), a cerca de 190 km por estrada." } }
+      },
+      "street_tip": { "es": "Independencia es una colonia pequeña y las posadas se llenan; reserva temprano o duerme en Villarrica, a media hora, y organiza la vuelta antes de que cierren los portones.", "en": "Independencia is a small farming colony and its inns fill up; book early or stay in Villarrica, half an hour away, and sort out your ride back before the gates close.", "pt": "Independencia é uma colônia pequena e as pousadas lotam; reserve cedo ou durma em Villarrica, a meia hora, e combine a volta antes de os portões fecharem." }
+    },
+    {
+      "slug": "carnaval-guaireno",
+      "names": { "local": "Carnaval Guaireño", "es": "Carnaval Guaireño", "en": "Guairá Carnival, Villarrica", "pt": "Carnaval Guaireño" },
+      "city": "Villarrica",
+      "subdivision": "PY-4",
+      "timezone": "America/Asuncion",
+      "coords": { "lat": -25.75, "lon": -56.4333 },
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "02-01", "end": "03-10" } },
+      "editions": {
+        "2027": {
+          "status": "por_anunciar",
+          "confidence": "estimacion",
+          "key_events": [],
+          "sources": [],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.abc.com.py/nacionales/2026/03/02/multitudinario-cierre-de-los-carnavales-guairenos-2026/", "quote": "con presencia de niños, jóvenes y adultos que disfrutaron de la tradición carnavalera y las guerras de espuma" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.abc.com.py/nacionales/2026/02/28/sambodromo-repleto-en-la-penultima-noche-de-los-carnavales-guairenos-2026/", "quote": "con visitantes provenientes no solo del departamento del Guairá, sino también de otras regiones del país" },
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Silvio_Pettirossi_International_Airport", "note": { "es": "No hay aeropuerto con vuelos regulares a menos de 40 km; el más cercano es ASU (Asunción), a unos 170 km por carretera.", "en": "No airport with scheduled flights within 40 km; the nearest is ASU (Asunción), about 170 km away by road.", "pt": "Não há aeroporto com voos regulares a menos de 40 km; o mais próximo é ASU (Assunção), a cerca de 170 km por estrada." } }
+      },
+      "street_tip": { "es": "Las noches de cierre, que suelen caer en fin de semana largo, son las más llenas; las entradas populares son baratas y la guerra de espuma está incluida.", "en": "The closing nights, which often fall on a long weekend, are the busiest; the cheap general seats come with the foam fight included.", "pt": "As noites de encerramento, que costumam cair em feriado prolongado, são as mais cheias; os ingressos populares são baratos e a guerra de espuma vem incluída." }
+    }
+  ]
+}

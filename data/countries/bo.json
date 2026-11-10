@@ -1,6 +1,6 @@
 {
   "country": "BO",
-  "status": "borrador",
+  "status": "publicado",
   "generated_at": "2026-11-10",
   "timezone": "America/La_Paz",
   "region": "sudamerica",
@@ -19,8 +19,8 @@
         "2026": {
           "start": "2026-02-14",
           "end": "2026-02-15",
-          "status": "tentativa",
-          "confidence": "estimacion",
+          "status": "confirmada",
+          "confidence": "prensa",
           "key_events": [
             { "id": "gran-peregrinacion", "name": { "es": "Gran Peregrinación al Socavón", "en": "Grand Pilgrimage to the Socavón", "pt": "Grande Peregrinação ao Socavón" }, "date": "2026-02-14", "confidence": "prensa" },
             { "id": "entrada-al-corso", "name": { "es": "Entrada al Corso", "en": "Corso parade", "pt": "Entrada ao Corso" }, "date": "2026-02-15", "confidence": "estimacion" }
@@ -28,18 +28,19 @@
           "sources": [
             { "url": "https://www.lostiempos.com/actualidad/pais/20260214/oruro-vibra-folklore-musica-entrada-devocion-virgen-del-socavon", "publisher": "Los Tiempos", "accessed": "2026-10-26", "tier": "B", "quote": "Las principales calles de la ciudad de Oruro se colmaron este sábado de miles de visitantes provenientes de distintas regiones" },
             { "url": "https://eju.tv/2026/02/conoce-la-ruta-de-la-entrada-folclorica-del-carnaval-de-oruro-2026/", "publisher": "eju.tv", "accessed": "2026-10-26", "tier": "C", "quote": "Entrada al Corso: domingo 15 de febrero" },
-            { "url": "https://eju.tv/2026/02/conoce-la-ruta-de-la-entrada-folclorica-del-carnaval-de-oruro-2026/", "publisher": "eju.tv", "accessed": "2026-10-26", "tier": "C", "quote": "Gran Peregrinación al Socavón: 14 de febrero" }
+            { "url": "https://eju.tv/2026/02/conoce-la-ruta-de-la-entrada-folclorica-del-carnaval-de-oruro-2026/", "publisher": "eju.tv", "accessed": "2026-10-26", "tier": "C", "quote": "Gran Peregrinación al Socavón: 14 de febrero" },
+            { "url": "https://eldeber.com.bo/pais/abre-carnaval-oruro-2026-fe-danza-mirada-mundo_1771078845", "publisher": "El Deber", "accessed": "2026-11-09", "tier": "B", "quote": "La versión 2026 se celebra este sábado 14 y domingo 15 de febrero." }
           ],
-          "last_verified": "2026-10-26",
-          "sequence": 0,
+          "last_verified": "2026-11-09",
+          "sequence": 1,
           "note": { "es": "Fechas de las dos jornadas de entrada; los festejos de carnaval siguen el lunes y el martes.", "en": "Dates of the two parade days; carnival celebrations continue on Monday and Tuesday.", "pt": "Datas dos dois dias de desfile; as festas de carnaval continuam na segunda e na terça." }
         }
       },
       "score": {
         "convocatoria": null,
-        "fiesta": { "measure": "baile_y_show", "confidence": "estimacion", "source": "https://sas-space.sas.ac.uk/6078/1/08%20Chapter%203.pdf", "quote": "taking part in water fights or dancing, often all at the same time." },
-        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://www.turismo.produccion.gob.bo/?p=10571", "quote": "el carnaval de Oruro registró la participación de 28.000 turistas extranjeros" },
-        "calle": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://eldeber.com.bo/pais/abre-carnaval-oruro-2026-fe-danza-mirada-mundo_1771078845", "quote": "miles de visitantes se aprestaban a a disfrutar de la fiesta, mientras los bailarines se aprestaban a iniciar el recorrido" },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://eldeber.com.bo/pais/abre-carnaval-oruro-2026-fe-danza-mirada-mundo_1771078845", "quote": "Venidos del exterior y de todo el país, miles de visitantes" },
+        "calle": { "measure": "mayoria_boleta", "confidence": "prensa", "source": "https://eldeber.com.bo/pais/abre-carnaval-oruro-2026-fe-danza-mirada-mundo_1771078845", "note": { "es": "El recorrido se ve desde graderías pagadas; en 2026 costaban desde Bs 800 en la avenida 6 de Agosto.", "en": "The route is watched from paid bleachers; in 2026 they cost from Bs 800 on Avenida 6 de Agosto.", "pt": "O percurso é visto de arquibancadas pagas; em 2026 custavam a partir de Bs 800 na avenida 6 de Agosto." } },
         "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Juan_Mendoza_Airport", "note": { "es": "ORU solo tiene vuelos a Cochabamba; el internacional más cercano es El Alto (LPB).", "en": "ORU only has flights to Cochabamba; the nearest international airport is El Alto (LPB).", "pt": "ORU só tem voos para Cochabamba; o aeroporto internacional mais próximo é El Alto (LPB)." } }
       },
       "street_tip": { "es": "La peregrinación del sábado arranca temprano y sigue hasta la noche; reserva alojamiento con meses de anticipación y lleva abrigo para la tarde.", "en": "Saturday's pilgrimage starts early and runs into the night; book lodging months ahead and bring a warm layer for the afternoon.", "pt": "A peregrinação de sábado começa cedo e vai até a noite; reserve hospedagem com meses de antecedência e leve agasalho para a tarde." },
@@ -59,16 +60,17 @@
         "2026": {
           "start": "2026-08-01",
           "end": "2026-08-01",
-          "status": "tentativa",
-          "confidence": "estimacion",
+          "status": "confirmada",
+          "confidence": "prensa",
           "key_events": [],
           "sources": [
             { "url": "https://www.atlas-news.com/internacional/d037-bolivia-paz-celebracion-gran_4_02173571.html", "publisher": "Atlas News (Reuters)", "accessed": "2026-10-26", "tier": "C", "quote": "Tens of thousands of dancers filled the streets of La Paz on Saturday (August 1)" },
-            { "url": "https://eju.tv/?p=5046102", "publisher": "eju.tv (ABI)", "accessed": "2026-10-26", "tier": "C", "quote": "prevista para el 1 de agosto" }
+            { "url": "https://eju.tv/?p=5046102", "publisher": "eju.tv (ABI)", "accessed": "2026-10-26", "tier": "C", "quote": "prevista para el 1 de agosto" },
+            { "url": "https://eldeber.com.bo/pais/paz-alista-gran-poder-2026-conozca-rol-ingreso-74-fraternidades_1785504501", "publisher": "El Deber", "accessed": "2026-11-09", "tier": "B", "quote": "La ciudad de La Paz volverá a vibrar este sábado, 1 de agosto, al ritmo de la fastuosa entrada folclórica en honor al Señor Jesús del Gran Poder" }
           ],
-          "last_verified": "2026-10-26",
-          "sequence": 1,
-          "note": { "es": "En 2026 la entrada se postergó dos veces por conflictos sociales y bloqueos, y salió el 1 de agosto, lejos de la fecha habitual antes de la Trinidad. Solo hay fuentes de nivel C para esa fecha.", "en": "In 2026 the entrada was postponed twice because of social unrest and road blockades, and took place on August 1, far from its usual date before Trinity. Only tier C sources give that date.", "pt": "Em 2026 a entrada foi adiada duas vezes por conflitos sociais e bloqueios, e saiu em 1º de agosto, longe da data habitual antes da Trindade. Só há fontes de nível C para essa data." }
+          "last_verified": "2026-11-09",
+          "sequence": 2,
+          "note": { "es": "En 2026 la entrada se postergó dos veces por conflictos sociales y bloqueos, y salió el sábado 1 de agosto, lejos de la fecha habitual antes de la Trinidad.", "en": "In 2026 the entrada was postponed twice because of social unrest and road blockades, and took place on Saturday, August 1, far from its usual date before Trinity.", "pt": "Em 2026 a entrada foi adiada duas vezes por conflitos sociais e bloqueios, e saiu no sábado, 1º de agosto, longe da data habitual antes da Trindade." }
         }
       },
       "score": {
@@ -93,7 +95,9 @@
       "rule": { "type": "fixed", "start": "08-14", "end": "08-16" },
       "editions": {
         "2026": {
-          "status": "tentativa",
+          "start": "2026-08-14",
+          "end": "2026-08-16",
+          "status": "confirmada",
           "confidence": "prensa",
           "key_events": [
             { "id": "entrada-folklorica", "name": { "es": "Gran Entrada Folklórica", "en": "Grand Folk Parade", "pt": "Grande Entrada Folclórica" }, "date": "2026-08-14", "confidence": "prensa" },
@@ -103,19 +107,20 @@
           "sources": [
             { "url": "https://www.lostiempos.com/actualidad/cochabamba/20260814/quillacollo-brilla-entrada-urkupina-2026", "publisher": "Los Tiempos", "accessed": "2026-10-26", "tier": "B", "quote": "reúne este 14 de agosto a peregrinos, músicos y danzarines" },
             { "url": "https://eju.tv/?p=5041475", "publisher": "eju.tv (Red Uno)", "accessed": "2026-10-26", "tier": "C", "quote": "16 de agosto: Tradicional peregrinación al Calvario." },
-            { "url": "https://eju.tv/?p=5041475", "publisher": "eju.tv (Red Uno)", "accessed": "2026-10-26", "tier": "C", "quote": "15 de agosto: Misa y celebración central en honor a la Virgen de Urkupiña." }
+            { "url": "https://eju.tv/?p=5041475", "publisher": "eju.tv (Red Uno)", "accessed": "2026-10-26", "tier": "C", "quote": "15 de agosto: Misa y celebración central en honor a la Virgen de Urkupiña." },
+            { "url": "https://www.lostiempos.com/actualidad/cochabamba/20260813/miles-se-alistan-renovar-su-fe-urkupina-participar-entrada", "publisher": "Los Tiempos", "accessed": "2026-11-09", "tier": "B", "quote": "Miles de peregrinos se alistan para renovar su fe en la Festividad de la Virgen de Urkupiña en Quillacollo del 14 al 16 de agosto" }
           ],
-          "last_verified": "2026-10-26",
-          "sequence": 1,
-          "note": { "es": "Los Tiempos confirma la entrada del 14 de agosto; ninguna fuente A o B fecha el cierre, así que los días siguen el patrón (14 a 16 de agosto).", "en": "Los Tiempos confirms the August 14 entrada; no A or B source dates the close, so the days follow the pattern (August 14 to 16).", "pt": "Los Tiempos confirma a entrada de 14 de agosto; nenhuma fonte A ou B data o encerramento, então os dias seguem o padrão (14 a 16 de agosto)." }
+          "last_verified": "2026-11-09",
+          "sequence": 2,
+          "note": { "es": "Entrada folklórica el 14 de agosto, misa central el 15 y peregrinación al Calvario el 16.", "en": "Folk parade on August 14, main Mass on the 15th and pilgrimage to the Calvario on the 16th.", "pt": "Entrada folclórica em 14 de agosto, missa central no dia 15 e peregrinação ao Calvário no dia 16." }
         }
       },
       "score": {
         "convocatoria": null,
-        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://bibliotecadigital.bcb.gob.bo/xmlui/bitstream/handle/123456789/4912/Los%20Tiempos%2012-08-2024.pdf?sequence=1&isAllowed=y", "quote": "convierten su peregrinación en un baile en honor a la" },
-        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://conocebolivia.turismoyculturas.gob.bo/municipio-totora/", "quote": "Cochabamba registró 131,004 turistas en 2022 (119,990 nacionales, 11,014 extranjeros)" },
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.lostiempos.com/actualidad/cochabamba/20260813/miles-se-alistan-renovar-su-fe-urkupina-participar-entrada", "quote": "La Entrada Folklórica comenzará por la mañana y es la peregrinación hecha danza" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://www.lostiempos.com/actualidad/cochabamba/20260814/quillacollo-brilla-entrada-urkupina-2026", "quote": "peregrinos, músicos y danzarines que llegaron desde diferentes regiones de Bolivia y del exterior" },
         "calle": null,
-        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "note": { "es": "Quillacollo no tiene aeropuerto; CBB está en Cochabamba, a unos 13 km.", "en": "Quillacollo has no airport; CBB is in Cochabamba, about 13 km away.", "pt": "Quillacollo não tem aeroporto; CBB fica em Cochabamba, a cerca de 13 km." } }
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Jorge_Wilstermann_International_Airport", "note": { "es": "CBB, en Cochabamba, está a unos 13 km de Quillacollo; Boliviana de Aviación vuela de ahí a São Paulo-Guarulhos.", "en": "CBB in Cochabamba is about 13 km from Quillacollo; Boliviana de Aviación flies from there to São Paulo-Guarulhos.", "pt": "CBB, em Cochabamba, fica a cerca de 13 km de Quillacollo; a Boliviana de Aviación voa de lá para São Paulo-Guarulhos." } }
       },
       "street_tip": { "es": "El 16 de agosto se sube a pie al cerro del Calvario; lleva zapatos cómodos, agua y protector solar.", "en": "On 16 August people walk up to the Calvario hill; bring comfortable shoes, water and sunscreen.", "pt": "Em 16 de agosto se sobe a pé o morro do Calvário; leve sapatos confortáveis, água e protetor solar." },
       "etiquette": { "es": "En el Calvario muchos devotos rezan y hacen ofrendas a la Virgen; observa con respeto y no interrumpas sus rituales para tomar fotos.", "en": "On the Calvario many devotees pray and make offerings to the Virgin; watch respectfully and do not interrupt their rituals for photos.", "pt": "No Calvário muitos devotos rezam e fazem oferendas à Virgem; observe com respeito e não interrompa seus rituais para tirar fotos." }
@@ -140,9 +145,10 @@
           "sources": [
             { "url": "https://www.opinion.com.bo/articulo/cultura/ch-utillos-memoria-mullu-punqu-entronizacion-santo-que-hoy-hace-bailar-potos/20260825181851995247.html", "publisher": "Opinión (ABI)", "accessed": "2026-10-26", "tier": "B", "quote": "el viernes 28 de agosto con el inicio de las entradas folklóricas y autóctonas" },
             { "url": "https://eju.tv/2026/08/la-gran-entrada-de-chutillos-toma-este-sabado-las-calles-de-potosi-se-preve-un-movimiento-de-mas-de-bs-50-millones/", "publisher": "eju.tv", "accessed": "2026-10-26", "tier": "C", "quote": "Más de 65.000 danzarines de 160 fraternidades ya rinden homenaje a San Bartolomé" },
-            { "url": "https://www.opinion.com.bo/articulo/cultura/ch-utillos-memoria-mullu-punqu-entronizacion-santo-que-hoy-hace-bailar-potos/20260825181851995247.html", "publisher": "Opinión (ABI)", "accessed": "2026-10-26", "tier": "B", "quote": "el domingo 30 se desarrollará el cierre de la festividad" }
+            { "url": "https://www.opinion.com.bo/articulo/cultura/ch-utillos-memoria-mullu-punqu-entronizacion-santo-que-hoy-hace-bailar-potos/20260825181851995247.html", "publisher": "Opinión (ABI)", "accessed": "2026-10-26", "tier": "B", "quote": "el domingo 30 se desarrollará el cierre de la festividad" },
+            { "url": "https://abi.bo/policia-refuerza-la-seguridad-en-la-festividad-de-chutillos-2026-de-potosi/", "publisher": "ABI", "accessed": "2026-11-09", "tier": "B", "quote": "que se desarrolla en Potosí, desde este viernes 28 hasta el domingo 30 de agosto" }
           ],
-          "last_verified": "2026-10-26",
+          "last_verified": "2026-11-09",
           "sequence": 0,
           "note": { "es": "Tres días de entradas tras el 24 de agosto, día de San Bartolomé; el fin de semana anterior ya desfilaron 115 fraternidades.", "en": "Three days of parades after 24 August, Saint Bartholomew's day; 115 fraternities had already paraded the weekend before.", "pt": "Três dias de entradas depois de 24 de agosto, dia de São Bartolomeu; 115 fraternidades já desfilaram no fim de semana anterior." }
         }
@@ -156,6 +162,45 @@
       },
       "street_tip": { "es": "Las entradas ocupan tres días seguidos; Potosí está a gran altura, así que camina despacio el primer día y abrígate al caer la tarde.", "en": "The parades fill three days in a row; Potosí sits very high, so take it slow on day one and bundle up as the afternoon ends.", "pt": "As entradas ocupam três dias seguidos; Potosí fica a grande altitude, então vá devagar no primeiro dia e agasalhe-se no fim da tarde." },
       "etiquette": { "es": "Es una fiesta en honor a San Bartolomé con danzas de comunidades rurales; pide permiso antes de fotografiar a los danzantes autóctonos.", "en": "It honors Saint Bartholomew with dances from rural communities; ask permission before photographing the indigenous dancers.", "pt": "É uma festa em honra a São Bartolomeu com danças de comunidades rurais; peça licença antes de fotografar os dançarinos autóctones." }
+    },
+    {
+      "slug": "carnaval-santa-cruz-de-la-sierra",
+      "names": { "local": "Carnaval Cruceño", "es": "Carnaval de Santa Cruz de la Sierra", "en": "Santa Cruz de la Sierra Carnival", "pt": "Carnaval de Santa Cruz de la Sierra" },
+      "city": "Santa Cruz de la Sierra",
+      "subdivision": "BO-S",
+      "timezone": "America/La_Paz",
+      "coords": { "lat": -17.7833, "lon": -63.1821 },
+      "nearest_airport": "VVI",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -50, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-14",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "corso-cruceno", "name": { "es": "Corso Cruceño en el Cambódromo", "en": "Santa Cruz Corso parade at the Cambódromo", "pt": "Corso Cruceño no Cambódromo" }, "date": "2026-02-14", "confidence": "prensa" },
+            { "id": "dias-de-mojazon", "name": { "es": "Días de mojazón", "en": "Water-fight days", "pt": "Dias de molhação" }, "date": "2026-02-15", "end": "2026-02-17", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://eldeber.com.bo/sociales/esta-agenda-oficial-carnaval-santa-cruz-2026_1765290379", "publisher": "El Deber", "accessed": "2026-11-09", "tier": "B", "quote": "El evento central llegará el sábado 14 de febrero con el esperado Corso Cruceño en el Cambódromo" },
+            { "url": "https://television.unitel.bo/portada/noticias/bolivia-ya-vibra-al-ritmo-del-carnaval-conoce-la-agenda-de-esta-semana-FL19213314", "publisher": "Unitel", "accessed": "2026-11-09", "tier": "B", "quote": "Días de Mojazón Domingo 15, lunes 16 y martes 17 de febrero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Las precarnavaleras empiezan en enero; el corso abre el carnaval y siguen tres días de mojazón.", "en": "Pre-carnival parties start in January; the corso opens the carnival, followed by three days of water fights.", "pt": "As festas pré-carnaval começam em janeiro; o corso abre o carnaval e seguem três dias de molhação." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://eldeber.com.bo/santa-cruz/camila-i-aviva-festejo-carnavalero-centro-cruceno-junto-testarudos_1771363104", "quote": "El tercer día de mojazón concentra a cientos de carnavaleros en el Casco Viejo, en las tradicionales calle Ballivián, plaza Callejas y la zona denominada Cruz Carnavalera, donde la gente celebra bailando música tradicional y urbana." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Viru_Viru_International_Airport", "note": { "es": "VVI está a unos 16 km al norte del centro.", "en": "VVI is about 16 km north of downtown.", "pt": "VVI fica a cerca de 16 km ao norte do centro." } }
+      },
+      "street_tip": { "es": "En los días de mojazón el Casco Viejo se llena de agua, espuma y pintura: ve con ropa que puedas tirar y el celular en una bolsa impermeable.", "en": "On the water-fight days the old town fills with water, foam and paint: wear clothes you can throw away and keep your phone in a waterproof bag.", "pt": "Nos dias de molhação o centro antigo se enche de água, espuma e tinta: vá com roupa que possa jogar fora e o celular num saco impermeável." },
+      "etiquette": { "es": "Mojar es parte del juego entre quienes salen a carnavalear: deja en paz a personas mayores, niños pequeños y a quien va trabajando.", "en": "Soaking people is part of the game among those out partying: leave the elderly, small children and people at work alone.", "pt": "Molhar faz parte da brincadeira entre quem sai para o carnaval: deixe em paz idosos, crianças pequenas e quem está trabalhando." }
     }
   ]
 }

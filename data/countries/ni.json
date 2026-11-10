@@ -1,0 +1,198 @@
+{
+  "country": "NI",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Managua",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "santo-domingo-managua",
+      "names": { "local": "Fiestas de Santo Domingo de Guzmán", "es": "Fiestas de Santo Domingo de Guzmán de Managua", "en": "Santo Domingo de Guzmán Festival, Managua", "pt": "Festas de Santo Domingo de Guzmán de Manágua" },
+      "city": "Managua",
+      "subdivision": "NI-MN",
+      "timezone": "America/Managua",
+      "coords": { "lat": 12.1364, "lon": -86.2514 },
+      "nearest_airport": "MGA",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "08-01", "end": "08-10" },
+      "editions": {
+        "2026": {
+          "start": "2026-08-01",
+          "end": "2026-08-10",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "bajada", "name": { "es": "Bajada de Santo Domingo desde Las Sierritas y desfile hípico", "en": "Descent of Santo Domingo from Las Sierritas and horse parade", "pt": "Descida de Santo Domingo desde Las Sierritas e desfile hípico" }, "date": "2026-08-01", "confidence": "prensa" },
+            { "id": "subida", "name": { "es": "Regreso de Santo Domingo a Las Sierritas", "en": "Return of Santo Domingo to Las Sierritas", "pt": "Retorno de Santo Domingo a Las Sierritas" }, "date": "2026-08-10", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://radiolaprimerisima.com/2026/08/01/miles-de-devotos-acompanan-bajada-de-santo-domingo-de-guzman-hacia-la-capital/", "publisher": "Radio La Primerísima", "accessed": "2026-11-09", "tier": "B", "quote": "miles de familias, feligreses, promesantes y tradicionalistas acompañaron este 1 de agosto la imagen de Santo Domingo de Guzmán en su tradicional bajada desde Las Sierritas hacia la capital" },
+            { "url": "https://radiolaprimerisima.com/2026/07/23/managua-celebrara-fiestas-tradicionales-con-amplia-agenda-cultural/", "publisher": "Radio La Primerísima", "accessed": "2026-11-09", "tier": "B", "quote": "El lunes 10 de agosto, procesión de retorno de la imagen de Santo Domingo de Guzmán" },
+            { "url": "https://www.vostv.com.ni/nacionales/50856-con-fe-y-algarabia-santo-domingo-de-guzman-inicio-/", "publisher": "Vos TV", "accessed": "2026-11-09", "tier": "B", "quote": "La salida marcó el cierre del ciclo de las Fiestas Tradicionales de Managua 2026, que comenzaron el pasado 1 de agosto con la Bajada de la imagen desde Las Sierritas hacia el centro de la ciudad." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://radiolaprimerisima.com/2026/08/01/miles-de-devotos-acompanan-bajada-de-santo-domingo-de-guzman-hacia-la-capital/", "quote": "junto a centenares de devotos que bailaron y acompañaron a la imagen, reafirmando el compromiso de mantener vivas las costumbres e identidad local" },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://canal2tv.com/nacionales/fieles-fiestas-santo-domingo/", "quote": "Las fiestas de Santo Domingo de Guzmán continúan reuniendo a miles de devotos provenientes de toda Nicaragua y de connacionales que regresan del extranjero para participar en esta tradición." },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Augusto_C._Sandino_International_Airport", "note": { "es": "Aeropuerto Augusto C. Sandino (MGA), a unos 11 km del centro, con vuelos internacionales.", "en": "Augusto C. Sandino Airport (MGA), about 11 km from the centre, with international flights.", "pt": "Aeroporto Augusto C. Sandino (MGA), a cerca de 11 km do centro, com voos internacionais." } }
+      },
+      "street_tip": { "es": "El 1 y el 10 de agosto la procesión recorre unos 10 km entre Las Sierritas y el centro con marimbas y bailantes: súmate a un tramo corto, sal temprano y lleva agua y sombrero.", "en": "On August 1 and 10 the procession covers about 10 km between Las Sierritas and downtown with marimbas and dancers: join a short stretch, start early and bring water and a hat.", "pt": "Em 1 e 10 de agosto a procissão percorre uns 10 km entre Las Sierritas e o centro com marimbas e dançarinos: acompanhe um trecho curto, saia cedo e leve água e chapéu." },
+      "etiquette": { "es": "Muchos promesantes cumplen una promesa: no les estorbes el paso ni los fotografíes de cerca sin pedir permiso.", "en": "Many walkers are fulfilling a religious vow: do not block their way or photograph them up close without asking.", "pt": "Muitos promesseiros estão cumprindo uma promessa: não atrapalhe a passagem nem os fotografe de perto sem pedir licença." }
+    },
+    {
+      "slug": "palo-de-mayo-bluefields",
+      "names": { "local": "Mayo Ya / Palo de Mayo", "es": "Palo de Mayo (Mayo Ya) de Bluefields", "en": "Maypole Festival (Mayo Ya) in Bluefields", "pt": "Festa do Palo de Mayo (Mayo Ya) de Bluefields" },
+      "city": "Bluefields",
+      "subdivision": "NI-AS",
+      "timezone": "America/Managua",
+      "coords": { "lat": 12.0137, "lon": -83.7636 },
+      "nearest_airport": "BEF",
+      "type": "danza",
+      "rule": { "type": "fixed", "start": "04-30", "end": "05-31" },
+      "editions": {
+        "2026": {
+          "start": "2026-04-30",
+          "end": "2026-05-31",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "carnaval-de-comparsas", "name": { "es": "Recorrido de comparsas y carrozas", "en": "Parade of dance troupes and floats", "pt": "Desfile de comparsas e carros alegóricos" }, "date": "2026-05-23", "confidence": "prensa" },
+            { "id": "tulululu", "name": { "es": "Recorrido del Tulululu", "en": "Tulululu street dance", "pt": "Percurso do Tulululu" }, "date": "2026-05-31", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://nuevaya.com.ni/ya-mi-municipio/bluefields-anuncia-programa-de-fiestas-de-mayo-ya-2026-patrimonio-e-identidad-cultural-de-nuestros-ancestros/", "publisher": "La Nueva Radio Ya", "accessed": "2026-11-09", "tier": "B", "quote": "Las actividades darán inicio el jueves 30 de abril con la celebración del 5.º Aniversario del nombramiento de Bluefields como Ciudad Creativa" },
+            { "url": "https://nuevaya.com.ni/ya-mi-municipio/bluefields-anuncia-programa-de-fiestas-de-mayo-ya-2026-patrimonio-e-identidad-cultural-de-nuestros-ancestros/", "publisher": "La Nueva Radio Ya", "accessed": "2026-11-09", "tier": "B", "quote": "Las festividades culminarán el domingo 31 de mayo con una agenda cargada de adrenalina y tradición" },
+            { "url": "https://radiolaprimerisima.com/2026/05/31/bluefields-se-prepara-para-despedir-mayo-ya-al-ritmo-del-tulululu/", "publisher": "Radio La Primerísima", "accessed": "2026-11-09", "tier": "B", "quote": "La ciudad de Bluefields se prepara para vivir una de sus tradiciones más emblemáticas y coloridas con la celebración del alegre recorrido del Tulululu, este domingo 31 de mayo, como parte de la despedida de las festividades de Mayo Ya." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Las fiestas abrieron con la vigilia del 30 de abril de 2026; el carnaval de comparsas fue el 23 de mayo y el Tulululu cerró el 31 de mayo.", "en": "The festivities opened with the April 30, 2026 vigil; the troupe carnival was on May 23 and the Tulululu closed them on May 31.", "pt": "As festas abriram com a vigília de 30 de abril de 2026; o carnaval de comparsas foi em 23 de maio e o Tulululu encerrou em 31 de maio." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://nuevaya.com.ni/ya-mi-municipio/bluefields-anuncia-programa-de-fiestas-de-mayo-ya-2026-patrimonio-e-identidad-cultural-de-nuestros-ancestros/", "quote": "Los fines de semana estarán marcados por la tradicional celebración del Palo de Mayo en diversos barrios emblemáticos como Beholdeen, Santa Rosa y El Canal, llevando la música y la danza rítmica a cada rincón de la comunidad." },
+        "viajeros": { "measure": "nacional", "confidence": "prensa", "source": "https://radiolaprimerisima.com/2026/05/31/bluefields-se-prepara-para-despedir-mayo-ya-al-ritmo-del-tulululu/", "quote": "reuniendo a familias, jóvenes, adultos mayores, turistas nacionales y visitantes extranjeros en una verdadera expresión de identidad, cultura y alegría costeña" },
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Bluefields_Airport", "note": { "es": "Aeropuerto de Bluefields (BEF), junto a la ciudad, con vuelos nacionales a Managua y Corn Island.", "en": "Bluefields Airport (BEF), next to the town, with domestic flights to Managua and Corn Island.", "pt": "Aeroporto de Bluefields (BEF), junto à cidade, com voos domésticos para Manágua e Corn Island." } }
+      },
+      "street_tip": { "es": "Las fechas fuertes son el carnaval de comparsas del sábado 23 y el Tulululu de la noche del 31 de mayo; los fines de semana hay Palo de Mayo en distintos barrios.", "en": "The key dates are the troupe carnival on Saturday the 23rd and the Tulululu on the night of May 31; on weekends there is Maypole dancing in different neighbourhoods.", "pt": "As datas principais são o carnaval de comparsas no sábado 23 e o Tulululu na noite de 31 de maio; nos fins de semana há Palo de Mayo em vários bairros." },
+      "etiquette": { "es": "En el Tulululu se baila bajo el arco de brazos: entra con el ritmo, no empujes la fila y bebe con moderación.", "en": "In the Tulululu people dance under an arch of arms: join with the rhythm, do not push the line and drink in moderation.", "pt": "No Tulululu dança-se sob o arco de braços: entre no ritmo, não empurre a fila e beba com moderação." }
+    },
+    {
+      "slug": "san-sebastian-diriamba",
+      "names": { "local": "Fiestas de San Sebastián", "es": "Fiestas de San Sebastián de Diriamba", "en": "San Sebastián Festival of Diriamba", "pt": "Festas de São Sebastião de Diriamba" },
+      "city": "Diriamba",
+      "subdivision": "NI-CA",
+      "timezone": "America/Managua",
+      "coords": { "lat": 11.8579, "lon": -86.2397 },
+      "nearest_airport": "MGA",
+      "type": "danza",
+      "rule": { "type": "fixed", "start": "01-17", "end": "01-27" },
+      "editions": {
+        "2026": {
+          "start": "2026-01-17",
+          "end": "2026-01-27",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://nuevaya.com.ni/farandula/candidatas-a-reina-de-diriamba-promocionan-en-tu-nueva-radio-el-festival-san-sebastian-2026/", "publisher": "La Nueva Radio Ya", "accessed": "2026-11-09", "tier": "B", "quote": "Las actividades continuarán el 17 y 18 de enero con presentaciones artísticas, batucadas y el tradicional desfile de carretas." },
+            { "url": "https://nuevaya.com.ni/farandula/candidatas-a-reina-de-diriamba-promocionan-en-tu-nueva-radio-el-festival-san-sebastian-2026/", "publisher": "La Nueva Radio Ya", "accessed": "2026-11-09", "tier": "B", "quote": "El festival culminará el martes 27 de enero con un desfile cultural de bailes tradicionales y presentaciones folclóricas" },
+            { "url": "https://www.vostv.com.ni/cultura/47004-diriambina-fe-tradicion-patrona-san-sebastian/", "publisher": "Vos TV", "accessed": "2026-11-09", "tier": "B", "quote": "A esta devota diriambina le tocará atender al pueblo nicaragüense del 24 al 27 de enero" },
+            { "url": "https://www.mined.gob.ni/mapatradicionesculturapopular/listing/diriamba/", "publisher": "Ministerio de Educación de Nicaragua", "accessed": "2026-11-09", "tier": "A", "quote": "El municipio de Diriamba se caracteriza por sus fiestas patronales en honor a San Sebastián Mártir del 17 al 27 de enero, duran diez días y su día principal es el 20 de enero." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "El programa municipal de 2026 empezó antes, el 9 de enero, con la elección de la reina; las fiestas patronales en sí van del 17 al 27 de enero, con el 20 como día principal.", "en": "The 2026 municipal programme started earlier, on January 9, with the queen pageant; the patron-saint festivities proper run from January 17 to 27, with the 20th as the main day.", "pt": "O programa municipal de 2026 começou antes, em 9 de janeiro, com a eleição da rainha; as festas do padroeiro vão de 17 a 27 de janeiro, com o dia 20 como principal." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://nuevaya.com.ni/farandula/candidatas-a-reina-de-diriamba-promocionan-en-tu-nueva-radio-el-festival-san-sebastian-2026/", "quote": "La agenda festiva se intensifica entre el 19 y el 26 de enero con presentaciones de bandas filarmónicas, juegos tradicionales de pólvora, espectáculos musicales, desfiles culturales, eventos hípicos, shows de danza, DJs en tarima central y actividades recreativas en el Parque Central y principales calles de la ciudad." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Augusto_C._Sandino_International_Airport", "note": { "es": "Sin aeropuerto a menos de 40 km; el más cercano es MGA (Managua), a unos 50 km por carretera.", "en": "No airport within 40 km; the nearest is MGA (Managua), about 50 km by road.", "pt": "Sem aeroporto a menos de 40 km; o mais próximo é MGA (Manágua), a cerca de 50 km por estrada." } }
+      },
+      "street_tip": { "es": "El 19 y el 20 de enero son los días de más baile: el Güegüense, el Toro Huaco y las Inditas salen a la calle al son del pito, el tambor y el violín.", "en": "January 19 and 20 are the biggest dance days: El Güegüense, the Toro Huaco and the Inditas take to the streets to fife, drum and violin.", "pt": "Os dias 19 e 20 de janeiro são os de mais dança: o Güegüense, o Toro Huaco e as Inditas saem às ruas ao som de pífano, tambor e violino." },
+      "etiquette": { "es": "Los bailantes cumplen promesas al santo: deja espacio a las danzas, no toques las máscaras y pide permiso antes de fotografiar de cerca.", "en": "The dancers are keeping vows to the saint: give the dances room, do not touch the masks and ask before close-up photos.", "pt": "Os dançarinos cumprem promessas ao santo: dê espaço às danças, não toque nas máscaras e peça licença antes de fotos de perto." }
+    },
+    {
+      "slug": "aguizotes-masaya",
+      "names": { "local": "Los Agüizotes", "es": "Desfile de los Agüizotes de Masaya", "en": "Agüizotes Night Parade in Masaya", "pt": "Desfile dos Agüizotes de Masaya" },
+      "city": "Masaya",
+      "subdivision": "NI-MS",
+      "timezone": "America/Managua",
+      "coords": { "lat": 11.9744, "lon": -86.0942 },
+      "nearest_airport": "MGA",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "10-15", "end": "10-31" } },
+      "editions": {
+        "2026": {
+          "start": "2026-10-23",
+          "end": "2026-10-23",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.canal4.com.ni/desfile-aguizotes-mitos-leyendas-2026-desborda-cultura-tradicion-calles-masaya/", "publisher": "Canal 4 Nicaragua", "accessed": "2026-11-09", "tier": "B", "quote": "Familias participaron este viernes 23 de octubre en el Desfile de Agüizotes, Mitos y Leyendas 2026" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Suele hacerse el último viernes de octubre, pero en 2026 fue el viernes 23. Forma parte de las largas fiestas de San Jerónimo de Masaya.", "en": "It is usually held on the last Friday of October, but in 2026 it was on Friday the 23rd. It is part of Masaya's long San Jerónimo festivities.", "pt": "Costuma ser na última sexta-feira de outubro, mas em 2026 foi na sexta 23. Faz parte das longas festas de São Jerônimo de Masaya." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.canal4.com.ni/desfile-aguizotes-mitos-leyendas-2026-desborda-cultura-tradicion-calles-masaya/", "quote": "recorrieron las calles, despertando el interés de las familias y visitantes que se sumaron a esta fiesta popular." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Augusto_C._Sandino_International_Airport", "note": { "es": "Aeropuerto Augusto C. Sandino (MGA), a unos 25 km por la carretera a Masaya.", "en": "Augusto C. Sandino Airport (MGA), about 25 km away along the Masaya highway.", "pt": "Aeroporto Augusto C. Sandino (MGA), a cerca de 25 km pela estrada para Masaya." } }
+      },
+      "street_tip": { "es": "Los personajes se concentran al anochecer en Monimbó y el desfile arranca hacia las 8 de la noche; ir disfrazado de leyenda nicaragüense es parte de la fiesta.", "en": "The characters gather at dusk in Monimbó and the parade sets off around 8 pm; dressing up as a Nicaraguan legend is part of the fun.", "pt": "Os personagens se reúnem ao anoitecer em Monimbó e o desfile sai por volta das 20h; ir fantasiado de lenda nicaraguense faz parte da festa." },
+      "etiquette": { "es": "Algunos participantes cargan animales muertos o lanzan líquidos al público: mantén cierta distancia y no te lo tomes a mal.", "en": "Some participants carry dead animals or splash liquids at the crowd: keep a little distance and take it in good humour.", "pt": "Alguns participantes carregam animais mortos ou jogam líquidos no público: mantenha certa distância e leve na esportiva." }
+    },
+    {
+      "slug": "emancipacion-corn-island",
+      "names": { "local": "Emancipation Day / Crab Soup Festival", "es": "Fiesta de la Emancipación (Sopa de Cangrejo) de Corn Island", "en": "Emancipation Day and Crab Soup Festival, Corn Island", "pt": "Festa da Emancipação (Sopa de Caranguejo) de Corn Island" },
+      "city": "Corn Island",
+      "subdivision": "NI-AS",
+      "timezone": "America/Managua",
+      "coords": { "lat": 12.1667, "lon": -83.05 },
+      "nearest_airport": "RNI",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "08-27", "end": "08-29" },
+      "editions": {
+        "2026": {
+          "start": "2026-08-27",
+          "end": "2026-08-29",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.canal4.com.ni/corn-island-185-anos-libre-esclavitud-colonial/", "publisher": "Canal 4 Nicaragua", "accessed": "2026-11-09", "tier": "B", "quote": "Corn Island conmemoró este 27 de agosto una historia que comenzó mucho antes de que la sopa de cangrejo" },
+            { "url": "https://radiolaprimerisima.com/2026/08/27/corn-island-conmemora-185-aniversario-de-la-emancipacion/", "publisher": "Radio La Primerísima", "accessed": "2026-11-09", "tier": "B", "quote": "Con un desfile Corn Island inició este jueves la conmemoración del 185 aniversario de la Emancipación de la Esclavitud" },
+            { "url": "https://www.visitanicaragua.com/fiesta-de-la-emancipacion-en-corn-island-una-de-las-festividades-mas-grandes-del-caribe-nicaraguense/", "publisher": "INTUR – Visita Nicaragua", "accessed": "2026-11-09", "tier": "A", "quote": "se celebra del 27 al 29 de agosto en Great Corn Island y Little Corn Island" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "La prensa de 2026 confirma el desfile del 27 de agosto; el cierre del 29 en Little Corn Island sigue el programa fijo que publica INTUR (27 desfile y sopa de cangrejo, 28 elección de Miss Corn Island, 29 Cross Over).", "en": "2026 press confirms the August 27 parade; the August 29 close on Little Corn Island follows INTUR's fixed programme (27th parade and crab soup, 28th Miss Corn Island pageant, 29th Cross Over).", "pt": "A imprensa de 2026 confirma o desfile de 27 de agosto; o encerramento de 29 em Little Corn Island segue o programa fixo do INTUR (27 desfile e sopa de caranguejo, 28 eleição de Miss Corn Island, 29 Cross Over)." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://radiolaprimerisima.com/2026/08/27/corn-island-conmemora-185-aniversario-de-la-emancipacion/", "quote": "El tradicional desfile recorrió las calles desde Southwest Bay hasta South End, llenando cada rincón de música, danza, color y energía." },
+        "viajeros": { "measure": "nacional", "confidence": "oficial", "source": "https://www.visitanicaragua.com/fiesta-de-la-emancipacion-en-corn-island-una-de-las-festividades-mas-grandes-del-caribe-nicaraguense/", "quote": "Esta fiesta, que congrega a toda la comunidad, turistas nacionales y de otras nacionalidades" },
+        "calle": null,
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Corn_Island_Airport", "note": { "es": "Aeropuerto de Corn Island (RNI), en la isla, con vuelos nacionales a Managua y Bluefields.", "en": "Corn Island Airport (RNI), on the island, with domestic flights to Managua and Bluefields.", "pt": "Aeroporto de Corn Island (RNI), na ilha, com voos domésticos para Manágua e Bluefields." } }
+      },
+      "street_tip": { "es": "El 27 el desfile sale de Southwest Bay por la mañana y termina en South End, donde se reparte sopa de cangrejo gratis al mediodía; reserva el vuelo o la panga con tiempo.", "en": "On the 27th the parade leaves Southwest Bay in the morning and ends in South End, where free crab soup is served at noon; book the flight or boat early.", "pt": "No dia 27 o desfile sai de Southwest Bay pela manhã e termina em South End, onde se serve sopa de caranguejo grátis ao meio-dia; reserve o voo ou o barco com antecedência." },
+      "etiquette": { "es": "Es también una conmemoración del fin de la esclavitud: escucha los actos históricos con respeto y no trates la fiesta solo como una fiesta de playa.", "en": "It also commemorates the end of slavery: listen respectfully to the historical acts and do not treat it as just a beach party.", "pt": "Também é a comemoração do fim da escravidão: ouça os atos históricos com respeito e não trate a festa só como festa de praia." }
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { defineConfig, type Plugin } from "vite";
 
 // No data: images: icons are inline SVG elements and the CSS embeds no data URLs (SEC-16).
@@ -11,20 +11,14 @@ export const CSP =
 const PRELOAD_FONTS = [/anybody-latin-standard-normal.*\.woff2$/, /atkinson-hyperlegible-next-latin-wght-normal.*\.woff2$/];
 
 /**
- * The first screen (world view and Explorar) needs the index and every published country, so the
- * build preloads them next to the JS instead of after it: two network round trips off the LCP.
- * Capped so a large catalogue does not preload files a country view never reads.
+ * The first screen (the world view) reads the index and data/world.json (build-data
+ * `worldBundle`: the tier-1 festivals in one file), so the build preloads exactly those two next to
+ * the JS instead of after it: a network round trip off the LCP. It used to preload the first four
+ * countries alphabetically, which with all of Latin America live were files the first screen
+ * never read, fighting the ones it did for bandwidth.
  */
-const MAX_PRELOADED_COUNTRIES = 4;
-
 function dataPreloads(): string[] {
-  try {
-    const index = JSON.parse(readFileSync("public/data/index.json", "utf8")) as { countries?: { code?: unknown }[] };
-    const codes = (index.countries ?? []).map((c) => c.code).filter((c): c is string => typeof c === "string" && /^[A-Z]{2}$/.test(c));
-    return ["data/index.json", ...codes.slice(0, MAX_PRELOADED_COUNTRIES).map((c) => `data/countries/${c.toLowerCase()}.json`)];
-  } catch {
-    return []; // no generated data yet (e.g. a bare `vite build`): the app still fetches it at runtime
-  }
+  return ["data/index.json", "data/world.json"].filter((path) => existsSync(`public/${path}`)); // a bare `vite build` has no data yet
 }
 
 /** Build only: the dev server needs inline scripts for HMR, so the CSP meta would break it. */

@@ -39,6 +39,18 @@ export const COUNTRIES: Readonly<Record<string, CountryInfo>> = {
   CU: C("es", "es", "America/Havana", "centroamerica_caribe", "Cuba", "Cuba"),
   DO: C("es", "es", "America/Santo_Domingo", "centroamerica_caribe", "República Dominicana", "Dominican Republic"),
   PA: C("es", "es", "America/Panama", "centroamerica_caribe", "Panamá", "Panama"),
+  // The rest of Latin America (config/pipeline.json «coverage»). CLDR's likely language is Guaraní
+  // for PY and Haitian Creole for HT, which the date reader cannot read; their press writes in
+  // Spanish and French.
+  PY: C("es", "es", "America/Asuncion", "sudamerica", "Paraguay", "Paraguay"),
+  VE: C("es", "es", "America/Caracas", "sudamerica", "Venezuela", "Venezuela"),
+  CR: C("es", "es", "America/Costa_Rica", "centroamerica_caribe", "Costa Rica", "Costa Rica"),
+  GT: C("es", "es", "America/Guatemala", "centroamerica_caribe", "Guatemala", "Guatemala"),
+  SV: C("es", "es", "America/El_Salvador", "centroamerica_caribe", "El Salvador", "El Salvador"),
+  HN: C("es", "es", "America/Tegucigalpa", "centroamerica_caribe", "Honduras", "Honduras"),
+  NI: C("es", "es", "America/Managua", "centroamerica_caribe", "Nicaragua", "Nicaragua"),
+  PR: C("es", "es", "America/Puerto_Rico", "centroamerica_caribe", "Puerto Rico", "Puerto Rico"),
+  HT: C("en", "fr", "America/Port-au-Prince", "centroamerica_caribe", "Haití", "Haiti"),
   US: C("en", "en", "America/New_York", "norteamerica", "Estados Unidos", "United States"),
   ES: C("es", "es", "Europe/Madrid", "europa", "España", "Spain"),
   PT: C("pt", "pt", "Europe/Lisbon", "europa", "Portugal", "Portugal"),

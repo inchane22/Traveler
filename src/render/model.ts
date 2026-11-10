@@ -96,14 +96,35 @@ export function loadChangelog(): Promise<ChangelogEntry[]> {
   return changelogPromise;
 }
 
-export function entriesFor(country: CountryFile, today: ISO): FestivalEntry[] {
-  const key = `${country.country}|${today}`;
+export function entriesFor(country: CountryFile, today: ISO, cachePrefix = ""): FestivalEntry[] {
+  const key = `${cachePrefix}${country.country}|${today}`;
   let entries = entryCache.get(key);
   if (!entries) {
     entries = buildEntries(country, scoring, today);
     entryCache.set(key, entries);
   }
   return entries;
+}
+
+let worldPromise: Promise<CountryFile[] | null> | null = null;
+
+/**
+ * data/world.json (build-data `worldBundle`): the tier-1 festivals of every country that has one,
+ * in one file. Null when it is missing or malformed (an older deploy): the caller loads the
+ * country files instead, and the next call tries again.
+ */
+function loadWorld(): Promise<CountryFile[] | null> {
+  worldPromise ??= getJson<unknown>("data/world.json")
+    .then((v) => {
+      const countries = (v as { countries?: unknown } | null)?.countries;
+      return Array.isArray(countries) && countries.every((c) => isCountryFile(c, (c as CountryFile | null)?.country ?? "")) ? (countries as CountryFile[]) : null;
+    })
+    .catch(() => null)
+    .then((countries) => {
+      if (!countries) worldPromise = null;
+      return countries;
+    });
+  return worldPromise;
 }
 
 export function published(index: PublicIndex): IndexCountry[] {
@@ -135,9 +156,16 @@ export interface ScopeData {
 }
 
 export async function loadScope(scope: Scope, tier2: boolean, today: ISO): Promise<ScopeData> {
+  // The world and a region at tier 1 read one small file, fetched alongside the index; with the
+  // Tier 2 switch, or a country, the full country files.
+  const world = scope.kind !== "country" && !tier2 ? loadWorld() : null;
   const index = await loadIndex();
-  const countries = await Promise.all(countriesFor(index, scope, tier2).map(loadCountry));
-  const entries = countries.flatMap((c) => entriesFor(c, today)).filter((e) => isVisible(e, scope, tier2));
+  const codes = countriesFor(index, scope, tier2);
+  const bundle = world ? await world : null;
+  const slim = bundle && codes.every((cc) => bundle.some((c) => c.country === cc)) ? bundle.filter((c) => codes.includes(c.country)) : null;
+  const countries = slim ?? (await Promise.all(codes.map(loadCountry)));
+  // Slim files get their own cache key: a country page must never see a trimmed festival list.
+  const entries = countries.flatMap((c) => entriesFor(c, today, slim ? "world:" : "")).filter((e) => isVisible(e, scope, tier2));
   return { index, countries, entries };
 }
 

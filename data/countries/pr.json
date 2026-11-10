@@ -1,0 +1,234 @@
+{
+  "country": "PR",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Puerto_Rico",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "fiestas-calle-san-sebastian",
+      "names": { "local": "Fiestas de la Calle San Sebastián (SanSe)", "es": "Fiestas de la Calle San Sebastián (SanSe)", "en": "San Sebastián Street Festival (SanSe)", "pt": "Festas da Rua San Sebastián (SanSe)" },
+      "city": "San Juan",
+      "subdivision": "PR-SJ",
+      "timezone": "America/Puerto_Rico",
+      "coords": { "lat": 18.4665, "lon": -66.1166 },
+      "nearest_airport": "SJU",
+      "type": "fiesta_popular",
+      "rule": { "type": "nth_weekday", "month": 1, "weekday": 4, "n": 3, "duration_days": 4 },
+      "editions": {
+        "2026": {
+          "start": "2026-01-15",
+          "end": "2026-01-18",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.telemundopr.com/especiales/sanse/se-acercan-las-fiestas-conoce-hoy-el-programa-oficial-de-la-sanse-2026/2770101/", "publisher": "Telemundo Puerto Rico", "accessed": "2026-11-09", "tier": "B", "quote": "que se llevarán a cabo del jueves 15 al domingo 18 de enero" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 56, en el Viejo San Juan, de jueves a domingo.", "en": "56th edition, in Old San Juan, Thursday to Sunday.", "pt": "56ª edição, na Velha San Juan, de quinta a domingo." }
+        },
+        "2027": {
+          "start": "2027-01-21",
+          "end": "2027-01-24",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.elnuevodia.com/entretenimiento/cultura/notas/revelan-la-fecha-de-las-fiestas-de-la-calle-san-sebastian-2027/", "publisher": "El Nuevo Día", "accessed": "2026-11-09", "tier": "B", "quote": "que serán del 21 al 24 de enero de 2027 en el Viejo San Juan" },
+            { "url": "https://www.metro.pr/entretenimiento/2026/03/12/anuncian-las-fechas-para-las-fiestas-de-la-calle-san-sebastian-2027/", "publisher": "Metro Puerto Rico", "accessed": "2026-11-09", "tier": "B", "quote": "se celebrarán del 21 al 24 de enero de 2027 en el Viejo San Juan" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Fechas anunciadas por el alcalde de San Juan en marzo de 2026.", "en": "Dates announced by the mayor of San Juan in March 2026.", "pt": "Datas anunciadas pelo prefeito de San Juan em março de 2026." }
+        }
+      },
+      "score": {
+        "convocatoria": { "measure": { "attendance": 1083881, "qualifier": "about", "unit": "attendees", "year": 2026 }, "confidence": "prensa", "source": "https://www.primerahora.com/entretenimiento/cultura-teatro/notas/sanse-2026-registra-record-historico-con-mas-de-un-millon-de-asistentes/", "quote": "Las Fiestas de la Calle San Sebastián 2026 cerraron con un récord histórico de asistencia: 1,083,881 personas durante los cuatro días de celebración en el Viejo San Juan", "note": { "es": "Estimación del Municipio de San Juan con sus sistemas de conteo, para los cuatro días.", "en": "Estimate by the San Juan municipality from its counting systems, for the four days.", "pt": "Estimativa do município de San Juan com seus sistemas de contagem, para os quatro dias." } },
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://www.primerahora.com/estilos-de-vida/ph-mas-pa-aprender/notas/arranca-la-sanse-pero-quien-fue-san-sebastian/", "quote": "Por cuatro días, miles de personas se darán la vuelta por la conocida ruta adoquinada del Viejo San Juan, ya sea para honrar la cultura nacional a través de la diversidad de espectáculos musicales y artísticos, o encontrar la excusa perfecta para andar de pachanga con su corillo." },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://www.primerahora.com/entretenimiento/cultura-teatro/notas/sanse-2026-registra-record-historico-con-mas-de-un-millon-de-asistentes/", "quote": "Este año vimos cómo nuestra diáspora volvió a casa para revivir lo que significan las Fiestas de la Calle San Sebastián, y cómo miles de turistas disfrutaron de lo que son las navidades más largas del mundo." },
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Luis_Mu%C3%B1oz_Mar%C3%ADn_International_Airport", "note": { "es": "SJU está en Carolina, a unos 13 km del Viejo San Juan, con vuelos a EE. UU., Europa y América Latina.", "en": "SJU is in Carolina, about 13 km from Old San Juan, with flights to the US, Europe and Latin America.", "pt": "O SJU fica em Carolina, a cerca de 13 km da Velha San Juan, com voos para os EUA, a Europa e a América Latina." } }
+      },
+      "street_tip": { "es": "No intentes entrar en carro a la isleta: deja el auto en los estacionamientos habilitados y sube en las guaguas del municipio, que funcionan hasta la madrugada.", "en": "Don't try to drive into the islet: park at the designated lots and ride the municipal shuttle buses, which run into the early morning.", "pt": "Não tente entrar de carro na ilhota: deixe o carro nos estacionamentos indicados e suba nos ônibus do município, que circulam até a madrugada." },
+      "etiquette": { "es": "Las calles se llenan hasta no poder moverse; ten paciencia con los empujones, cuida tus pertenencias y deja pasar a las comparsas de cabezudos.", "en": "The streets get packed shoulder to shoulder; be patient with the jostling, watch your belongings and make way for the cabezudo troupes.", "pt": "As ruas ficam lotadas a ponto de mal dar para andar; tenha paciência com os empurrões, cuide dos seus pertences e abra caminho para as comparsas de cabezudos." }
+    },
+    {
+      "slug": "carnaval-ponceno",
+      "names": { "local": "Carnaval Ponceño", "es": "Carnaval de Ponce", "en": "Ponce Carnival", "pt": "Carnaval de Ponce" },
+      "city": "Ponce",
+      "subdivision": "PR-PO",
+      "timezone": "America/Puerto_Rico",
+      "coords": { "lat": 18.012, "lon": -66.6141 },
+      "nearest_airport": "PSE",
+      "type": "carnaval",
+      "rule": { "type": "easter_offset", "calendar": "gregorian", "start": -52, "end": -47 },
+      "editions": {
+        "2026": {
+          "start": "2026-02-12",
+          "end": "2026-02-17",
+          "status": "confirmada",
+          "confidence": "oficial",
+          "key_events": [],
+          "sources": [
+            { "url": "https://sutra.oslpr.org/resoluciones/14090", "publisher": "Oficina de Servicios Legislativos de Puerto Rico (resolución de la Legislatura Municipal de Ponce)", "accessed": "2026-11-09", "tier": "A", "quote": "DESDE EL 12 AL 17 DE FEBRERO DE 2026" },
+            { "url": "https://teleonce.com/programas/prenvivo/alcaldesa-de-ponce-reflexiona-sobre-su-primer-ano-de-gestion-e-invita-al-carnaval-ponceno/", "publisher": "TeleOnce", "accessed": "2026-11-09", "tier": "B", "quote": "El evento se llevará a cabo del 12 al 17 de febrero de este año." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 168: abrió el jueves con el Baile de Máscaras y cerró el martes con el Entierro de la Sardina; el desfile de carrozas fue el domingo.", "en": "168th edition: it opened on Thursday with the Masked Ball and closed on Tuesday with the Burial of the Sardine; the float parade was on Sunday.", "pt": "168ª edição: abriu na quinta com o Baile de Máscaras e terminou na terça com o Enterro da Sardinha; o desfile de carros alegóricos foi no domingo." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.metro.pr/entretenimiento/2026/02/10/carnaval-ponceno-2026-celebra-su-edicion-168-dedicada-al-centenario-de-tite-curet-alonso", "quote": "El carnaval iniciará oficialmente el jueves 12 de febrero en la Plaza Las Delicias con el Baile de Máscaras, mientras que los desfiles y noches de música continuarán durante el fin de semana hasta cerrar el martes con el tradicional Entierro de la Sardina." },
+        "viajeros": { "measure": "internacional", "confidence": "prensa", "source": "https://www.metro.pr/entretenimiento/2026/02/10/carnaval-ponceno-2026-celebra-su-edicion-168-dedicada-al-centenario-de-tite-curet-alonso", "quote": "El municipio anticipó que el domingo de carnaval tendrá un ambiente especial con la visita de miles de cruceristas del Marella Discovery, que hará escala en la Ciudad Señorial." },
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Mercedita_International_Airport", "note": { "es": "PSE (Mercedita) está a unos 6 km del centro de Ponce; solo tiene vuelos a EE. UU. continental (Orlando, Fort Lauderdale).", "en": "PSE (Mercedita) is about 6 km from downtown Ponce; it only has flights to the US mainland (Orlando, Fort Lauderdale).", "pt": "O PSE (Mercedita) fica a cerca de 6 km do centro de Ponce; só tem voos para os EUA continentais (Orlando, Fort Lauderdale)." } }
+      },
+      "street_tip": { "es": "El domingo del desfile es el día más lleno: llega temprano a la Plaza Las Delicias y quédate para la música de la noche frente a la alcaldía.", "en": "Parade Sunday is the busiest day: get to Plaza Las Delicias early and stay for the evening music in front of city hall.", "pt": "O domingo do desfile é o dia mais cheio: chegue cedo à Plaza Las Delicias e fique para a música da noite em frente à prefeitura." },
+      "etiquette": { "es": "Los vejigantes pueden darte un golpecito con su vejiga como parte del juego; tómalo con humor y pide permiso antes de fotografiar de cerca a los enmascarados.", "en": "Vejigantes may tap you with their bladder as part of the game; take it with good humor and ask before taking close-up photos of the masked figures.", "pt": "Os vejigantes podem te dar um tapinha com a bexiga como parte da brincadeira; leve na esportiva e peça licença antes de fotografar os mascarados de perto." }
+    },
+    {
+      "slug": "festival-mascaras-hatillo",
+      "names": { "local": "Festival de las Máscaras de Hatillo", "es": "Festival de las Máscaras de Hatillo", "en": "Hatillo Mask Festival", "pt": "Festival das Máscaras de Hatillo" },
+      "city": "Hatillo",
+      "subdivision": "PR-HA",
+      "timezone": "America/Puerto_Rico",
+      "coords": { "lat": 18.4863, "lon": -66.8254 },
+      "nearest_airport": "BQN",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "12-28", "end": "12-28" },
+      "editions": {
+        "2025": {
+          "start": "2025-12-28",
+          "end": "2025-12-28",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.elnuevodia.com/entretenimiento/cultura/fotogalerias/lugares-para-disfrutar-de-los-festejos-navidenos-este-fin-de-semana/", "publisher": "El Nuevo Día", "accessed": "2026-11-09", "tier": "B", "quote": "El 28 de diciembre, desde las 7:00 a.m., por las calles y barrios de Hatillo (especialmente en Lechuga, Molinari, Santa Rosa, Corcobado y Carrizal) las personas podrán disfrutar del Festival de Las Máscaras." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.elnuevodia.com/entretenimiento/cultura/fotogalerias/lugares-para-disfrutar-de-los-festejos-navidenos-este-fin-de-semana/", "quote": "las personas podrán disfrutar del Festival de Las Máscaras. Habrá desfiles de carrozas." },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "nacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Rafael_Hern%C3%A1ndez_Airport", "note": { "es": "BQN (Aguadilla) queda a unos 40 km por carretera y solo tiene vuelos a EE. UU. continental; SJU está a unos 90 km.", "en": "BQN (Aguadilla) is about 40 km away by road and only has flights to the US mainland; SJU is about 90 km away.", "pt": "O BQN (Aguadilla) fica a cerca de 40 km por estrada e só tem voos para os EUA continentais; o SJU fica a cerca de 90 km." } }
+      },
+      "street_tip": { "es": "Es un solo día y empieza temprano: llega por la PR-2 antes del mediodía, cuando las comparsas y carrozas toman las calles y el tráfico se vuelve lento.", "en": "It is a single day and starts early: arrive via PR-2 before noon, when the troupes and floats take over the streets and traffic crawls.", "pt": "É um dia só e começa cedo: chegue pela PR-2 antes do meio-dia, quando as comparsas e os carros alegóricos tomam as ruas e o trânsito fica lento." },
+      "etiquette": { "es": "Mantén distancia de las carrozas en movimiento y no te subas sin invitación; las comparsas son grupos familiares que preparan sus trajes todo el año.", "en": "Keep clear of moving floats and don't climb on without an invitation; the troupes are family groups who work on their costumes all year.", "pt": "Mantenha distância dos carros alegóricos em movimento e não suba sem convite; as comparsas são grupos familiares que preparam as fantasias o ano todo." }
+    },
+    {
+      "slug": "fiestas-santiago-apostol-loiza",
+      "names": { "local": "Fiestas Tradicionales en Honor a Santiago Apóstol", "es": "Fiestas de Santiago Apóstol de Loíza", "en": "Loíza Saint James Festival", "pt": "Festas de Santiago Apóstolo de Loíza" },
+      "city": "Loíza",
+      "subdivision": "PR-LO",
+      "timezone": "America/Puerto_Rico",
+      "coords": { "lat": 18.4313, "lon": -65.8802 },
+      "nearest_airport": "SJU",
+      "type": "fiesta_popular",
+      "rule": { "type": "announced", "window": { "start": "07-15", "end": "08-10" } },
+      "editions": {
+        "2025": {
+          "start": "2025-07-24",
+          "end": "2025-08-03",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://noticel.com/noticias/la-calle/20250721/loiza-celebra-las-fiestas-en-honor-a-santiago-apostol/", "publisher": "NotiCel", "accessed": "2026-11-09", "tier": "B", "quote": "el jueves, 24 de julio a las 12:00 del mediodía es la tradicional Diana y salva de cohetes" },
+            { "url": "https://noticel.com/noticias/la-calle/20250721/loiza-celebra-las-fiestas-en-honor-a-santiago-apostol/", "publisher": "NotiCel", "accessed": "2026-11-09", "tier": "B", "quote": "El domingo, 3 de agosto de 2025 a la 1:00 de la tarde es el Paseo Carnaval de Santa Ana" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Abrió con la diana del 24 de julio y cerró con el Paseo Carnaval de Santa Ana del 3 de agosto; las procesiones de los tres Santiagos son el centro de la fiesta.", "en": "It opened with the dawn diana on July 24 and closed with the Santa Ana Carnival Parade on August 3; the processions of the three Santiagos are the heart of the festival.", "pt": "Abriu com a alvorada de 24 de julho e terminou com o Desfile-Carnaval de Santa Ana em 3 de agosto; as procissões dos três Santiagos são o centro da festa." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://noticel.com/noticias/la-calle/20250721/loiza-celebra-las-fiestas-en-honor-a-santiago-apostol/", "quote": "donde el pueblo loiceño celebra sus múltiples tradiciones y reciben a miles de personas durante los días en que se presentan las actividades artísticas, así como a las procesiones y eventos deportivos" },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Luis_Mu%C3%B1oz_Mar%C3%ADn_International_Airport", "note": { "es": "SJU queda a unos 20 km de Loíza por la PR-187 o la PR-188.", "en": "SJU is about 20 km from Loíza via PR-187 or PR-188.", "pt": "O SJU fica a cerca de 20 km de Loíza pela PR-187 ou pela PR-188." } }
+      },
+      "street_tip": { "es": "Las procesiones con vejigantes, caballeros, locas y viejos recorren la carretera hacia Medianía por la tarde; busca sombra y agua, y acércate al batey de los Ayala para la bomba.", "en": "The processions with vejigantes, caballeros, locas and viejos move along the road to Medianía in the afternoon; find shade and water, and head to the Ayala family batey for bomba.", "pt": "As procissões com vejigantes, caballeros, locas e viejos percorrem a estrada rumo a Medianía à tarde; procure sombra e água, e vá ao batey dos Ayala para a bomba." },
+      "etiquette": { "es": "Es una fiesta religiosa y afropuertorriqueña a la vez: no interrumpas el paso de los santos y pide permiso antes de fotografiar a los mantenedores y a los enmascarados.", "en": "It is both a religious and an Afro-Puerto Rican celebration: don't cut across the saints' path and ask before photographing the keepers of the saints and the masked figures.", "pt": "É uma festa religiosa e afro-porto-riquenha ao mesmo tempo: não atravesse a passagem dos santos e peça licença antes de fotografar os mantenedores e os mascarados." }
+    },
+    {
+      "slug": "noche-de-san-juan-puerto-rico",
+      "names": { "local": "Noche de San Juan", "es": "Noche de San Juan", "en": "Saint John's Eve (Noche de San Juan)", "pt": "Noite de São João (Noche de San Juan)" },
+      "city": "San Juan",
+      "subdivision": "PR-SJ",
+      "timezone": "America/Puerto_Rico",
+      "coords": { "lat": 18.4589, "lon": -66.0745 },
+      "nearest_airport": "SJU",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "06-23", "end": "06-23" },
+      "editions": {
+        "2026": {
+          "start": "2026-06-23",
+          "end": "2026-06-23",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.metro.pr/noticias/2026/06/23/por-que-se-celebra-la-noche-de-san-juan-estos-son-algunos-lugares-para-visitar-este-martes", "publisher": "Metro Puerto Rico", "accessed": "2026-11-09", "tier": "B", "quote": "Durante este martes, 23 de junio de 2026, se celebra en la isla la Noche de San Juan" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Se celebra en playas de toda la isla; en San Juan, sobre todo en Condado, Ocean Park, Isla Verde y El Escambrón.", "en": "It is celebrated on beaches all over the island; in San Juan, mainly at Condado, Ocean Park, Isla Verde and El Escambrón.", "pt": "É celebrada em praias de toda a ilha; em San Juan, principalmente em Condado, Ocean Park, Isla Verde e El Escambrón." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://www.metro.pr/noticias/2026/06/23/por-que-se-celebra-la-noche-de-san-juan-estos-son-algunos-lugares-para-visitar-este-martes", "quote": "A medida que se pone el sol, las playas de Puerto Rico cobran vida con picnics, hogueras y música." },
+        "viajeros": null,
+        "calle": { "measure": "mayoria_gratis", "confidence": "estimacion" },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Luis_Mu%C3%B1oz_Mar%C3%ADn_International_Airport", "note": { "es": "SJU está junto a Isla Verde, a pocos kilómetros de las playas de la capital.", "en": "SJU sits next to Isla Verde, a few kilometres from the capital's beaches.", "pt": "O SJU fica ao lado de Isla Verde, a poucos quilômetros das praias da capital." } }
+      },
+      "street_tip": { "es": "Llega a la playa antes del atardecer para encontrar sitio; a la medianoche todos entran al mar de espaldas, así que lleva ropa que se pueda mojar y una bolsa seca para el teléfono.", "en": "Get to the beach before sunset to find a spot; at midnight everyone walks backwards into the sea, so wear clothes you can get wet and bring a dry bag for your phone.", "pt": "Chegue à praia antes do pôr do sol para achar lugar; à meia-noite todos entram no mar de costas, então use roupa que possa molhar e leve um saco estanque para o celular." },
+      "etiquette": { "es": "Entra al agua solo hasta donde das pie, sobre todo de noche y si bebiste, y llévate tu basura de la arena.", "en": "Only wade in as far as you can stand, especially at night or after drinking, and take your trash off the sand.", "pt": "Entre na água só até onde der pé, sobretudo à noite ou se tiver bebido, e leve seu lixo da areia." }
+    },
+    {
+      "slug": "congreso-mundial-salsa",
+      "names": { "local": "Congreso Mundial de la Salsa", "es": "Congreso Mundial de la Salsa", "en": "World Salsa Congress", "pt": "Congresso Mundial da Salsa" },
+      "city": "Carolina (Isla Verde)",
+      "subdivision": "PR-CA",
+      "timezone": "America/Puerto_Rico",
+      "coords": { "lat": 18.4447, "lon": -66.0205 },
+      "nearest_airport": "SJU",
+      "type": "danza",
+      "rule": { "type": "announced", "window": { "start": "07-20", "end": "08-10" } },
+      "editions": {
+        "2026": {
+          "start": "2026-07-30",
+          "end": "2026-08-01",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.primerahora.com/entretenimiento/ph-mas-coge-calle/notas/congreso-mundial-de-salsa-celebra-en-30-anos-de-historia-con-destino-salsa-2026/", "publisher": "Primera Hora", "accessed": "2026-11-09", "tier": "B", "quote": "a celebrarse los días; jueves 30 de julio, viernes 31 de julio y sábado 1 de agosto de 2026 en el Fairmont El San Juan Hotel" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición 30, en el Fairmont El San Juan Hotel de Isla Verde, como cierre de un mes de noches de salsa por la isla.", "en": "30th edition, at the Fairmont El San Juan Hotel in Isla Verde, closing a month of salsa nights around the island.", "pt": "30ª edição, no Fairmont El San Juan Hotel, em Isla Verde, encerrando um mês de noites de salsa pela ilha." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.primerahora.com/entretenimiento/ph-mas-coge-calle/notas/congreso-mundial-de-salsa-celebra-en-30-anos-de-historia-con-destino-salsa-2026/", "quote": "reuniendo a bailarines de élite, instructores de renombre internacional y miles de fanáticos de la salsa en un evento de calibre global" },
+        "viajeros": { "measure": "internacional", "confidence": "oficial", "source": "https://destinosalsa.com/destino-salsa/", "quote": "ha permitido que miles de visitantes de más de 40 países hayan viajado a Puerto Rico" },
+        "calle": { "measure": "mixta", "confidence": "estimacion" },
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Luis_Mu%C3%B1oz_Mar%C3%ADn_International_Airport", "note": { "es": "SJU está a unos 3 km del hotel sede en Isla Verde.", "en": "SJU is about 3 km from the host hotel in Isla Verde.", "pt": "O SJU fica a cerca de 3 km do hotel-sede em Isla Verde." } }
+      },
+      "street_tip": { "es": "Los talleres y competencias requieren pase, pero las noches bailables con orquesta suelen ser la parte más abierta: lleva zapatos cómodos para bailar.", "en": "Workshops and competitions need a pass, but the dance nights with live orchestras tend to be the most open part: bring comfortable dancing shoes.", "pt": "Oficinas e competições exigem passe, mas as noites de baile com orquestra costumam ser a parte mais aberta: leve sapatos confortáveis para dançar." },
+      "etiquette": { "es": "En la pista social, pide la pieza con una invitación clara, adapta el nivel a tu pareja y no ocupes el espacio de las exhibiciones.", "en": "On the social floor, ask for a dance clearly, match your partner's level and keep off the space set aside for showcases.", "pt": "Na pista social, convide para dançar com clareza, adapte o nível ao seu par e não ocupe o espaço das apresentações." }
+    }
+  ]
+}

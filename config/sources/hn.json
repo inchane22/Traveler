@@ -1,0 +1,18 @@
+{
+  "country": "HN",
+  "A": ["gob.hn", "iht.hn", "honduras.travel", "amdc.hn", "sanpedrosula.hn", "ampuertocortes.hn", "unesco.org"],
+  "B": [
+    "laprensa.hn",
+    "elheraldo.hn",
+    "latribuna.hn",
+    "proceso.hn",
+    "tunota.com",
+    "hondudiario.com",
+    "criterio.hn",
+    "hch.tv",
+    "tiempo.hn",
+    "elpais.hn",
+    "radioamerica.hn"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

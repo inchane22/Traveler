@@ -1,0 +1,217 @@
+{
+  "country": "CU",
+  "status": "publicado",
+  "generated_at": "2026-11-09",
+  "timezone": "America/Havana",
+  "region": "centroamerica_caribe",
+  "festivals": [
+    {
+      "slug": "carnaval-santiago-de-cuba",
+      "names": { "local": "Carnaval de Santiago de Cuba", "es": "Carnaval de Santiago de Cuba", "en": "Santiago de Cuba Carnival", "pt": "Carnaval de Santiago de Cuba" },
+      "city": "Santiago de Cuba",
+      "subdivision": "CU-13",
+      "timezone": "America/Havana",
+      "coords": { "lat": 20.0213, "lon": -75.8296 },
+      "nearest_airport": "SCU",
+      "type": "carnaval",
+      "rule": { "type": "announced", "window": { "start": "07-18", "end": "07-27" } },
+      "editions": {},
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_abierto", "confidence": "prensa", "source": "https://www.prensa-latina.cu/2026/07/20/el-simbolo-turistico-del-carnaval-de-santiago-de-cuba/", "quote": "Lo mas llamativo está en el toque de sus tambores, corneta china, el quinto y la campana entre otros instrumentos que permiten a los santiagueros bailar conga por las calles, acción conocida como arrollar." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Antonio_Maceo_Airport", "note": { "es": "El aeropuerto Antonio Maceo (SCU) está a unos 8 km del centro y tiene vuelos internacionales; la crisis de combustible de 2026 ha recortado frecuencias.", "en": "Antonio Maceo Airport (SCU) is about 8 km from the centre and has international flights; the 2026 fuel crisis has cut frequencies.", "pt": "O aeroporto Antonio Maceo (SCU) fica a cerca de 8 km do centro e tem voos internacionais; a crise de combustível de 2026 reduziu as frequências." } }
+      },
+      "street_tip": { "es": "Las congas salen de sus barrios y la gente se suma detrás a arrollar; el desfile principal va por la avenida Garzón. Confirma el programa del año en la prensa local, porque la crisis energética ha cambiado horarios y fechas.", "en": "The congas leave their neighbourhoods and people join in behind them to dance; the main parade runs along Avenida Garzón. Check that year's programme in the local press, since the energy crisis has changed hours and dates.", "pt": "As congas saem dos bairros e o público entra atrás para dançar; o desfile principal passa pela avenida Garzón. Confira a programação do ano na imprensa local, porque a crise energética mudou horários e datas." },
+      "etiquette": { "es": "Arrollar detrás de una conga es bienvenido, pero no cortes la fila de músicos ni te pongas delante de los tambores.", "en": "Dancing behind a conga is welcome, but do not cut through the line of musicians or stand in front of the drums.", "pt": "Dançar atrás de uma conga é bem-vindo, mas não atravesse a fila de músicos nem fique na frente dos tambores." }
+    },
+    {
+      "slug": "parrandas-de-remedios",
+      "names": { "local": "Parrandas de Remedios", "es": "Parrandas de Remedios", "en": "Parrandas of Remedios", "pt": "Parrandas de Remedios" },
+      "city": "Remedios",
+      "subdivision": "CU-05",
+      "timezone": "America/Havana",
+      "coords": { "lat": 22.495, "lon": -79.5458 },
+      "nearest_airport": "SNU",
+      "type": "fiesta_popular",
+      "rule": { "type": "fixed", "start": "12-24", "end": "12-24" },
+      "editions": {
+        "2025": {
+          "start": "2025-12-24",
+          "end": "2025-12-24",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.prensa-latina.cu/2025/12/24/sintesis-de-cuba-439/", "publisher": "Prensa Latina", "accessed": "2026-11-09", "tier": "B", "quote": "Remedios, Cuba, 24 dic (Prensa Latina) La villa de San Juan de los Remedios, en la provincia Villa Clara, se viste de gala hoy para celebrar la edición 205 de sus legendarias Parrandas." },
+            { "url": "https://www.prensa-latina.cu/2025/12/24/sintesis-de-cuba-439/", "publisher": "Prensa Latina", "accessed": "2026-11-09", "tier": "B", "quote": "Este acontecimiento cultural, inscrito en la Lista Representativa del Patrimonio Cultural Inmaterial de la Humanidad por la Unesco desde 2018, convierte cada noche del 24 de diciembre en un espectáculo de creatividad, música y fuegos, donde toda la comunidad se une en una tradición que define su identidad." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "oficial", "source": "https://ich.unesco.org/en/RL/festivity-of-las-parrandas-in-the-centre-of-cuba-01405", "quote": "Everyone in the eighteen communities, regardless of their social class, gender, age, religion, profession or background, is involved in the festivities" },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "ninguno", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Abel_Santamar%C3%ADa_Airport", "note": { "es": "Remedios no tiene aeropuerto; el más cercano, Abel Santamaría (SNU) en Santa Clara, queda a más de 40 km.", "en": "Remedios has no airport; the nearest, Abel Santamaría (SNU) in Santa Clara, is more than 40 km away.", "pt": "Remedios não tem aeroporto; o mais próximo, Abel Santamaría (SNU) em Santa Clara, fica a mais de 40 km." } }
+      },
+      "street_tip": { "es": "La fiesta es la noche del 24 de diciembre en la plaza central, con los barrios San Salvador y El Carmen compitiendo con carrozas, trabajos de plaza y fuegos artificiales hasta la madrugada.", "en": "The party is on the night of December 24 in the main square, with the San Salvador and El Carmen neighbourhoods competing with floats, light structures and fireworks until dawn.", "pt": "A festa é na noite de 24 de dezembro na praça central, com os bairros San Salvador e El Carmen competindo com carros alegóricos, estruturas iluminadas e fogos até a madrugada." },
+      "etiquette": { "es": "Hay muchísima pirotecnia a ras de suelo: usa ropa de algodón, protege los oídos y no te acerques a donde los parranderos encienden los fuegos.", "en": "There is a lot of ground-level pyrotechnics: wear cotton clothes, protect your ears and keep away from where the revellers light the fireworks.", "pt": "Há muita pirotecnia no nível do chão: use roupa de algodão, proteja os ouvidos e fique longe de onde os parrandeiros acendem os fogos." }
+    },
+    {
+      "slug": "fiesta-del-fuego-santiago-de-cuba",
+      "names": { "local": "Festival del Caribe, Fiesta del Fuego", "es": "Festival del Caribe, Fiesta del Fuego", "en": "Caribbean Festival, Fire Festival", "pt": "Festival do Caribe, Festa do Fogo" },
+      "city": "Santiago de Cuba",
+      "subdivision": "CU-13",
+      "timezone": "America/Havana",
+      "coords": { "lat": 20.0213, "lon": -75.8296 },
+      "nearest_airport": "SCU",
+      "type": "danza",
+      "rule": { "type": "announced", "window": { "start": "07-01", "end": "07-12" } },
+      "editions": {
+        "2026": {
+          "start": "2026-07-03",
+          "end": "2026-07-05",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.acn.cu/cultura/realizaran-edicion-45-del-festival-del-caribe-en-santiago-de-cuba", "publisher": "Agencia Cubana de Noticias", "accessed": "2026-11-09", "tier": "B", "quote": "La edición 45 del Festival del Caribe acontecerá del 3 al 5 de julio próximo con un formato especial, adaptado a las condiciones actuales del país, pero con la voluntad de preservar una de las principales celebraciones de Cuba y de la región." },
+            { "url": "https://www.acn.cu/cultura/realizaran-edicion-45-del-festival-del-caribe-en-santiago-de-cuba", "publisher": "Agencia Cubana de Noticias", "accessed": "2026-11-09", "tier": "B", "quote": "Manifestó que esta será una edición atípica, marcada por numerosos retos, razón por la cual no podrán desarrollarse los tradicionales desfiles ni la gala del país invitado de honor, Colombia" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0,
+          "note": { "es": "Edición reducida a tres días por la crisis energética, sin los desfiles tradicionales ni la gala del país invitado; en años normales dura del 3 al 9 de julio.", "en": "Edition cut to three days by the energy crisis, without the traditional parades or the guest-country gala; in normal years it runs July 3 to 9.", "pt": "Edição reduzida a três dias pela crise energética, sem os desfiles tradicionais nem a gala do país convidado; em anos normais vai de 3 a 9 de julho." }
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.prensa-latina.cu/2025/07/09/concluyo-en-santiago-de-cuba-el-festival-del-caribe/", "quote": "A continuación, desfilaron por la calle Aguilera del centro patrimonial de la ciudad de Santiago de Cuba, decenas de agrupaciones representativas del país y el Caribe, hacia el paseo marítimo La Alameda, donde «ardió el diablo», para dejar clausurado el Festival." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Antonio_Maceo_Airport", "note": { "es": "SCU está a unos 8 km del centro de Santiago de Cuba y tiene vuelos internacionales.", "en": "SCU is about 8 km from central Santiago de Cuba and has international flights.", "pt": "SCU fica a cerca de 8 km do centro de Santiago de Cuba e tem voos internacionais." } }
+      },
+      "street_tip": { "es": "El cierre es la Quema del Diablo, al final del festival: sigue a los grupos desde el centro histórico hasta el lugar de la hoguera.", "en": "The finale is the Burning of the Devil at the end of the festival: follow the groups from the historic centre to the bonfire.", "pt": "O encerramento é a Queima do Diabo, no fim do festival: acompanhe os grupos do centro histórico até a fogueira." },
+      "etiquette": { "es": "Muchos grupos traen ritos religiosos afrocaribeños; pide permiso antes de fotografiar ceremonias y no toques los objetos rituales.", "en": "Many groups bring Afro-Caribbean religious rites; ask before photographing ceremonies and do not touch ritual objects.", "pt": "Muitos grupos trazem ritos religiosos afro-caribenhos; peça licença antes de fotografar cerimônias e não toque nos objetos rituais." }
+    },
+    {
+      "slug": "san-juan-camagueyano",
+      "names": { "local": "San Juan Camagüeyano", "es": "San Juan Camagüeyano", "en": "San Juan Carnival of Camagüey", "pt": "São João de Camagüey" },
+      "city": "Camagüey",
+      "subdivision": "CU-09",
+      "timezone": "America/Havana",
+      "coords": { "lat": 21.3808, "lon": -77.9178 },
+      "nearest_airport": "CMW",
+      "type": "carnaval",
+      "rule": { "type": "fixed", "start": "06-24", "end": "06-29" },
+      "editions": {
+        "2026": {
+          "start": "2026-06-24",
+          "end": "2026-06-29",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [
+            { "id": "paseo", "name": { "es": "Paseo por la avenida 26 de Julio hasta la Plaza de la Libertad", "en": "Parade from Avenida 26 de Julio to Plaza de la Libertad", "pt": "Desfile da avenida 26 de Julio até a Plaza de la Libertad" }, "date": "2026-06-26", "end": "2026-06-27", "confidence": "prensa" },
+            { "id": "entierro-de-san-pedro", "name": { "es": "Entierro de San Pedro", "en": "Burial of Saint Peter", "pt": "Enterro de São Pedro" }, "date": "2026-06-29", "confidence": "prensa" }
+          ],
+          "sources": [
+            { "url": "https://www.acn.cu/cultura/san-juan-camagueeyano-2026-identidad-tradicion-y-resistencia-cultural", "publisher": "Agencia Cubana de Noticias", "accessed": "2026-11-09", "tier": "B", "quote": "Como una de las expresiones más arraigadas de la cultura popular tradicional en Cuba, y profundamente vinculada a la identidad de los lugareños de esta urbe, llegará el San Juan Camagüeyano, del 24 al 29 de junio." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "baile_y_show", "confidence": "prensa", "source": "https://www.acn.cu/cultura/san-juan-camagueeyano-2026-identidad-tradicion-y-resistencia-cultural", "quote": "En sus calles, el pueblo se reconoce a sí mismo a través de la música, las comparsas, los desfiles, consolidando un sentido de pertenencia que trasciende generaciones." },
+        "viajeros": { "measure": "regional", "confidence": "prensa", "source": "https://www.acn.cu/cultura/san-juan-camagueeyano-2026-identidad-tradicion-y-resistencia-cultural", "quote": "Para los agramontinos el San Juan no es solo una festividad, sino también un espacio de encuentro comunitario" },
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Ignacio_Agramonte_International_Airport", "note": { "es": "El aeropuerto Ignacio Agramonte (CMW) está a unos 10 km del centro de Camagüey y tiene vuelos internacionales.", "en": "Ignacio Agramonte Airport (CMW) is about 10 km from central Camagüey and has international flights.", "pt": "O aeroporto Ignacio Agramonte (CMW) fica a cerca de 10 km do centro de Camagüey e tem voos internacionais." } }
+      },
+      "street_tip": { "es": "El primer día cada cuadra cocina su ajiaco en la calle; luego la fiesta se reparte entre los paseos de la avenida y las calles temáticas del centro.", "en": "On the first day each block cooks its ajiaco stew in the street; then the party spreads between the avenue parades and the themed streets downtown.", "pt": "No primeiro dia cada quarteirão cozinha seu ajiaco na rua; depois a festa se divide entre os desfiles da avenida e as ruas temáticas do centro." },
+      "etiquette": { "es": "El ajiaco es comida de vecinos: si te ofrecen un plato, acéptalo con gusto y no lo pidas como si fuera un puesto de venta.", "en": "The ajiaco is a neighbours' meal: if you are offered a bowl, accept it gladly, but do not ask for it as if it were a food stall.", "pt": "O ajiaco é comida de vizinhos: se oferecerem um prato, aceite com gosto, mas não peça como se fosse uma barraca." }
+    },
+    {
+      "slug": "jazz-plaza-habana",
+      "names": { "local": "Festival Internacional Jazz Plaza", "es": "Festival Internacional Jazz Plaza", "en": "Jazz Plaza International Festival", "pt": "Festival Internacional Jazz Plaza" },
+      "city": "La Habana",
+      "subdivision": "CU-03",
+      "timezone": "America/Havana",
+      "coords": { "lat": 23.1136, "lon": -82.3666 },
+      "nearest_airport": "HAV",
+      "type": "musica",
+      "rule": { "type": "announced", "window": { "start": "01-15", "end": "02-10" } },
+      "editions": {
+        "2026": {
+          "start": "2026-01-25",
+          "end": "2026-02-01",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.acn.cu/cultura/amplio-programa-tendra-edicion-41-del-festival-jazz-plaza-fotos", "publisher": "Agencia Cubana de Noticias", "accessed": "2026-11-09", "tier": "B", "quote": "A pocas horas de comenzar de manera oficial la edición 41 del Festival Internacional Jazz Plaza, a celebrarse entre el 25 de enero y el 1 de febrero en La Habana y sus subsedes Santiago de Cuba, Holguín y Villa Clara" }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        },
+        "2027": {
+          "start": "2027-01-24",
+          "end": "2027-01-31",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.prensa-latina.cu/2026/10/14/festival-jazz-plaza-de-cuba-exhibe-novedades-en-mexico/", "publisher": "Prensa Latina", "accessed": "2026-11-09", "tier": "B", "quote": "La capital mexicana fue el escenario elegido para anunciar el 42 Festival Internacional Jazz Plaza, evento que se celebrará del 24 al 31 de enero de 2027 y cuyo prestigio es reconocido hoy en Cuba y el mundo." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": null,
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Jos%C3%A9_Mart%C3%AD_International_Airport", "note": { "es": "El aeropuerto José Martí (HAV) está a unos 15 km del centro de La Habana.", "en": "José Martí Airport (HAV) is about 15 km from central Havana.", "pt": "O aeroporto José Martí (HAV) fica a cerca de 15 km do centro de Havana." } }
+      },
+      "street_tip": { "es": "Las galas grandes son en el Teatro Nacional, pero las sesiones más animadas suelen estar en la Fábrica de Arte Cubano y en los clubes de jazz; revisa el programa diario porque cambia a menudo.", "en": "The big galas are at the Teatro Nacional, but the liveliest sessions tend to be at Fábrica de Arte Cubano and the jazz clubs; check the daily programme because it changes often.", "pt": "As grandes galas são no Teatro Nacional, mas as sessões mais animadas costumam estar na Fábrica de Arte Cubano e nos clubes de jazz; confira a programação diária, que muda com frequência." }
+    },
+    {
+      "slug": "romerias-de-mayo-holguin",
+      "names": { "local": "Romerías de Mayo", "es": "Romerías de Mayo", "en": "May Romerías Festival", "pt": "Romerías de Maio" },
+      "city": "Holguín",
+      "subdivision": "CU-11",
+      "timezone": "America/Havana",
+      "coords": { "lat": 20.8872, "lon": -76.2631 },
+      "nearest_airport": "HOG",
+      "type": "musica",
+      "rule": { "type": "fixed", "start": "05-02", "end": "05-08" },
+      "editions": {
+        "2026": {
+          "start": "2026-05-02",
+          "end": "2026-05-08",
+          "status": "confirmada",
+          "confidence": "prensa",
+          "key_events": [],
+          "sources": [
+            { "url": "https://www.prensa-latina.cu/2026/05/02/holguin-inicia-en-cuba-festejos-por-romerias-de-mayo/", "publisher": "Prensa Latina", "accessed": "2026-11-09", "tier": "B", "quote": "Con desfile y concierto hoy en esta ciudad se inicia el Festival Mundial de Juventudes Artísticas, evento cultural que del 2 al 8 de mayo honrará el pensamiento intelectual de Fidel Castro." },
+            { "url": "https://www.acn.cu/cultura/regresan-a-holguin-romerias-de-mayo", "publisher": "Agencia Cubana de Noticias", "accessed": "2026-11-09", "tier": "B", "quote": "Las Romerías de Mayo regresarán a Holguín del 2 al 8 de mayo, convirtiendo nuevamente a la ciudad en la capital del arte joven." }
+          ],
+          "last_verified": "2026-11-09",
+          "sequence": 0
+        }
+      },
+      "score": {
+        "convocatoria": null,
+        "fiesta": { "measure": "show", "confidence": "prensa", "source": "https://www.acn.cu/cultura/regresan-a-holguin-romerias-de-mayo", "quote": "Se mantendrán otros espacios habituales dedicados a la literatura, el cine, las artes visuales y la trova, junto a la danza en los parques de la ciudad, además de conciertos de rap y rock que se entremezclarán durante esos días en diversos puntos de la urbe holguinera." },
+        "viajeros": null,
+        "calle": null,
+        "conectividad": { "measure": "internacional", "confidence": "estimacion", "source": "https://en.wikipedia.org/wiki/Frank_Pa%C3%ADs_Airport", "note": { "es": "El aeropuerto Frank País (HOG) está a unos 10 km del centro de Holguín y tiene vuelos internacionales.", "en": "Frank País Airport (HOG) is about 10 km from central Holguín and has international flights.", "pt": "O aeroporto Frank País (HOG) fica a cerca de 10 km do centro de Holguín e tem voos internacionais." } }
+      },
+      "street_tip": { "es": "Es un festival de arte joven: conciertos de rock, rap y trova en parques y plazas del centro, y un desfile inaugural cuyo recorrido cambia de un año a otro.", "en": "It is a young-arts festival: rock, rap and trova concerts in downtown parks and squares, and an opening parade whose route changes from year to year.", "pt": "É um festival de arte jovem: shows de rock, rap e trova em parques e praças do centro, e um desfile de abertura cujo trajeto muda a cada ano." }
+    }
+  ]
+}

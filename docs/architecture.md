@@ -31,6 +31,12 @@ app and Node scripts import them. Relative imports keep the `.ts` extension (Nod
   so a country page can say where its build stands; an older index without it reads as `[]`.
 - `public/data/countries/<cc>.json`: the validated `CountryFile`, lowercase file name. The client
   computes scores with `config/scoring.json` (bundled via Vite JSON import).
+- `public/data/world.json` (2026-11-10): `{ generated_at, countries: CountryFile[] }` with only each
+  country's tier-1 festivals plus the ones their `relative_to` rules and key events hang on
+  (`worldBundle`). The world and region views at tier 1 read it in one request (`loadScope`, with a
+  separate entry cache so a country page never sees a trimmed list); with the Tier 2 switch, a
+  country, or the file missing, they load the country files. The build preloads exactly
+  `index.json` and `world.json` (vite.config.ts `dataPreloads`).
 - `public/data/changelog.json`: array of `ChangelogEntry`.
 - `public/calendars/<cc>.ics`, `<cc>.en.ics`, `<cc>.pt.ics`: per-country subscription feeds.
 - Drafts (`status: "borrador"`) are included only when `INCLUDE_DRAFTS=1` (`pnpm dev` sets it).
@@ -92,7 +98,8 @@ function or table with a unit test: change behaviour there, not with a new statu
 | Screen load | `loading` → `ready` (kept per key) or `failed` → next read loads again | `resource(key, factory)` (src/resource.ts) | `asyncView` (components.ts); «Reintentar» is a re-render |
 | Refresh outcome per festival | `FestivalOutcome` (report.ts) | refresh-run.ts | `VERIFIED` record: every outcome says whether the model answered (verified count, blind check, exit code) |
 | Budget level (R10) | `ok`, `warn50`, `degraded80`, `stopped` | derived from the month's spend on every read (`levelOf`), never stored | `allowedAtLevel`, the follow-up budget |
-| Country request | (none) → `queued` → `live`; `queued` → `retry` (30 days) → `gave_up` (3rd short build); `retry`/`gave_up` → `queued` on a new request | `nextRequest(req, cc, event, rules)` (scripts/lib/requests.ts); an error mid-build is not an attempt | `requestsDue` (the planner), `indexRequests` (the site) |
+| Country request | (none) → `queued` → `live`; `queued` → `retry` (30 days) → `gave_up` (3rd short build); `retry`/`gave_up` → `queued` on a new request | `nextRequest(req, cc, event, rules)` (scripts/lib/requests.ts); an error mid-build is not an attempt; a coverage country (config «coverage») gets the `request` event from the pipeline itself when it has none, or gave up `coverage_retry_days` ago (`coverageDue`) | `requestsDue` (the planner), `indexRequests` (the site) |
+| Festival in a country file | (none) → listed | onboarding (a new country) or discovery (`selectNew` in discover-run.ts: new, cited party level, cited date or rule on an A/B source, passes build-data); the pipeline never deletes one | `discoverDue` (the planner: every `discover_every_days` per live country, from the ledger) |
 | Link verdict (R13) | `ok`, `broken`, `unknown` | `checkLink` (links.ts); a downgrade happens once, keyed by its changelog entry | `applyLostSources` |
 | Country | `borrador` → `publicado` | by the pipeline only, when `readiness` (scripts/lib/publish.ts) passes: build-data's own checks for a «publicado» country, `MIN_SOURCED_FESTIVALS` dated A/B festivals included | drafts are built only with `INCLUDE_DRAFTS=1` |
 | Classification (2026-11-09) | `score.fiesta` / `score.viajeros`: `null` → a level | the classifier (refresh `--classify`, the `classify` band, builds); a first classification applies, a `score.fiesta` change into or out of `solemne` over a stored value is flagged (validate.ts) | `isParty` (src/score.ts), `needsClassifying` (queue.ts) |
@@ -186,8 +193,32 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
 - `pipeline` (pipeline.yml runs it daily and on «build-country» issues): intake of the request
   (`--request`, or ISSUE_NUMBER / ISSUE_TITLE / ISSUE_BODY from an issue event, parsed by
   `countryFromIssue`; refused unless it is one of the site's 238 codes) → drafts that pass R2 go
-  live (`publishReady`) → `makePlan` → news sweeps → classification → builds → verification (minus
-  what the classification just found solemn) → holds → state files.
+  live (`publishReady`) → coverage countries not live are queued (`coverageDue`) → `makePlan` →
+  news sweeps → classification → discovery of new festivals → builds → verification (minus what
+  the classification just found solemn) → holds → state files.
+- Coverage (2026-11-10): `config/pipeline.json` «coverage» lists the countries the pipeline builds
+  without being asked: all of Latin America (AR BO BR CL CO CR CU DO EC GT HN HT MX NI PA PE PR PY
+  SV UY VE). They queue like any request and are built within the new-country share
+  (`max_builds_per_run`, a few a month at US$20); one that gave up is asked for again after
+  `coverage_retry_days` (90).
+- Discovery (2026-11-10, `scripts/lib/discover-run.ts`, job `discover`, key `discover/<CC>`): every
+  `discover_every_days` (60) each live country gets one research call (open search, block list
+  only, `DISCOVER_MAX_USES` 8; prompts `discover-research-system.md` and `discover-research-user.md`,
+  which lists the festivals the file already has inside a `<known>` fence) and one extraction to the
+  onboarding contract (`onboard-extract-system.md`, `OnboardingDraft`). Each candidate goes through
+  `mapFestival` (every fact needs a verbatim citation) and `selectNew`: not the same festival as one
+  listed (`sameFestival`: same slug or name, or in the same city one name inside the other or half
+  the distinctive words in common), a cited party level that is not `solemne`, a cited dated
+  edition or date rule, an A or B source, not `hidden` by score, a free slug (else `<slug>-<city>`)
+  and no new build-data problem. At most `discover_max_new` (3) join per run, best score first,
+  each with a changelog entry `field: "festival"` (old `null`, new its Spanish name, its source
+  URLs). Planner band `discover` sits after `sweep-45`, paid from the discovery pool (paced, see
+  Planner), at most `max_discover_per_run` (2) a day, oldest look first (onboarding counts as one),
+  then the country with fewest festivals. Skipped at 80% of the month (R10), like follow-ups. A retry build of a
+  draft (`hasFile`) runs a discovery (job `build`) before its classification and top-ups, so a
+  draft whose first festivals were solemn or undatable can still reach R2. Report:
+  `proposals/discover-<cc>-<date>.json|md`; the pipeline summary lists `discovered` and the
+  commit message «New on the calendar». Fixtures: `<dir>/discover/<cc>.json`.
   `--plan` (or `--dry-run`) makes no API call and writes only the summary. Outputs in `proposals/`:
   `pipeline-<date>.json|md` (plan and summary), `commit-message.txt`, `holds.md` (body of the
   «Needs a look» issue), `issue-updates.json` (`[{issue, comment, close}]` for the workflow), plus
@@ -201,9 +232,13 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   `build_topups` unclassified festivals are classified, and up to `build_topups` parties without a
   sourced date, nearest first (`topUpQueue`), are verified, all with job `build`; `readiness`
   decides `publicado`. Short of R2 → the request retries in `retry_days`.
-- Planner (`makePlan`, pure): pools from `config/pipeline.json` (`new_country_share` for builds,
-  the rest for upkeep spread over the days left; in the last `release_build_pool_days` both share
-  what is left, upkeep first). Cadence: `verifyInterval(daysToStart, settled, tier, stretch)` and
+- Planner (`makePlan`, pure): pools from `config/pipeline.json` (`new_country_share` 20% for
+  builds, `discover_share` 15% for discoveries, the rest for upkeep spread over the days left; in
+  the last `release_build_pool_days` all share what is left, upkeep first). The discovery pool is
+  paced: by the end of day d of an n-day month it may have spent d/n of itself (`todayDiscover`),
+  and a discovery starts while the pace owes anything, so one costing more than a day's slice
+  still runs (at US$20 a discovery costs more than a whole day of upkeep).
+  `projection.discoverCycleDays` says how often each live country gets searched. Cadence: `verifyInterval(daysToStart, settled, tier, stretch)` and
   `sweepInterval`; the last check per festival comes from the ledger (`lastDays`), so a check that
   found nothing is not repeated. Bands in priority order: `sweep-7`, `classify` (a live festival
   with `fiesta` or `viajeros` still null, at most every `CLASSIFY_RETRY_DAYS` = 30 days),
@@ -215,6 +250,8 @@ node scripts/check-links.ts [--today=YYYY-MM-DD]   # R6/R13 link check; exit 1 o
   returned: `{day, job, key, call, model, searches, input_tokens, output_tokens, usd}`; jobs
   `onboard`, `policy`, `build` (new-country pool) and `verify`, `followup`, `sweep`, `classify` (upkeep).
   `call: "carryover"` brings in a total from before the ledger. Fixture runs keep it in memory.
+  Job `discover` (its own pool, `spendByPool(...).discover`) looks for new festivals in a live
+  country; inside a retry build the same call is recorded as `build`.
 
 - `--classify` (2026-11-09): every unclassified festival (drafts included), or `--only` one even if
   classified. Prompts `classify-system.md` (with the level rules from config/scoring.json),

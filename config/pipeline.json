@@ -1,10 +1,16 @@
 {
-  "new_country_share": 0.3,
+  "new_country_share": 0.2,
+  "discover_share": 0.15,
   "release_build_pool_days": 7,
   "max_builds_per_run": 2,
   "build_topups": 5,
   "max_build_attempts": 3,
   "retry_days": 30,
+  "coverage": ["AR", "BO", "BR", "CL", "CO", "CR", "CU", "DO", "EC", "GT", "HN", "HT", "MX", "NI", "PA", "PE", "PR", "PY", "SV", "UY", "VE"],
+  "coverage_retry_days": 90,
+  "discover_every_days": 60,
+  "discover_max_new": 3,
+  "max_discover_per_run": 2,
   "default_job_usd": {
     "policy": 0.03,
     "onboard": 1.2,
@@ -12,6 +18,7 @@
     "verify": 0.15,
     "followup": 0.12,
     "sweep": 0.08,
-    "classify": 0.12
+    "classify": 0.12,
+    "discover": 0.7
   }
 }

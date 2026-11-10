@@ -9,19 +9,22 @@ import { ISODate } from "../../src/schema.ts";
 /**
  * What a call was for. `onboard` and `policy` start a new country, `build` classifies and tops up
  * its dates before it goes live; the others keep published countries fresh (`classify` decides
- * once whether a festival is a party and where its crowd comes from).
+ * once whether a festival is a party and where its crowd comes from, `discover` looks for parties
+ * a live country's file does not have yet).
  */
-export const Job = z.enum(["onboard", "policy", "build", "verify", "followup", "sweep", "classify"]);
+export const Job = z.enum(["onboard", "policy", "build", "verify", "followup", "sweep", "classify", "discover"]);
 export type Job = z.infer<typeof Job>;
 
 /** Jobs paid from the share of the budget set aside for new countries. */
 export const BUILD_JOBS: ReadonlySet<Job> = new Set(["onboard", "policy", "build"]);
+/** Jobs paid from the share set aside for finding new festivals in live countries. */
+export const DISCOVER_JOBS: ReadonlySet<Job> = new Set(["discover"]);
 
 export const LedgerEntry = z
   .object({
     day: ISODate,
     job: Job,
-    /** `CO/carnaval-barranquilla` for a festival, `onboard/PE` or `policy/PE` for a country. */
+    /** `CO/carnaval-barranquilla` for a festival, `onboard/PE`, `policy/PE` or `discover/PE` for a country. */
     key: z.string().min(1),
     /** `carryover` is a total brought in from before the ledger existed. */
     call: z.enum(["research", "extract", "carryover"]),
@@ -100,16 +103,18 @@ export function monthsOf(entries: readonly LedgerEntry[]): UsageMonth[] {
   return [...byMonth.values()].sort((a, b) => a.month.localeCompare(b.month));
 }
 
-/** What a month's entries spent on new countries and on keeping the others fresh. */
-export function spendByPool(entries: readonly LedgerEntry[], month: string): { build: number; upkeep: number } {
+/** What a month's entries spent on new countries, on new festivals and on keeping the rest fresh. */
+export function spendByPool(entries: readonly LedgerEntry[], month: string): { build: number; upkeep: number; discover: number } {
   let build = 0;
   let upkeep = 0;
+  let discover = 0;
   for (const e of entries) {
     if (!e.day.startsWith(month)) continue;
     if (BUILD_JOBS.has(e.job)) build += e.usd;
+    else if (DISCOVER_JOBS.has(e.job)) discover += e.usd;
     else upkeep += e.usd;
   }
-  return { build: round(build), upkeep: round(upkeep) };
+  return { build: round(build), upkeep: round(upkeep), discover: round(discover) };
 }
 
 /**

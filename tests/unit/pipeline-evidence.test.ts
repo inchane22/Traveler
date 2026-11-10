@@ -160,6 +160,12 @@ describe("date parser (R3)", () => {
     ["pt", "de 6 a 9 de fevereiro de 2027", "2027-02-06", "2027-02-09"],
     ["es", "1ro de mayo de 2027", "2027-05-01", "2027-05-01"],
     ["es", "entre 2027-02-06 y 2027-02-09", "2027-02-06", "2027-02-09"],
+    // Comma lists, the usual way Latin American press writes a festival's days (2026-11-10: the first
+    // day used to be dropped, so Arica's «22, 23 y 24 de enero» could not be checked).
+    ["es", "los días 22, 23 y 24 de enero de 2027", "2027-01-22", "2027-01-24"],
+    ["es", "las noches del 20, 21, 27 y 28 de febrero", "2027-02-20", "2027-02-28"],
+    ["pt", "nos dias 7, 8 e 9 de março de 2027", "2027-03-07", "2027-03-09"],
+    ["en", "January 22, 23 and 24, 2027", "2027-01-22", "2027-01-24"],
   ] as const)("%s: %s", (lang, quote, start, end) => {
     expect(quoteStatesDate(quote, lang, start, "start")).toBe(true);
     expect(quoteStatesDate(quote, lang, end, "end")).toBe(true);
@@ -170,6 +176,17 @@ describe("date parser (R3)", () => {
     expect(quoteStatesDate("se celebrarán del 10 al 16 de noviembre", "es", "2026-11-16", "start")).toBe(false);
     expect(quoteStatesDate("cada 24 de junio", "es", "2031-06-24", "any")).toBe(true);
     expect(quoteStatesDate("del 2 al 7 de enero de 2027", "es", "2028-01-02", "start")).toBe(false);
+  });
+
+  test("a comma does not make a range out of a day and a number that follows it", () => {
+    expect(quoteStatesDate("On March 5, 10 bands will play", "en", "2027-03-10", "end")).toBe(false);
+    expect(quoteStatesDate("On March 5, 10 bands will play", "en", "2027-03-05", "end")).toBe(true);
+    expect(quoteStatesDate("el 14 de febrero, 15 comparsas desfilan", "es", "2027-02-15", "end")).toBe(false);
+    // A count before the range is not its first day (Carnaval de Limón 2026).
+    const limon = "se tomarán el cantón central de Limón durante 10 días, del 9 al 18 de octubre, con una agenda cargada";
+    expect(quoteStatesDate(limon, "es", "2026-10-09", "start")).toBe(true);
+    expect(quoteStatesDate(limon, "es", "2026-10-18", "end")).toBe(true);
+    expect(quoteStatesDate(limon, "es", "2026-10-10", "start")).toBe(false);
   });
 
   test("the language matters: an English quote read as Spanish states nothing", () => {

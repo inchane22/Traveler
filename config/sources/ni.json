@@ -1,0 +1,21 @@
+{
+  "country": "NI",
+  "A": ["gob.ni", "visitanicaragua.com", "visitanicaragua.us", "unesco.org"],
+  "B": [
+    "laprensani.com",
+    "confidencial.digital",
+    "100noticias.com.ni",
+    "articulo66.com",
+    "despacho505.com",
+    "elnuevodiario.com.ni",
+    "canal2tv.com",
+    "canal4.com.ni",
+    "canal6.com.ni",
+    "tn8.ni",
+    "el19digital.com",
+    "radiolaprimerisima.com",
+    "vostv.com.ni",
+    "nuevaya.com.ni"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

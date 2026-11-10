@@ -1,0 +1,17 @@
+{
+  "country": "EC",
+  "A": ["gob.ec", "ecuador.travel", "fiestasdeambato.com", "unesco.org"],
+  "B": [
+    "elcomercio.com",
+    "eluniverso.com",
+    "expreso.ec",
+    "primicias.ec",
+    "elmercurio.com.ec",
+    "eltelegrafo.com.ec",
+    "extra.ec",
+    "ecuavisa.com",
+    "teleamazonas.com",
+    "lahora.com.ec"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

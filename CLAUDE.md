@@ -19,6 +19,10 @@ a milestone closes only when its tests are green.
 - The calendar lists parties (2026-11-09): whether a festival is one is `score.fiesta`, set by the
   classifier with a source, never its `type`. Ask `isParty` (src/score.ts); `buildEntries` already
   leaves solemn acts out of every view and queue.
+- The calendar is alive (2026-11-10): every country in config/pipeline.json «coverage» (all of Latin
+  America) is built without a request, and live countries are searched for missing parties every
+  `discover_every_days`. A festival joins an existing file only through `selectNew`
+  (scripts/lib/discover-run.ts); tighten it there, never add festivals from another code path.
 - Lifecycles have one home (docs/architecture.md «State machines»). For behaviour (does an edition
   take place, is it settled, do calendars keep it) ask `STATUS_TRAITS` in `src/status.ts`; compare a
   status string only for its own wording or style. Move «Cerca de mí» only through `nextGeo` and

@@ -1,0 +1,16 @@
+{
+  "country": "SV",
+  "A": ["gob.sv", "elsalvador.travel", "unesco.org"],
+  "B": [
+    "laprensagrafica.com",
+    "elsalvador.com",
+    "diario.elmundo.sv",
+    "diarioelmundo.com.sv",
+    "elfaro.net",
+    "diariocolatino.com",
+    "canal12.com.sv",
+    "tcsgo.com",
+    "lapagina.com.sv"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

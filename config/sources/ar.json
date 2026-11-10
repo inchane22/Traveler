@@ -1,0 +1,32 @@
+{
+  "country": "AR",
+  "A": [
+    "gob.ar",
+    "gov.ar",
+    "unesco.org",
+    "aquicosquin.com.ar",
+    "aquicosquin.org",
+    "carnavaldelpais.com.ar",
+    "oktoberfestargentina.com.ar",
+    "jesusmaria.tur.ar"
+  ],
+  "B": [
+    "clarin.com",
+    "lanacion.com.ar",
+    "infobae.com",
+    "pagina12.com.ar",
+    "perfil.com",
+    "tn.com.ar",
+    "ambito.com",
+    "cronista.com",
+    "tvpublica.com.ar",
+    "canal7.com.ar",
+    "radionacional.com.ar",
+    "losandes.com.ar",
+    "lavoz.com.ar",
+    "lacapital.com.ar",
+    "eltribuno.com",
+    "eltribunodejujuy.com"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}

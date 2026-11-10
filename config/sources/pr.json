@@ -1,0 +1,18 @@
+{
+  "country": "PR",
+  "A": ["pr.gov", "discoverpuertorico.com", "sanjuan.pr", "sanjuanciudadpatria.com", "oslpr.org", "destinosalsa.com", "unesco.org"],
+  "B": [
+    "elnuevodia.com",
+    "primerahora.com",
+    "elvocero.com",
+    "metro.pr",
+    "noticel.com",
+    "telemundopr.com",
+    "wapa.tv",
+    "teleonce.com",
+    "wipr.pr",
+    "notiuno.com",
+    "newsismybusiness.com"
+  ],
+  "blocked": ["viagogo.com", "stubhub.com", "allevents.in", "happeningnext.com"]
+}
