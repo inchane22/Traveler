@@ -150,3 +150,8 @@
 {"day":"2026-11-11","job":"sweep","key":"EC/fiestas-de-quito","call":"research","model":"claude-sonnet-5-5","searches":5,"input_tokens":132662,"output_tokens":1546,"usd":0.251421}
 {"day":"2026-11-11","job":"sweep","key":"EC/fiestas-de-quito","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":2481,"output_tokens":253,"usd":0.004576}
 {"day":"2026-11-11","job":"discover","key":"discover/BO","call":"research","model":"claude-sonnet-5-5","searches":8,"input_tokens":164462,"output_tokens":7571,"usd":0.406758}
+{"day":"2026-11-13","job":"sweep","key":"VE/feria-la-chinita","call":"research","model":"claude-sonnet-5-5","searches":5,"input_tokens":71619,"output_tokens":2770,"usd":0.180525}
+{"day":"2026-11-13","job":"sweep","key":"VE/feria-la-chinita","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":3309,"output_tokens":910,"usd":0.016528}
+{"day":"2026-11-13","job":"sweep","key":"EC/fiestas-de-quito","call":"research","model":"claude-sonnet-5-5","searches":5,"input_tokens":103228,"output_tokens":1678,"usd":0.223909}
+{"day":"2026-11-13","job":"sweep","key":"EC/fiestas-de-quito","call":"extract","model":"claude-sonnet-5-5","searches":0,"input_tokens":3182,"output_tokens":996,"usd":0.013408}
+{"day":"2026-11-13","job":"discover","key":"discover/CR","call":"research","model":"claude-sonnet-5-5","searches":8,"input_tokens":153749,"output_tokens":8323,"usd":0.397791}
